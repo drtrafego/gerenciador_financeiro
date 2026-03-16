@@ -28,7 +28,7 @@ async function getDashboardData() {
     upcomingInvoices,
     monthExpense,
     allContracts,
-    expensesByMonth,
+    expenseTransactions,
   ] = await Promise.all([
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "active")),
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "overdue")),
@@ -49,16 +49,10 @@ async function getDashboardData() {
       endDate: contracts.endDate,
       status: contracts.status,
     }).from(contracts),
-    // Despesas por mês para o gráfico
-    db.execute(sql`
-      SELECT to_char(date_trunc('month', date::date), 'Mon/YY') as month,
-             date_trunc('month', date::date) as month_start,
-             sum(amount) as expense
-      FROM transactions
-      WHERE type = 'expense' AND date >= ${sixMonthsAgo.toISOString().split("T")[0]}
-      GROUP BY date_trunc('month', date::date)
-      ORDER BY date_trunc('month', date::date)
-    `),
+    // Transações de despesa dos últimos 6 meses (agrupamos em JS para evitar mismatch de locale)
+    db.select({ amount: transactions.amount, date: transactions.date })
+      .from(transactions)
+      .where(and(eq(transactions.type, "expense"), gte(transactions.date, sixMonthsAgo.toISOString().split("T")[0]!))),
   ]);
 
   const rateRow = latestRate[0];
@@ -70,38 +64,34 @@ async function getDashboardData() {
   const activeContracts = allContracts.filter((c) => c.status === "active");
   const mrr = activeContracts.reduce((sum, c) => sum + parseFloat(c.fixedAmount ?? "0"), 0);
 
-  // Gerar dados do gráfico para os últimos 6 meses
-  // Receita = contratos que estavam ativos naquele mês
+  // Agrupar despesas por "YYYY-MM" em JS (evita mismatch de locale com SQL)
   const expenseMap = new Map<string, number>();
-  for (const row of Array.from(expensesByMonth)) {
-    expenseMap.set(String((row as any).month), Number((row as any).expense ?? 0));
+  for (const t of expenseTransactions) {
+    const key = t.date.slice(0, 7); // "YYYY-MM"
+    expenseMap.set(key, (expenseMap.get(key) ?? 0) + parseFloat(t.amount ?? "0"));
   }
 
+  // Gerar dados do gráfico para os últimos 6 meses
   const chartData = [];
   for (let i = 5; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const monthStart = new Date(d.getFullYear(), d.getMonth(), 1);
-    const monthEnd = new Date(d.getFullYear(), d.getMonth() + 1, 0); // último dia do mês
+    const monthEnd = new Date(d.getFullYear(), d.getMonth() + 1, 0);
     const label = d.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 
-    // Receita = contratos que estavam vigentes neste mês
     const monthIncome = allContracts
       .filter((c) => {
         const start = new Date(c.startDate + "T12:00:00");
         const end = c.endDate ? new Date(c.endDate + "T12:00:00") : null;
-        const wasActive = start <= monthEnd && (end === null || end >= monthStart);
-        // Incluir contratos ativos ou que foram cancelados/pausados após iniciarem
-        return wasActive;
+        return start <= monthEnd && (end === null || end >= monthStart);
       })
       .reduce((sum, c) => sum + parseFloat(c.fixedAmount ?? "0"), 0);
-
-    const expenseKey = d.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
-    const monthExpenseVal = expenseMap.get(expenseKey) ?? 0;
 
     chartData.push({
       month: label,
       income: monthIncome,
-      expense: monthExpenseVal,
+      expense: expenseMap.get(key) ?? 0,
     });
   }
 

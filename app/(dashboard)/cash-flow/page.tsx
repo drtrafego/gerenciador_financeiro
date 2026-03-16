@@ -75,7 +75,7 @@ export default async function CashFlowPage({
       amount: c.fixedAmount ?? "0",
       currency: c.currency ?? "BRL",
       date,
-      isContract: true,
+      isContract: true as const,
     };
   });
 
