@@ -11,9 +11,12 @@ import AlertsPanel from "@/components/dashboard/AlertsPanel";
 
 async function getDashboardData() {
   const now = new Date();
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split("T")[0];
-  const today = now.toISOString().split("T")[0];
-  const in7days = new Date(now.getTime() + 7 * 86400000).toISOString().split("T")[0];
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split("T")[0]!;
+  const today = now.toISOString().split("T")[0]!;
+  const in7days = new Date(now.getTime() + 7 * 86400000).toISOString().split("T")[0]!;
+
+  // Data de início da janela de 6 meses
+  const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
 
   const [
     activeClients,
@@ -23,10 +26,9 @@ async function getDashboardData() {
     recentInvoices,
     overdueInvoices,
     upcomingInvoices,
-    monthIncome,
     monthExpense,
-    last6Months,
-    activeContracts,
+    allContracts,
+    expensesByMonth,
   ] = await Promise.all([
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "active")),
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "overdue")),
@@ -39,20 +41,24 @@ async function getDashboardData() {
     ),
     db.select({ total: sql<number>`coalesce(sum(amount),0)` })
       .from(transactions)
-      .where(and(eq(transactions.type, "income"), gte(transactions.date, startOfMonth))),
-    db.select({ total: sql<number>`coalesce(sum(amount),0)` })
-      .from(transactions)
       .where(and(eq(transactions.type, "expense"), gte(transactions.date, startOfMonth))),
+    // Todos os contratos para calcular receita mensal
+    db.select({
+      fixedAmount: contracts.fixedAmount,
+      startDate: contracts.startDate,
+      endDate: contracts.endDate,
+      status: contracts.status,
+    }).from(contracts),
+    // Despesas por mês para o gráfico
     db.execute(sql`
-      SELECT to_char(date_trunc('month', date), 'Mon') as month,
-             sum(case when type='income' then amount else 0 end) as income,
-             sum(case when type='expense' then amount else 0 end) as expense
+      SELECT to_char(date_trunc('month', date::date), 'Mon/YY') as month,
+             date_trunc('month', date::date) as month_start,
+             sum(amount) as expense
       FROM transactions
-      WHERE date >= now() - interval '6 months'
-      GROUP BY date_trunc('month', date)
-      ORDER BY date_trunc('month', date)
+      WHERE type = 'expense' AND date >= ${sixMonthsAgo.toISOString().split("T")[0]}
+      GROUP BY date_trunc('month', date::date)
+      ORDER BY date_trunc('month', date::date)
     `),
-    db.select({ fixedAmount: contracts.fixedAmount }).from(contracts).where(eq(contracts.status, "active")),
   ]);
 
   const rateRow = latestRate[0];
@@ -60,7 +66,44 @@ async function getDashboardData() {
     ? { usd_brl: Number(rateRow.usdBrl), usd_ars: Number(rateRow.usdArs) }
     : { usd_brl: 5.87, usd_ars: 1429 };
 
+  // MRR atual = soma dos contratos ativos
+  const activeContracts = allContracts.filter((c) => c.status === "active");
   const mrr = activeContracts.reduce((sum, c) => sum + parseFloat(c.fixedAmount ?? "0"), 0);
+
+  // Gerar dados do gráfico para os últimos 6 meses
+  // Receita = contratos que estavam ativos naquele mês
+  const expenseMap = new Map<string, number>();
+  for (const row of Array.from(expensesByMonth)) {
+    expenseMap.set(String((row as any).month), Number((row as any).expense ?? 0));
+  }
+
+  const chartData = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const monthStart = new Date(d.getFullYear(), d.getMonth(), 1);
+    const monthEnd = new Date(d.getFullYear(), d.getMonth() + 1, 0); // último dia do mês
+    const label = d.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
+
+    // Receita = contratos que estavam vigentes neste mês
+    const monthIncome = allContracts
+      .filter((c) => {
+        const start = new Date(c.startDate + "T12:00:00");
+        const end = c.endDate ? new Date(c.endDate + "T12:00:00") : null;
+        const wasActive = start <= monthEnd && (end === null || end >= monthStart);
+        // Incluir contratos ativos ou que foram cancelados/pausados após iniciarem
+        return wasActive;
+      })
+      .reduce((sum, c) => sum + parseFloat(c.fixedAmount ?? "0"), 0);
+
+    const expenseKey = d.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
+    const monthExpenseVal = expenseMap.get(expenseKey) ?? 0;
+
+    chartData.push({
+      month: label,
+      income: monthIncome,
+      expense: monthExpenseVal,
+    });
+  }
 
   return {
     activeClients: Number(activeClients[0]?.count ?? 0),
@@ -71,9 +114,8 @@ async function getDashboardData() {
     overdueInvoices,
     upcomingInvoices,
     mrr,
-    monthIncome: Number(monthIncome[0]?.total ?? 0),
     monthExpense: Number(monthExpense[0]?.total ?? 0),
-    chartData: Array.from(last6Months) as any[],
+    chartData,
   };
 }
 
@@ -93,14 +135,13 @@ export default async function DashboardPage() {
           color="indigo"
         />
         <MetricCard
-          label="Recebido (mês)"
-          value={data.monthIncome}
+          label="Receita Prevista"
+          value={data.mrr}
           currency={data.displayCurrency}
           rate={data.rate}
-          sub="entradas confirmadas"
+          sub="contratos ativos este mês"
           icon="check"
           color="green"
-          trend={8.1}
         />
         <MetricCard
           label="Despesas (mês)"
@@ -110,7 +151,6 @@ export default async function DashboardPage() {
           sub="saídas no mês"
           icon="trending-down"
           color="red"
-          trend={-2.4}
         />
         <MetricCard
           label="Inadimplentes"
