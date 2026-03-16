@@ -17,6 +17,7 @@ const contractSchema = z.object({
   endDate: z.string().optional().transform((v) => v || null),
   status: z.enum(['active', 'paused', 'cancelled']).default('active'),
   description: z.string().optional(),
+  pdfUrl: z.string().url().optional().or(z.literal('')).transform((v) => v || null),
 });
 
 export async function createContractAction(formData: FormData): Promise<void> {
@@ -34,6 +35,7 @@ export async function createContractAction(formData: FormData): Promise<void> {
     endDate: parsed.endDate ?? null,
     status: parsed.status,
     description: parsed.description ?? null,
+    pdfUrl: parsed.pdfUrl ?? null,
   });
   revalidatePath('/contracts');
   redirect('/contracts');
@@ -54,6 +56,7 @@ export async function updateContractAction(id: string, formData: FormData): Prom
     endDate: parsed.endDate ?? null,
     status: parsed.status,
     description: parsed.description ?? null,
+    pdfUrl: parsed.pdfUrl ?? null,
   });
   revalidatePath('/contracts');
   revalidatePath(`/contracts/${id}`);

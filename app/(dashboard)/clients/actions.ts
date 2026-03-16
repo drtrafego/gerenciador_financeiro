@@ -18,7 +18,7 @@ const clientSchema = z.object({
 export async function createClientAction(formData: FormData): Promise<void> {
   const raw = Object.fromEntries(formData.entries());
   const parsed = clientSchema.parse(raw);
-  await createClient({
+  const newClient = await createClient({
     name: parsed.name,
     contactName: parsed.contactName ?? null,
     email: parsed.email || null,
@@ -28,7 +28,7 @@ export async function createClientAction(formData: FormData): Promise<void> {
     notes: parsed.notes ?? null,
   });
   revalidatePath('/clients');
-  redirect('/clients');
+  redirect(`/contracts/new?clientId=${newClient.id}`);
 }
 
 export async function updateClientAction(id: string, formData: FormData): Promise<void> {

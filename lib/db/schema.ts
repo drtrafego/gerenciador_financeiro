@@ -125,6 +125,7 @@ export const contracts = pgTable('contracts', {
   endDate: date('end_date'),
   status: text('status').default('active'), // active | paused | cancelled
   description: text('description'),
+  pdfUrl: text('pdf_url'),
   createdAt: timestamp('created_at').defaultNow(),
 });
 

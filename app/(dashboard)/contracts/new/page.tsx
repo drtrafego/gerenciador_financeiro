@@ -150,6 +150,19 @@ export default async function NewContractPage({
                 placeholder="Escopo do contrato, observações..."
               />
             </div>
+
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+                Link do Contrato em PDF
+                <span className="text-zinc-500 font-normal ml-1">(Google Drive, Dropbox, etc.)</span>
+              </label>
+              <input
+                name="pdfUrl"
+                type="url"
+                placeholder="https://drive.google.com/..."
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
           </div>
         </div>
 

@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { db } from "@/lib/db";
-import { invoices, transactions, clients, exchangeRates, systemSettings } from "@/lib/db/schema";
+import { invoices, transactions, clients, contracts, exchangeRates, systemSettings } from "@/lib/db/schema";
 import { desc, eq, gte, and, sql } from "drizzle-orm";
 import MetricCard from "@/components/dashboard/MetricCard";
 import RevenueChart from "@/components/dashboard/RevenueChart";
@@ -26,6 +26,7 @@ async function getDashboardData() {
     monthIncome,
     monthExpense,
     last6Months,
+    activeContracts,
   ] = await Promise.all([
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "active")),
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "overdue")),
@@ -51,12 +52,15 @@ async function getDashboardData() {
       GROUP BY date_trunc('month', date)
       ORDER BY date_trunc('month', date)
     `),
+    db.select({ fixedAmount: contracts.fixedAmount }).from(contracts).where(eq(contracts.status, "active")),
   ]);
 
   const rateRow = latestRate[0];
   const rate = rateRow
     ? { usd_brl: Number(rateRow.usdBrl), usd_ars: Number(rateRow.usdArs) }
     : { usd_brl: 5.87, usd_ars: 1429 };
+
+  const mrr = activeContracts.reduce((sum, c) => sum + parseFloat(c.fixedAmount ?? "0"), 0);
 
   return {
     activeClients: Number(activeClients[0]?.count ?? 0),
@@ -66,6 +70,7 @@ async function getDashboardData() {
     recentInvoices,
     overdueInvoices,
     upcomingInvoices,
+    mrr,
     monthIncome: Number(monthIncome[0]?.total ?? 0),
     monthExpense: Number(monthExpense[0]?.total ?? 0),
     chartData: Array.from(last6Months) as any[],
@@ -80,13 +85,12 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <MetricCard
           label="MRR"
-          value={data.monthIncome}
+          value={data.mrr}
           currency={data.displayCurrency}
           rate={data.rate}
           sub={`${data.activeClients} clientes ativos`}
           icon="trending-up"
           color="indigo"
-          trend={11.3}
         />
         <MetricCard
           label="Recebido (mês)"

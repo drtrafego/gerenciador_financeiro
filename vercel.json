@@ -1,5 +1,6 @@
 {
   "installCommand": "npm install --legacy-peer-deps",
+  "buildCommand": "npx tsx lib/db/migrate.ts && next build",
   "crons": [
     {
       "path": "/api/cron/update-rates",

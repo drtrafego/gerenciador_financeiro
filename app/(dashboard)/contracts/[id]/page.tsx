@@ -7,7 +7,7 @@ import { deleteContractAction, updateContractAction } from '../actions';
 import { formatCurrency } from '@/lib/currency/format';
 import type { Currency } from '@/lib/currency/format';
 import { cn } from '@/lib/utils';
-import { Trash2 } from 'lucide-react';
+import { Trash2, FileText } from 'lucide-react';
 
 const typeLabels: Record<string, string> = {
   fixed_fee: 'Fee Fixo',
@@ -179,6 +179,31 @@ export default async function ContractDetailPage({
                 defaultValue={contract.description ?? ''}
                 className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
               />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="block text-xs text-zinc-400 mb-1">
+                Link do Contrato em PDF
+                <span className="text-zinc-600 font-normal ml-1">(Google Drive, Dropbox, etc.)</span>
+              </label>
+              <input
+                name="pdfUrl"
+                type="url"
+                defaultValue={contract.pdfUrl ?? ''}
+                placeholder="https://drive.google.com/..."
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              {contract.pdfUrl && (
+                <a
+                  href={contract.pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 mt-2 text-xs text-indigo-400 hover:text-indigo-300"
+                >
+                  <FileText className="h-3.5 w-3.5" />
+                  Abrir PDF do contrato
+                </a>
+              )}
             </div>
           </div>
         </div>

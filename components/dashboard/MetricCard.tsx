@@ -1,5 +1,5 @@
 import { TrendingUp, TrendingDown, CheckCircle, AlertCircle, DollarSign, BarChart2 } from "lucide-react";
-import { formatCurrency } from "@/lib/currency/format";
+import { formatCurrency, convertAmount, type Currency, type RatesMap } from "@/lib/currency/format";
 
 const ICONS: Record<string, any> = {
   "trending-up":   TrendingUp,
@@ -20,29 +20,34 @@ const COLORS: Record<string, string> = {
 interface MetricCardProps {
   label: string;
   value: number;
-  currency?: string;
+  currency?: Currency;
+  sourceCurrency?: Currency;
   raw?: boolean;
   sub?: string;
   icon: string;
   color?: string;
   trend?: number;
-  rate?: any;
+  rate?: RatesMap;
 }
 
 export default function MetricCard({
   label,
   value,
-  currency,
+  currency = "BRL",
+  sourceCurrency = "BRL",
   raw = false,
   sub,
   icon,
   color = "indigo",
   trend,
+  rate,
 }: MetricCardProps) {
   const Icon = ICONS[icon] ?? DollarSign;
-  const displayValue = raw
-    ? String(value)
-    : formatCurrency(value, (currency ?? "BRL") as any);
+  const converted =
+    !raw && rate && currency !== sourceCurrency
+      ? convertAmount(value, sourceCurrency, currency, rate)
+      : value;
+  const displayValue = raw ? String(value) : formatCurrency(converted, currency);
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col gap-3">
