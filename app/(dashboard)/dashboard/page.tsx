@@ -64,11 +64,12 @@ async function getDashboardData() {
   );
   const displayCurrency = (displayCurrencySetting[0]?.value ?? "BRL") as Currency;
 
-  // MRR atual = soma dos contratos ativos convertidos para a moeda de exibição
+  // MRR = soma dos contratos ativos, todos convertidos para BRL
+  // O MetricCard recebe em BRL e converte para a moeda de exibição (sourceCurrency padrão = "BRL")
   const activeContracts = allContracts.filter((c) => c.status === "active");
   const mrr = activeContracts.reduce((sum, c) => {
     const amount = parseFloat(c.fixedAmount ?? "0");
-    return sum + convertAmount(amount, (c.currency ?? "BRL") as Currency, displayCurrency, rate);
+    return sum + convertAmount(amount, (c.currency ?? "BRL") as Currency, "BRL", rate);
   }, 0);
 
   // Agrupar despesas por "YYYY-MM" em JS (evita mismatch de locale com SQL)
@@ -95,7 +96,7 @@ async function getDashboardData() {
       })
       .reduce((sum, c) => {
         const amount = parseFloat(c.fixedAmount ?? "0");
-        return sum + convertAmount(amount, (c.currency ?? "BRL") as Currency, displayCurrency, rate);
+        return sum + convertAmount(amount, (c.currency ?? "BRL") as Currency, "BRL", rate);
       }, 0);
 
     chartData.push({
