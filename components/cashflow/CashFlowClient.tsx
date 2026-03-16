@@ -149,12 +149,17 @@ export default function CashFlowClient({
                 </p>
               </div>
             </div>
-            <span
-              className={`text-sm font-bold ml-3 shrink-0 ${t.type === "income" ? "text-green-400" : "text-red-400"}`}
-            >
-              {t.type === "income" ? "+" : "-"}
-              {formatCurrency(Number(t.amount), (t.currency as Currency) ?? "BRL")}
-            </span>
+            <div className="ml-3 shrink-0 text-right">
+              <span className={`text-sm font-bold ${t.type === "income" ? "text-green-400" : "text-red-400"}`}>
+                {t.type === "income" ? "+" : "-"}
+                {formatCurrency(toDisplay(Number(t.amount), t.currency ?? "BRL"), displayCurrency)}
+              </span>
+              {(t.currency ?? "BRL") !== displayCurrency && (
+                <p className="text-xs text-zinc-600 mt-0.5">
+                  {formatCurrency(Number(t.amount), (t.currency as Currency) ?? "BRL")}
+                </p>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -214,11 +219,16 @@ export default function CashFlowClient({
                     {t.type === "income" ? "↑ Entrada" : "↓ Saída"}
                   </span>
                 </td>
-                <td
-                  className={`px-4 py-3 text-sm font-semibold whitespace-nowrap ${t.type === "income" ? "text-green-400" : "text-red-400"}`}
-                >
-                  {t.type === "income" ? "+" : "-"}
-                  {formatCurrency(Number(t.amount), (t.currency as Currency) ?? "BRL")}
+                <td className="px-4 py-3 text-sm whitespace-nowrap">
+                  <span className={`font-semibold ${t.type === "income" ? "text-green-400" : "text-red-400"}`}>
+                    {t.type === "income" ? "+" : "-"}
+                    {formatCurrency(toDisplay(Number(t.amount), t.currency ?? "BRL"), displayCurrency)}
+                  </span>
+                  {(t.currency ?? "BRL") !== displayCurrency && (
+                    <span className="block text-xs text-zinc-600 mt-0.5">
+                      {formatCurrency(Number(t.amount), (t.currency as Currency) ?? "BRL")}
+                    </span>
+                  )}
                 </td>
               </tr>
             ))}
