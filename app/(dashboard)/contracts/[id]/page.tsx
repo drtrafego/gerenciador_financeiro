@@ -196,7 +196,7 @@ export default async function ContractDetailPage({
               />
               {contract.pdfUrl && (
                 <a
-                  href={contract.pdfUrl}
+                  href={`/api/contracts/pdf?id=${contract.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 mt-2 text-xs text-indigo-400 hover:text-indigo-300"
