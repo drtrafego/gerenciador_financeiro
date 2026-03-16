@@ -3,6 +3,8 @@ export const dynamic = "force-dynamic";
 import { db } from "@/lib/db";
 import { invoices, transactions, clients, contracts, exchangeRates, systemSettings } from "@/lib/db/schema";
 import { desc, eq, gte, and, sql } from "drizzle-orm";
+import { convertAmount, safeRates } from "@/lib/currency/format";
+import type { Currency } from "@/lib/currency/format";
 import MetricCard from "@/components/dashboard/MetricCard";
 import RevenueChart from "@/components/dashboard/RevenueChart";
 import MRRChart from "@/components/dashboard/MRRChart";
@@ -45,6 +47,7 @@ async function getDashboardData() {
     // Todos os contratos para calcular receita mensal
     db.select({
       fixedAmount: contracts.fixedAmount,
+      currency: contracts.currency,
       startDate: contracts.startDate,
       endDate: contracts.endDate,
       status: contracts.status,
@@ -56,13 +59,17 @@ async function getDashboardData() {
   ]);
 
   const rateRow = latestRate[0];
-  const rate = rateRow
-    ? { usd_brl: Number(rateRow.usdBrl), usd_ars: Number(rateRow.usdArs) }
-    : { usd_brl: 5.87, usd_ars: 1429 };
+  const rate = safeRates(
+    rateRow ? { usd_brl: Number(rateRow.usdBrl), usd_ars: Number(rateRow.usdArs) } : null
+  );
+  const displayCurrency = (displayCurrencySetting[0]?.value ?? "BRL") as Currency;
 
-  // MRR atual = soma dos contratos ativos
+  // MRR atual = soma dos contratos ativos convertidos para a moeda de exibição
   const activeContracts = allContracts.filter((c) => c.status === "active");
-  const mrr = activeContracts.reduce((sum, c) => sum + parseFloat(c.fixedAmount ?? "0"), 0);
+  const mrr = activeContracts.reduce((sum, c) => {
+    const amount = parseFloat(c.fixedAmount ?? "0");
+    return sum + convertAmount(amount, (c.currency ?? "BRL") as Currency, displayCurrency, rate);
+  }, 0);
 
   // Agrupar despesas por "YYYY-MM" em JS (evita mismatch de locale com SQL)
   const expenseMap = new Map<string, number>();
@@ -86,7 +93,10 @@ async function getDashboardData() {
         const end = c.endDate ? new Date(c.endDate + "T12:00:00") : null;
         return start <= monthEnd && (end === null || end >= monthStart);
       })
-      .reduce((sum, c) => sum + parseFloat(c.fixedAmount ?? "0"), 0);
+      .reduce((sum, c) => {
+        const amount = parseFloat(c.fixedAmount ?? "0");
+        return sum + convertAmount(amount, (c.currency ?? "BRL") as Currency, displayCurrency, rate);
+      }, 0);
 
     chartData.push({
       month: label,
@@ -99,7 +109,7 @@ async function getDashboardData() {
     activeClients: Number(activeClients[0]?.count ?? 0),
     overdueClients: Number(overdueClients[0]?.count ?? 0),
     rate,
-    displayCurrency: (displayCurrencySetting[0]?.value ?? "BRL") as "BRL" | "USD" | "ARS",
+    displayCurrency,
     recentInvoices,
     overdueInvoices,
     upcomingInvoices,
