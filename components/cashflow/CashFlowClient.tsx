@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Plus, FileText } from "lucide-react";
 import { formatCurrency, convertAmount } from "@/lib/currency/format";
 import MetricCard from "@/components/dashboard/MetricCard";
 import TransactionModal from "@/components/cashflow/TransactionModal";
@@ -13,14 +13,27 @@ const MONTHS = [
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
 ];
 
+type ContractIncome = {
+  id: string;
+  type: "income";
+  category: string;
+  description: string;
+  amount: string;
+  currency: string;
+  date: string;
+  isContract: true;
+};
+
 export default function CashFlowClient({
   transactions,
+  contractIncomes = [],
   rate,
   displayCurrency,
   month,
   year,
 }: {
   transactions: any[];
+  contractIncomes?: ContractIncome[];
   rate: { usd_brl: number; usd_ars: number };
   displayCurrency: Currency;
   month: number;
@@ -32,9 +45,19 @@ export default function CashFlowClient({
   const toDisplay = (amount: number, currency: string) =>
     convertAmount(amount, currency as Currency, displayCurrency, rate);
 
-  const totalIn = transactions
+  // Combina contratos + transações, ordenado por data desc
+  const allEntries = [
+    ...contractIncomes,
+    ...transactions,
+  ].sort((a, b) => (a.date > b.date ? -1 : a.date < b.date ? 1 : 0));
+
+  const contractTotal = contractIncomes.reduce(
+    (a, c) => a + toDisplay(Number(c.amount), c.currency ?? "BRL"), 0
+  );
+  const txIncomeTotal = transactions
     .filter((t) => t.type === "income")
     .reduce((a, t) => a + toDisplay(Number(t.amount), t.currency ?? "BRL"), 0);
+  const totalIn = contractTotal + txIncomeTotal;
   const totalOut = transactions
     .filter((t) => t.type === "expense")
     .reduce((a, t) => a + toDisplay(Number(t.amount), t.currency ?? "BRL"), 0);
@@ -48,6 +71,8 @@ export default function CashFlowClient({
     const d = new Date(year, month, 1);
     router.push(`/cash-flow?month=${d.getMonth() + 1}&year=${d.getFullYear()}`);
   };
+
+  const entryCount = allEntries.length;
 
   return (
     <div className="flex flex-col gap-4">
@@ -92,35 +117,40 @@ export default function CashFlowClient({
           color={balance >= 0 ? "indigo" : "red"}
         />
         <MetricCard
-          label="Transações"
-          value={transactions.length}
+          label="Lançamentos"
+          value={entryCount}
           raw
           icon="dollar"
           color="indigo"
-          sub="no mês"
+          sub={`${contractIncomes.length} contrato(s)`}
         />
       </div>
 
       {/* Mobile cards */}
       <div className="flex flex-col gap-2 sm:hidden">
-        {transactions.length === 0 && (
+        {allEntries.length === 0 && (
           <p className="text-center text-sm text-zinc-600 py-8">
-            Nenhuma transação neste mês
+            Nenhum lançamento neste mês
           </p>
         )}
-        {transactions.map((t) => (
+        {allEntries.map((t) => (
           <div
             key={t.id}
             className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-center justify-between"
           >
-            <div>
-              <p className="text-sm font-medium text-zinc-200">{t.description}</p>
-              <p className="text-xs text-zinc-500 mt-0.5">
-                {t.category} · {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
-              </p>
+            <div className="flex items-start gap-2 min-w-0">
+              {(t as any).isContract && (
+                <FileText size={14} className="text-indigo-400 mt-0.5 shrink-0" />
+              )}
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-zinc-200 truncate">{t.description}</p>
+                <p className="text-xs text-zinc-500 mt-0.5">
+                  {t.category} · {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
+                </p>
+              </div>
             </div>
             <span
-              className={`text-sm font-bold ${t.type === "income" ? "text-green-400" : "text-red-400"}`}
+              className={`text-sm font-bold ml-3 shrink-0 ${t.type === "income" ? "text-green-400" : "text-red-400"}`}
             >
               {t.type === "income" ? "+" : "-"}
               {formatCurrency(Number(t.amount), (t.currency as Currency) ?? "BRL")}
@@ -145,14 +175,14 @@ export default function CashFlowClient({
             </tr>
           </thead>
           <tbody>
-            {transactions.length === 0 && (
+            {allEntries.length === 0 && (
               <tr>
                 <td colSpan={5} className="text-center py-10 text-sm text-zinc-600">
-                  Nenhuma transação neste mês
+                  Nenhum lançamento neste mês
                 </td>
               </tr>
             )}
-            {transactions.map((t) => (
+            {allEntries.map((t) => (
               <tr
                 key={t.id}
                 className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors"
@@ -160,9 +190,20 @@ export default function CashFlowClient({
                 <td className="px-4 py-3 text-sm text-zinc-500 whitespace-nowrap">
                   {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
                 </td>
-                <td className="px-4 py-3 text-sm text-zinc-200">{t.description}</td>
+                <td className="px-4 py-3 text-sm text-zinc-200">
+                  <div className="flex items-center gap-1.5">
+                    {(t as any).isContract && (
+                      <FileText size={12} className="text-indigo-400 shrink-0" />
+                    )}
+                    {t.description}
+                  </div>
+                </td>
                 <td className="px-4 py-3">
-                  <span className="text-xs bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">
+                  <span className={`text-xs px-2 py-0.5 rounded font-medium ${
+                    (t as any).isContract
+                      ? "bg-indigo-500/10 text-indigo-400"
+                      : "bg-zinc-800 text-zinc-400"
+                  }`}>
                     {t.category}
                   </span>
                 </td>
