@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Link from 'next/link';
 import { getTransactions } from '@/lib/db/queries';
 import { deleteTransactionAction } from './actions';

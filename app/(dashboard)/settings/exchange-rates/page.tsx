@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Suspense } from 'react';
 import { getExchangeRateHistory } from '@/lib/db/queries';
 import Link from 'next/link';

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Link from 'next/link';
 import { getContracts } from '@/lib/db/queries';
 import { Plus, FileText } from 'lucide-react';
