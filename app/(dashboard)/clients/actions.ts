@@ -4,6 +4,9 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { createClient, updateClient, deleteClient } from '@/lib/db/queries';
+import { db } from '@/lib/db';
+import { contracts } from '@/lib/db/schema';
+import { eq, sql } from 'drizzle-orm';
 
 const clientSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
@@ -48,7 +51,18 @@ export async function updateClientAction(id: string, formData: FormData): Promis
   redirect(`/clients/${id}`);
 }
 
-export async function deleteClientAction(id: string): Promise<void> {
+export async function deleteClientAction(id: string): Promise<{ error: string } | void> {
+  const [{ count }] = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(contracts)
+    .where(eq(contracts.clientId, id));
+
+  if (Number(count) > 0) {
+    return {
+      error: `Este cliente possui ${count} contrato(s) vinculado(s). Exclua os contratos antes de excluir o cliente.`,
+    };
+  }
+
   await deleteClient(id);
   revalidatePath('/clients');
   redirect('/clients');
