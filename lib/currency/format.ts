@@ -15,6 +15,18 @@ export function formatCurrency(amount: number, currency: Currency): string {
   return formatters[currency].format(amount);
 }
 
+// Taxas de fallback usadas quando o banco não tem cotações válidas
+const FALLBACK_RATES = { usd_brl: 5.87, usd_ars: 1429 };
+
+export function safeRates(rates?: { usd_brl: number; usd_ars: number } | null) {
+  const usdBrl = Number(rates?.usd_brl);
+  const usdArs = Number(rates?.usd_ars);
+  return {
+    usd_brl: usdBrl > 0 ? usdBrl : FALLBACK_RATES.usd_brl,
+    usd_ars: usdArs > 0 ? usdArs : FALLBACK_RATES.usd_ars,
+  };
+}
+
 export function convertAmount(
   amount: number,
   from: Currency,
@@ -23,21 +35,20 @@ export function convertAmount(
 ): number {
   if (from === to) return amount;
 
-  // Normalizar tudo para USD
-  const toUSD: Record<Currency, number> = {
-    BRL: amount / rates.usd_brl,
-    USD: amount,
-    ARS: amount / rates.usd_ars,
-  };
-  const inUSD = toUSD[from];
+  // Garante taxas válidas mesmo se o banco tiver valores ruins
+  const r = safeRates(rates);
 
-  const fromUSD: Record<Currency, number> = {
-    BRL: inUSD * rates.usd_brl,
-    USD: inUSD,
-    ARS: inUSD * rates.usd_ars,
-  };
+  // Normalizar para USD como moeda intermediária
+  const inUSD =
+    from === "BRL" ? amount / r.usd_brl :
+    from === "ARS" ? amount / r.usd_ars :
+    amount; // USD
 
-  return fromUSD[to];
+  return (
+    to === "BRL" ? inUSD * r.usd_brl :
+    to === "ARS" ? inUSD * r.usd_ars :
+    inUSD // USD
+  );
 }
 
 export function getCurrencySymbol(currency: Currency): string {

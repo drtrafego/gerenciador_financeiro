@@ -57,9 +57,12 @@ export default async function CashFlowPage({
   ]);
 
   const rateRow = latestRate[0];
-  const rate = rateRow
-    ? { usd_brl: Number(rateRow.usdBrl), usd_ars: Number(rateRow.usdArs) }
-    : { usd_brl: 5.87, usd_ars: 1429 };
+  const usdBrl = Number(rateRow?.usdBrl);
+  const usdArs = Number(rateRow?.usdArs);
+  const rate =
+    usdBrl > 0 && usdArs > 0
+      ? { usd_brl: usdBrl, usd_ars: usdArs }
+      : { usd_brl: 5.87, usd_ars: 1429 };
 
   // Mapear contratos para entradas de receita no fluxo de caixa
   const contractIncomes = contractData.map((c) => {
