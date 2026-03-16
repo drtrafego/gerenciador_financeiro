@@ -14,7 +14,7 @@ const titles: Record<string, string> = {
   "/settings":   "Configurações",
 };
 
-export default function Header({ user }: { user: any }) {
+export default function Header() {
   const path = usePathname();
   const title = Object.entries(titles).find(([k]) => path.startsWith(k))?.[1] ?? "";
 
