@@ -7,6 +7,7 @@ export type Rates = {
 
 export async function fetchLatestRates(): Promise<Rates> {
   // Tentativa 1: Frankfurter (Banco Central Europeu)
+  // Nota: ECB não cobre ARS, então validamos antes de retornar
   try {
     const res = await fetch(
       'https://api.frankfurter.dev/v1/latest?base=USD&symbols=BRL,ARS',
@@ -14,14 +15,16 @@ export async function fetchLatestRates(): Promise<Rates> {
     );
     if (res.ok) {
       const data = await res.json();
-      const USD_BRL = data.rates.BRL;
-      const USD_ARS = data.rates.ARS;
-      return {
-        USD_BRL,
-        USD_ARS,
-        ARS_BRL: USD_BRL / USD_ARS,
-        source: 'frankfurter',
-      };
+      const USD_BRL = Number(data.rates?.BRL);
+      const USD_ARS = Number(data.rates?.ARS);
+      if (USD_BRL > 0 && USD_ARS > 0) {
+        return {
+          USD_BRL,
+          USD_ARS,
+          ARS_BRL: USD_BRL / USD_ARS,
+          source: 'frankfurter',
+        };
+      }
     }
   } catch {}
 
@@ -32,14 +35,16 @@ export async function fetchLatestRates(): Promise<Rates> {
     });
     if (res.ok) {
       const data = await res.json();
-      const USD_BRL = data.rates.BRL;
-      const USD_ARS = data.rates.ARS;
-      return {
-        USD_BRL,
-        USD_ARS,
-        ARS_BRL: USD_BRL / USD_ARS,
-        source: 'er-api',
-      };
+      const USD_BRL = Number(data.rates?.BRL);
+      const USD_ARS = Number(data.rates?.ARS);
+      if (USD_BRL > 0 && USD_ARS > 0) {
+        return {
+          USD_BRL,
+          USD_ARS,
+          ARS_BRL: USD_BRL / USD_ARS,
+          source: 'er-api',
+        };
+      }
     }
   } catch {}
 
@@ -48,9 +53,11 @@ export async function fetchLatestRates(): Promise<Rates> {
     'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',
     { cache: 'no-store' }
   );
+  if (!res.ok) throw new Error('Todas as APIs de cotação falharam');
   const data = await res.json();
-  const USD_BRL = data.usd.brl;
-  const USD_ARS = data.usd.ars;
+  const USD_BRL = Number(data.usd?.brl);
+  const USD_ARS = Number(data.usd?.ars);
+  if (!USD_BRL || !USD_ARS) throw new Error('Cotações inválidas na resposta da API');
   return {
     USD_BRL,
     USD_ARS,

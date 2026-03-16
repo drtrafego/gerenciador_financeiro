@@ -7,7 +7,8 @@ import { deleteClientAction, updateClientAction } from '../actions';
 import { formatCurrency } from '@/lib/currency/format';
 import type { Currency } from '@/lib/currency/format';
 import { cn } from '@/lib/utils';
-import { Mail, Phone, Pencil, Trash2, FileText, Plus } from 'lucide-react';
+import { Mail, Phone, Pencil, FileText, Plus } from 'lucide-react';
+import DeleteClientButton from '@/components/clients/DeleteClientButton';
 
 const statusStyles: Record<string, string> = {
   active: 'bg-green-500/10 text-green-400 border-green-500/20',
@@ -71,18 +72,7 @@ export default async function ClientDetailPage({
         </div>
 
         <div className="flex items-center gap-2">
-          <form action={deleteWithId}>
-            <button
-              type="submit"
-              className="flex items-center gap-1.5 rounded-lg border border-red-500/20 px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
-              onClick={(e) => {
-                if (!confirm('Excluir este cliente?')) e.preventDefault();
-              }}
-            >
-              <Trash2 className="h-4 w-4" />
-              Excluir
-            </button>
-          </form>
+          <DeleteClientButton action={deleteWithId} />
         </div>
       </div>
 
