@@ -52,7 +52,7 @@ export default async function ContractDetailPage({
         </form>
       </div>
 
-      <form action={updateWithId} className="space-y-5">
+      <form action={updateWithId} encType="multipart/form-data" className="space-y-5">
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 space-y-5">
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div className="sm:col-span-2">
@@ -183,15 +183,16 @@ export default async function ContractDetailPage({
 
             <div className="sm:col-span-2">
               <label className="block text-xs text-zinc-400 mb-1">
-                Link do Contrato em PDF
-                <span className="text-zinc-600 font-normal ml-1">(Google Drive, Dropbox, etc.)</span>
+                Contrato em PDF
+                <span className="text-zinc-600 font-normal ml-1">(deixe em branco para manter o atual)</span>
               </label>
+              {/* Preserva o PDF existente se nenhum novo arquivo for enviado */}
+              <input type="hidden" name="existingPdfUrl" value={contract.pdfUrl ?? ''} />
               <input
-                name="pdfUrl"
-                type="url"
-                defaultValue={contract.pdfUrl ?? ''}
-                placeholder="https://drive.google.com/..."
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                name="pdfFile"
+                type="file"
+                accept="application/pdf"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-300 file:mr-3 file:rounded-md file:border-0 file:bg-indigo-600 file:px-3 file:py-1 file:text-xs file:font-medium file:text-white hover:file:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               {contract.pdfUrl && (
                 <a
@@ -201,7 +202,7 @@ export default async function ContractDetailPage({
                   className="inline-flex items-center gap-1.5 mt-2 text-xs text-indigo-400 hover:text-indigo-300"
                 >
                   <FileText className="h-3.5 w-3.5" />
-                  Abrir PDF do contrato
+                  Ver PDF atual
                 </a>
               )}
             </div>

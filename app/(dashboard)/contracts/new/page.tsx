@@ -16,7 +16,7 @@ export default async function NewContractPage({
         <p className="text-sm text-zinc-400">Defina os termos do contrato</p>
       </div>
 
-      <form action={createContractAction} className="space-y-5">
+      <form action={createContractAction} encType="multipart/form-data" className="space-y-5">
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 space-y-5">
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div className="sm:col-span-2">
@@ -153,14 +153,14 @@ export default async function NewContractPage({
 
             <div className="sm:col-span-2">
               <label className="block text-sm font-medium text-zinc-300 mb-1.5">
-                Link do Contrato em PDF
-                <span className="text-zinc-500 font-normal ml-1">(Google Drive, Dropbox, etc.)</span>
+                Contrato em PDF
+                <span className="text-zinc-500 font-normal ml-1">(opcional)</span>
               </label>
               <input
-                name="pdfUrl"
-                type="url"
-                placeholder="https://drive.google.com/..."
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                name="pdfFile"
+                type="file"
+                accept="application/pdf"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-zinc-300 file:mr-3 file:rounded-md file:border-0 file:bg-indigo-600 file:px-3 file:py-1 file:text-xs file:font-medium file:text-white hover:file:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
           </div>

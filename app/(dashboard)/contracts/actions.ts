@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { put } from '@vercel/blob';
 import { createContract, updateContract, deleteContract } from '@/lib/db/queries';
 
 const contractSchema = z.object({
@@ -17,12 +18,29 @@ const contractSchema = z.object({
   endDate: z.string().optional().transform((v) => v || null),
   status: z.enum(['active', 'paused', 'cancelled']).default('active'),
   description: z.string().optional(),
-  pdfUrl: z.string().url().optional().or(z.literal('')).transform((v) => v || null),
+  existingPdfUrl: z.string().optional(),
 });
 
+async function uploadPdfIfPresent(
+  formData: FormData,
+  existingUrl?: string | null
+): Promise<string | null> {
+  const file = formData.get('pdfFile') as File | null;
+  if (file && file.size > 0) {
+    const { url } = await put(`contracts/${Date.now()}-${file.name}`, file, {
+      access: 'public',
+    });
+    return url;
+  }
+  return existingUrl ?? null;
+}
+
 export async function createContractAction(formData: FormData): Promise<void> {
-  const raw = Object.fromEntries(formData.entries());
+  const raw = Object.fromEntries(
+    [...formData.entries()].filter(([k]) => k !== 'pdfFile')
+  );
   const parsed = contractSchema.parse(raw);
+  const pdfUrl = await uploadPdfIfPresent(formData);
   await createContract({
     clientId: parsed.clientId,
     type: parsed.type,
@@ -35,15 +53,18 @@ export async function createContractAction(formData: FormData): Promise<void> {
     endDate: parsed.endDate ?? null,
     status: parsed.status,
     description: parsed.description ?? null,
-    pdfUrl: parsed.pdfUrl ?? null,
+    pdfUrl,
   });
   revalidatePath('/contracts');
   redirect('/contracts');
 }
 
 export async function updateContractAction(id: string, formData: FormData): Promise<void> {
-  const raw = Object.fromEntries(formData.entries());
+  const raw = Object.fromEntries(
+    [...formData.entries()].filter(([k]) => k !== 'pdfFile')
+  );
   const parsed = contractSchema.parse(raw);
+  const pdfUrl = await uploadPdfIfPresent(formData, parsed.existingPdfUrl);
   await updateContract(id, {
     clientId: parsed.clientId,
     type: parsed.type,
@@ -56,7 +77,7 @@ export async function updateContractAction(id: string, formData: FormData): Prom
     endDate: parsed.endDate ?? null,
     status: parsed.status,
     description: parsed.description ?? null,
-    pdfUrl: parsed.pdfUrl ?? null,
+    pdfUrl,
   });
   revalidatePath('/contracts');
   revalidatePath(`/contracts/${id}`);
