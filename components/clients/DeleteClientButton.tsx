@@ -24,7 +24,7 @@ export default function DeleteClientButton({
         <button
           type="submit"
           onClick={(e) => {
-            if (!confirm('Excluir este cliente? Esta ação não pode ser desfeita.'))
+            if (!confirm('⚠️ ATENÇÃO: Isso vai excluir o cliente permanentemente do sistema.\n\nEsta ação não pode ser desfeita.\n\nTem certeza que deseja continuar?'))
               e.preventDefault();
           }}
           className="flex items-center gap-1.5 rounded-lg border border-red-500/20 px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
