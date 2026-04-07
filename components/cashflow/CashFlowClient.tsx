@@ -6,7 +6,6 @@ import { Plus, FileText, RefreshCw, Eye, EyeOff } from "lucide-react";
 import { formatCurrency, convertAmount } from "@/lib/currency/format";
 import MetricCard from "@/components/dashboard/MetricCard";
 import TransactionModal from "@/components/cashflow/TransactionModal";
-import RecurringExpensesModal from "@/components/cashflow/RecurringExpensesModal";
 import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 import type { Currency } from "@/lib/currency/format";
 
@@ -26,25 +25,19 @@ type ContractIncome = {
   isContract: true;
 };
 
-type RecurringItem = {
+type AnyTransaction = {
   id: string;
-  type: "expense";
+  type: string;
   category: string;
   description: string;
-  amount: string;
-  currency: string;
-  date: string;
-  isRecurring: true;
-};
-
-type AnyExpense = {
-  id: string;
-  name: string;
-  category: string;
-  amount: string;
+  amount: string | null;
   currency: string | null;
-  dayOfMonth: number | null;
-  active: string | null;
+  date: string;
+  isRecurring?: string | null;
+  recurringActive?: string | null;
+  recurringEndsAt?: string | null;
+  isContract?: true;
+  isProjected?: true;
 };
 
 const HIDDEN = "••••••";
@@ -52,17 +45,13 @@ const HIDDEN = "••••••";
 export default function CashFlowClient({
   transactions,
   contractIncomes = [],
-  recurringItems = [],
-  allRecurringExpenses = [],
   rate,
   displayCurrency,
   month,
   year,
 }: {
-  transactions: any[];
+  transactions: AnyTransaction[];
   contractIncomes?: ContractIncome[];
-  recurringItems?: RecurringItem[];
-  allRecurringExpenses?: AnyExpense[];
   rate: { usd_brl: number; usd_ars: number };
   displayCurrency: Currency;
   month: number;
@@ -70,15 +59,14 @@ export default function CashFlowClient({
 }) {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-  const [showRecurring, setShowRecurring] = useState(false);
+  const [editingTx, setEditingTx] = useState<AnyTransaction | null>(null);
   const { hidden: valuesHidden, toggle: toggleValues } = useValuesVisibility();
 
   const toDisplay = (amount: number, currency: string) =>
     convertAmount(amount, currency as Currency, displayCurrency, rate);
 
-  const allEntries = [
+  const allEntries: AnyTransaction[] = [
     ...contractIncomes,
-    ...recurringItems,
     ...transactions,
   ].sort((a, b) => (a.date > b.date ? -1 : a.date < b.date ? 1 : 0));
 
@@ -90,15 +78,13 @@ export default function CashFlowClient({
     .reduce((a, t) => a + toDisplay(Number(t.amount), t.currency ?? "BRL"), 0);
   const totalIn = contractTotal + txIncomeTotal;
 
-  const recurringTotal = recurringItems.reduce(
-    (a, r) => a + toDisplay(Number(r.amount), r.currency ?? "BRL"), 0
-  );
-  const txExpenseTotal = transactions
+  const totalOut = transactions
     .filter((t) => t.type === "expense")
     .reduce((a, t) => a + toDisplay(Number(t.amount), t.currency ?? "BRL"), 0);
-  const totalOut = recurringTotal + txExpenseTotal;
 
   const balance = totalIn - totalOut;
+  const entryCount = allEntries.length;
+  const recurringCount = transactions.filter((t) => t.isRecurring === "true" && t.recurringActive !== "false").length;
 
   const prevMonth = () => {
     const d = new Date(year, month - 2, 1);
@@ -109,13 +95,16 @@ export default function CashFlowClient({
     router.push(`/cash-flow?month=${d.getMonth() + 1}&year=${d.getFullYear()}`);
   };
 
-  const entryCount = allEntries.length;
-
   const fmtValue = (value: number, currency: Currency) =>
     valuesHidden ? HIDDEN : formatCurrency(value, currency);
 
   const fmtRaw = (amount: number, currency: string) =>
     valuesHidden ? HIDDEN : formatCurrency(Number(amount), currency as Currency);
+
+  const openEdit = (t: AnyTransaction) => {
+    if (t.isContract) return;
+    setEditingTx(t);
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -139,29 +128,20 @@ export default function CashFlowClient({
           </button>
         </div>
 
-        {/* Botão ocultar valores */}
         <button
           onClick={toggleValues}
-          className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-200 text-sm transition-colors"
+          className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
+            valuesHidden
+              ? "bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20"
+              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
+          }`}
           title={valuesHidden ? "Mostrar valores" : "Ocultar valores"}
         >
           {valuesHidden ? <EyeOff size={14} /> : <Eye size={14} />}
           <span className="hidden sm:inline">{valuesHidden ? "Mostrar" : "Ocultar"}</span>
         </button>
 
-        <div className="ml-auto flex items-center gap-2">
-          <button
-            onClick={() => setShowRecurring(true)}
-            className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-          >
-            <RefreshCw size={14} />
-            <span className="hidden sm:inline">Recorrentes</span>
-            {allRecurringExpenses.filter((r) => r.active === 'true').length > 0 && (
-              <span className="bg-indigo-500/20 text-indigo-400 text-xs px-1.5 py-0.5 rounded-full">
-                {allRecurringExpenses.filter((r) => r.active === 'true').length}
-              </span>
-            )}
-          </button>
+        <div className="ml-auto">
           <button
             onClick={() => setShowModal(true)}
             className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
@@ -191,33 +171,31 @@ export default function CashFlowClient({
           raw
           icon="dollar"
           color="indigo"
-          sub={`${contractIncomes.length} contrato(s) · ${recurringItems.length} recorrente(s)`}
+          sub={`${contractIncomes.length} contrato(s) · ${recurringCount} recorrente(s)`}
         />
       </div>
 
       {/* Mobile cards */}
       <div className="flex flex-col gap-2 sm:hidden">
         {allEntries.length === 0 && (
-          <p className="text-center text-sm text-zinc-600 py-8">
-            Nenhum lançamento neste mês
-          </p>
+          <p className="text-center text-sm text-zinc-600 py-8">Nenhum lançamento neste mês</p>
         )}
         {allEntries.map((t) => (
           <div
             key={t.id}
-            className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-center justify-between"
+            onClick={() => openEdit(t)}
+            className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-center justify-between ${!t.isContract ? "cursor-pointer hover:border-zinc-700 transition-colors" : ""}`}
           >
             <div className="flex items-start gap-2 min-w-0">
-              {(t as any).isContract && (
-                <FileText size={14} className="text-indigo-400 mt-0.5 shrink-0" />
-              )}
-              {(t as any).isRecurring && (
-                <RefreshCw size={14} className="text-orange-400 mt-0.5 shrink-0" />
+              {t.isContract && <FileText size={14} className="text-indigo-400 mt-0.5 shrink-0" />}
+              {t.isRecurring === "true" && !t.isContract && (
+                <RefreshCw size={14} className={`mt-0.5 shrink-0 ${t.recurringActive === "false" ? "text-zinc-600" : "text-orange-400"}`} />
               )}
               <div className="min-w-0">
                 <p className="text-sm font-medium text-zinc-200 truncate">{t.description}</p>
                 <p className="text-xs text-zinc-500 mt-0.5">
                   {t.category} · {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
+                  {t.isProjected && " · recorrente"}
                 </p>
               </div>
             </div>
@@ -242,10 +220,7 @@ export default function CashFlowClient({
           <thead>
             <tr className="border-b border-zinc-800">
               {["Data", "Descrição", "Categoria", "Tipo", "Valor"].map((h) => (
-                <th
-                  key={h}
-                  className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wide"
-                >
+                <th key={h} className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wide">
                   {h}
                 </th>
               ))}
@@ -262,27 +237,29 @@ export default function CashFlowClient({
             {allEntries.map((t) => (
               <tr
                 key={t.id}
-                className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors"
+                onClick={() => openEdit(t)}
+                className={`border-b border-zinc-800/50 transition-colors ${!t.isContract ? "cursor-pointer hover:bg-zinc-800/40" : "hover:bg-zinc-800/20"}`}
               >
                 <td className="px-4 py-3 text-sm text-zinc-500 whitespace-nowrap">
                   {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
                 </td>
                 <td className="px-4 py-3 text-sm text-zinc-200">
                   <div className="flex items-center gap-1.5">
-                    {(t as any).isContract && (
-                      <FileText size={12} className="text-indigo-400 shrink-0" />
-                    )}
-                    {(t as any).isRecurring && (
-                      <RefreshCw size={12} className="text-orange-400 shrink-0" />
+                    {t.isContract && <FileText size={12} className="text-indigo-400 shrink-0" />}
+                    {t.isRecurring === "true" && !t.isContract && (
+                      <RefreshCw size={12} className={t.recurringActive === "false" ? "text-zinc-600 shrink-0" : "text-orange-400 shrink-0"} />
                     )}
                     {t.description}
+                    {t.isProjected && (
+                      <span className="text-xs text-zinc-600 ml-1">(recorrente)</span>
+                    )}
                   </div>
                 </td>
                 <td className="px-4 py-3">
                   <span className={`text-xs px-2 py-0.5 rounded font-medium ${
-                    (t as any).isContract
+                    t.isContract
                       ? "bg-indigo-500/10 text-indigo-400"
-                      : (t as any).isRecurring
+                      : t.isRecurring === "true"
                       ? "bg-orange-500/10 text-orange-400"
                       : "bg-zinc-800 text-zinc-400"
                   }`}>
@@ -290,9 +267,7 @@ export default function CashFlowClient({
                   </span>
                 </td>
                 <td className="px-4 py-3">
-                  <span
-                    className={`text-xs font-medium ${t.type === "income" ? "text-green-400" : "text-red-400"}`}
-                  >
+                  <span className={`text-xs font-medium ${t.type === "income" ? "text-green-400" : "text-red-400"}`}>
                     {t.type === "income" ? "↑ Entrada" : "↓ Saída"}
                   </span>
                 </td>
@@ -313,11 +288,13 @@ export default function CashFlowClient({
         </table>
       </div>
 
-      {showModal && <TransactionModal onClose={() => setShowModal(false)} />}
-      {showRecurring && (
-        <RecurringExpensesModal
-          onClose={() => setShowRecurring(false)}
-          expenses={allRecurringExpenses}
+      {showModal && (
+        <TransactionModal onClose={() => setShowModal(false)} />
+      )}
+      {editingTx && (
+        <TransactionModal
+          onClose={() => setEditingTx(null)}
+          transaction={editingTx as any}
         />
       )}
     </div>

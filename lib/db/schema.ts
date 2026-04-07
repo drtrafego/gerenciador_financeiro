@@ -157,6 +157,10 @@ export const transactions = pgTable('transactions', {
   date: date('date').notNull(),
   invoiceId: uuid('invoice_id').references(() => invoices.id),
   clientId: uuid('client_id').references(() => clients.id),
+  // Recorrência
+  isRecurring: text('is_recurring').default('false'),     // 'true' | 'false'
+  recurringActive: text('recurring_active').default('true'), // 'true' | 'false'
+  recurringEndsAt: date('recurring_ends_at'),               // null = para sempre
   createdAt: timestamp('created_at').defaultNow(),
 });
 

@@ -323,8 +323,36 @@ export async function createTransaction(data: NewTransaction) {
   return tx;
 }
 
+export async function updateTransaction(id: string, data: Partial<NewTransaction>) {
+  const [tx] = await db.update(transactions).set(data).where(eq(transactions.id, id)).returning();
+  return tx;
+}
+
+export async function deactivateRecurringTransaction(id: string) {
+  const [tx] = await db
+    .update(transactions)
+    .set({ recurringActive: 'false' })
+    .where(eq(transactions.id, id))
+    .returning();
+  return tx;
+}
+
 export async function deleteTransaction(id: string) {
   await db.delete(transactions).where(eq(transactions.id, id));
+}
+
+export async function getActiveRecurringTransactions(beforeDate: string, fromDate: string) {
+  return db
+    .select()
+    .from(transactions)
+    .where(
+      and(
+        eq(transactions.isRecurring, 'true'),
+        eq(transactions.recurringActive, 'true'),
+        lte(transactions.date, beforeDate),
+        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, fromDate))
+      )
+    );
 }
 
 // ─── CUSTOS RECORRENTES ────────────────────────
