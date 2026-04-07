@@ -5,7 +5,7 @@ import { invoices, transactions, clients, contracts, exchangeRates, systemSettin
 import { desc, eq, gte, and, sql } from "drizzle-orm";
 import { convertAmount, safeRates } from "@/lib/currency/format";
 import type { Currency } from "@/lib/currency/format";
-import MetricCard from "@/components/dashboard/MetricCard";
+import DashboardMetrics from "@/components/dashboard/DashboardMetrics";
 import RevenueChart from "@/components/dashboard/RevenueChart";
 import MRRChart from "@/components/dashboard/MRRChart";
 import RecentInvoices from "@/components/dashboard/RecentInvoices";
@@ -125,43 +125,15 @@ export default async function DashboardPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <MetricCard
-          label="MRR"
-          value={data.mrr}
-          currency={data.displayCurrency}
-          rate={data.rate}
-          sub={`${data.activeClients} clientes ativos`}
-          icon="trending-up"
-          color="indigo"
-        />
-        <MetricCard
-          label="Receita Prevista"
-          value={data.mrr}
-          currency={data.displayCurrency}
-          rate={data.rate}
-          sub="contratos ativos este mês"
-          icon="check"
-          color="green"
-        />
-        <MetricCard
-          label="Despesas (mês)"
-          value={data.monthExpense}
-          currency={data.displayCurrency}
-          rate={data.rate}
-          sub="saídas no mês"
-          icon="trending-down"
-          color="red"
-        />
-        <MetricCard
-          label="Inadimplentes"
-          value={data.overdueClients}
-          raw
-          sub={`${data.overdueInvoices.length} fatura(s) em atraso`}
-          icon="alert"
-          color="yellow"
-        />
-      </div>
+      <DashboardMetrics
+        mrr={data.mrr}
+        monthExpense={data.monthExpense}
+        activeClients={data.activeClients}
+        overdueClients={data.overdueClients}
+        overdueInvoicesCount={data.overdueInvoices.length}
+        displayCurrency={data.displayCurrency}
+        rate={data.rate}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <RevenueChart data={data.chartData} />

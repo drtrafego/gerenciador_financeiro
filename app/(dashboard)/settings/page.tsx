@@ -6,6 +6,7 @@ import { desc, eq } from "drizzle-orm";
 import { ExchangeRateWidget } from "@/components/settings/ExchangeRateWidget";
 import CurrencyPreference from "@/components/settings/CurrencyPreference";
 import AgencySettings from "@/components/settings/AgencySettings";
+import HideValuesPreference from "@/components/settings/HideValuesPreference";
 
 export default async function SettingsPage() {
   const [latestRate, displayCurrencySetting, agencyName, agencyEmail] = await Promise.all([
@@ -24,6 +25,8 @@ export default async function SettingsPage() {
       <ExchangeRateWidget rate={latestRate[0] ?? null} cronSecret={cronSecret} />
 
       <CurrencyPreference current={(displayCurrencySetting[0]?.value ?? "BRL") as any} />
+
+      <HideValuesPreference />
 
       <AgencySettings
         name={agencyName[0]?.value ?? "DR.TRÁFEGO"}

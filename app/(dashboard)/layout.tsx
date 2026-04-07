@@ -4,6 +4,7 @@ import { systemSettings } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import Sidebar from "@/components/shared/Sidebar";
 import Header from "@/components/shared/Header";
+import { ValuesVisibilityProvider } from "@/lib/contexts/ValuesVisibilityContext";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   await stackServerApp.getUser({ or: "redirect" });
@@ -17,12 +18,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const displayCurrency = (currencySetting?.value ?? "BRL") as "BRL" | "USD" | "ARS";
 
   return (
-    <div className="flex h-screen bg-zinc-950 text-zinc-100 overflow-hidden">
-      <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header displayCurrency={displayCurrency} />
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+    <ValuesVisibilityProvider>
+      <div className="flex h-screen bg-zinc-950 text-zinc-100 overflow-hidden">
+        <Sidebar />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <Header displayCurrency={displayCurrency} />
+          <main className="flex-1 overflow-auto p-6">{children}</main>
+        </div>
       </div>
-    </div>
+    </ValuesVisibilityProvider>
   );
 }

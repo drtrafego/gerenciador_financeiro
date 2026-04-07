@@ -7,7 +7,10 @@ import { formatCurrency } from "@/lib/currency/format";
 import Link from "next/link";
 import { markInvoicePaid } from "@/server/actions/invoices";
 import { useRouter } from "next/navigation";
+import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 import type { Currency } from "@/lib/currency/format";
+
+const HIDDEN = "••••••";
 
 const STATUSES = ["all", "draft", "sent", "paid", "overdue", "cancelled"];
 const STATUS_LABELS: Record<string, string> = {
@@ -23,6 +26,10 @@ export default function InvoicesTable({ invoices }: { invoices: any[] }) {
   const [filter, setFilter] = useState("all");
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const router = useRouter();
+  const { hidden } = useValuesVisibility();
+
+  const fmtAmount = (amount: number, currency: string = "BRL") =>
+    hidden ? HIDDEN : formatCurrency(amount, currency as Currency);
 
   const filtered =
     filter === "all" ? invoices : invoices.filter((i) => i.status === filter);
@@ -65,7 +72,7 @@ export default function InvoicesTable({ invoices }: { invoices: any[] }) {
             </div>
             <div className="flex items-center justify-between mt-3">
               <span className="text-base font-bold text-zinc-100">
-                {formatCurrency(Number(inv.amount), (inv.currency as Currency) ?? "BRL")}
+                {fmtAmount(Number(inv.amount), inv.currency ?? "BRL")}
               </span>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-zinc-500">
@@ -124,7 +131,7 @@ export default function InvoicesTable({ invoices }: { invoices: any[] }) {
                   {inv.type}
                 </td>
                 <td className="px-4 py-3 text-sm font-semibold text-zinc-200">
-                  {formatCurrency(Number(inv.amount), (inv.currency as Currency) ?? "BRL")}
+                  {fmtAmount(Number(inv.amount), inv.currency ?? "BRL")}
                 </td>
                 <td className="px-4 py-3 text-sm text-zinc-400">
                   {inv.due_date

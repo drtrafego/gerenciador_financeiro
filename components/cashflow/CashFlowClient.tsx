@@ -7,6 +7,7 @@ import { formatCurrency, convertAmount } from "@/lib/currency/format";
 import MetricCard from "@/components/dashboard/MetricCard";
 import TransactionModal from "@/components/cashflow/TransactionModal";
 import RecurringExpensesModal from "@/components/cashflow/RecurringExpensesModal";
+import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 import type { Currency } from "@/lib/currency/format";
 
 const MONTHS = [
@@ -70,7 +71,7 @@ export default function CashFlowClient({
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [showRecurring, setShowRecurring] = useState(false);
-  const [valuesHidden, setValuesHidden] = useState(false);
+  const { hidden: valuesHidden, toggle: toggleValues } = useValuesVisibility();
 
   const toDisplay = (amount: number, currency: string) =>
     convertAmount(amount, currency as Currency, displayCurrency, rate);
@@ -140,7 +141,7 @@ export default function CashFlowClient({
 
         {/* Botão ocultar valores */}
         <button
-          onClick={() => setValuesHidden((v) => !v)}
+          onClick={toggleValues}
           className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-200 text-sm transition-colors"
           title={valuesHidden ? "Mostrar valores" : "Ocultar valores"}
         >
