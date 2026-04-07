@@ -28,6 +28,7 @@ interface MetricCardProps {
   color?: string;
   trend?: number;
   rate?: RatesMap;
+  hidden?: boolean;
 }
 
 export default function MetricCard({
@@ -41,13 +42,14 @@ export default function MetricCard({
   color = "indigo",
   trend,
   rate,
+  hidden = false,
 }: MetricCardProps) {
   const Icon = ICONS[icon] ?? DollarSign;
   const converted =
     !raw && rate && currency !== sourceCurrency
       ? convertAmount(value, sourceCurrency, currency, rate)
       : value;
-  const displayValue = raw ? String(value) : formatCurrency(converted, currency);
+  const displayValue = hidden ? "••••••" : raw ? String(value) : formatCurrency(converted, currency);
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col gap-3">

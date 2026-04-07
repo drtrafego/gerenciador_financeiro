@@ -11,10 +11,12 @@ import {
   transactions,
   exchangeRates,
   systemSettings,
+  recurringExpenses,
   type NewClient,
   type NewContract,
   type NewInvoice,
   type NewTransaction,
+  type NewRecurringExpense,
 } from './schema';
 import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/auth/session';
@@ -323,6 +325,30 @@ export async function createTransaction(data: NewTransaction) {
 
 export async function deleteTransaction(id: string) {
   await db.delete(transactions).where(eq(transactions.id, id));
+}
+
+// ─── CUSTOS RECORRENTES ────────────────────────
+
+export async function getRecurringExpenses() {
+  return db.select().from(recurringExpenses).orderBy(recurringExpenses.createdAt);
+}
+
+export async function getActiveRecurringExpenses() {
+  return db.select().from(recurringExpenses).where(eq(recurringExpenses.active, 'true')).orderBy(recurringExpenses.dayOfMonth);
+}
+
+export async function createRecurringExpense(data: NewRecurringExpense) {
+  const [row] = await db.insert(recurringExpenses).values(data).returning();
+  return row;
+}
+
+export async function updateRecurringExpense(id: string, data: Partial<NewRecurringExpense>) {
+  const [row] = await db.update(recurringExpenses).set(data).where(eq(recurringExpenses.id, id)).returning();
+  return row;
+}
+
+export async function deleteRecurringExpense(id: string) {
+  await db.delete(recurringExpenses).where(eq(recurringExpenses.id, id));
 }
 
 // ─── MÉTRICAS DO DASHBOARD ────────────────────

@@ -28,7 +28,7 @@ async function uploadPdfIfPresent(
   const file = formData.get('pdfFile') as File | null;
   if (file && file.size > 0) {
     const { url } = await put(`contracts/${Date.now()}-${file.name}`, file, {
-      access: 'private',
+      access: 'public',
     });
     return url;
   }

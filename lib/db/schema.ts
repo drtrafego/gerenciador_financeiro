@@ -160,6 +160,18 @@ export const transactions = pgTable('transactions', {
   createdAt: timestamp('created_at').defaultNow(),
 });
 
+// Custos recorrentes mensais da agência
+export const recurringExpenses = pgTable('recurring_expenses', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  name: text('name').notNull(),
+  category: text('category').notNull(),
+  amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
+  currency: text('currency').default('BRL'),
+  dayOfMonth: integer('day_of_month').default(1),
+  active: text('active').default('true'),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
 // ─────────────────────────────────────────────
 // RELATIONS
 // ─────────────────────────────────────────────
@@ -242,6 +254,8 @@ export type Invoice = typeof invoices.$inferSelect;
 export type NewInvoice = typeof invoices.$inferInsert;
 export type Transaction = typeof transactions.$inferSelect;
 export type NewTransaction = typeof transactions.$inferInsert;
+export type RecurringExpense = typeof recurringExpenses.$inferSelect;
+export type NewRecurringExpense = typeof recurringExpenses.$inferInsert;
 
 export type ClientStatus = 'active' | 'inactive' | 'overdue';
 export type ContractType = 'fixed_fee' | 'fixed_plus_percentage' | 'project';

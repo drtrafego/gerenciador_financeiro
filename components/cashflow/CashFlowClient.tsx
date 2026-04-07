@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, FileText } from "lucide-react";
+import { Plus, FileText, RefreshCw, Eye, EyeOff } from "lucide-react";
 import { formatCurrency, convertAmount } from "@/lib/currency/format";
 import MetricCard from "@/components/dashboard/MetricCard";
 import TransactionModal from "@/components/cashflow/TransactionModal";
+import RecurringExpensesModal from "@/components/cashflow/RecurringExpensesModal";
 import type { Currency } from "@/lib/currency/format";
 
 const MONTHS = [
@@ -24,9 +25,34 @@ type ContractIncome = {
   isContract: true;
 };
 
+type RecurringItem = {
+  id: string;
+  type: "expense";
+  category: string;
+  description: string;
+  amount: string;
+  currency: string;
+  date: string;
+  isRecurring: true;
+};
+
+type AnyExpense = {
+  id: string;
+  name: string;
+  category: string;
+  amount: string;
+  currency: string | null;
+  dayOfMonth: number | null;
+  active: string | null;
+};
+
+const HIDDEN = "••••••";
+
 export default function CashFlowClient({
   transactions,
   contractIncomes = [],
+  recurringItems = [],
+  allRecurringExpenses = [],
   rate,
   displayCurrency,
   month,
@@ -34,6 +60,8 @@ export default function CashFlowClient({
 }: {
   transactions: any[];
   contractIncomes?: ContractIncome[];
+  recurringItems?: RecurringItem[];
+  allRecurringExpenses?: AnyExpense[];
   rate: { usd_brl: number; usd_ars: number };
   displayCurrency: Currency;
   month: number;
@@ -41,13 +69,15 @@ export default function CashFlowClient({
 }) {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+  const [showRecurring, setShowRecurring] = useState(false);
+  const [valuesHidden, setValuesHidden] = useState(false);
 
   const toDisplay = (amount: number, currency: string) =>
     convertAmount(amount, currency as Currency, displayCurrency, rate);
 
-  // Combina contratos + transações, ordenado por data desc
   const allEntries = [
     ...contractIncomes,
+    ...recurringItems,
     ...transactions,
   ].sort((a, b) => (a.date > b.date ? -1 : a.date < b.date ? 1 : 0));
 
@@ -58,9 +88,15 @@ export default function CashFlowClient({
     .filter((t) => t.type === "income")
     .reduce((a, t) => a + toDisplay(Number(t.amount), t.currency ?? "BRL"), 0);
   const totalIn = contractTotal + txIncomeTotal;
-  const totalOut = transactions
+
+  const recurringTotal = recurringItems.reduce(
+    (a, r) => a + toDisplay(Number(r.amount), r.currency ?? "BRL"), 0
+  );
+  const txExpenseTotal = transactions
     .filter((t) => t.type === "expense")
     .reduce((a, t) => a + toDisplay(Number(t.amount), t.currency ?? "BRL"), 0);
+  const totalOut = recurringTotal + txExpenseTotal;
+
   const balance = totalIn - totalOut;
 
   const prevMonth = () => {
@@ -74,10 +110,16 @@ export default function CashFlowClient({
 
   const entryCount = allEntries.length;
 
+  const fmtValue = (value: number, currency: Currency) =>
+    valuesHidden ? HIDDEN : formatCurrency(value, currency);
+
+  const fmtRaw = (amount: number, currency: string) =>
+    valuesHidden ? HIDDEN : formatCurrency(Number(amount), currency as Currency);
+
   return (
     <div className="flex flex-col gap-4">
       {/* Month Nav */}
-      <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex items-center gap-2 flex-wrap">
         <div className="flex items-center gap-2">
           <button
             onClick={prevMonth}
@@ -95,26 +137,52 @@ export default function CashFlowClient({
             →
           </button>
         </div>
+
+        {/* Botão ocultar valores */}
         <button
-          onClick={() => setShowModal(true)}
-          className="ml-auto flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          onClick={() => setValuesHidden((v) => !v)}
+          className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-200 text-sm transition-colors"
+          title={valuesHidden ? "Mostrar valores" : "Ocultar valores"}
         >
-          <Plus size={14} />
-          <span className="hidden sm:inline">Novo Lançamento</span>
-          <span className="sm:hidden">Lançar</span>
+          {valuesHidden ? <EyeOff size={14} /> : <Eye size={14} />}
+          <span className="hidden sm:inline">{valuesHidden ? "Mostrar" : "Ocultar"}</span>
         </button>
+
+        <div className="ml-auto flex items-center gap-2">
+          <button
+            onClick={() => setShowRecurring(true)}
+            className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            <RefreshCw size={14} />
+            <span className="hidden sm:inline">Recorrentes</span>
+            {allRecurringExpenses.filter((r) => r.active === 'true').length > 0 && (
+              <span className="bg-indigo-500/20 text-indigo-400 text-xs px-1.5 py-0.5 rounded-full">
+                {allRecurringExpenses.filter((r) => r.active === 'true').length}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setShowModal(true)}
+            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          >
+            <Plus size={14} />
+            <span className="hidden sm:inline">Novo Lançamento</span>
+            <span className="sm:hidden">Lançar</span>
+          </button>
+        </div>
       </div>
 
       {/* Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <MetricCard label="Entradas" value={totalIn} currency={displayCurrency} icon="trending-up" color="green" />
-        <MetricCard label="Saídas" value={totalOut} currency={displayCurrency} icon="trending-down" color="red" />
+        <MetricCard label="Entradas" value={totalIn} currency={displayCurrency} icon="trending-up" color="green" hidden={valuesHidden} />
+        <MetricCard label="Saídas" value={totalOut} currency={displayCurrency} icon="trending-down" color="red" hidden={valuesHidden} />
         <MetricCard
           label="Saldo do Mês"
           value={balance}
           currency={displayCurrency}
           icon="bar-chart"
           color={balance >= 0 ? "indigo" : "red"}
+          hidden={valuesHidden}
         />
         <MetricCard
           label="Lançamentos"
@@ -122,7 +190,7 @@ export default function CashFlowClient({
           raw
           icon="dollar"
           color="indigo"
-          sub={`${contractIncomes.length} contrato(s)`}
+          sub={`${contractIncomes.length} contrato(s) · ${recurringItems.length} recorrente(s)`}
         />
       </div>
 
@@ -142,6 +210,9 @@ export default function CashFlowClient({
               {(t as any).isContract && (
                 <FileText size={14} className="text-indigo-400 mt-0.5 shrink-0" />
               )}
+              {(t as any).isRecurring && (
+                <RefreshCw size={14} className="text-orange-400 mt-0.5 shrink-0" />
+              )}
               <div className="min-w-0">
                 <p className="text-sm font-medium text-zinc-200 truncate">{t.description}</p>
                 <p className="text-xs text-zinc-500 mt-0.5">
@@ -152,11 +223,11 @@ export default function CashFlowClient({
             <div className="ml-3 shrink-0 text-right">
               <span className={`text-sm font-bold ${t.type === "income" ? "text-green-400" : "text-red-400"}`}>
                 {t.type === "income" ? "+" : "-"}
-                {formatCurrency(toDisplay(Number(t.amount), t.currency ?? "BRL"), displayCurrency)}
+                {fmtValue(toDisplay(Number(t.amount), t.currency ?? "BRL"), displayCurrency)}
               </span>
-              {(t.currency ?? "BRL") !== displayCurrency && (
+              {!valuesHidden && (t.currency ?? "BRL") !== displayCurrency && (
                 <p className="text-xs text-zinc-600 mt-0.5">
-                  {formatCurrency(Number(t.amount), (t.currency as Currency) ?? "BRL")}
+                  {fmtRaw(Number(t.amount), t.currency ?? "BRL")}
                 </p>
               )}
             </div>
@@ -200,6 +271,9 @@ export default function CashFlowClient({
                     {(t as any).isContract && (
                       <FileText size={12} className="text-indigo-400 shrink-0" />
                     )}
+                    {(t as any).isRecurring && (
+                      <RefreshCw size={12} className="text-orange-400 shrink-0" />
+                    )}
                     {t.description}
                   </div>
                 </td>
@@ -207,6 +281,8 @@ export default function CashFlowClient({
                   <span className={`text-xs px-2 py-0.5 rounded font-medium ${
                     (t as any).isContract
                       ? "bg-indigo-500/10 text-indigo-400"
+                      : (t as any).isRecurring
+                      ? "bg-orange-500/10 text-orange-400"
                       : "bg-zinc-800 text-zinc-400"
                   }`}>
                     {t.category}
@@ -222,11 +298,11 @@ export default function CashFlowClient({
                 <td className="px-4 py-3 text-sm whitespace-nowrap">
                   <span className={`font-semibold ${t.type === "income" ? "text-green-400" : "text-red-400"}`}>
                     {t.type === "income" ? "+" : "-"}
-                    {formatCurrency(toDisplay(Number(t.amount), t.currency ?? "BRL"), displayCurrency)}
+                    {fmtValue(toDisplay(Number(t.amount), t.currency ?? "BRL"), displayCurrency)}
                   </span>
-                  {(t.currency ?? "BRL") !== displayCurrency && (
+                  {!valuesHidden && (t.currency ?? "BRL") !== displayCurrency && (
                     <span className="block text-xs text-zinc-600 mt-0.5">
-                      {formatCurrency(Number(t.amount), (t.currency as Currency) ?? "BRL")}
+                      {fmtRaw(Number(t.amount), t.currency ?? "BRL")}
                     </span>
                   )}
                 </td>
@@ -237,6 +313,12 @@ export default function CashFlowClient({
       </div>
 
       {showModal && <TransactionModal onClose={() => setShowModal(false)} />}
+      {showRecurring && (
+        <RecurringExpensesModal
+          onClose={() => setShowRecurring(false)}
+          expenses={allRecurringExpenses}
+        />
+      )}
     </div>
   );
 }
