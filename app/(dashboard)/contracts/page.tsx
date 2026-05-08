@@ -61,6 +61,7 @@ export default async function ContractsPage() {
             <thead>
               <tr className="border-b border-zinc-800">
                 <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400">Cliente</th>
+                <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400">Serviço</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400">Tipo</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400">Valor Fixo</th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400">Venc.</th>
@@ -72,6 +73,7 @@ export default async function ContractsPage() {
               {rows.map(({ contract, clientName }) => (
                 <tr key={contract.id} className="hover:bg-zinc-800/50 transition-colors">
                   <td className="px-4 py-3 font-medium text-white">{clientName ?? '—'}</td>
+                  <td className="px-4 py-3 text-zinc-300">{contract.name ?? <span className="text-zinc-600">—</span>}</td>
                   <td className="px-4 py-3 text-zinc-400">
                     {typeLabels[contract.type] ?? contract.type}
                   </td>
