@@ -74,6 +74,7 @@ export default async function PublicInvoicePage({
   const { invoice, client } = row;
   const agencyEmail = settings['agency_email'] ?? '';
   const agencyCnpj = settings['agency_cnpj'] ?? '';
+  const agencyAddress = settings['agency_address'] ?? '';
   const agencyCity = settings['agency_city'] ?? '';
   const agencyPaymentMethods = settings['agency_payment_methods'] ?? '';
   const isPaid = invoice.status === 'paid';
@@ -120,7 +121,10 @@ export default async function PublicInvoicePage({
                   <p className="text-xs text-gray-500 mt-1">{agencyEmail}</p>
                 )}
                 {agencyCnpj && (
-                  <p className="text-xs text-gray-500">CNPJ/CPF: {agencyCnpj}</p>
+                  <p className="text-xs text-gray-500">CNPJ: {agencyCnpj}</p>
+                )}
+                {agencyAddress && (
+                  <p className="text-xs text-gray-500">{agencyAddress}</p>
                 )}
               </div>
               <div className="text-right">

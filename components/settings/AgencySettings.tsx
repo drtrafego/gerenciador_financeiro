@@ -7,14 +7,16 @@ interface Props {
   name: string;
   email: string;
   cnpj: string;
+  address: string;
   city: string;
   paymentMethods: string;
 }
 
-export default function AgencySettings({ name, email, cnpj, city, paymentMethods }: Props) {
+export default function AgencySettings({ name, email, cnpj, address, city, paymentMethods }: Props) {
   const [agencyName, setAgencyName] = useState(name);
   const [agencyEmail, setAgencyEmail] = useState(email);
   const [agencyCnpj, setAgencyCnpj] = useState(cnpj);
+  const [agencyAddress, setAgencyAddress] = useState(address);
   const [agencyCity, setAgencyCity] = useState(city);
   const [agencyPaymentMethods, setAgencyPaymentMethods] = useState(paymentMethods);
   const [pending, startTransition] = useTransition();
@@ -26,6 +28,7 @@ export default function AgencySettings({ name, email, cnpj, city, paymentMethods
         name: agencyName,
         email: agencyEmail,
         cnpj: agencyCnpj,
+        address: agencyAddress,
         city: agencyCity,
         paymentMethods: agencyPaymentMethods,
       });
@@ -43,7 +46,7 @@ export default function AgencySettings({ name, email, cnpj, city, paymentMethods
       <div className="flex flex-col gap-3">
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1">
-            <label className="text-xs text-zinc-500">Nome da Agência</label>
+            <label className="text-xs text-zinc-500">Nome da Empresa</label>
             <input value={agencyName} onChange={(e) => setAgencyName(e.target.value)} className={inputClass} />
           </div>
           <div className="flex flex-col gap-1">
@@ -70,6 +73,15 @@ export default function AgencySettings({ name, email, cnpj, city, paymentMethods
               placeholder="São Paulo"
             />
           </div>
+        </div>
+        <div className="flex flex-col gap-1">
+          <label className="text-xs text-zinc-500">Endereço completo</label>
+          <input
+            value={agencyAddress}
+            onChange={(e) => setAgencyAddress(e.target.value)}
+            className={inputClass}
+            placeholder="Rua Exemplo, 123, Sala 10, Bairro, CEP 00000-000"
+          />
         </div>
         <div className="flex flex-col gap-1">
           <label className="text-xs text-zinc-500">Formas de pagamento aceitas</label>

@@ -29,12 +29,14 @@ export async function updateAgencySettings({
   name,
   email,
   cnpj,
+  address,
   city,
   paymentMethods,
 }: {
   name: string;
   email: string;
   cnpj?: string;
+  address?: string;
   city?: string;
   paymentMethods?: string;
 }): Promise<void> {
@@ -43,6 +45,7 @@ export async function updateAgencySettings({
     upsertSetting("agency_email", email),
   ];
   if (cnpj !== undefined) ops.push(upsertSetting("agency_cnpj", cnpj));
+  if (address !== undefined) ops.push(upsertSetting("agency_address", address));
   if (city !== undefined) ops.push(upsertSetting("agency_city", city));
   if (paymentMethods !== undefined) ops.push(upsertSetting("agency_payment_methods", paymentMethods));
   await Promise.all(ops);

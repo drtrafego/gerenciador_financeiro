@@ -9,12 +9,13 @@ import AgencySettings from "@/components/settings/AgencySettings";
 import HideValuesPreference from "@/components/settings/HideValuesPreference";
 
 export default async function SettingsPage() {
-  const [latestRate, displayCurrencySetting, agencyName, agencyEmail, agencyCnpj, agencyCity, agencyPaymentMethods] = await Promise.all([
+  const [latestRate, displayCurrencySetting, agencyName, agencyEmail, agencyCnpj, agencyAddress, agencyCity, agencyPaymentMethods] = await Promise.all([
     db.select().from(exchangeRates).orderBy(desc(exchangeRates.fetchedAt)).limit(1),
     db.select().from(systemSettings).where(eq(systemSettings.key, "display_currency")),
     db.select().from(systemSettings).where(eq(systemSettings.key, "agency_name")),
     db.select().from(systemSettings).where(eq(systemSettings.key, "agency_email")),
     db.select().from(systemSettings).where(eq(systemSettings.key, "agency_cnpj")),
+    db.select().from(systemSettings).where(eq(systemSettings.key, "agency_address")),
     db.select().from(systemSettings).where(eq(systemSettings.key, "agency_city")),
     db.select().from(systemSettings).where(eq(systemSettings.key, "agency_payment_methods")),
   ]);
@@ -35,6 +36,7 @@ export default async function SettingsPage() {
         name={agencyName[0]?.value ?? "DR.TRÁFEGO"}
         email={agencyEmail[0]?.value ?? ""}
         cnpj={agencyCnpj[0]?.value ?? ""}
+        address={agencyAddress[0]?.value ?? ""}
         city={agencyCity[0]?.value ?? ""}
         paymentMethods={agencyPaymentMethods[0]?.value ?? ""}
       />
