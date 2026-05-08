@@ -116,6 +116,7 @@ export const clients = pgTable('clients', {
 export const contracts = pgTable('contracts', {
   id: uuid('id').defaultRandom().primaryKey(),
   clientId: uuid('client_id').references(() => clients.id),
+  name: text('name'), // ex: "Gestão de Tráfego Meta Ads", "Google Ads"
   type: text('type').notNull(), // fixed_fee | fixed_plus_percentage | project
   fixedAmount: decimal('fixed_amount', { precision: 10, scale: 2 }).notNull(),
   percentage: decimal('percentage', { precision: 5, scale: 2 }),

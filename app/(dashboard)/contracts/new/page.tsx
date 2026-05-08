@@ -20,6 +20,16 @@ export default async function NewContractPage({
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 space-y-5">
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">Nome do Serviço *</label>
+              <input
+                name="name"
+                required
+                placeholder="Ex: Gestão de Tráfego Meta Ads, Google Ads, Criação de Conteúdo..."
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+
+            <div className="sm:col-span-2">
               <label className="block text-sm font-medium text-zinc-300 mb-1.5">Cliente *</label>
               <select
                 name="clientId"

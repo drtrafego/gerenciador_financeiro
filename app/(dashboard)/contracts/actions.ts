@@ -8,6 +8,7 @@ import { createContract, updateContract, deleteContract } from '@/lib/db/queries
 
 const contractSchema = z.object({
   clientId: z.string().uuid(),
+  name: z.string().optional(),
   type: z.enum(['fixed_fee', 'fixed_plus_percentage', 'project']),
   fixedAmount: z.string().transform((v) => v.replace(',', '.')),
   percentage: z.string().optional().transform((v) => v?.replace(',', '.') || null),
@@ -43,6 +44,7 @@ export async function createContractAction(formData: FormData): Promise<void> {
   const pdfUrl = await uploadPdfIfPresent(formData);
   await createContract({
     clientId: parsed.clientId,
+    name: parsed.name ?? null,
     type: parsed.type,
     fixedAmount: parsed.fixedAmount,
     percentage: parsed.percentage ?? null,
@@ -67,6 +69,7 @@ export async function updateContractAction(id: string, formData: FormData): Prom
   const pdfUrl = await uploadPdfIfPresent(formData, parsed.existingPdfUrl);
   await updateContract(id, {
     clientId: parsed.clientId,
+    name: parsed.name ?? null,
     type: parsed.type,
     fixedAmount: parsed.fixedAmount,
     percentage: parsed.percentage ?? null,

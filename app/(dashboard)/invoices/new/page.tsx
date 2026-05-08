@@ -53,7 +53,7 @@ export default async function NewInvoicePage({
                 <option value="">Sem contrato vinculado</option>
                 {contractRows.map(({ contract, clientName }) => (
                   <option key={contract.id} value={contract.id}>
-                    {clientName} — {contract.type.replace(/_/g, ' ')} ({contract.currency})
+                    {clientName} — {contract.name ?? contract.type.replace(/_/g, ' ')} ({contract.currency})
                   </option>
                 ))}
               </select>
