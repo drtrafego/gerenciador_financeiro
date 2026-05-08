@@ -8,6 +8,7 @@ import { formatCurrency } from '@/lib/currency/format';
 import type { Currency } from '@/lib/currency/format';
 import { cn } from '@/lib/utils';
 import { Trash2, CheckCircle, ExternalLink, FileText } from 'lucide-react';
+import SendEmailButton from '@/components/invoices/SendEmailButton';
 
 const statusStyles: Record<string, string> = {
   draft: 'bg-zinc-500/10 text-zinc-400 border-zinc-500/20',
@@ -66,15 +67,16 @@ export default async function InvoiceDetailPage({
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Link
             href={`/invoice/${id}`}
             target="_blank"
             className="flex items-center gap-1.5 rounded-lg border border-zinc-700 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-800 transition-colors"
           >
             <ExternalLink className="h-4 w-4" />
-            Ver pública
+            Ver recibo
           </Link>
+          <SendEmailButton invoiceId={id} defaultEmail={client?.email ?? ''} />
           {!isPaid && (
             <form action={markPaidWithId}>
               <button

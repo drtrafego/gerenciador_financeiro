@@ -3,7 +3,10 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { createInvoice, updateInvoice, deleteInvoice, markInvoicePaid } from '@/lib/db/queries';
+import { createInvoice, updateInvoice, deleteInvoice, markInvoicePaid, getInvoiceWithClient } from '@/lib/db/queries';
+import { sendReceiptEmail } from '@/lib/email/gmail';
+import { formatCurrency } from '@/lib/currency/format';
+import type { Currency } from '@/lib/currency/format';
 
 const invoiceSchema = z.object({
   clientId: z.string().uuid(),
@@ -67,4 +70,36 @@ export async function deleteInvoiceAction(id: string): Promise<void> {
   await deleteInvoice(id);
   revalidatePath('/invoices');
   redirect('/invoices');
+}
+
+export async function sendReceiptEmailAction(
+  id: string,
+  to: string
+): Promise<{ ok: boolean }> {
+  try {
+    const row = await getInvoiceWithClient(id);
+    if (!row) return { ok: false };
+
+    const { invoice, client } = row;
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+
+    await sendReceiptEmail({
+      to,
+      clientName: client?.name ?? 'Cliente',
+      invoiceNumber: invoice.invoiceNumber ?? id,
+      amount: formatCurrency(
+        parseFloat(invoice.amount ?? '0'),
+        (invoice.currency as Currency) ?? 'BRL'
+      ),
+      dueDate: invoice.dueDate,
+      description: invoice.description ?? 'Serviços de gestão de tráfego pago',
+      receiptUrl: `${appUrl}/invoice/${id}`,
+      isPaid: invoice.status === 'paid',
+      paidAt: invoice.paidAt ? invoice.paidAt.toISOString() : null,
+    });
+
+    return { ok: true };
+  } catch {
+    return { ok: false };
+  }
 }

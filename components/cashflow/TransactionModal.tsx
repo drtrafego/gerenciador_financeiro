@@ -53,6 +53,9 @@ export default function TransactionModal({ onClose, transaction }: Props) {
     transaction?.date ?? new Date().toISOString().split("T")[0]
   );
 
+  const [applyIof, setApplyIof] = useState(false);
+  const IOF_RATE = 0.0338;
+
   const [isRecurring, setIsRecurring] = useState(transaction?.isRecurring === "true");
   const [periodType, setPeriodType] = useState<"forever" | "months">(
     transaction?.recurringEndsAt ? "months" : "forever"
@@ -83,11 +86,16 @@ export default function TransactionModal({ onClose, transaction }: Props) {
     e.preventDefault();
     if (!amount || !description || !date) return;
     setLoading(true);
+    const baseAmount = parseFloat(amount);
+    const finalAmount = currency === "USD" && applyIof
+      ? parseFloat((baseAmount * (1 + IOF_RATE)).toFixed(2))
+      : baseAmount;
+
     const data = {
       type,
       category,
       description,
-      amount: parseFloat(amount),
+      amount: finalAmount,
       currency: currency as "BRL" | "USD" | "ARS",
       date,
       isRecurring,
@@ -197,6 +205,29 @@ export default function TransactionModal({ onClose, transaction }: Props) {
                 <option value="ARS">ARS</option>
               </select>
             </div>
+            {/* IOF — só aparece quando moeda é USD */}
+            {currency === "USD" && (
+              <div className="col-span-2 flex items-center justify-between rounded-lg bg-amber-500/10 border border-amber-500/20 px-3 py-2.5">
+                <div>
+                  <p className="text-xs font-medium text-amber-400">IOF — Cartão Internacional</p>
+                  {applyIof && amount ? (
+                    <p className="text-[10px] text-amber-300/70 mt-0.5">
+                      USD {parseFloat(amount).toFixed(2)} + IOF = USD {(parseFloat(amount) * (1 + IOF_RATE)).toFixed(2)} (3,38%)
+                    </p>
+                  ) : (
+                    <p className="text-[10px] text-amber-300/50 mt-0.5">3,38% sobre o valor em dólar</p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setApplyIof((v) => !v)}
+                  className={`w-10 h-5 rounded-full transition-colors relative shrink-0 ${applyIof ? "bg-amber-500" : "bg-zinc-600"}`}
+                >
+                  <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${applyIof ? "left-5" : "left-0.5"}`} />
+                </button>
+              </div>
+            )}
+
             <div className="flex flex-col gap-1">
               <label className="text-xs font-medium text-zinc-400">Categoria</label>
               <select value={category} onChange={(e) => setCategory(e.target.value)} className={inputClass}>

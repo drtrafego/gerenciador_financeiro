@@ -34,14 +34,25 @@ export default function RecurringExpensesModal({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [showForm, setShowForm] = useState(false);
+  const [formCurrency, setFormCurrency] = useState("BRL");
+  const [formAmount, setFormAmount] = useState("");
+  const [formApplyIof, setFormApplyIof] = useState(false);
+  const IOF_RATE = 0.0338;
 
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    if (formCurrency === "USD" && formApplyIof && formAmount) {
+      const withIof = (parseFloat(formAmount) * (1 + IOF_RATE)).toFixed(2);
+      fd.set("amount", withIof);
+    }
     startTransition(async () => {
       await createRecurringExpenseAction(fd);
       router.refresh();
       setShowForm(false);
+      setFormCurrency("BRL");
+      setFormAmount("");
+      setFormApplyIof(false);
     });
   };
 
@@ -135,7 +146,12 @@ export default function RecurringExpensesModal({
                   </select>
                 </div>
                 <div>
-                  <select name="currency" defaultValue="BRL" className={inputClass}>
+                  <select
+                    name="currency"
+                    value={formCurrency}
+                    onChange={(e) => { setFormCurrency(e.target.value); setFormApplyIof(false); }}
+                    className={inputClass}
+                  >
                     <option value="BRL">BRL</option>
                     <option value="USD">USD</option>
                     <option value="ARS">ARS</option>
@@ -149,9 +165,33 @@ export default function RecurringExpensesModal({
                     min="0.01"
                     required
                     placeholder="Valor"
+                    value={formAmount}
+                    onChange={(e) => setFormAmount(e.target.value)}
                     className={inputClass}
                   />
                 </div>
+                {/* IOF — só aparece quando USD selecionado */}
+                {formCurrency === "USD" && (
+                  <div className="col-span-2 flex items-center justify-between rounded-lg bg-amber-500/10 border border-amber-500/20 px-3 py-2.5">
+                    <div>
+                      <p className="text-xs font-medium text-amber-400">IOF — Cartão Internacional</p>
+                      {formApplyIof && formAmount ? (
+                        <p className="text-[10px] text-amber-300/70 mt-0.5">
+                          USD {parseFloat(formAmount).toFixed(2)} + IOF = USD {(parseFloat(formAmount) * (1 + IOF_RATE)).toFixed(2)} (3,38%)
+                        </p>
+                      ) : (
+                        <p className="text-[10px] text-amber-300/50 mt-0.5">3,38% sobre o valor em dólar</p>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setFormApplyIof((v) => !v)}
+                      className={`w-10 h-5 rounded-full transition-colors relative shrink-0 ${formApplyIof ? "bg-amber-500" : "bg-zinc-600"}`}
+                    >
+                      <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${formApplyIof ? "left-5" : "left-0.5"}`} />
+                    </button>
+                  </div>
+                )}
                 <div>
                   <input
                     name="dayOfMonth"
