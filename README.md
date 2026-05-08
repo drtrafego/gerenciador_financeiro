@@ -1,119 +1,234 @@
-# Next.js SaaS Starter
+# DR.TRÁFEGO Finance
 
-This is a starter template for building a SaaS application using **Next.js** with support for authentication, Stripe integration for payments, and a dashboard for logged-in users.
+Sistema financeiro completo para agências de tráfego pago. Gestão de clientes, contratos, faturas, transações e fluxo de caixa com suporte a múltiplas moedas (BRL, USD, ARS).
 
-**Demo: [https://next-saas-start.vercel.app/](https://next-saas-start.vercel.app/)**
+## Stack
 
-## Features
+- **Next.js 15** (App Router, Server Components, Server Actions)
+- **TypeScript** strict
+- **Tailwind CSS v4** + shadcn/ui
+- **Drizzle ORM** + **PostgreSQL** (Neon)
+- **Stack Auth** (autenticação JWT + convites)
+- **Nodemailer** (envio de recibos via Gmail SMTP)
+- **Vercel Blob** (armazenamento de PDFs de contratos)
+- **Stripe** (pagamentos)
+- **Recharts** (gráficos)
+- Deploy: **Vercel**
 
-- Marketing landing page (`/`) with animated Terminal element
-- Pricing page (`/pricing`) which connects to Stripe Checkout
-- Dashboard pages with CRUD operations on users/teams
-- Basic RBAC with Owner and Member roles
-- Subscription management with Stripe Customer Portal
-- Email/password authentication with JWTs stored to cookies
-- Global middleware to protect logged-in routes
-- Local middleware to protect Server Actions or validate Zod schemas
-- Activity logging system for any user events
+---
 
-## Tech Stack
+## Variáveis de Ambiente
 
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Database**: [Postgres](https://www.postgresql.org/)
-- **ORM**: [Drizzle](https://orm.drizzle.team/)
-- **Payments**: [Stripe](https://stripe.com/)
-- **UI Library**: [shadcn/ui](https://ui.shadcn.com/)
+Crie um arquivo `.env.local` na raiz do projeto:
 
-## Getting Started
+```env
+# Banco de dados (Neon PostgreSQL)
+POSTGRES_URL=postgresql://user:password@host/dbname?sslmode=require
+
+# Stack Auth
+NEXT_PUBLIC_STACK_PROJECT_ID=
+NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY=pck_***
+STACK_SECRET_SERVER_KEY=ssk_***
+
+# Segurança
+AUTH_SECRET=
+CRON_SECRET=
+
+# App
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# Email (Gmail SMTP)
+GMAIL_USER=seuemail@gmail.com
+GMAIL_APP_PASSWORD=xxxx-xxxx-xxxx-xxxx
+```
+
+---
+
+## Setup
 
 ```bash
-git clone https://github.com/nextjs/saas-starter
-cd saas-starter
+# Instalar dependências
 pnpm install
-```
 
-## Running Locally
-
-[Install](https://docs.stripe.com/stripe-cli) and log in to your Stripe account:
-
-```bash
-stripe login
-```
-
-Use the included setup script to create your `.env` file:
-
-```bash
-pnpm db:setup
-```
-
-Run the database migrations and seed the database with a default user and team:
-
-```bash
+# Rodar migrações do banco
 pnpm db:migrate
-pnpm db:seed
-```
 
-This will create the following user and team:
-
-- User: `test@test.com`
-- Password: `admin123`
-
-You can also create new users through the `/sign-up` route.
-
-Finally, run the Next.js development server:
-
-```bash
+# Iniciar dev server
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the app in action.
+---
 
-You can listen for Stripe webhooks locally through their CLI to handle subscription change events:
+## Scripts
 
-```bash
-stripe listen --forward-to localhost:3000/api/stripe/webhook
+| Script | Descrição |
+|--------|-----------|
+| `pnpm dev` | Dev server com Turbopack |
+| `pnpm build` | Build de produção |
+| `pnpm start` | Servidor de produção |
+| `pnpm db:migrate` | Executar migrações |
+| `pnpm db:generate` | Gerar novas migrações a partir do schema |
+| `pnpm db:studio` | Abrir Drizzle Studio (UI visual do banco) |
+| `pnpm db:seed` | Popular banco com dados de desenvolvimento |
+
+> **Atenção:** `pnpm db:migrate` requer `POSTGRES_URL` no ambiente. Em desenvolvimento, as variáveis do `.env.local` não são carregadas automaticamente pelo drizzle-kit. Use:
+> ```bash
+> node -e "require('dotenv').config({path:'.env.local'}); const {execSync} = require('child_process'); execSync('pnpm db:migrate', {stdio:'inherit', env: process.env});"
+> ```
+
+---
+
+## Módulos
+
+### Clientes
+- Cadastro com nome, contato, email, telefone, moeda preferida e status
+- Campo `document` (CPF/CNPJ) para uso em recibos
+- Status: `active` | `inactive` | `overdue`
+
+### Contratos
+- Vinculados a clientes
+- Campo **Nome do Serviço** para diferenciar múltiplos contratos do mesmo cliente (ex: "Tráfego Meta Ads", "Google Ads")
+- Tipos de contrato: `fixed_fee` | `fixed_plus_percentage` | `project`
+- Suporte a PDF do contrato (armazenado no Vercel Blob)
+- Dia de cobrança configurável por contrato
+
+### Faturas
+- Numeração automática: `INV-YYYY-XXX`
+- Tipos: `monthly` | `project` | `proposal`
+- Status: `draft` | `sent` | `paid` | `overdue` | `cancelled`
+- Ao selecionar um contrato, valor e moeda são preenchidos automaticamente
+- Campo **Forma de pagamento** por fatura (cada cliente paga de forma diferente)
+- Marcar como paga cria uma transação de receita automaticamente
+- Envio de recibo por email (Gmail SMTP) com destinatário digitado no momento
+
+### Recibo Público (`/invoice/[id]`)
+- Página pública sem autenticação
+- Dados da empresa (Construa Seu Sucesso) carregados das configurações
+- Campos exibidos: CNPJ, endereço completo, cidade, e-mail
+- Valor por extenso em português (BRL/USD/ARS)
+- Forma de pagamento da fatura
+- Linha de assinatura com "Cidade, DD de mês de AAAA"
+- Botão de impressão (CSS print-friendly)
+
+### Transações
+- Tipos: `income` | `expense`
+- Suporte a **recorrência** com data de término opcional
+- Opção de **IOF (3,38%)** para transações em USD pagas com cartão
+- Categorização livre
+
+### Fluxo de Caixa
+- Visão consolidada de receitas e despesas
+- Filtros por período e categoria
+- Suporte a despesas recorrentes da agência
+
+### Dashboard
+- MRR (Monthly Recurring Revenue) com conversão de moedas
+- Alertas de faturas vencidas e próximas do vencimento
+- Gráficos de receita dos últimos 6 meses
+- Clientes ativos e inadimplentes
+
+### Configurações
+- **Dados da empresa** (aparecem nos recibos): nome, CNPJ/CPF, endereço, cidade, e-mail
+- **Moeda de exibição** padrão do sistema (BRL/USD/ARS)
+- **Cotações de câmbio** (USD/BRL, USD/ARS, ARS/BRL) — atualização automática via cron diário
+- **Ocultar valores** no dashboard
+
+---
+
+## Banco de Dados
+
+### Tabelas principais
+
+| Tabela | Descrição |
+|--------|-----------|
+| `users` | Usuários do sistema |
+| `teams` | Times / empresas |
+| `clients` | Clientes da agência |
+| `contracts` | Contratos com clientes |
+| `invoices` | Faturas emitidas |
+| `transactions` | Receitas e despesas |
+| `recurring_expenses` | Custos fixos mensais da agência |
+| `exchange_rates` | Cotações de câmbio (atualizado por cron) |
+| `system_settings` | Configurações chave-valor do sistema |
+
+### Migrações disponíveis
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `0001_*` | Schema inicial |
+| `0002_*` | Adições ao schema base |
+| `0003_*` | Campos de recorrência em transações |
+| `0004_*` | Tabela de despesas recorrentes |
+| `0005_add_client_document.sql` | Campo CPF/CNPJ no cliente |
+| `0006_add_invoice_payment_method.sql` | Forma de pagamento na fatura |
+| `0007_add_contract_name.sql` | Nome do serviço no contrato |
+
+---
+
+## API Routes
+
+| Rota | Método | Descrição |
+|------|--------|-----------|
+| `/api/user` | GET | Dados do usuário autenticado |
+| `/api/team` | GET | Dados do time do usuário |
+| `/api/contracts/pdf?id=` | GET | Redirect para PDF do contrato |
+| `/api/cron/update-rates` | GET | Atualiza cotações (requer `Authorization: Bearer $CRON_SECRET`) |
+
+---
+
+## Autenticação
+
+Baseada em **JWT com cookies** + **Stack Auth** como provider OIDC.
+
+- Login/cadastro com email e senha
+- Convites por email com atribuição de papel (`member` | `owner`)
+- Log de atividades automático (sign in, sign out, alterações de conta)
+- Soft delete de contas (campo `deletedAt`)
+
+---
+
+## Deploy (Vercel)
+
+1. Conectar repositório no Vercel
+2. Configurar variáveis de ambiente no painel (Settings → Environment Variables)
+3. Configurar cron job para atualização de cotações:
+   ```
+   GET /api/cron/update-rates
+   Authorization: Bearer $CRON_SECRET
+   Schedule: 0 9 * * 1-5  (dias úteis às 9h)
+   ```
+4. Fazer deploy — migrações devem ser rodadas manualmente na primeira vez
+
+---
+
+## Estrutura de Pastas
+
 ```
-
-## Testing Payments
-
-To test Stripe payments, use the following test card details:
-
-- Card Number: `4242 4242 4242 4242`
-- Expiration: Any future date
-- CVC: Any 3-digit number
-
-## Going to Production
-
-When you're ready to deploy your SaaS application to production, follow these steps:
-
-### Set up a production Stripe webhook
-
-1. Go to the Stripe Dashboard and create a new webhook for your production environment.
-2. Set the endpoint URL to your production API route (e.g., `https://yourdomain.com/api/stripe/webhook`).
-3. Select the events you want to listen for (e.g., `checkout.session.completed`, `customer.subscription.updated`).
-
-### Deploy to Vercel
-
-1. Push your code to a GitHub repository.
-2. Connect your repository to [Vercel](https://vercel.com/) and deploy it.
-3. Follow the Vercel deployment process, which will guide you through setting up your project.
-
-### Add environment variables
-
-In your Vercel project settings (or during deployment), add all the necessary environment variables. Make sure to update the values for the production environment, including:
-
-1. `BASE_URL`: Set this to your production domain.
-2. `STRIPE_SECRET_KEY`: Use your Stripe secret key for the production environment.
-3. `STRIPE_WEBHOOK_SECRET`: Use the webhook secret from the production webhook you created in step 1.
-4. `POSTGRES_URL`: Set this to your production database URL.
-5. `AUTH_SECRET`: Set this to a random string. `openssl rand -base64 32` will generate one.
-
-## Other Templates
-
-While this template is intentionally minimal and to be used as a learning resource, there are other paid versions in the community which are more full-featured:
-
-- https://achromatic.dev
-- https://shipfa.st
-- https://makerkit.dev
-- https://zerotoshipped.com
-- https://turbostarter.dev
+dr-trafego-finance/
+├── app/
+│   ├── (dashboard)/          # Rotas autenticadas
+│   │   ├── clients/
+│   │   ├── contracts/
+│   │   ├── invoices/
+│   │   ├── cash-flow/
+│   │   ├── transactions/
+│   │   ├── settings/
+│   │   └── dashboard/
+│   ├── (login)/              # Rotas de autenticação
+│   ├── invoice/[id]/         # Recibo público (sem auth)
+│   └── api/                  # API Routes
+├── components/
+│   ├── cashflow/
+│   ├── clients/
+│   ├── dashboard/
+│   ├── invoices/
+│   ├── settings/
+│   └── ui/                   # Componentes base (shadcn)
+├── lib/
+│   ├── auth/                 # Sessão e middleware de auth
+│   ├── currency/             # Conversão e formatação de moedas
+│   ├── db/                   # Schema, queries, migrações
+│   └── email/                # Gmail SMTP
+└── server/
+    └── actions/              # Server Actions reutilizáveis
+```
