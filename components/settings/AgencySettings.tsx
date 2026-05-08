@@ -12,13 +12,12 @@ interface Props {
   paymentMethods: string;
 }
 
-export default function AgencySettings({ name, email, cnpj, address, city, paymentMethods }: Props) {
+export default function AgencySettings({ name, email, cnpj, address, city }: Props) {
   const [agencyName, setAgencyName] = useState(name);
   const [agencyEmail, setAgencyEmail] = useState(email);
   const [agencyCnpj, setAgencyCnpj] = useState(cnpj);
   const [agencyAddress, setAgencyAddress] = useState(address);
   const [agencyCity, setAgencyCity] = useState(city);
-  const [agencyPaymentMethods, setAgencyPaymentMethods] = useState(paymentMethods);
   const [pending, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
 
@@ -30,7 +29,6 @@ export default function AgencySettings({ name, email, cnpj, address, city, payme
         cnpj: agencyCnpj,
         address: agencyAddress,
         city: agencyCity,
-        paymentMethods: agencyPaymentMethods,
       });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
@@ -81,15 +79,6 @@ export default function AgencySettings({ name, email, cnpj, address, city, payme
             onChange={(e) => setAgencyAddress(e.target.value)}
             className={inputClass}
             placeholder="Rua Exemplo, 123, Sala 10, Bairro, CEP 00000-000"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xs text-zinc-500">Formas de pagamento aceitas</label>
-          <input
-            value={agencyPaymentMethods}
-            onChange={(e) => setAgencyPaymentMethods(e.target.value)}
-            className={inputClass}
-            placeholder="PIX, Transferência Bancária, Boleto"
           />
         </div>
         <button

@@ -76,7 +76,7 @@ export default async function PublicInvoicePage({
   const agencyCnpj = settings['agency_cnpj'] ?? '';
   const agencyAddress = settings['agency_address'] ?? '';
   const agencyCity = settings['agency_city'] ?? '';
-  const agencyPaymentMethods = settings['agency_payment_methods'] ?? '';
+  const invoicePaymentMethod = invoice.paymentMethod ?? '';
   const isPaid = invoice.status === 'paid';
   const isOverdue = invoice.status === 'overdue';
 
@@ -191,10 +191,10 @@ export default async function PublicInvoicePage({
           </div>
 
           {/* Forma de pagamento */}
-          {agencyPaymentMethods && (
+          {invoicePaymentMethod && (
             <div className="px-10 py-5 border-b border-dashed border-gray-200">
               <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Forma de pagamento</p>
-              <p className="text-sm text-gray-700">{agencyPaymentMethods}</p>
+              <p className="text-sm text-gray-700">{invoicePaymentMethod}</p>
             </div>
           )}
 

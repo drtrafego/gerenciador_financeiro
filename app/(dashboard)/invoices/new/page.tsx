@@ -134,6 +134,17 @@ export default async function NewInvoicePage({
 
             <div className="sm:col-span-2">
               <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+                Forma de pagamento
+              </label>
+              <input
+                name="paymentMethod"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="PIX, Transferência Bancária, Boleto..."
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">
                 Observações internas
               </label>
               <textarea

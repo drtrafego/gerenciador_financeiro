@@ -144,6 +144,7 @@ export const invoices = pgTable('invoices', {
   paidAt: timestamp('paid_at'),
   description: text('description'),
   notes: text('notes'),
+  paymentMethod: text('payment_method'),
   createdAt: timestamp('created_at').defaultNow(),
 });
 

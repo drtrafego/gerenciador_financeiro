@@ -18,6 +18,7 @@ const invoiceSchema = z.object({
   dueDate: z.string().min(1),
   description: z.string().optional(),
   notes: z.string().optional(),
+  paymentMethod: z.string().optional(),
 });
 
 export async function createInvoiceAction(formData: FormData): Promise<void> {
@@ -33,6 +34,7 @@ export async function createInvoiceAction(formData: FormData): Promise<void> {
     dueDate: parsed.dueDate,
     description: parsed.description ?? null,
     notes: parsed.notes ?? null,
+    paymentMethod: parsed.paymentMethod ?? null,
     paidAt: null,
     invoiceNumber: null,
   });
@@ -53,6 +55,7 @@ export async function updateInvoiceAction(id: string, formData: FormData): Promi
     dueDate: parsed.dueDate,
     description: parsed.description ?? null,
     notes: parsed.notes ?? null,
+    paymentMethod: parsed.paymentMethod ?? null,
   });
   revalidatePath('/invoices');
   revalidatePath(`/invoices/${id}`);
