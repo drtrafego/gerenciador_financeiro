@@ -3,15 +3,32 @@
 import { useState, useTransition } from "react";
 import { updateAgencySettings } from "@/server/actions/settings";
 
-export default function AgencySettings({ name, email }: { name: string; email: string }) {
+interface Props {
+  name: string;
+  email: string;
+  cnpj: string;
+  city: string;
+  paymentMethods: string;
+}
+
+export default function AgencySettings({ name, email, cnpj, city, paymentMethods }: Props) {
   const [agencyName, setAgencyName] = useState(name);
   const [agencyEmail, setAgencyEmail] = useState(email);
+  const [agencyCnpj, setAgencyCnpj] = useState(cnpj);
+  const [agencyCity, setAgencyCity] = useState(city);
+  const [agencyPaymentMethods, setAgencyPaymentMethods] = useState(paymentMethods);
   const [pending, startTransition] = useTransition();
   const [saved, setSaved] = useState(false);
 
   const handleSave = () => {
     startTransition(async () => {
-      await updateAgencySettings({ name: agencyName, email: agencyEmail });
+      await updateAgencySettings({
+        name: agencyName,
+        email: agencyEmail,
+        cnpj: agencyCnpj,
+        city: agencyCity,
+        paymentMethods: agencyPaymentMethods,
+      });
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     });
@@ -22,23 +39,45 @@ export default function AgencySettings({ name, email }: { name: string; email: s
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-      <p className="text-sm font-semibold text-zinc-200 mb-4">Dados da Agência</p>
+      <p className="text-sm font-semibold text-zinc-200 mb-4">Dados da Empresa (aparecem nos recibos)</p>
       <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-1">
-          <label className="text-xs text-zinc-500">Nome da Agência</label>
-          <input
-            value={agencyName}
-            onChange={(e) => setAgencyName(e.target.value)}
-            className={inputClass}
-          />
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-1">
+            <label className="text-xs text-zinc-500">Nome da Agência</label>
+            <input value={agencyName} onChange={(e) => setAgencyName(e.target.value)} className={inputClass} />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-xs text-zinc-500">CNPJ / CPF</label>
+            <input
+              value={agencyCnpj}
+              onChange={(e) => setAgencyCnpj(e.target.value)}
+              className={inputClass}
+              placeholder="00.000.000/0001-00"
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-1">
+            <label className="text-xs text-zinc-500">E-mail</label>
+            <input value={agencyEmail} onChange={(e) => setAgencyEmail(e.target.value)} type="email" className={inputClass} />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-xs text-zinc-500">Cidade de emissão</label>
+            <input
+              value={agencyCity}
+              onChange={(e) => setAgencyCity(e.target.value)}
+              className={inputClass}
+              placeholder="São Paulo"
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs text-zinc-500">E-mail</label>
+          <label className="text-xs text-zinc-500">Formas de pagamento aceitas</label>
           <input
-            value={agencyEmail}
-            onChange={(e) => setAgencyEmail(e.target.value)}
-            type="email"
+            value={agencyPaymentMethods}
+            onChange={(e) => setAgencyPaymentMethods(e.target.value)}
             className={inputClass}
+            placeholder="PIX, Transferência Bancária, Boleto"
           />
         </div>
         <button

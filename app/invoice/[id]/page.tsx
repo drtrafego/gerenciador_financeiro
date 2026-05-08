@@ -73,6 +73,9 @@ export default async function PublicInvoicePage({
 
   const { invoice, client } = row;
   const agencyEmail = settings['agency_email'] ?? '';
+  const agencyCnpj = settings['agency_cnpj'] ?? '';
+  const agencyCity = settings['agency_city'] ?? '';
+  const agencyPaymentMethods = settings['agency_payment_methods'] ?? '';
   const isPaid = invoice.status === 'paid';
   const isOverdue = invoice.status === 'overdue';
 
@@ -116,6 +119,9 @@ export default async function PublicInvoicePage({
                 {agencyEmail && (
                   <p className="text-xs text-gray-500 mt-1">{agencyEmail}</p>
                 )}
+                {agencyCnpj && (
+                  <p className="text-xs text-gray-500">CNPJ/CPF: {agencyCnpj}</p>
+                )}
               </div>
               <div className="text-right">
                 <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Recibo</p>
@@ -140,6 +146,9 @@ export default async function PublicInvoicePage({
                 <div>
                   <p className="text-[10px] text-gray-400 uppercase tracking-wider mb-1">Emissão</p>
                   <p className="text-sm font-medium text-gray-800">{emittedDate}</p>
+                  {agencyCity && (
+                    <p className="text-xs text-gray-400">{agencyCity}</p>
+                  )}
                 </div>
               )}
               <div>
@@ -177,6 +186,14 @@ export default async function PublicInvoicePage({
             </div>
           </div>
 
+          {/* Forma de pagamento */}
+          {agencyPaymentMethods && (
+            <div className="px-10 py-5 border-b border-dashed border-gray-200">
+              <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Forma de pagamento</p>
+              <p className="text-sm text-gray-700">{agencyPaymentMethods}</p>
+            </div>
+          )}
+
           {/* Total */}
           <div className="px-10 py-7 bg-gray-50">
             <div className="flex justify-between items-center">
@@ -210,10 +227,20 @@ export default async function PublicInvoicePage({
           </div>
 
           {/* Assinatura */}
-          <div className="px-10 py-8 border-t border-dashed border-gray-200 flex justify-end print:py-12">
-            <div className="text-center">
-              <div className="w-52 border-t border-gray-400 pt-2">
-                <p className="text-xs text-gray-500 font-medium">Construa Seu Sucesso</p>
+          <div className="px-10 py-8 border-t border-dashed border-gray-200 print:py-12">
+            {emittedDate && (
+              <p className="text-xs text-gray-400 mb-8">
+                {agencyCity ? `${agencyCity}, ` : ''}{emittedDate}
+              </p>
+            )}
+            <div className="flex justify-end">
+              <div className="text-center">
+                <div className="w-52 border-t border-gray-400 pt-2">
+                  <p className="text-xs text-gray-500 font-medium">Construa Seu Sucesso</p>
+                  {agencyCnpj && (
+                    <p className="text-[10px] text-gray-400">{agencyCnpj}</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>

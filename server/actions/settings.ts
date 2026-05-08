@@ -28,13 +28,24 @@ export async function updateDisplayCurrency(currency: string): Promise<void> {
 export async function updateAgencySettings({
   name,
   email,
+  cnpj,
+  city,
+  paymentMethods,
 }: {
   name: string;
   email: string;
+  cnpj?: string;
+  city?: string;
+  paymentMethods?: string;
 }): Promise<void> {
-  await Promise.all([
+  const ops = [
     upsertSetting("agency_name", name),
     upsertSetting("agency_email", email),
-  ]);
+  ];
+  if (cnpj !== undefined) ops.push(upsertSetting("agency_cnpj", cnpj));
+  if (city !== undefined) ops.push(upsertSetting("agency_city", city));
+  if (paymentMethods !== undefined) ops.push(upsertSetting("agency_payment_methods", paymentMethods));
+  await Promise.all(ops);
   revalidatePath("/settings");
+  revalidatePath("/invoice");
 }

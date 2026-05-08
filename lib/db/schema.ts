@@ -101,6 +101,7 @@ export const systemSettings = pgTable('system_settings', {
 export const clients = pgTable('clients', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
+  document: text('document'),
   contactName: text('contact_name'),
   email: text('email'),
   phone: text('phone'),
