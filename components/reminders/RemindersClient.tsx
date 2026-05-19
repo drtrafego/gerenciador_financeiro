@@ -1,0 +1,603 @@
+"use client";
+
+import { useState, useEffect, useTransition } from "react";
+import { Bell, Plus, MessageSquare, Wifi, WifiOff, Loader2, Trash2, X, Check, RefreshCw } from "lucide-react";
+import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction } from "@/app/(dashboard)/reminders/actions";
+import { useRouter } from "next/navigation";
+
+const WPP_URL = process.env.NEXT_PUBLIC_WPP_URL ?? "";
+const WPP_KEY = process.env.NEXT_PUBLIC_WPP_KEY ?? "";
+
+type ReminderRow = {
+  reminder: {
+    id: string;
+    phone: string;
+    triggerDate: string;
+    triggerTime: string | null;
+    status: string | null;
+    customMessage: string | null;
+    sentAt: Date | null;
+    errorMessage: string | null;
+  };
+  clientName: string | null;
+  templateName: string | null;
+};
+
+type Template = {
+  id: string;
+  name: string;
+  body: string;
+  isDefault: string | null;
+  clientId: string | null;
+};
+
+type Client = {
+  id: string;
+  name: string;
+  phone: string | null;
+};
+
+type WppStatus = { connected: boolean; hasQR: boolean } | null;
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+  sent: "bg-green-500/10 text-green-400 border-green-500/20",
+  failed: "bg-red-500/10 text-red-400 border-red-500/20",
+  cancelled: "bg-zinc-700/20 text-zinc-500 border-zinc-700/20",
+};
+const STATUS_LABELS: Record<string, string> = {
+  pending: "Pendente",
+  sent: "Enviado",
+  failed: "Falhou",
+  cancelled: "Cancelado",
+};
+
+type Tab = "connection" | "reminders" | "templates";
+
+export default function RemindersClient({ reminders, templates, clients }: {
+  reminders: ReminderRow[];
+  templates: Template[];
+  clients: Client[];
+}) {
+  const router = useRouter();
+  const [tab, setTab] = useState<Tab>("connection");
+  const [wppStatus, setWppStatus] = useState<WppStatus>(null);
+  const [qrUrl, setQrUrl] = useState<string | null>(null);
+  const [loadingQR, setLoadingQR] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  // Modais
+  const [showReminderModal, setShowReminderModal] = useState(false);
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+
+  // Form lembrete
+  const [selectedClientId, setSelectedClientId] = useState("");
+  const [phone, setPhone] = useState("");
+  const [triggerDate, setTriggerDate] = useState("");
+  const [triggerTime, setTriggerTime] = useState("08:00");
+  const [selectedTemplateId, setSelectedTemplateId] = useState("");
+  const [customMessage, setCustomMessage] = useState("");
+
+  // Form template
+  const [templateName, setTemplateName] = useState("");
+  const [templateBody, setTemplateBody] = useState("");
+
+  const fetchStatus = async () => {
+    if (!WPP_URL) return;
+    try {
+      const res = await fetch(`${WPP_URL}/status`, { headers: { "x-api-key": WPP_KEY } });
+      const data = await res.json();
+      setWppStatus(data);
+    } catch {
+      setWppStatus(null);
+    }
+  };
+
+  const fetchQR = async () => {
+    if (!WPP_URL) return;
+    setLoadingQR(true);
+    try {
+      const res = await fetch(`${WPP_URL}/qr`, { headers: { "x-api-key": WPP_KEY } });
+      const data = await res.json();
+      if (data.connected) {
+        setWppStatus({ connected: true, hasQR: false });
+        setQrUrl(null);
+      } else if (data.qr) {
+        setQrUrl(data.qr);
+      }
+    } catch {
+      setQrUrl(null);
+    } finally {
+      setLoadingQR(false);
+    }
+  };
+
+  // Polling de status a cada 5s quando na aba de conexão
+  useEffect(() => {
+    fetchStatus();
+    if (tab !== "connection") return;
+    const interval = setInterval(fetchStatus, 5000);
+    return () => clearInterval(interval);
+  }, [tab]);
+
+  // Auto-preenche telefone quando seleciona cliente
+  const handleClientChange = (id: string) => {
+    setSelectedClientId(id);
+    const c = clients.find((c) => c.id === id);
+    if (c?.phone) setPhone(c.phone);
+  };
+
+  const handleCreateReminder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const fd = new FormData();
+    fd.append("clientId", selectedClientId);
+    fd.append("phone", phone);
+    fd.append("triggerDate", triggerDate);
+    fd.append("triggerTime", triggerTime);
+    if (selectedTemplateId) fd.append("templateId", selectedTemplateId);
+    if (customMessage) fd.append("customMessage", customMessage);
+    startTransition(async () => {
+      await createReminderAction(fd);
+      setShowReminderModal(false);
+      setSelectedClientId("");
+      setPhone("");
+      setTriggerDate("");
+      setCustomMessage("");
+      router.refresh();
+    });
+  };
+
+  const handleCreateTemplate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const fd = new FormData();
+    fd.append("name", templateName);
+    fd.append("body", templateBody);
+    startTransition(async () => {
+      await createTemplateAction(fd);
+      setShowTemplateModal(false);
+      setTemplateName("");
+      setTemplateBody("");
+      router.refresh();
+    });
+  };
+
+  const handleCancel = (id: string) => {
+    startTransition(async () => {
+      await cancelReminderAction(id);
+      router.refresh();
+    });
+  };
+
+  const handleDelete = (id: string) => {
+    startTransition(async () => {
+      await deleteReminderAction(id);
+      router.refresh();
+    });
+  };
+
+  const handleDeleteTemplate = (id: string) => {
+    startTransition(async () => {
+      await deleteTemplateAction(id);
+      router.refresh();
+    });
+  };
+
+  const pending = reminders.filter((r) => r.reminder.status === "pending").length;
+  const sent = reminders.filter((r) => r.reminder.status === "sent").length;
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-bold text-white flex items-center gap-2">
+            <Bell className="h-5 w-5 text-indigo-400" />
+            Lembretes WhatsApp
+          </h1>
+          <p className="text-sm text-zinc-400 mt-0.5">
+            {pending} pendente(s) · {sent} enviado(s)
+          </p>
+        </div>
+        <div
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border ${
+            wppStatus?.connected
+              ? "bg-green-500/10 text-green-400 border-green-500/20"
+              : "bg-red-500/10 text-red-400 border-red-500/20"
+          }`}
+        >
+          {wppStatus?.connected ? <Wifi size={12} /> : <WifiOff size={12} />}
+          {wppStatus?.connected ? "WhatsApp Conectado" : "WhatsApp Desconectado"}
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-1 bg-zinc-800 rounded-lg p-1 w-fit">
+        {(["connection", "reminders", "templates"] as Tab[]).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              tab === t ? "bg-zinc-700 text-white" : "text-zinc-400 hover:text-zinc-200"
+            }`}
+          >
+            {t === "connection" ? "Conexão" : t === "reminders" ? "Lembretes" : "Templates"}
+          </button>
+        ))}
+      </div>
+
+      {/* ── ABA CONEXÃO ── */}
+      {tab === "connection" && (
+        <div className="max-w-lg space-y-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
+            <h2 className="text-sm font-semibold text-zinc-200">Status da Conexão</h2>
+
+            {!WPP_URL ? (
+              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4 text-sm text-yellow-400">
+                Configure <code className="font-mono">NEXT_PUBLIC_WPP_URL</code> e <code className="font-mono">NEXT_PUBLIC_WPP_KEY</code> nas variáveis de ambiente.
+              </div>
+            ) : wppStatus?.connected ? (
+              <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 flex items-center gap-3">
+                <Check size={20} className="text-green-400 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium text-green-400">WhatsApp conectado</p>
+                  <p className="text-xs text-zinc-400 mt-0.5">O sistema está pronto para enviar mensagens.</p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <p className="text-sm text-zinc-400">
+                  Escaneie o QR code abaixo com o WhatsApp do seu celular para conectar.
+                  A sessão fica salva — você só precisa escanear uma vez.
+                </p>
+
+                <div className="flex flex-col items-center gap-4">
+                  {qrUrl ? (
+                    <div className="bg-white p-3 rounded-xl">
+                      <img src={qrUrl} alt="QR Code WhatsApp" className="w-56 h-56" />
+                    </div>
+                  ) : (
+                    <div className="w-64 h-64 bg-zinc-800 border border-zinc-700 rounded-xl flex flex-col items-center justify-center gap-3 text-zinc-500">
+                      {loadingQR ? (
+                        <Loader2 size={32} className="animate-spin" />
+                      ) : (
+                        <>
+                          <MessageSquare size={32} />
+                          <p className="text-xs text-center">Clique em "Gerar QR Code"<br />para conectar</p>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={fetchQR}
+                      disabled={loadingQR}
+                      className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+                    >
+                      {loadingQR ? <Loader2 size={14} className="animate-spin" /> : <RefreshCw size={14} />}
+                      {qrUrl ? "Novo QR Code" : "Gerar QR Code"}
+                    </button>
+                    <button
+                      onClick={fetchStatus}
+                      className="px-4 py-2 rounded-lg text-sm text-zinc-400 bg-zinc-800 hover:bg-zinc-700 transition-colors"
+                    >
+                      Verificar status
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-3">
+            <h2 className="text-sm font-semibold text-zinc-200">Como funciona</h2>
+            <ul className="text-sm text-zinc-400 space-y-2">
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">1.</span>Conecte o WhatsApp escaneando o QR code acima.</li>
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">2.</span>Crie templates de mensagem com variáveis como {"{nome}"}, {"{valor}"}, {"{data}"}.</li>
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">3.</span>Crie lembretes manualmente ou deixe o sistema gerar automaticamente na data de vencimento.</li>
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">4.</span>O sistema envia as mensagens automaticamente no horário configurado.</li>
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {/* ── ABA LEMBRETES ── */}
+      {tab === "reminders" && (
+        <div className="space-y-4">
+          <div className="flex justify-end">
+            <button
+              onClick={() => setShowReminderModal(true)}
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              <Plus size={14} />
+              Novo Lembrete
+            </button>
+          </div>
+
+          {reminders.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-700 py-20 text-center">
+              <Bell className="h-10 w-10 text-zinc-600 mb-4" />
+              <p className="text-zinc-400 font-medium">Nenhum lembrete cadastrado</p>
+            </div>
+          ) : (
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-zinc-800">
+                    {["Cliente", "Telefone", "Data", "Hora", "Template/Mensagem", "Status", ""].map((h) => (
+                      <th key={h} className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wide">{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-800">
+                  {reminders.map(({ reminder, clientName, templateName }) => (
+                    <tr key={reminder.id} className="hover:bg-zinc-800/30 transition-colors">
+                      <td className="px-4 py-3 font-medium text-white">{clientName ?? "—"}</td>
+                      <td className="px-4 py-3 text-zinc-400 font-mono text-xs">{reminder.phone}</td>
+                      <td className="px-4 py-3 text-zinc-300">
+                        {new Date(reminder.triggerDate + "T12:00:00").toLocaleDateString("pt-BR")}
+                      </td>
+                      <td className="px-4 py-3 text-zinc-400">{reminder.triggerTime ?? "08:00"}</td>
+                      <td className="px-4 py-3 text-zinc-400 max-w-xs truncate">
+                        {reminder.customMessage ? (
+                          <span className="text-zinc-300">{reminder.customMessage.slice(0, 40)}…</span>
+                        ) : (
+                          <span className="text-indigo-400">{templateName ?? "—"}</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[reminder.status ?? "pending"]}`}>
+                          {STATUS_LABELS[reminder.status ?? "pending"]}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1">
+                          {reminder.status === "pending" && (
+                            <button
+                              onClick={() => handleCancel(reminder.id)}
+                              className="text-zinc-600 hover:text-yellow-400 p-1 rounded transition-colors"
+                              title="Cancelar"
+                            >
+                              <X size={14} />
+                            </button>
+                          )}
+                          <button
+                            onClick={() => handleDelete(reminder.id)}
+                            className="text-zinc-600 hover:text-red-400 p-1 rounded transition-colors"
+                            title="Excluir"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── ABA TEMPLATES ── */}
+      {tab === "templates" && (
+        <div className="space-y-4">
+          <div className="flex justify-end">
+            <button
+              onClick={() => setShowTemplateModal(true)}
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              <Plus size={14} />
+              Novo Template
+            </button>
+          </div>
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 text-xs text-zinc-500 space-y-1">
+            <p className="font-medium text-zinc-400">Variáveis disponíveis nos templates:</p>
+            <p><code className="text-indigo-400">{"{nome}"}</code> — Nome do cliente</p>
+            <p><code className="text-indigo-400">{"{valor}"}</code> — Valor da fatura</p>
+            <p><code className="text-indigo-400">{"{data}"}</code> — Data de vencimento</p>
+            <p><code className="text-indigo-400">{"{dias}"}</code> — Dias para vencimento</p>
+          </div>
+
+          {templates.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-700 py-16 text-center">
+              <MessageSquare className="h-10 w-10 text-zinc-600 mb-4" />
+              <p className="text-zinc-400 font-medium">Nenhum template cadastrado</p>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3">
+              {templates.map((t) => (
+                <div key={t.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-medium text-white">{t.name}</p>
+                        {t.isDefault === "true" && (
+                          <span className="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full px-2 py-0.5">
+                            Padrão
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-zinc-400 mt-2 whitespace-pre-wrap">{t.body}</p>
+                    </div>
+                    {t.isDefault !== "true" && (
+                      <button
+                        onClick={() => handleDeleteTemplate(t.id)}
+                        className="ml-4 text-zinc-600 hover:text-red-400 p-1 rounded transition-colors shrink-0"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── MODAL NOVO LEMBRETE ── */}
+      {showReminderModal && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md">
+            <div className="flex items-center justify-between p-5 border-b border-zinc-800">
+              <h2 className="text-sm font-semibold text-white">Novo Lembrete</h2>
+              <button onClick={() => setShowReminderModal(false)} className="text-zinc-400 hover:text-zinc-200">
+                <X size={16} />
+              </button>
+            </div>
+            <form onSubmit={handleCreateReminder} className="p-5 space-y-4">
+              <div>
+                <label className="block text-xs text-zinc-400 mb-1">Cliente</label>
+                <select
+                  value={selectedClientId}
+                  onChange={(e) => handleClientChange(e.target.value)}
+                  required
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                >
+                  <option value="">Selecione…</option>
+                  {clients.map((c) => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-zinc-400 mb-1">Telefone WhatsApp</label>
+                <input
+                  type="text"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="5511999999999"
+                  required
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                />
+                <p className="text-xs text-zinc-600 mt-1">Com código do país: 55 + DDD + número</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-zinc-400 mb-1">Data de envio</label>
+                  <input
+                    type="date"
+                    value={triggerDate}
+                    onChange={(e) => setTriggerDate(e.target.value)}
+                    required
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-zinc-400 mb-1">Hora</label>
+                  <input
+                    type="time"
+                    value={triggerTime}
+                    onChange={(e) => setTriggerTime(e.target.value)}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs text-zinc-400 mb-1">Template</label>
+                <select
+                  value={selectedTemplateId}
+                  onChange={(e) => setSelectedTemplateId(e.target.value)}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                >
+                  <option value="">Nenhum (usar mensagem personalizada)</option>
+                  {templates.map((t) => (
+                    <option key={t.id} value={t.id}>{t.name}</option>
+                  ))}
+                </select>
+              </div>
+              {!selectedTemplateId && (
+                <div>
+                  <label className="block text-xs text-zinc-400 mb-1">Mensagem personalizada</label>
+                  <textarea
+                    value={customMessage}
+                    onChange={(e) => setCustomMessage(e.target.value)}
+                    rows={3}
+                    required={!selectedTemplateId}
+                    placeholder="Digite a mensagem…"
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 resize-none"
+                  />
+                </div>
+              )}
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowReminderModal(false)}
+                  className="px-4 py-2 rounded-lg text-sm text-zinc-400 bg-zinc-800 hover:bg-zinc-700 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-colors disabled:opacity-50"
+                >
+                  {isPending && <Loader2 size={14} className="animate-spin" />}
+                  Criar Lembrete
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL NOVO TEMPLATE ── */}
+      {showTemplateModal && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md">
+            <div className="flex items-center justify-between p-5 border-b border-zinc-800">
+              <h2 className="text-sm font-semibold text-white">Novo Template</h2>
+              <button onClick={() => setShowTemplateModal(false)} className="text-zinc-400 hover:text-zinc-200">
+                <X size={16} />
+              </button>
+            </div>
+            <form onSubmit={handleCreateTemplate} className="p-5 space-y-4">
+              <div>
+                <label className="block text-xs text-zinc-400 mb-1">Nome do template</label>
+                <input
+                  type="text"
+                  value={templateName}
+                  onChange={(e) => setTemplateName(e.target.value)}
+                  placeholder="Ex: Lembrete 3 dias antes"
+                  required
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-zinc-400 mb-1">Mensagem</label>
+                <textarea
+                  value={templateBody}
+                  onChange={(e) => setTemplateBody(e.target.value)}
+                  rows={4}
+                  required
+                  placeholder={"Olá *{nome}*, seu honorário de *{valor}* vence em *{data}*."}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 resize-none"
+                />
+                <p className="text-xs text-zinc-600 mt-1">Use *texto* para negrito no WhatsApp</p>
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowTemplateModal(false)}
+                  className="px-4 py-2 rounded-lg text-sm text-zinc-400 bg-zinc-800 hover:bg-zinc-700 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-colors disabled:opacity-50"
+                >
+                  {isPending && <Loader2 size={14} className="animate-spin" />}
+                  Salvar Template
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

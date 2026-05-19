@@ -180,6 +180,37 @@ export const recurringExpenses = pgTable('recurring_expenses', {
 });
 
 // ─────────────────────────────────────────────
+// MÓDULO LEMBRETES WHATSAPP
+// ─────────────────────────────────────────────
+
+// Templates de mensagem (genérico ou por cliente)
+export const messageTemplates = pgTable('message_templates', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  name: text('name').notNull(),
+  body: text('body').notNull(), // variáveis: {nome}, {valor}, {data}, {dias}
+  isDefault: text('is_default').default('false'), // 'true' | 'false'
+  clientId: uuid('client_id').references(() => clients.id), // null = genérico
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+// Lembretes agendados
+export const reminders = pgTable('reminders', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  clientId: uuid('client_id').references(() => clients.id),
+  invoiceId: uuid('invoice_id').references(() => invoices.id),
+  contractId: uuid('contract_id').references(() => contracts.id),
+  phone: text('phone').notNull(),
+  templateId: uuid('template_id').references(() => messageTemplates.id),
+  customMessage: text('custom_message'), // substitui template se preenchido
+  triggerDate: date('trigger_date').notNull(), // data de envio
+  triggerTime: text('trigger_time').default('08:00'), // hora de envio HH:MM
+  status: text('status').default('pending'), // pending | sent | failed | cancelled
+  sentAt: timestamp('sent_at'),
+  errorMessage: text('error_message'),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+// ─────────────────────────────────────────────
 // RELATIONS
 // ─────────────────────────────────────────────
 
@@ -263,6 +294,10 @@ export type Transaction = typeof transactions.$inferSelect;
 export type NewTransaction = typeof transactions.$inferInsert;
 export type RecurringExpense = typeof recurringExpenses.$inferSelect;
 export type NewRecurringExpense = typeof recurringExpenses.$inferInsert;
+export type MessageTemplate = typeof messageTemplates.$inferSelect;
+export type NewMessageTemplate = typeof messageTemplates.$inferInsert;
+export type Reminder = typeof reminders.$inferSelect;
+export type NewReminder = typeof reminders.$inferInsert;
 
 export type ClientStatus = 'active' | 'inactive' | 'overdue';
 export type ContractType = 'fixed_fee' | 'fixed_plus_percentage' | 'project';

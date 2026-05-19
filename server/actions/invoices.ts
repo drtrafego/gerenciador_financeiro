@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { invoices, transactions } from "@/lib/db/schema";
+import { invoices } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
@@ -49,17 +49,9 @@ export async function markInvoicePaid(id: string): Promise<void> {
     .set({ status: "paid", paidAt: new Date() })
     .where(eq(invoices.id, id));
 
-  // Criar transação de receita automaticamente
-  await db.insert(transactions).values({
-    type: "income",
-    category: "invoice",
-    description: `Fatura ${invoice.invoiceNumber} paga`,
-    amount: invoice.amount,
-    currency: invoice.currency ?? "BRL",
-    date: new Date().toISOString().split("T")[0],
-    invoiceId: id,
-    clientId: invoice.clientId ?? null,
-  });
+  // Faturas não criam entradas no fluxo de caixa.
+  // O fluxo de caixa é alimentado exclusivamente por contratos (projeções)
+  // e por lançamentos manuais feitos na aba Fluxo de Caixa.
 
   revalidatePath("/invoices");
   revalidatePath("/dashboard");

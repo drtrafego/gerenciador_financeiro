@@ -12,6 +12,7 @@ const titles: Record<string, string> = {
   "/invoices":     "Faturas",
   "/cash-flow":    "Fluxo de Caixa",
   "/transactions": "Transações",
+  "/reminders":    "Lembretes WhatsApp",
   "/settings":     "Configurações",
 };
 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, ClipboardList, FileText, ArrowLeftRight, Settings, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, ClipboardList, FileText, ArrowLeftRight, Bell, Settings, Menu, X } from "lucide-react";
 import { UserButton } from "@stackframe/stack";
 
 const nav = [
@@ -12,6 +12,7 @@ const nav = [
   { href: "/contracts",  label: "Contratos",      icon: ClipboardList },
   { href: "/invoices",   label: "Faturas",        icon: FileText },
   { href: "/cash-flow",  label: "Fluxo de Caixa", icon: ArrowLeftRight },
+  { href: "/reminders",  label: "Lembretes",      icon: Bell },
   { href: "/settings",   label: "Configurações",  icon: Settings },
 ];
 
