@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { db } from '@/lib/db';
-import { reminders, messageTemplates, clients, invoices } from '@/lib/db/schema';
+import { reminders, messageTemplates, clients, invoices, systemSettings } from '@/lib/db/schema';
 import { eq, desc, and, lte, eq as eqOp } from 'drizzle-orm';
 import { z } from 'zod';
 
@@ -103,6 +103,9 @@ export async function updateReminderAction(id: string, formData: FormData) {
       startDate: startDate || null,
       endDate: endDate || null,
       recurring,
+      status: 'pending',
+      sentAt: null,
+      errorMessage: null,
     })
     .where(eq(reminders.id, id));
 
@@ -115,6 +118,21 @@ export async function deleteReminderAction(id: string) {
 }
 
 // Gera lembretes automáticos para faturas com vencimento próximo
+// ── CONFIGURAÇÕES ─────────────────────────────────
+
+export async function getSettingAction(key: string): Promise<string | null> {
+  const [row] = await db.select().from(systemSettings).where(eq(systemSettings.key, key)).limit(1);
+  return row?.value ?? null;
+}
+
+export async function saveAlertPhoneAction(phone: string) {
+  await db
+    .insert(systemSettings)
+    .values({ key: 'alert_phone', value: phone })
+    .onConflictDoUpdate({ target: systemSettings.key, set: { value: phone, updatedAt: new Date() } });
+  revalidatePath('/reminders');
+}
+
 export async function generateRemindersFromInvoicesAction(daysBefore: number, time: string) {
   const today = new Date();
   const future = new Date();
