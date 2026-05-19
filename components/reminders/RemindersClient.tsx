@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
-import { Bell, Plus, MessageSquare, Wifi, WifiOff, Loader2, Trash2, X, Check, RefreshCw } from "lucide-react";
-import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction } from "@/app/(dashboard)/reminders/actions";
+import { Bell, Plus, MessageSquare, Wifi, WifiOff, Loader2, Trash2, X, Check, RefreshCw, Pencil, Repeat } from "lucide-react";
+import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction, updateReminderAction } from "@/app/(dashboard)/reminders/actions";
 import { useRouter } from "next/navigation";
 
 const WPP_URL = process.env.NEXT_PUBLIC_WPP_URL ?? "";
@@ -18,6 +18,9 @@ type ReminderRow = {
     customMessage: string | null;
     sentAt: Date | null;
     errorMessage: string | null;
+    startDate: string | null;
+    endDate: string | null;
+    recurring: boolean | null;
   };
   clientName: string | null;
   templateName: string | null;
@@ -44,12 +47,14 @@ const STATUS_COLORS: Record<string, string> = {
   sent: "bg-green-500/10 text-green-400 border-green-500/20",
   failed: "bg-red-500/10 text-red-400 border-red-500/20",
   cancelled: "bg-zinc-700/20 text-zinc-500 border-zinc-700/20",
+  completed: "bg-blue-500/10 text-blue-400 border-blue-500/20",
 };
 const STATUS_LABELS: Record<string, string> = {
   pending: "Pendente",
   sent: "Enviado",
   failed: "Falhou",
   cancelled: "Cancelado",
+  completed: "Concluído",
 };
 
 type Tab = "connection" | "reminders" | "templates";
@@ -69,14 +74,29 @@ export default function RemindersClient({ reminders, templates, clients }: {
   // Modais
   const [showReminderModal, setShowReminderModal] = useState(false);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [editingReminder, setEditingReminder] = useState<ReminderRow | null>(null);
 
-  // Form lembrete
+  // Form lembrete (criação)
   const [selectedClientId, setSelectedClientId] = useState("");
   const [phone, setPhone] = useState("");
   const [triggerDate, setTriggerDate] = useState("");
   const [triggerTime, setTriggerTime] = useState("08:00");
   const [selectedTemplateId, setSelectedTemplateId] = useState("");
   const [customMessage, setCustomMessage] = useState("");
+  const [recurring, setRecurring] = useState(false);
+  const [indefinite, setIndefinite] = useState(true);
+  const [endDate, setEndDate] = useState("");
+
+  // Form lembrete (edição)
+  const [editPhone, setEditPhone] = useState("");
+  const [editTriggerDate, setEditTriggerDate] = useState("");
+  const [editTriggerTime, setEditTriggerTime] = useState("08:00");
+  const [editTemplateId, setEditTemplateId] = useState("");
+  const [editCustomMessage, setEditCustomMessage] = useState("");
+  const [editStartDate, setEditStartDate] = useState("");
+  const [editEndDate, setEditEndDate] = useState("");
+  const [editRecurring, setEditRecurring] = useState(false);
+  const [editIndefinite, setEditIndefinite] = useState(true);
 
   // Form template
   const [templateName, setTemplateName] = useState("");
@@ -112,7 +132,6 @@ export default function RemindersClient({ reminders, templates, clients }: {
     }
   };
 
-  // Polling de status a cada 5s quando na aba de conexão
   useEffect(() => {
     fetchStatus();
     if (tab !== "connection") return;
@@ -120,7 +139,6 @@ export default function RemindersClient({ reminders, templates, clients }: {
     return () => clearInterval(interval);
   }, [tab]);
 
-  // Polling do QR a cada 10s quando desconectado e na aba de conexão
   useEffect(() => {
     if (tab !== "connection" || wppStatus?.connected) return;
     fetchQR();
@@ -128,7 +146,6 @@ export default function RemindersClient({ reminders, templates, clients }: {
     return () => clearInterval(interval);
   }, [tab, wppStatus?.connected]);
 
-  // Auto-preenche telefone quando seleciona cliente
   const handleClientChange = (id: string) => {
     setSelectedClientId(id);
     const c = clients.find((c) => c.id === id);
@@ -144,6 +161,9 @@ export default function RemindersClient({ reminders, templates, clients }: {
     fd.append("triggerTime", triggerTime);
     if (selectedTemplateId) fd.append("templateId", selectedTemplateId);
     if (customMessage) fd.append("customMessage", customMessage);
+    fd.append("startDate", triggerDate);
+    if (!indefinite && endDate) fd.append("endDate", endDate);
+    fd.append("recurring", String(recurring));
     startTransition(async () => {
       await createReminderAction(fd);
       setShowReminderModal(false);
@@ -151,6 +171,41 @@ export default function RemindersClient({ reminders, templates, clients }: {
       setPhone("");
       setTriggerDate("");
       setCustomMessage("");
+      setRecurring(false);
+      setIndefinite(true);
+      setEndDate("");
+      router.refresh();
+    });
+  };
+
+  const handleOpenEdit = (row: ReminderRow) => {
+    setEditingReminder(row);
+    setEditPhone(row.reminder.phone);
+    setEditTriggerDate(row.reminder.triggerDate);
+    setEditTriggerTime(row.reminder.triggerTime ?? "08:00");
+    setEditTemplateId("");
+    setEditCustomMessage(row.reminder.customMessage ?? "");
+    setEditStartDate(row.reminder.startDate ?? row.reminder.triggerDate);
+    setEditEndDate(row.reminder.endDate ?? "");
+    setEditRecurring(row.reminder.recurring ?? false);
+    setEditIndefinite(!row.reminder.endDate);
+  };
+
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingReminder) return;
+    const fd = new FormData();
+    fd.append("phone", editPhone);
+    fd.append("triggerDate", editStartDate);
+    fd.append("triggerTime", editTriggerTime);
+    if (editTemplateId) fd.append("templateId", editTemplateId);
+    if (editCustomMessage) fd.append("customMessage", editCustomMessage);
+    fd.append("startDate", editStartDate);
+    if (!editIndefinite && editEndDate) fd.append("endDate", editEndDate);
+    fd.append("recurring", String(editRecurring));
+    startTransition(async () => {
+      await updateReminderAction(editingReminder.reminder.id, fd);
+      setEditingReminder(null);
       router.refresh();
     });
   };
@@ -332,7 +387,7 @@ export default function RemindersClient({ reminders, templates, clients }: {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-zinc-800">
-                    {["Cliente", "Telefone", "Data", "Hora", "Template/Mensagem", "Status", ""].map((h) => (
+                    {["Cliente", "Telefone", "Próx. envio", "Hora", "Template/Mensagem", "Recorrente", "Status", ""].map((h) => (
                       <th key={h} className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wide">{h}</th>
                     ))}
                   </tr>
@@ -354,6 +409,16 @@ export default function RemindersClient({ reminders, templates, clients }: {
                         )}
                       </td>
                       <td className="px-4 py-3">
+                        {reminder.recurring ? (
+                          <span className="flex items-center gap-1 text-xs text-indigo-400">
+                            <Repeat size={12} />
+                            Mensal
+                          </span>
+                        ) : (
+                          <span className="text-zinc-600 text-xs">—</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
                         <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[reminder.status ?? "pending"]}`}>
                           {STATUS_LABELS[reminder.status ?? "pending"]}
                         </span>
@@ -361,13 +426,22 @@ export default function RemindersClient({ reminders, templates, clients }: {
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-1">
                           {reminder.status === "pending" && (
-                            <button
-                              onClick={() => handleCancel(reminder.id)}
-                              className="text-zinc-600 hover:text-yellow-400 p-1 rounded transition-colors"
-                              title="Cancelar"
-                            >
-                              <X size={14} />
-                            </button>
+                            <>
+                              <button
+                                onClick={() => handleOpenEdit({ reminder, clientName, templateName })}
+                                className="text-zinc-600 hover:text-indigo-400 p-1 rounded transition-colors"
+                                title="Editar"
+                              >
+                                <Pencil size={14} />
+                              </button>
+                              <button
+                                onClick={() => handleCancel(reminder.id)}
+                                className="text-zinc-600 hover:text-yellow-400 p-1 rounded transition-colors"
+                                title="Cancelar"
+                              >
+                                <X size={14} />
+                              </button>
+                            </>
                           )}
                           <button
                             onClick={() => handleDelete(reminder.id)}
@@ -448,7 +522,7 @@ export default function RemindersClient({ reminders, templates, clients }: {
       {/* ── MODAL NOVO LEMBRETE ── */}
       {showReminderModal && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-zinc-800">
               <h2 className="text-sm font-semibold text-white">Novo Lembrete</h2>
               <button onClick={() => setShowReminderModal(false)} className="text-zinc-400 hover:text-zinc-200">
@@ -480,11 +554,11 @@ export default function RemindersClient({ reminders, templates, clients }: {
                   required
                   className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
                 />
-                <p className="text-xs text-zinc-600 mt-1">Com código do país: 55 + DDD + número</p>
+                <p className="text-xs text-zinc-600 mt-1">Números brasileiros: 55 + DDD + número. Internacionais: código do país + número completo.</p>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-zinc-400 mb-1">Data de envio</label>
+                  <label className="block text-xs text-zinc-400 mb-1">Data do primeiro envio</label>
                   <input
                     type="date"
                     value={triggerDate}
@@ -503,6 +577,46 @@ export default function RemindersClient({ reminders, templates, clients }: {
                   />
                 </div>
               </div>
+
+              <div className="flex items-center gap-3 py-1">
+                <button
+                  type="button"
+                  onClick={() => setRecurring(!recurring)}
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${recurring ? "bg-indigo-600" : "bg-zinc-700"}`}
+                >
+                  <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${recurring ? "translate-x-4.5" : "translate-x-0.5"}`} />
+                </button>
+                <label className="text-sm text-zinc-300 flex items-center gap-1.5">
+                  <Repeat size={13} className="text-zinc-500" />
+                  Repetir mensalmente
+                </label>
+              </div>
+
+              {recurring && (
+                <div className="space-y-3 pl-2 border-l-2 border-indigo-500/30">
+                  <label className="flex items-center gap-2 text-sm text-zinc-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={indefinite}
+                      onChange={(e) => setIndefinite(e.target.checked)}
+                      className="rounded border-zinc-600 bg-zinc-800"
+                    />
+                    Sem data de fim
+                  </label>
+                  {!indefinite && (
+                    <div>
+                      <label className="block text-xs text-zinc-400 mb-1">Data de encerramento</label>
+                      <input
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+
               <div>
                 <label className="block text-xs text-zinc-400 mb-1">Template</label>
                 <select
@@ -544,6 +658,138 @@ export default function RemindersClient({ reminders, templates, clients }: {
                 >
                   {isPending && <Loader2 size={14} className="animate-spin" />}
                   Criar Lembrete
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL EDITAR LEMBRETE ── */}
+      {editingReminder && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-5 border-b border-zinc-800">
+              <h2 className="text-sm font-semibold text-white">Editar Lembrete</h2>
+              <button onClick={() => setEditingReminder(null)} className="text-zinc-400 hover:text-zinc-200">
+                <X size={16} />
+              </button>
+            </div>
+            <form onSubmit={handleSaveEdit} className="p-5 space-y-4">
+              <div>
+                <label className="block text-xs text-zinc-400 mb-1">Telefone WhatsApp</label>
+                <input
+                  type="text"
+                  value={editPhone}
+                  onChange={(e) => setEditPhone(e.target.value)}
+                  placeholder="5511999999999"
+                  required
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                />
+                <p className="text-xs text-zinc-600 mt-1">Números brasileiros: 55 + DDD + número. Internacionais: código do país + número completo.</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-zinc-400 mb-1">Data do próximo envio</label>
+                  <input
+                    type="date"
+                    value={editStartDate}
+                    onChange={(e) => setEditStartDate(e.target.value)}
+                    required
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs text-zinc-400 mb-1">Hora</label>
+                  <input
+                    type="time"
+                    value={editTriggerTime}
+                    onChange={(e) => setEditTriggerTime(e.target.value)}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 py-1">
+                <button
+                  type="button"
+                  onClick={() => setEditRecurring(!editRecurring)}
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${editRecurring ? "bg-indigo-600" : "bg-zinc-700"}`}
+                >
+                  <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${editRecurring ? "translate-x-4.5" : "translate-x-0.5"}`} />
+                </button>
+                <label className="text-sm text-zinc-300 flex items-center gap-1.5">
+                  <Repeat size={13} className="text-zinc-500" />
+                  Repetir mensalmente
+                </label>
+              </div>
+
+              {editRecurring && (
+                <div className="space-y-3 pl-2 border-l-2 border-indigo-500/30">
+                  <label className="flex items-center gap-2 text-sm text-zinc-300 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={editIndefinite}
+                      onChange={(e) => setEditIndefinite(e.target.checked)}
+                      className="rounded border-zinc-600 bg-zinc-800"
+                    />
+                    Sem data de fim
+                  </label>
+                  {!editIndefinite && (
+                    <div>
+                      <label className="block text-xs text-zinc-400 mb-1">Data de encerramento</label>
+                      <input
+                        type="date"
+                        value={editEndDate}
+                        onChange={(e) => setEditEndDate(e.target.value)}
+                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs text-zinc-400 mb-1">Template</label>
+                <select
+                  value={editTemplateId}
+                  onChange={(e) => setEditTemplateId(e.target.value)}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                >
+                  <option value="">Nenhum (usar mensagem personalizada)</option>
+                  {templates.map((t) => (
+                    <option key={t.id} value={t.id}>{t.name}</option>
+                  ))}
+                </select>
+              </div>
+              {!editTemplateId && (
+                <div>
+                  <label className="block text-xs text-zinc-400 mb-1">Mensagem personalizada</label>
+                  <textarea
+                    value={editCustomMessage}
+                    onChange={(e) => setEditCustomMessage(e.target.value)}
+                    rows={3}
+                    required={!editTemplateId}
+                    placeholder="Digite a mensagem…"
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 resize-none"
+                  />
+                </div>
+              )}
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditingReminder(null)}
+                  className="px-4 py-2 rounded-lg text-sm text-zinc-400 bg-zinc-800 hover:bg-zinc-700 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-colors disabled:opacity-50"
+                >
+                  {isPending && <Loader2 size={14} className="animate-spin" />}
+                  Salvar
                 </button>
               </div>
             </form>
