@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { Bell, Plus, MessageSquare, Wifi, WifiOff, Loader2, Trash2, X, Check, RefreshCw, Pencil, Repeat } from "lucide-react";
-import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction, updateReminderAction } from "@/app/(dashboard)/reminders/actions";
+import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction, updateReminderAction, saveAlertPhoneAction } from "@/app/(dashboard)/reminders/actions";
 import { useRouter } from "next/navigation";
 
 const WPP_URL = process.env.NEXT_PUBLIC_WPP_URL ?? "";
@@ -57,12 +57,95 @@ const STATUS_LABELS: Record<string, string> = {
   completed: "Concluído",
 };
 
-type Tab = "connection" | "reminders" | "templates";
+type Tab = "connection" | "reminders" | "sent" | "templates" | "settings";
 
-export default function RemindersClient({ reminders, templates, clients }: {
+function ReminderTable({ rows, templates, onEdit, onCancel, onDelete }: {
+  rows: ReminderRow[];
+  templates: Template[];
+  onEdit: (row: ReminderRow) => void;
+  onCancel: (id: string) => void;
+  onDelete: (id: string) => void;
+}) {
+  return (
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-zinc-800">
+            {["Cliente", "Telefone", "Data", "Template/Mensagem", "Recorrente", "Status", ""].map((h) => (
+              <th key={h} className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wide">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-zinc-800">
+          {rows.map(({ reminder, clientName, templateName }) => (
+            <tr key={reminder.id} className="hover:bg-zinc-800/30 transition-colors">
+              <td className="px-4 py-3 font-medium text-white">{clientName ?? "—"}</td>
+              <td className="px-4 py-3 text-zinc-400 font-mono text-xs">{reminder.phone}</td>
+              <td className="px-4 py-3 text-zinc-300 whitespace-nowrap">
+                {new Date(reminder.triggerDate + "T12:00:00").toLocaleDateString("pt-BR")}
+              </td>
+              <td className="px-4 py-3 text-zinc-400 max-w-xs truncate">
+                {reminder.customMessage ? (
+                  <span className="text-zinc-300">{reminder.customMessage.slice(0, 40)}…</span>
+                ) : (
+                  <span className="text-indigo-400">{templateName ?? "—"}</span>
+                )}
+              </td>
+              <td className="px-4 py-3">
+                {reminder.recurring ? (
+                  <span className="flex items-center gap-1 text-xs text-indigo-400">
+                    <Repeat size={12} />
+                    Mensal
+                  </span>
+                ) : (
+                  <span className="text-zinc-600 text-xs">—</span>
+                )}
+              </td>
+              <td className="px-4 py-3">
+                <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[reminder.status ?? "pending"]}`}>
+                  {STATUS_LABELS[reminder.status ?? "pending"]}
+                </span>
+              </td>
+              <td className="px-4 py-3">
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => onEdit({ reminder, clientName, templateName })}
+                    className="text-zinc-600 hover:text-indigo-400 p-1 rounded transition-colors"
+                    title="Editar"
+                  >
+                    <Pencil size={14} />
+                  </button>
+                  {reminder.status === "pending" && (
+                    <button
+                      onClick={() => onCancel(reminder.id)}
+                      className="text-zinc-600 hover:text-yellow-400 p-1 rounded transition-colors"
+                      title="Cancelar"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => onDelete(reminder.id)}
+                    className="text-zinc-600 hover:text-red-400 p-1 rounded transition-colors"
+                    title="Excluir"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default function RemindersClient({ reminders, templates, clients, alertPhone: initialAlertPhone }: {
   reminders: ReminderRow[];
   templates: Template[];
   clients: Client[];
+  alertPhone: string;
 }) {
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("connection");
@@ -101,6 +184,11 @@ export default function RemindersClient({ reminders, templates, clients }: {
   // Form template
   const [templateName, setTemplateName] = useState("");
   const [templateBody, setTemplateBody] = useState("");
+
+  // Configurações de alerta
+  const [alertPhoneInput, setAlertPhoneInput] = useState(initialAlertPhone);
+  const [savingAlertPhone, setSavingAlertPhone] = useState(false);
+  const [alertPhoneSaved, setAlertPhoneSaved] = useState(false);
 
   const fetchStatus = async () => {
     if (!WPP_URL) return;
@@ -245,8 +333,18 @@ export default function RemindersClient({ reminders, templates, clients }: {
     });
   };
 
-  const pending = reminders.filter((r) => r.reminder.status === "pending").length;
-  const sent = reminders.filter((r) => r.reminder.status === "sent").length;
+  const handleSaveAlertPhone = async () => {
+    setSavingAlertPhone(true);
+    await saveAlertPhoneAction(alertPhoneInput);
+    setSavingAlertPhone(false);
+    setAlertPhoneSaved(true);
+    setTimeout(() => setAlertPhoneSaved(false), 3000);
+  };
+
+  const pendingReminders = reminders.filter((r) => r.reminder.status === "pending" || r.reminder.status === "cancelled");
+  const sentReminders = reminders.filter((r) => r.reminder.status === "sent" || r.reminder.status === "failed" || r.reminder.status === "completed");
+  const pendingCount = reminders.filter((r) => r.reminder.status === "pending").length;
+  const sentCount = sentReminders.length;
 
   return (
     <div className="space-y-6">
@@ -258,7 +356,7 @@ export default function RemindersClient({ reminders, templates, clients }: {
             Lembretes WhatsApp
           </h1>
           <p className="text-sm text-zinc-400 mt-0.5">
-            {pending} pendente(s) · {sent} enviado(s)
+            {pendingCount} pendente(s) · {sentCount} enviado(s)
           </p>
         </div>
         <div
@@ -275,7 +373,7 @@ export default function RemindersClient({ reminders, templates, clients }: {
 
       {/* Tabs */}
       <div className="flex gap-1 bg-zinc-800 rounded-lg p-1 w-fit">
-        {(["connection", "reminders", "templates"] as Tab[]).map((t) => (
+        {(["connection", "reminders", "sent", "templates", "settings"] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -283,7 +381,7 @@ export default function RemindersClient({ reminders, templates, clients }: {
               tab === t ? "bg-zinc-700 text-white" : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
-            {t === "connection" ? "Conexão" : t === "reminders" ? "Lembretes" : "Templates"}
+            {t === "connection" ? "Conexão" : t === "reminders" ? "Lembretes" : t === "sent" ? "Enviados" : t === "templates" ? "Templates" : "Configurações"}
           </button>
         ))}
       </div>
@@ -377,86 +475,27 @@ export default function RemindersClient({ reminders, templates, clients }: {
             </button>
           </div>
 
-          {reminders.length === 0 ? (
+          {pendingReminders.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-700 py-20 text-center">
               <Bell className="h-10 w-10 text-zinc-600 mb-4" />
-              <p className="text-zinc-400 font-medium">Nenhum lembrete cadastrado</p>
+              <p className="text-zinc-400 font-medium">Nenhum lembrete pendente</p>
             </div>
           ) : (
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-zinc-800">
-                    {["Cliente", "Telefone", "Próx. envio", "Hora", "Template/Mensagem", "Recorrente", "Status", ""].map((h) => (
-                      <th key={h} className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wide">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-800">
-                  {reminders.map(({ reminder, clientName, templateName }) => (
-                    <tr key={reminder.id} className="hover:bg-zinc-800/30 transition-colors">
-                      <td className="px-4 py-3 font-medium text-white">{clientName ?? "—"}</td>
-                      <td className="px-4 py-3 text-zinc-400 font-mono text-xs">{reminder.phone}</td>
-                      <td className="px-4 py-3 text-zinc-300">
-                        {new Date(reminder.triggerDate + "T12:00:00").toLocaleDateString("pt-BR")}
-                      </td>
-                      <td className="px-4 py-3 text-zinc-400">{reminder.triggerTime ?? "08:00"}</td>
-                      <td className="px-4 py-3 text-zinc-400 max-w-xs truncate">
-                        {reminder.customMessage ? (
-                          <span className="text-zinc-300">{reminder.customMessage.slice(0, 40)}…</span>
-                        ) : (
-                          <span className="text-indigo-400">{templateName ?? "—"}</span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        {reminder.recurring ? (
-                          <span className="flex items-center gap-1 text-xs text-indigo-400">
-                            <Repeat size={12} />
-                            Mensal
-                          </span>
-                        ) : (
-                          <span className="text-zinc-600 text-xs">—</span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[reminder.status ?? "pending"]}`}>
-                          {STATUS_LABELS[reminder.status ?? "pending"]}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-1">
-                          {reminder.status === "pending" && (
-                            <>
-                              <button
-                                onClick={() => handleOpenEdit({ reminder, clientName, templateName })}
-                                className="text-zinc-600 hover:text-indigo-400 p-1 rounded transition-colors"
-                                title="Editar"
-                              >
-                                <Pencil size={14} />
-                              </button>
-                              <button
-                                onClick={() => handleCancel(reminder.id)}
-                                className="text-zinc-600 hover:text-yellow-400 p-1 rounded transition-colors"
-                                title="Cancelar"
-                              >
-                                <X size={14} />
-                              </button>
-                            </>
-                          )}
-                          <button
-                            onClick={() => handleDelete(reminder.id)}
-                            className="text-zinc-600 hover:text-red-400 p-1 rounded transition-colors"
-                            title="Excluir"
-                          >
-                            <Trash2 size={14} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <ReminderTable rows={pendingReminders} templates={templates} onEdit={handleOpenEdit} onCancel={handleCancel} onDelete={handleDelete} />
+          )}
+        </div>
+      )}
+
+      {/* ── ABA ENVIADOS ── */}
+      {tab === "sent" && (
+        <div className="space-y-4">
+          {sentReminders.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-700 py-20 text-center">
+              <Bell className="h-10 w-10 text-zinc-600 mb-4" />
+              <p className="text-zinc-400 font-medium">Nenhuma notificação enviada ainda</p>
             </div>
+          ) : (
+            <ReminderTable rows={sentReminders} templates={templates} onEdit={handleOpenEdit} onCancel={handleCancel} onDelete={handleDelete} />
           )}
         </div>
       )}
@@ -516,6 +555,43 @@ export default function RemindersClient({ reminders, templates, clients }: {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* ── ABA CONFIGURAÇÕES ── */}
+      {tab === "settings" && (
+        <div className="max-w-lg space-y-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
+            <h2 className="text-sm font-semibold text-zinc-200">Alertas de Conexão</h2>
+            <p className="text-sm text-zinc-400">
+              Quando o WhatsApp desconectar e reconectar, uma mensagem será enviada para este número.
+            </p>
+            <div className="space-y-2">
+              <label className="text-xs text-zinc-500 font-medium uppercase tracking-wide">
+                Telefone para alertas
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="tel"
+                  value={alertPhoneInput}
+                  onChange={(e) => setAlertPhoneInput(e.target.value)}
+                  placeholder="Ex: 11999999999 ou +351912345678"
+                  className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500"
+                />
+                <button
+                  onClick={handleSaveAlertPhone}
+                  disabled={savingAlertPhone || !alertPhoneInput}
+                  className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+                >
+                  {savingAlertPhone ? <Loader2 size={14} className="animate-spin" /> : alertPhoneSaved ? <Check size={14} /> : null}
+                  Salvar
+                </button>
+              </div>
+              {alertPhoneSaved && (
+                <p className="text-xs text-green-400">Número salvo com sucesso.</p>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
