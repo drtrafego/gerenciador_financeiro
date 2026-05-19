@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { Bell, Plus, MessageSquare, Wifi, WifiOff, Loader2, Trash2, X, Check, RefreshCw, Pencil, Repeat } from "lucide-react";
-import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction, updateReminderAction, saveAlertPhoneAction } from "@/app/(dashboard)/reminders/actions";
+import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction, updateTemplateAction, updateReminderAction, saveAlertPhoneAction } from "@/app/(dashboard)/reminders/actions";
 import { useRouter } from "next/navigation";
 
 const WPP_URL = process.env.NEXT_PUBLIC_WPP_URL ?? "";
@@ -102,9 +102,14 @@ function ReminderTable({ rows, templates, onEdit, onCancel, onDelete }: {
                 )}
               </td>
               <td className="px-4 py-3">
-                <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[reminder.status ?? "pending"]}`}>
-                  {STATUS_LABELS[reminder.status ?? "pending"]}
-                </span>
+                <div className="space-y-1">
+                  <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[reminder.status ?? "pending"]}`}>
+                    {STATUS_LABELS[reminder.status ?? "pending"]}
+                  </span>
+                  {reminder.status === "failed" && reminder.errorMessage && (
+                    <p className="text-xs text-red-400/70 max-w-[160px] truncate" title={reminder.errorMessage}>{reminder.errorMessage}</p>
+                  )}
+                </div>
               </td>
               <td className="px-4 py-3">
                 <div className="flex items-center gap-1">
@@ -181,9 +186,20 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
   const [editRecurring, setEditRecurring] = useState(false);
   const [editIndefinite, setEditIndefinite] = useState(true);
 
-  // Form template
+  // Form template (criação)
   const [templateName, setTemplateName] = useState("");
   const [templateBody, setTemplateBody] = useState("");
+
+  // Form template (edição)
+  const [editingTemplate, setEditingTemplate] = useState<Template | null>(null);
+  const [editTemplateName, setEditTemplateName] = useState("");
+  const [editTemplateBody, setEditTemplateBody] = useState("");
+
+  // Teste de envio
+  const [testPhone, setTestPhone] = useState("");
+  const [testMessage, setTestMessage] = useState("");
+  const [testSending, setTestSending] = useState(false);
+  const [testResult, setTestResult] = useState<{ ok: boolean; msg: string } | null>(null);
 
   // Configurações de alerta
   const [alertPhoneInput, setAlertPhoneInput] = useState(initialAlertPhone);
@@ -333,6 +349,44 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
     });
   };
 
+  const handleOpenEditTemplate = (t: Template) => {
+    setEditingTemplate(t);
+    setEditTemplateName(t.name);
+    setEditTemplateBody(t.body);
+  };
+
+  const handleSaveEditTemplate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingTemplate) return;
+    const fd = new FormData();
+    fd.append("name", editTemplateName);
+    fd.append("body", editTemplateBody);
+    startTransition(async () => {
+      await updateTemplateAction(editingTemplate.id, fd);
+      setEditingTemplate(null);
+      router.refresh();
+    });
+  };
+
+  const handleTestSend = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setTestSending(true);
+    setTestResult(null);
+    try {
+      const res = await fetch(`${WPP_URL}/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-api-key": WPP_KEY },
+        body: JSON.stringify({ phone: testPhone, message: testMessage }),
+      });
+      const data = await res.json();
+      setTestResult({ ok: data.ok, msg: data.ok ? "Mensagem enviada com sucesso!" : `Erro: ${data.error ?? "falha desconhecida"}` });
+    } catch (err: any) {
+      setTestResult({ ok: false, msg: `Erro de rede: ${err.message}` });
+    } finally {
+      setTestSending(false);
+    }
+  };
+
   const handleSaveAlertPhone = async () => {
     setSavingAlertPhone(true);
     await saveAlertPhoneAction(alertPhoneInput);
@@ -397,12 +451,46 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
                 Configure <code className="font-mono">NEXT_PUBLIC_WPP_URL</code> e <code className="font-mono">NEXT_PUBLIC_WPP_KEY</code> nas variáveis de ambiente.
               </div>
             ) : wppStatus?.connected ? (
-              <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 flex items-center gap-3">
-                <Check size={20} className="text-green-400 shrink-0" />
-                <div>
-                  <p className="text-sm font-medium text-green-400">WhatsApp conectado</p>
-                  <p className="text-xs text-zinc-400 mt-0.5">O sistema está pronto para enviar mensagens.</p>
+              <div className="space-y-4">
+                <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 flex items-center gap-3">
+                  <Check size={20} className="text-green-400 shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-green-400">WhatsApp conectado</p>
+                    <p className="text-xs text-zinc-400 mt-0.5">O sistema está pronto para enviar mensagens.</p>
+                  </div>
                 </div>
+                <form onSubmit={handleTestSend} className="space-y-3 pt-2 border-t border-zinc-800">
+                  <p className="text-xs font-medium text-zinc-400 uppercase tracking-wide">Testar envio</p>
+                  <input
+                    type="text"
+                    value={testPhone}
+                    onChange={(e) => setTestPhone(e.target.value)}
+                    placeholder="Telefone (ex: 5511999999999)"
+                    required
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500"
+                  />
+                  <textarea
+                    value={testMessage}
+                    onChange={(e) => setTestMessage(e.target.value)}
+                    placeholder="Mensagem de teste…"
+                    required
+                    rows={2}
+                    className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500 resize-none"
+                  />
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="submit"
+                      disabled={testSending}
+                      className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+                    >
+                      {testSending ? <Loader2 size={14} className="animate-spin" /> : <MessageSquare size={14} />}
+                      Enviar teste
+                    </button>
+                    {testResult && (
+                      <p className={`text-xs ${testResult.ok ? "text-green-400" : "text-red-400"}`}>{testResult.msg}</p>
+                    )}
+                  </div>
+                </form>
               </div>
             ) : (
               <div className="space-y-4">
@@ -542,14 +630,24 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
                       </div>
                       <p className="text-sm text-zinc-400 mt-2 whitespace-pre-wrap">{t.body}</p>
                     </div>
-                    {t.isDefault !== "true" && (
+                    <div className="flex items-center gap-1 ml-4 shrink-0">
                       <button
-                        onClick={() => handleDeleteTemplate(t.id)}
-                        className="ml-4 text-zinc-600 hover:text-red-400 p-1 rounded transition-colors shrink-0"
+                        onClick={() => handleOpenEditTemplate(t)}
+                        className="text-zinc-600 hover:text-indigo-400 p-1 rounded transition-colors"
+                        title="Editar"
                       >
-                        <Trash2 size={14} />
+                        <Pencil size={14} />
                       </button>
-                    )}
+                      {t.isDefault !== "true" && (
+                        <button
+                          onClick={() => handleDeleteTemplate(t.id)}
+                          className="text-zinc-600 hover:text-red-400 p-1 rounded transition-colors"
+                          title="Excluir"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -734,6 +832,52 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
                 >
                   {isPending && <Loader2 size={14} className="animate-spin" />}
                   Criar Lembrete
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL EDITAR TEMPLATE ── */}
+      {editingTemplate && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md">
+            <div className="flex items-center justify-between p-5 border-b border-zinc-800">
+              <h2 className="text-sm font-semibold text-white">Editar Template</h2>
+              <button onClick={() => setEditingTemplate(null)} className="text-zinc-400 hover:text-zinc-200">
+                <X size={16} />
+              </button>
+            </div>
+            <form onSubmit={handleSaveEditTemplate} className="p-5 space-y-4">
+              <div>
+                <label className="block text-xs text-zinc-400 mb-1">Nome</label>
+                <input
+                  type="text"
+                  value={editTemplateName}
+                  onChange={(e) => setEditTemplateName(e.target.value)}
+                  required
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-zinc-400 mb-1">Mensagem</label>
+                <textarea
+                  value={editTemplateBody}
+                  onChange={(e) => setEditTemplateBody(e.target.value)}
+                  required
+                  rows={5}
+                  className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 resize-none"
+                />
+                <p className="text-xs text-zinc-600 mt-1">Variáveis: {"{nome}"} {"{valor}"} {"{data}"} {"{dias}"}</p>
+              </div>
+              <div className="flex justify-end gap-2 pt-2">
+                <button type="button" onClick={() => setEditingTemplate(null)} className="px-4 py-2 rounded-lg text-sm text-zinc-400 bg-zinc-800 hover:bg-zinc-700 transition-colors">
+                  Cancelar
+                </button>
+                <button type="submit" disabled={isPending} className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white transition-colors disabled:opacity-50">
+                  {isPending && <Loader2 size={14} className="animate-spin" />}
+                  Salvar
                 </button>
               </div>
             </form>
