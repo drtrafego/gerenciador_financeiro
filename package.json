@@ -32,6 +32,7 @@
     "lucide-react": "^0.511.0",
     "next": "15.6.0-canary.59",
     "nodemailer": "^8.0.7",
+    "pg": "^8.21.0",
     "postcss": "^8.5.3",
     "postgres": "^3.4.5",
     "radix-ui": "^1.4.2",
