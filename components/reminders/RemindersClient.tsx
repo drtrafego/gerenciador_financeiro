@@ -120,6 +120,14 @@ export default function RemindersClient({ reminders, templates, clients }: {
     return () => clearInterval(interval);
   }, [tab]);
 
+  // Polling do QR a cada 10s quando desconectado e na aba de conexão
+  useEffect(() => {
+    if (tab !== "connection" || wppStatus?.connected) return;
+    fetchQR();
+    const interval = setInterval(fetchQR, 10000);
+    return () => clearInterval(interval);
+  }, [tab, wppStatus?.connected]);
+
   // Auto-preenche telefone quando seleciona cliente
   const handleClientChange = (id: string) => {
     setSelectedClientId(id);
