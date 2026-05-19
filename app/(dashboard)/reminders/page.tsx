@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import { db } from '@/lib/db';
 import { reminders, messageTemplates, clients } from '@/lib/db/schema';
-import { desc, eq, leftJoin } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import RemindersClient from '@/components/reminders/RemindersClient';
 
 export default async function RemindersPage() {
