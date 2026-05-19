@@ -8,6 +8,7 @@ import {
   uuid,
   decimal,
   date,
+  boolean,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -204,7 +205,10 @@ export const reminders = pgTable('reminders', {
   customMessage: text('custom_message'), // substitui template se preenchido
   triggerDate: date('trigger_date').notNull(), // data de envio
   triggerTime: text('trigger_time').default('08:00'), // hora de envio HH:MM
-  status: text('status').default('pending'), // pending | sent | failed | cancelled
+  startDate: date('start_date'),
+  endDate: date('end_date'),
+  recurring: boolean('recurring').default(false),
+  status: text('status').default('pending'), // pending | sent | failed | cancelled | completed
   sentAt: timestamp('sent_at'),
   errorMessage: text('error_message'),
   createdAt: timestamp('created_at').defaultNow(),

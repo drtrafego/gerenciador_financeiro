@@ -99,17 +99,33 @@ export async function GET(request: Request) {
 
     const ok = await sendWhatsApp(reminder.phone, message);
 
-    await db
-      .update(reminders)
-      .set({
-        status: ok ? 'sent' : 'failed',
-        sentAt: ok ? new Date() : undefined,
-        errorMessage: ok ? null : 'Falha no envio via WhatsApp service',
-      })
-      .where(eq(reminders.id, reminder.id));
-
-    if (ok) sent++;
-    else failed++;
+    if (ok) {
+      sent++;
+      if (reminder.recurring) {
+        const current = new Date(reminder.triggerDate + 'T12:00:00');
+        current.setMonth(current.getMonth() + 1);
+        const nextDate = current.toISOString().split('T')[0]!;
+        const isExpired = reminder.endDate && nextDate > reminder.endDate;
+        await db.update(reminders).set({
+          triggerDate: nextDate,
+          sentAt: new Date(),
+          status: isExpired ? 'completed' : 'pending',
+          errorMessage: null,
+        }).where(eq(reminders.id, reminder.id));
+      } else {
+        await db.update(reminders).set({
+          status: 'sent',
+          sentAt: new Date(),
+          errorMessage: null,
+        }).where(eq(reminders.id, reminder.id));
+      }
+    } else {
+      failed++;
+      await db.update(reminders).set({
+        status: 'failed',
+        errorMessage: 'Falha no envio via WhatsApp service',
+      }).where(eq(reminders.id, reminder.id));
+    }
   }
 
   return NextResponse.json({ ok: true, sent, failed, total: toSend.length });

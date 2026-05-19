@@ -42,6 +42,9 @@ const reminderSchema = z.object({
   customMessage: z.string().optional().nullable(),
   invoiceId: z.string().uuid().optional().nullable(),
   contractId: z.string().uuid().optional().nullable(),
+  startDate: z.string().optional().nullable(),
+  endDate: z.string().optional().nullable(),
+  recurring: z.boolean().optional().default(false),
 });
 
 export async function createReminderAction(formData: FormData) {
@@ -52,6 +55,9 @@ export async function createReminderAction(formData: FormData) {
     customMessage: raw.customMessage || null,
     invoiceId: raw.invoiceId || null,
     contractId: raw.contractId || null,
+    startDate: raw.startDate || null,
+    endDate: raw.endDate || null,
+    recurring: raw.recurring === 'true',
   });
 
   await db.insert(reminders).values({
@@ -63,6 +69,9 @@ export async function createReminderAction(formData: FormData) {
     customMessage: parsed.customMessage ?? null,
     invoiceId: parsed.invoiceId ?? null,
     contractId: parsed.contractId ?? null,
+    startDate: parsed.startDate ?? null,
+    endDate: parsed.endDate ?? null,
+    recurring: parsed.recurring,
     status: 'pending',
   });
   revalidatePath('/reminders');
@@ -70,6 +79,33 @@ export async function createReminderAction(formData: FormData) {
 
 export async function cancelReminderAction(id: string) {
   await db.update(reminders).set({ status: 'cancelled' }).where(eq(reminders.id, id));
+  revalidatePath('/reminders');
+}
+
+export async function updateReminderAction(id: string, formData: FormData) {
+  const phone = formData.get('phone') as string;
+  const triggerDate = formData.get('triggerDate') as string;
+  const triggerTime = (formData.get('triggerTime') as string) || '08:00';
+  const templateId = (formData.get('templateId') as string) || null;
+  const customMessage = (formData.get('customMessage') as string) || null;
+  const startDate = (formData.get('startDate') as string) || null;
+  const endDate = (formData.get('endDate') as string) || null;
+  const recurring = formData.get('recurring') === 'true';
+
+  await db
+    .update(reminders)
+    .set({
+      phone,
+      triggerDate,
+      triggerTime,
+      templateId: templateId || null,
+      customMessage: customMessage || null,
+      startDate: startDate || null,
+      endDate: endDate || null,
+      recurring,
+    })
+    .where(eq(reminders.id, id));
+
   revalidatePath('/reminders');
 }
 
