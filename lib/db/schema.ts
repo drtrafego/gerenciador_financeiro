@@ -156,7 +156,9 @@ export const transactions = pgTable('transactions', {
   type: text('type').notNull(), // income | expense
   category: text('category').notNull(),
   description: text('description').notNull(),
-  amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
+  amount: decimal('amount', { precision: 10, scale: 2 }).notNull(), // valor efetivo (com IOF aplicado, se houver)
+  baseAmount: decimal('base_amount', { precision: 10, scale: 2 }),   // valor original digitado, sem IOF
+  iof: boolean('iof').default(false),                                // se true, amount = baseAmount * 1.0338
   currency: text('currency').default('BRL'),
   date: date('date').notNull(),
   invoiceId: uuid('invoice_id').references(() => invoices.id),
@@ -173,7 +175,9 @@ export const recurringExpenses = pgTable('recurring_expenses', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
   category: text('category').notNull(),
-  amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
+  amount: decimal('amount', { precision: 10, scale: 2 }).notNull(), // valor efetivo (com IOF aplicado, se houver)
+  baseAmount: decimal('base_amount', { precision: 10, scale: 2 }),   // valor original digitado, sem IOF
+  iof: boolean('iof').default(false),                                // se true, amount = baseAmount * 1.0338
   currency: text('currency').default('BRL'),
   dayOfMonth: integer('day_of_month').default(1),
   active: text('active').default('true'),

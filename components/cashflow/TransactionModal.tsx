@@ -24,6 +24,8 @@ type TransactionData = {
   category: string;
   description: string;
   amount: string | null;
+  baseAmount?: string | null;
+  iof?: boolean | null;
   currency: string | null;
   date: string;
   isRecurring: string | null;
@@ -45,15 +47,20 @@ export default function TransactionModal({ onClose, transaction }: Props) {
   );
   const [category, setCategory] = useState(transaction?.category ?? CATEGORIES.expense[0]);
   const [description, setDescription] = useState(transaction?.description ?? "");
+  // No modo edição mostra o valor original (base); só cai no amount em registros antigos sem base
   const [amount, setAmount] = useState(
-    transaction?.amount ? String(Number(transaction.amount)) : ""
+    transaction?.baseAmount
+      ? String(Number(transaction.baseAmount))
+      : transaction?.amount
+      ? String(Number(transaction.amount))
+      : ""
   );
   const [currency, setCurrency] = useState(transaction?.currency ?? "BRL");
   const [date, setDate] = useState(
     transaction?.date ?? new Date().toISOString().split("T")[0]
   );
 
-  const [applyIof, setApplyIof] = useState(false);
+  const [applyIof, setApplyIof] = useState(transaction?.iof === true);
   const IOF_RATE = 0.0338;
 
   const [isRecurring, setIsRecurring] = useState(transaction?.isRecurring === "true");
@@ -86,8 +93,10 @@ export default function TransactionModal({ onClose, transaction }: Props) {
     e.preventDefault();
     if (!amount || !description || !date) return;
     setLoading(true);
+    // amount digitado é sempre o valor ORIGINAL (base). O IOF é aplicado por cima e fica reversível.
     const baseAmount = parseFloat(amount);
-    const finalAmount = currency === "USD" && applyIof
+    const useIof = currency === "USD" && applyIof;
+    const finalAmount = useIof
       ? parseFloat((baseAmount * (1 + IOF_RATE)).toFixed(2))
       : baseAmount;
 
@@ -96,6 +105,8 @@ export default function TransactionModal({ onClose, transaction }: Props) {
       category,
       description,
       amount: finalAmount,
+      baseAmount,
+      iof: useIof,
       currency: currency as "BRL" | "USD" | "ARS",
       date,
       isRecurring,

@@ -65,12 +65,26 @@ export default function CashFlowClient({
   const toDisplay = (amount: number, currency: string) =>
     convertAmount(amount, currency as Currency, displayCurrency, rate);
 
+  // Data de hoje no formato YYYY-MM-DD (mesma forma das datas dos lançamentos)
+  const todayStr = (() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  })();
+  // Contrato "a vencer": dia do vencimento ainda não chegou (vale para mês corrente e meses futuros)
+  const isContractPending = (t: AnyTransaction) => t.isContract === true && t.date > todayStr;
+
   const allEntries: AnyTransaction[] = [
     ...contractIncomes,
     ...transactions,
   ].sort((a, b) => (a.date > b.date ? -1 : a.date < b.date ? 1 : 0));
 
-  const contractTotal = contractIncomes.reduce(
+  // Só contratos cujo vencimento já chegou entram no rendimento realizado (acumula dia a dia)
+  const contractTotal = contractIncomes
+    .filter((c) => c.date <= todayStr)
+    .reduce((a, c) => a + toDisplay(Number(c.amount), c.currency ?? "BRL"), 0);
+  // Contratos ainda não vencidos ficam de fora do total, somados num indicador separado
+  const pendingContracts = contractIncomes.filter((c) => c.date > todayStr);
+  const contractPendingTotal = pendingContracts.reduce(
     (a, c) => a + toDisplay(Number(c.amount), c.currency ?? "BRL"), 0
   );
   const txIncomeTotal = transactions
@@ -155,7 +169,15 @@ export default function CashFlowClient({
 
       {/* Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <MetricCard label="Entradas" value={totalIn} currency={displayCurrency} icon="trending-up" color="green" hidden={valuesHidden} />
+        <MetricCard
+          label="Entradas"
+          value={totalIn}
+          currency={displayCurrency}
+          icon="trending-up"
+          color="green"
+          hidden={valuesHidden}
+          sub={contractPendingTotal > 0 ? `+ ${fmtValue(contractPendingTotal, displayCurrency)} a vencer` : undefined}
+        />
         <MetricCard label="Saídas" value={totalOut} currency={displayCurrency} icon="trending-down" color="red" hidden={valuesHidden} />
         <MetricCard
           label="Saldo do Mês"
@@ -184,7 +206,7 @@ export default function CashFlowClient({
           <div
             key={t.id}
             onClick={() => openEdit(t)}
-            className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-center justify-between ${!t.isContract ? "cursor-pointer hover:border-zinc-700 transition-colors" : ""}`}
+            className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-center justify-between ${!t.isContract ? "cursor-pointer hover:border-zinc-700 transition-colors" : ""} ${isContractPending(t) ? "opacity-60" : ""}`}
           >
             <div className="flex items-start gap-2 min-w-0">
               {t.isContract && <FileText size={14} className="text-indigo-400 mt-0.5 shrink-0" />}
@@ -196,6 +218,7 @@ export default function CashFlowClient({
                 <p className="text-xs text-zinc-500 mt-0.5">
                   {t.category} · {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
                   {t.isProjected && " · recorrente"}
+                  {isContractPending(t) && <span className="text-amber-400/80"> · a vencer</span>}
                 </p>
               </div>
             </div>
@@ -238,7 +261,7 @@ export default function CashFlowClient({
               <tr
                 key={t.id}
                 onClick={() => openEdit(t)}
-                className={`border-b border-zinc-800/50 transition-colors ${!t.isContract ? "cursor-pointer hover:bg-zinc-800/40" : "hover:bg-zinc-800/20"}`}
+                className={`border-b border-zinc-800/50 transition-colors ${!t.isContract ? "cursor-pointer hover:bg-zinc-800/40" : "hover:bg-zinc-800/20"} ${isContractPending(t) ? "opacity-60" : ""}`}
               >
                 <td className="px-4 py-3 text-sm text-zinc-500 whitespace-nowrap">
                   {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
@@ -252,6 +275,9 @@ export default function CashFlowClient({
                     {t.description}
                     {t.isProjected && (
                       <span className="text-xs text-zinc-600 ml-1">(recorrente)</span>
+                    )}
+                    {isContractPending(t) && (
+                      <span className="text-xs text-amber-400/80 ml-1">a vencer</span>
                     )}
                   </div>
                 </td>

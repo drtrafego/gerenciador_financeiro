@@ -10,7 +10,9 @@ const transactionSchema = z.object({
   type:              z.enum(["income", "expense"]),
   category:         z.string().min(1),
   description:      z.string().min(1),
-  amount:           z.number().positive(),
+  amount:           z.number().positive(),       // valor efetivo (com IOF, se houver)
+  baseAmount:       z.number().positive().nullable().optional(), // valor original digitado
+  iof:              z.boolean().optional().default(false),
   currency:         z.enum(["BRL", "USD", "ARS"]),
   date:             z.string(),
   isRecurring:      z.boolean().optional().default(false),
@@ -24,6 +26,8 @@ export async function createTransaction(data: unknown): Promise<void> {
     category:         parsed.category,
     description:      parsed.description,
     amount:           String(parsed.amount),
+    baseAmount:       parsed.baseAmount != null ? String(parsed.baseAmount) : null,
+    iof:              parsed.iof,
     currency:         parsed.currency,
     date:             parsed.date,
     isRecurring:      parsed.isRecurring ? 'true' : 'false',
@@ -42,6 +46,8 @@ export async function updateTransaction(id: string, data: unknown): Promise<void
     category:         parsed.category,
     description:      parsed.description,
     amount:           String(parsed.amount),
+    baseAmount:       parsed.baseAmount != null ? String(parsed.baseAmount) : null,
+    iof:              parsed.iof,
     currency:         parsed.currency,
     date:             parsed.date,
     isRecurring:      parsed.isRecurring ? 'true' : 'false',
