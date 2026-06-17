@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { createTransaction, deleteTransaction } from '@/lib/db/queries';
+import { createTransaction, deleteTransaction, getUser } from '@/lib/db/queries';
 
 const txSchema = z.object({
   type: z.enum(['income', 'expense']),
@@ -17,6 +17,9 @@ const txSchema = z.object({
 });
 
 export async function createTransactionAction(formData: FormData): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const raw = Object.fromEntries(formData.entries());
   const parsed = txSchema.parse(raw);
   await createTransaction({
@@ -36,6 +39,9 @@ export async function createTransactionAction(formData: FormData): Promise<void>
 }
 
 export async function deleteTransactionAction(id: string): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await deleteTransaction(id);
   revalidatePath('/transactions');
   revalidatePath('/cash-flow');

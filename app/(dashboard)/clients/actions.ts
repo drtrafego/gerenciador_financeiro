@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { createClient, updateClient, deleteClient } from '@/lib/db/queries';
+import { createClient, updateClient, deleteClient, getUser } from '@/lib/db/queries';
 import { db } from '@/lib/db';
 import { contracts } from '@/lib/db/schema';
 import { eq, sql } from 'drizzle-orm';
@@ -19,6 +19,9 @@ const clientSchema = z.object({
 });
 
 export async function createClientAction(formData: FormData): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const raw = Object.fromEntries(formData.entries());
   const parsed = clientSchema.parse(raw);
   const newClient = await createClient({
@@ -35,6 +38,9 @@ export async function createClientAction(formData: FormData): Promise<void> {
 }
 
 export async function updateClientAction(id: string, formData: FormData): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const raw = Object.fromEntries(formData.entries());
   const parsed = clientSchema.parse(raw);
   await updateClient(id, {
@@ -52,6 +58,9 @@ export async function updateClientAction(id: string, formData: FormData): Promis
 }
 
 export async function deleteClientAction(id: string): Promise<{ error: string } | void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const [{ count }] = await db
     .select({ count: sql<number>`count(*)` })
     .from(contracts)

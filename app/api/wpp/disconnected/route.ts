@@ -1,7 +1,12 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { sendEmail } from '@/lib/email';
 
-export async function POST() {
+export async function POST(req: NextRequest) {
+  const secret = req.headers.get('x-wpp-secret');
+  if (!secret || secret !== process.env.WPP_CALLBACK_SECRET) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const adminEmail = process.env.GMAIL_USER ?? '';
   if (!adminEmail) return NextResponse.json({ ok: false });
 

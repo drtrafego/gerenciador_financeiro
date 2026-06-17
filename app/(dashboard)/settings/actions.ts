@@ -1,9 +1,12 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { setSetting } from '@/lib/db/queries';
+import { setSetting, getUser } from '@/lib/db/queries';
 
 export async function updateSettingsAction(formData: FormData) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const agencyName = formData.get('agency_name') as string;
   const agencyEmail = formData.get('agency_email') as string;
   const displayCurrency = formData.get('display_currency') as string;

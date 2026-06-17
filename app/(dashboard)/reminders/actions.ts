@@ -5,28 +5,49 @@ import { db } from '@/lib/db';
 import { reminders, messageTemplates, clients, invoices, systemSettings } from '@/lib/db/schema';
 import { eq, desc, and, lte, eq as eqOp } from 'drizzle-orm';
 import { z } from 'zod';
+import { getUser } from '@/lib/db/queries';
 
 // ── TEMPLATES ─────────────────────────────────
 
-export async function createTemplateAction(formData: FormData) {
-  const name = formData.get('name') as string;
-  const body = formData.get('body') as string;
-  const clientId = (formData.get('clientId') as string) || null;
+const templateSchema = z.object({
+  name: z.string().min(1),
+  body: z.string().min(1),
+  clientId: z.string().uuid().optional().nullable(),
+});
 
-  await db.insert(messageTemplates).values({ name, body, clientId });
+export async function createTemplateAction(formData: FormData) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
+  const raw = Object.fromEntries(formData.entries());
+  const parsed = templateSchema.parse({ ...raw, clientId: raw.clientId || null });
+
+  await db.insert(messageTemplates).values({
+    name: parsed.name,
+    body: parsed.body,
+    clientId: parsed.clientId ?? null,
+  });
   revalidatePath('/reminders');
 }
 
 export async function updateTemplateAction(id: string, formData: FormData) {
-  const name = formData.get('name') as string;
-  const body = formData.get('body') as string;
-  const clientId = (formData.get('clientId') as string) || null;
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
+  const raw = Object.fromEntries(formData.entries());
+  const parsed = templateSchema.parse({ ...raw, clientId: raw.clientId || null });
 
-  await db.update(messageTemplates).set({ name, body, clientId }).where(eq(messageTemplates.id, id));
+  await db
+    .update(messageTemplates)
+    .set({ name: parsed.name, body: parsed.body, clientId: parsed.clientId ?? null })
+    .where(eq(messageTemplates.id, id));
   revalidatePath('/reminders');
 }
 
 export async function deleteTemplateAction(id: string) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await db.delete(messageTemplates).where(eq(messageTemplates.id, id));
   revalidatePath('/reminders');
 }
@@ -48,6 +69,9 @@ const reminderSchema = z.object({
 });
 
 export async function createReminderAction(formData: FormData) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const raw = Object.fromEntries(formData.entries());
   const parsed = reminderSchema.parse({
     ...raw,
@@ -78,31 +102,40 @@ export async function createReminderAction(formData: FormData) {
 }
 
 export async function cancelReminderAction(id: string) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await db.update(reminders).set({ status: 'cancelled' }).where(eq(reminders.id, id));
   revalidatePath('/reminders');
 }
 
+const updateReminderSchema = reminderSchema.omit({ clientId: true, invoiceId: true, contractId: true });
+
 export async function updateReminderAction(id: string, formData: FormData) {
-  const phone = formData.get('phone') as string;
-  const triggerDate = formData.get('triggerDate') as string;
-  const triggerTime = (formData.get('triggerTime') as string) || '08:00';
-  const templateId = (formData.get('templateId') as string) || null;
-  const customMessage = (formData.get('customMessage') as string) || null;
-  const startDate = (formData.get('startDate') as string) || null;
-  const endDate = (formData.get('endDate') as string) || null;
-  const recurring = formData.get('recurring') === 'true';
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
+  const raw = Object.fromEntries(formData.entries());
+  const parsed = updateReminderSchema.parse({
+    ...raw,
+    templateId: raw.templateId || null,
+    customMessage: raw.customMessage || null,
+    startDate: raw.startDate || null,
+    endDate: raw.endDate || null,
+    recurring: raw.recurring === 'true',
+  });
 
   await db
     .update(reminders)
     .set({
-      phone,
-      triggerDate,
-      triggerTime,
-      templateId: templateId || null,
-      customMessage: customMessage || null,
-      startDate: startDate || null,
-      endDate: endDate || null,
-      recurring,
+      phone: parsed.phone,
+      triggerDate: parsed.triggerDate,
+      triggerTime: parsed.triggerTime,
+      templateId: parsed.templateId ?? null,
+      customMessage: parsed.customMessage ?? null,
+      startDate: parsed.startDate ?? null,
+      endDate: parsed.endDate ?? null,
+      recurring: parsed.recurring,
       status: 'pending',
       sentAt: null,
       errorMessage: null,
@@ -113,6 +146,9 @@ export async function updateReminderAction(id: string, formData: FormData) {
 }
 
 export async function deleteReminderAction(id: string) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await db.delete(reminders).where(eq(reminders.id, id));
   revalidatePath('/reminders');
 }
@@ -126,6 +162,9 @@ export async function getSettingAction(key: string): Promise<string | null> {
 }
 
 export async function saveAlertPhoneAction(phone: string) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await db
     .insert(systemSettings)
     .values({ key: 'alert_phone', value: phone })
@@ -134,6 +173,9 @@ export async function saveAlertPhoneAction(phone: string) {
 }
 
 export async function generateRemindersFromInvoicesAction(daysBefore: number, time: string) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const today = new Date();
   const future = new Date();
   future.setDate(today.getDate() + daysBefore);
