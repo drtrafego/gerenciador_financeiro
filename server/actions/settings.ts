@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { systemSettings } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import { getUser } from "@/lib/db/queries";
 
 async function upsertSetting(key: string, value: string): Promise<void> {
   const existing = await db.select().from(systemSettings).where(eq(systemSettings.key, key));
@@ -18,6 +19,9 @@ async function upsertSetting(key: string, value: string): Promise<void> {
 }
 
 export async function updateDisplayCurrency(currency: string): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await upsertSetting("display_currency", currency);
   revalidatePath("/", "layout");
   revalidatePath("/dashboard");
@@ -38,6 +42,9 @@ export async function updateAgencySettings({
   address?: string;
   city?: string;
 }): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const ops = [
     upsertSetting("agency_name", name),
     upsertSetting("agency_email", email),

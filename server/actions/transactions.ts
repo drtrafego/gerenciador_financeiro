@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { transactions } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { getUser } from "@/lib/db/queries";
 
 const transactionSchema = z.object({
   type:              z.enum(["income", "expense"]),
@@ -20,6 +21,9 @@ const transactionSchema = z.object({
 });
 
 export async function createTransaction(data: unknown): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const parsed = transactionSchema.parse(data);
   await db.insert(transactions).values({
     type:             parsed.type,
@@ -40,6 +44,9 @@ export async function createTransaction(data: unknown): Promise<void> {
 }
 
 export async function updateTransaction(id: string, data: unknown): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const parsed = transactionSchema.parse(data);
   await db.update(transactions).set({
     type:             parsed.type,
@@ -60,12 +67,18 @@ export async function updateTransaction(id: string, data: unknown): Promise<void
 }
 
 export async function deactivateRecurring(id: string): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await db.update(transactions).set({ recurringActive: 'false' }).where(eq(transactions.id, id));
   revalidatePath("/cash-flow");
   revalidatePath("/transactions");
 }
 
 export async function deleteTransactionById(id: string): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await db.delete(transactions).where(eq(transactions.id, id));
   revalidatePath("/cash-flow");
   revalidatePath("/dashboard");

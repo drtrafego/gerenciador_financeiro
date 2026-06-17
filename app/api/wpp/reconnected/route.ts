@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { systemSettings } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
@@ -7,7 +7,12 @@ import { sendEmail } from '@/lib/email';
 const WPP_URL = process.env.WPP_SERVICE_URL ?? '';
 const WPP_KEY = process.env.WPP_API_KEY ?? '';
 
-export async function POST() {
+export async function POST(req: NextRequest) {
+  const secret = req.headers.get('x-wpp-secret');
+  if (!secret || secret !== process.env.WPP_CALLBACK_SECRET) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const now = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
 
   // Email sempre que reconectar

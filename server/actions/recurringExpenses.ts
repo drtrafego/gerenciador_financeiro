@@ -5,6 +5,7 @@ import {
   createRecurringExpense,
   updateRecurringExpense,
   deleteRecurringExpense,
+  getUser,
 } from '@/lib/db/queries';
 
 const IOF_RATE = 0.0338;
@@ -20,6 +21,9 @@ function resolveAmounts(formData: FormData) {
 }
 
 export async function createRecurringExpenseAction(formData: FormData) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const { base, final, iof } = resolveAmounts(formData);
   await createRecurringExpense({
     name: formData.get('name') as string,
@@ -35,6 +39,9 @@ export async function createRecurringExpenseAction(formData: FormData) {
 }
 
 export async function updateRecurringExpenseAction(id: string, formData: FormData) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const { base, final, iof } = resolveAmounts(formData);
   await updateRecurringExpense(id, {
     name: formData.get('name') as string,
@@ -49,11 +56,17 @@ export async function updateRecurringExpenseAction(id: string, formData: FormDat
 }
 
 export async function toggleRecurringExpenseAction(id: string, active: boolean) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await updateRecurringExpense(id, { active: active ? 'true' : 'false' });
   revalidatePath('/cash-flow');
 }
 
 export async function deleteRecurringExpenseAction(id: string) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await deleteRecurringExpense(id);
   revalidatePath('/cash-flow');
 }

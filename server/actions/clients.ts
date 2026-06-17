@@ -6,6 +6,7 @@ import { clients } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { redirect } from "next/navigation";
+import { getUser } from "@/lib/db/queries";
 
 const clientSchema = z.object({
   name: z.string().min(2),
@@ -18,6 +19,9 @@ const clientSchema = z.object({
 });
 
 export async function createClient(data: unknown): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const parsed = clientSchema.parse(data);
   await db.insert(clients).values({
     name: parsed.name,
@@ -32,6 +36,9 @@ export async function createClient(data: unknown): Promise<void> {
 }
 
 export async function updateClient(id: string, data: unknown): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const parsed = clientSchema.parse(data);
   await db
     .update(clients)
@@ -50,6 +57,9 @@ export async function updateClient(id: string, data: unknown): Promise<void> {
 }
 
 export async function deactivateClient(id: string): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await db.update(clients).set({ status: "inactive" }).where(eq(clients.id, id));
   revalidatePath("/clients");
 }

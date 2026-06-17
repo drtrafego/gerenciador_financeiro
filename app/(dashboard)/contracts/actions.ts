@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { put } from '@vercel/blob';
-import { createContract, updateContract, deleteContract } from '@/lib/db/queries';
+import { createContract, updateContract, deleteContract, getUser } from '@/lib/db/queries';
 
 const contractSchema = z.object({
   clientId: z.string().uuid(),
@@ -37,6 +37,9 @@ async function uploadPdfIfPresent(
 }
 
 export async function createContractAction(formData: FormData): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const raw = Object.fromEntries(
     [...formData.entries()].filter(([k]) => k !== 'pdfFile')
   );
@@ -62,6 +65,9 @@ export async function createContractAction(formData: FormData): Promise<void> {
 }
 
 export async function updateContractAction(id: string, formData: FormData): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const raw = Object.fromEntries(
     [...formData.entries()].filter(([k]) => k !== 'pdfFile')
   );
@@ -88,6 +94,9 @@ export async function updateContractAction(id: string, formData: FormData): Prom
 }
 
 export async function deleteContractAction(id: string): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await deleteContract(id);
   revalidatePath('/contracts');
   redirect('/contracts');

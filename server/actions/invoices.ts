@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { invoices } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+import { getUser } from "@/lib/db/queries";
 
 const invoiceSchema = z.object({
   clientId: z.string().uuid(),
@@ -17,6 +18,8 @@ const invoiceSchema = z.object({
   notes: z.string().optional(),
 });
 
+const invoiceStatusSchema = z.enum(['draft', 'sent', 'paid', 'overdue', 'cancelled']);
+
 function generateInvoiceNumber() {
   const year = new Date().getFullYear();
   const rand = String(Math.floor(Math.random() * 900) + 100);
@@ -24,6 +27,9 @@ function generateInvoiceNumber() {
 }
 
 export async function createInvoice(data: unknown): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const parsed = invoiceSchema.parse(data);
   await db.insert(invoices).values({
     invoiceNumber: generateInvoiceNumber(),
@@ -41,6 +47,9 @@ export async function createInvoice(data: unknown): Promise<void> {
 }
 
 export async function markInvoicePaid(id: string): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const [invoice] = await db.select().from(invoices).where(eq(invoices.id, id));
   if (!invoice) return;
 
@@ -59,6 +68,10 @@ export async function markInvoicePaid(id: string): Promise<void> {
 }
 
 export async function updateInvoiceStatus(id: string, status: string): Promise<void> {
-  await db.update(invoices).set({ status }).where(eq(invoices.id, id));
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
+  const parsedStatus = invoiceStatusSchema.parse(status);
+  await db.update(invoices).set({ status: parsedStatus }).where(eq(invoices.id, id));
   revalidatePath("/invoices");
 }

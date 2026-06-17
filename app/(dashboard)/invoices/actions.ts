@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { createInvoice, updateInvoice, deleteInvoice, markInvoicePaid, getInvoiceWithClient } from '@/lib/db/queries';
+import { createInvoice, updateInvoice, deleteInvoice, markInvoicePaid, getInvoiceWithClient, getUser } from '@/lib/db/queries';
 import { sendReceiptEmail } from '@/lib/email/gmail';
 import { formatCurrency } from '@/lib/currency/format';
 import type { Currency } from '@/lib/currency/format';
@@ -22,6 +22,9 @@ const invoiceSchema = z.object({
 });
 
 export async function createInvoiceAction(formData: FormData): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const raw = Object.fromEntries(formData.entries());
   const parsed = invoiceSchema.parse(raw);
   const inv = await createInvoice({
@@ -43,6 +46,9 @@ export async function createInvoiceAction(formData: FormData): Promise<void> {
 }
 
 export async function updateInvoiceAction(id: string, formData: FormData): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   const raw = Object.fromEntries(formData.entries());
   const parsed = invoiceSchema.parse(raw);
   await updateInvoice(id, {
@@ -63,6 +69,9 @@ export async function updateInvoiceAction(id: string, formData: FormData): Promi
 }
 
 export async function markInvoicePaidAction(id: string): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await markInvoicePaid(id);
   revalidatePath('/invoices');
   revalidatePath(`/invoices/${id}`);
@@ -70,6 +79,9 @@ export async function markInvoicePaidAction(id: string): Promise<void> {
 }
 
 export async function deleteInvoiceAction(id: string): Promise<void> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   await deleteInvoice(id);
   revalidatePath('/invoices');
   redirect('/invoices');
@@ -79,6 +91,9 @@ export async function sendReceiptEmailAction(
   id: string,
   to: string
 ): Promise<{ ok: boolean }> {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
   try {
     const row = await getInvoiceWithClient(id);
     if (!row) return { ok: false };
