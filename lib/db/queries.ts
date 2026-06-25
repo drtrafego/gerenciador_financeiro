@@ -18,26 +18,41 @@ import {
   type NewTransaction,
   type NewRecurringExpense,
 } from './schema';
-import { cookies } from 'next/headers';
-import { verifyToken } from '@/lib/auth/session';
+import { stackServerApp } from '@/stack/server';
+import type { User } from './schema';
 
-// ─── AUTH (repo base) ────────────────────────
+// ─── AUTH ─────────────────────────────────────
+// A autenticação real do app é o Stack Auth (vide app/(dashboard)/layout.tsx).
+// O cookie 'session' do template legado não é renovado pelo Stack Auth e a
+// tabela 'users' legada está vazia, então a checagem antiga sempre falhava
+// ("Unauthenticated"). Aqui validamos a sessão pelo Stack Auth e, por
+// compatibilidade com o tipo legado, devolvemos o registro do banco quando
+// existir ou um usuário virtual mínimo só para o gate de autenticação.
+export async function getUser(): Promise<User | null> {
+  const stackUser = await stackServerApp.getUser();
+  if (!stackUser) return null;
 
-export async function getUser() {
-  const sessionCookie = (await cookies()).get('session');
-  if (!sessionCookie || !sessionCookie.value) return null;
+  const email = stackUser.primaryEmail ?? '';
+  if (email) {
+    const [dbUser] = await db
+      .select()
+      .from(users)
+      .where(and(eq(users.email, email), isNull(users.deletedAt)))
+      .limit(1);
+    if (dbUser) return dbUser;
+  }
 
-  const sessionData = await verifyToken(sessionCookie.value);
-  if (!sessionData || !sessionData.user || typeof sessionData.user.id !== 'number') return null;
-  if (new Date(sessionData.expires) < new Date()) return null;
-
-  const user = await db
-    .select()
-    .from(users)
-    .where(and(eq(users.id, sessionData.user.id), isNull(users.deletedAt)))
-    .limit(1);
-
-  return user[0] ?? null;
+  const now = new Date();
+  return {
+    id: 0,
+    name: stackUser.displayName ?? null,
+    email,
+    passwordHash: '',
+    role: 'member',
+    createdAt: now,
+    updatedAt: now,
+    deletedAt: null,
+  };
 }
 
 export async function getTeamByStripeCustomerId(customerId: string) {
