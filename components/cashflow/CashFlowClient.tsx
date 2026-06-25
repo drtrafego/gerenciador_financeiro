@@ -1,18 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Plus, FileText, RefreshCw, Eye, EyeOff } from "lucide-react";
 import { formatCurrency, convertAmount } from "@/lib/currency/format";
 import MetricCard from "@/components/dashboard/MetricCard";
 import TransactionModal from "@/components/cashflow/TransactionModal";
+import DateRangePicker from "@/components/shared/DateRangePicker";
 import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 import type { Currency } from "@/lib/currency/format";
-
-const MONTHS = [
-  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
-];
 
 type ContractIncome = {
   id: string;
@@ -47,17 +42,16 @@ export default function CashFlowClient({
   contractIncomes = [],
   rate,
   displayCurrency,
-  month,
-  year,
+  from,
+  to,
 }: {
   transactions: AnyTransaction[];
   contractIncomes?: ContractIncome[];
   rate: { usd_brl: number; usd_ars: number };
   displayCurrency: Currency;
-  month: number;
-  year: number;
+  from: string;
+  to: string;
 }) {
-  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [editingTx, setEditingTx] = useState<AnyTransaction | null>(null);
   const { hidden: valuesHidden, toggle: toggleValues } = useValuesVisibility();
@@ -65,27 +59,20 @@ export default function CashFlowClient({
   const toDisplay = (amount: number, currency: string) =>
     convertAmount(amount, currency as Currency, displayCurrency, rate);
 
-  // Data de hoje no formato YYYY-MM-DD (mesma forma das datas dos lançamentos)
   const todayStr = (() => {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   })();
-  // Contrato "a vencer": dia do vencimento ainda não chegou (vale para mês corrente e meses futuros)
-  const isContractPending = (t: AnyTransaction) => t.isContract === true && t.date > todayStr;
+  // Entrada futura dentro do intervalo (vencimento ainda não chegou)
+  const isPending = (t: AnyTransaction) => t.date > todayStr;
 
-  const allEntries: AnyTransaction[] = [
-    ...contractIncomes,
-    ...transactions,
-  ].sort((a, b) => (a.date > b.date ? -1 : a.date < b.date ? 1 : 0));
+  const allEntries: AnyTransaction[] = [...contractIncomes, ...transactions].sort((a, b) =>
+    a.date > b.date ? -1 : a.date < b.date ? 1 : 0
+  );
 
-  // Só contratos cujo vencimento já chegou entram no rendimento realizado (acumula dia a dia)
-  const contractTotal = contractIncomes
-    .filter((c) => c.date <= todayStr)
-    .reduce((a, c) => a + toDisplay(Number(c.amount), c.currency ?? "BRL"), 0);
-  // Contratos ainda não vencidos ficam de fora do total, somados num indicador separado
-  const pendingContracts = contractIncomes.filter((c) => c.date > todayStr);
-  const contractPendingTotal = pendingContracts.reduce(
-    (a, c) => a + toDisplay(Number(c.amount), c.currency ?? "BRL"), 0
+  const contractTotal = contractIncomes.reduce(
+    (a, c) => a + toDisplay(Number(c.amount), c.currency ?? "BRL"),
+    0
   );
   const txIncomeTotal = transactions
     .filter((t) => t.type === "income")
@@ -98,16 +85,7 @@ export default function CashFlowClient({
 
   const balance = totalIn - totalOut;
   const entryCount = allEntries.length;
-  const recurringCount = transactions.filter((t) => t.isRecurring === "true" && t.recurringActive !== "false").length;
-
-  const prevMonth = () => {
-    const d = new Date(year, month - 2, 1);
-    router.push(`/cash-flow?month=${d.getMonth() + 1}&year=${d.getFullYear()}`);
-  };
-  const nextMonth = () => {
-    const d = new Date(year, month, 1);
-    router.push(`/cash-flow?month=${d.getMonth() + 1}&year=${d.getFullYear()}`);
-  };
+  const pendingCount = allEntries.filter(isPending).length;
 
   const fmtValue = (value: number, currency: Currency) =>
     valuesHidden ? HIDDEN : formatCurrency(value, currency);
@@ -122,25 +100,9 @@ export default function CashFlowClient({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Month Nav */}
+      {/* Seletor de período + ações */}
       <div className="flex items-center gap-2 flex-wrap">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={prevMonth}
-            className="text-zinc-400 hover:text-zinc-200 px-3 py-2 bg-zinc-800 rounded-lg text-sm hover:bg-zinc-700 transition-colors"
-          >
-            ←
-          </button>
-          <span className="text-sm font-semibold text-zinc-200 min-w-[140px] text-center">
-            {MONTHS[month - 1]} {year}
-          </span>
-          <button
-            onClick={nextMonth}
-            className="text-zinc-400 hover:text-zinc-200 px-3 py-2 bg-zinc-800 rounded-lg text-sm hover:bg-zinc-700 transition-colors"
-          >
-            →
-          </button>
-        </div>
+        <DateRangePicker from={from} to={to} />
 
         <button
           onClick={toggleValues}
@@ -167,7 +129,7 @@ export default function CashFlowClient({
         </div>
       </div>
 
-      {/* Metrics */}
+      {/* Métricas do período */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <MetricCard
           label="Entradas"
@@ -176,11 +138,11 @@ export default function CashFlowClient({
           icon="trending-up"
           color="green"
           hidden={valuesHidden}
-          sub={contractPendingTotal > 0 ? `+ ${fmtValue(contractPendingTotal, displayCurrency)} a vencer` : undefined}
+          sub={pendingCount > 0 ? `${pendingCount} a vencer no período` : undefined}
         />
         <MetricCard label="Saídas" value={totalOut} currency={displayCurrency} icon="trending-down" color="red" hidden={valuesHidden} />
         <MetricCard
-          label="Saldo do Mês"
+          label="Saldo do Período"
           value={balance}
           currency={displayCurrency}
           icon="bar-chart"
@@ -193,20 +155,20 @@ export default function CashFlowClient({
           raw
           icon="dollar"
           color="indigo"
-          sub={`${contractIncomes.length} contrato(s) · ${recurringCount} recorrente(s)`}
+          sub={`${contractIncomes.length} de contrato`}
         />
       </div>
 
       {/* Mobile cards */}
       <div className="flex flex-col gap-2 sm:hidden">
         {allEntries.length === 0 && (
-          <p className="text-center text-sm text-zinc-600 py-8">Nenhum lançamento neste mês</p>
+          <p className="text-center text-sm text-zinc-600 py-8">Nenhum lançamento no período</p>
         )}
         {allEntries.map((t) => (
           <div
             key={t.id}
             onClick={() => openEdit(t)}
-            className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-center justify-between ${!t.isContract ? "cursor-pointer hover:border-zinc-700 transition-colors" : ""} ${isContractPending(t) ? "opacity-60" : ""}`}
+            className={`bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-center justify-between ${!t.isContract ? "cursor-pointer hover:border-zinc-700 transition-colors" : ""} ${isPending(t) ? "opacity-60" : ""}`}
           >
             <div className="flex items-start gap-2 min-w-0">
               {t.isContract && <FileText size={14} className="text-indigo-400 mt-0.5 shrink-0" />}
@@ -218,7 +180,7 @@ export default function CashFlowClient({
                 <p className="text-xs text-zinc-500 mt-0.5">
                   {t.category} · {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
                   {t.isProjected && " · recorrente"}
-                  {isContractPending(t) && <span className="text-amber-400/80"> · a vencer</span>}
+                  {isPending(t) && <span className="text-amber-400/80"> · a vencer</span>}
                 </p>
               </div>
             </div>
@@ -253,7 +215,7 @@ export default function CashFlowClient({
             {allEntries.length === 0 && (
               <tr>
                 <td colSpan={5} className="text-center py-10 text-sm text-zinc-600">
-                  Nenhum lançamento neste mês
+                  Nenhum lançamento no período
                 </td>
               </tr>
             )}
@@ -261,7 +223,7 @@ export default function CashFlowClient({
               <tr
                 key={t.id}
                 onClick={() => openEdit(t)}
-                className={`border-b border-zinc-800/50 transition-colors ${!t.isContract ? "cursor-pointer hover:bg-zinc-800/40" : "hover:bg-zinc-800/20"} ${isContractPending(t) ? "opacity-60" : ""}`}
+                className={`border-b border-zinc-800/50 transition-colors ${!t.isContract ? "cursor-pointer hover:bg-zinc-800/40" : "hover:bg-zinc-800/20"} ${isPending(t) ? "opacity-60" : ""}`}
               >
                 <td className="px-4 py-3 text-sm text-zinc-500 whitespace-nowrap">
                   {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
@@ -276,7 +238,7 @@ export default function CashFlowClient({
                     {t.isProjected && (
                       <span className="text-xs text-zinc-600 ml-1">(recorrente)</span>
                     )}
-                    {isContractPending(t) && (
+                    {isPending(t) && (
                       <span className="text-xs text-amber-400/80 ml-1">a vencer</span>
                     )}
                   </div>
@@ -314,14 +276,9 @@ export default function CashFlowClient({
         </table>
       </div>
 
-      {showModal && (
-        <TransactionModal onClose={() => setShowModal(false)} />
-      )}
+      {showModal && <TransactionModal onClose={() => setShowModal(false)} />}
       {editingTx && (
-        <TransactionModal
-          onClose={() => setEditingTx(null)}
-          transaction={editingTx as any}
-        />
+        <TransactionModal onClose={() => setEditingTx(null)} transaction={editingTx as any} />
       )}
     </div>
   );
