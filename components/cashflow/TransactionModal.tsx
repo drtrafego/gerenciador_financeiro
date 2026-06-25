@@ -38,16 +38,17 @@ interface Props {
   onClose: () => void;
   transaction?: TransactionData;
   clients?: { id: string; name: string }[];
+  defaultType?: "income" | "expense";
 }
 
-export default function TransactionModal({ onClose, transaction, clients = [] }: Props) {
+export default function TransactionModal({ onClose, transaction, clients = [], defaultType = "expense" }: Props) {
   const router = useRouter();
   const isEdit = !!transaction;
 
   const [type, setType] = useState<"income" | "expense">(
-    (transaction?.type as "income" | "expense") ?? "expense"
+    (transaction?.type as "income" | "expense") ?? defaultType
   );
-  const [category, setCategory] = useState(transaction?.category ?? CATEGORIES.expense[0]);
+  const [category, setCategory] = useState(transaction?.category ?? CATEGORIES[defaultType][0]);
   const [description, setDescription] = useState(transaction?.description ?? "");
   // No modo edição mostra o valor original (base); só cai no amount em registros antigos sem base
   const [amount, setAmount] = useState(
