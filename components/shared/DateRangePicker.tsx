@@ -31,7 +31,7 @@ interface Props {
   to?: string;
 }
 
-type Preset = { label: string; days?: number; thisMonth?: boolean };
+type Preset = { label: string; days?: number; thisMonth?: boolean; all?: boolean };
 
 const PRESETS: Preset[] = [
   { label: "Hoje", days: 0 },
@@ -39,6 +39,7 @@ const PRESETS: Preset[] = [
   { label: "Últimos 30 dias", days: 29 },
   { label: "Últimos 60 dias", days: 59 },
   { label: "Este mês", thisMonth: true },
+  { label: "Tudo", all: true },
 ];
 
 function MonthGrid({
@@ -146,7 +147,9 @@ export default function DateRangePicker({ from, to }: Props) {
     const today = startOfDay(new Date());
     let f: Date;
     let t: Date = today;
-    if (p.thisMonth) {
+    if (p.all) {
+      f = new Date(2020, 0, 1);
+    } else if (p.thisMonth) {
       f = startOfMonth(today);
       t = endOfMonth(today);
     } else {
