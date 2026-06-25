@@ -4,7 +4,9 @@ import { createTransactionAction } from '../actions';
 const INCOME_CATEGORIES = [
   'Mensalidade de cliente',
   'Fee de gestão',
+  'Mentoria / Consultoria',
   'Projeto pontual',
+  'Comissão por venda',
   'Bônus / comissão',
   'Outros receitas',
 ];
@@ -105,6 +107,21 @@ export default async function NewTransactionPage() {
                 defaultValue={today}
                 className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">Parcelas</label>
+              <input
+                name="installments"
+                type="number"
+                min="1"
+                max="60"
+                defaultValue="1"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <p className="text-xs text-zinc-500 mt-1">
+                Acima de 1, o valor é o TOTAL e será dividido em meses (ex: 2.000 em 2x = 2 de 1.000).
+              </p>
             </div>
 
             <div>

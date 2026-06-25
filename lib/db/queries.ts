@@ -203,11 +203,12 @@ export async function deleteClient(id: string) {
 export async function getClientWithDetails(id: string) {
   const client = await getClientById(id);
   if (!client) return null;
-  const [clientContracts, clientInvoices] = await Promise.all([
+  const [clientContracts, clientInvoices, clientTransactions] = await Promise.all([
     db.select().from(contracts).where(eq(contracts.clientId, id)).orderBy(desc(contracts.createdAt)),
     db.select().from(invoices).where(eq(invoices.clientId, id)).orderBy(desc(invoices.createdAt)),
+    db.select().from(transactions).where(eq(transactions.clientId, id)).orderBy(desc(transactions.date)),
   ]);
-  return { ...client, contracts: clientContracts, invoices: clientInvoices };
+  return { ...client, contracts: clientContracts, invoices: clientInvoices, transactions: clientTransactions };
 }
 
 // ─── CONTRATOS ────────────────────────────────
