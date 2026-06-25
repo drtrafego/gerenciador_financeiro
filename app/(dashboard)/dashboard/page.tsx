@@ -261,11 +261,11 @@ export default async function DashboardPage({
       {/* Resumo do período selecionado (dinheiro real movimentado) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-          <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Receita no período</p>
+          <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Recebido no período</p>
           <MaskedCurrency amount={data.periodIncome} currency={data.displayCurrency} className="text-xl font-bold text-green-400" />
         </div>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-          <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Despesa no período</p>
+          <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Pago no período</p>
           <MaskedCurrency amount={data.periodExpense} currency={data.displayCurrency} className="text-xl font-bold text-red-400" />
         </div>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
