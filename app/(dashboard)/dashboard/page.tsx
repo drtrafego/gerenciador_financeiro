@@ -39,7 +39,6 @@ async function getDashboardData(from: string, to: string) {
     allContracts,
     expenseTransactions,
     sourceContracts,
-    sourceIncome,
     clientSourceRows,
     contractsWithSource,
     periodRealTx,
@@ -75,11 +74,6 @@ async function getDashboardData(from: string, to: string) {
       .from(contracts)
       .innerJoin(clients, eq(contracts.clientId, clients.id))
       .where(eq(contracts.status, "active")),
-    // Origem do cliente: total já recebido (transações de receita por canal)
-    db.select({ source: clients.source, amount: transactions.amount, currency: transactions.currency })
-      .from(transactions)
-      .innerJoin(clients, eq(transactions.clientId, clients.id))
-      .where(eq(transactions.type, "income")),
     // Contagem de clientes por origem (todos os clientes cadastrados)
     db.select({ source: clients.source }).from(clients),
     // Todos os contratos com a origem do cliente, para a evolução do MRR por canal
@@ -92,19 +86,22 @@ async function getDashboardData(from: string, to: string) {
     }).from(contracts).leftJoin(clients, eq(contracts.clientId, clients.id)),
     // Resumo do período (bate com o fluxo de caixa): transações reais no intervalo,
     // recorrentes anteriores ainda ativas (projetadas em JS) e honorários de contrato vigentes.
-    db.select({ type: transactions.type, amount: transactions.amount, currency: transactions.currency })
+    db.select({ type: transactions.type, amount: transactions.amount, currency: transactions.currency, source: clients.source })
       .from(transactions)
+      .leftJoin(clients, eq(transactions.clientId, clients.id))
       .where(and(gte(transactions.date, from), lte(transactions.date, to))),
-    db.select({ type: transactions.type, amount: transactions.amount, currency: transactions.currency, date: transactions.date, recurringEndsAt: transactions.recurringEndsAt })
+    db.select({ type: transactions.type, amount: transactions.amount, currency: transactions.currency, date: transactions.date, recurringEndsAt: transactions.recurringEndsAt, source: clients.source })
       .from(transactions)
+      .leftJoin(clients, eq(transactions.clientId, clients.id))
       .where(and(
         eq(transactions.isRecurring, "true"),
         eq(transactions.recurringActive, "true"),
         lt(transactions.date, from),
         or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, from))
       )),
-    db.select({ fixedAmount: contracts.fixedAmount, currency: contracts.currency, billingDay: contracts.billingDay, startDate: contracts.startDate, endDate: contracts.endDate })
+    db.select({ fixedAmount: contracts.fixedAmount, currency: contracts.currency, billingDay: contracts.billingDay, startDate: contracts.startDate, endDate: contracts.endDate, source: clients.source })
       .from(contracts)
+      .leftJoin(clients, eq(contracts.clientId, clients.id))
       .where(and(
         lte(contracts.startDate, to),
         or(isNull(contracts.endDate), gte(contracts.endDate, from)),
@@ -131,23 +128,33 @@ async function getDashboardData(from: string, to: string) {
   }
   let periodIncome = 0;
   let periodExpense = 0;
-  const addPeriod = (type: string, amount: string | null, currency: string | null) => {
-    const v = convertAmount(parseFloat(amount ?? "0"), (currency ?? "BRL") as Currency, displayCurrency, rate);
-    if (type === "income") periodIncome += v;
-    else if (type === "expense") periodExpense += v;
+  // Entradas do período agrupadas por canal de aquisição (para a Receita por Origem)
+  const incomeBySource = new Map<string, number>();
+  const addPeriod = (type: string, amount: string | null, currency: string | null, source?: string | null) => {
+    const amt = parseFloat(amount ?? "0");
+    const cur = (currency ?? "BRL") as Currency;
+    const vDisplay = convertAmount(amt, cur, displayCurrency, rate); // cards do topo
+    if (type === "income") {
+      periodIncome += vDisplay;
+      const vBrl = convertAmount(amt, cur, "BRL", rate); // tabela por origem converte BRL->display
+      const k = source ?? "none";
+      incomeBySource.set(k, (incomeBySource.get(k) ?? 0) + vBrl);
+    } else if (type === "expense") {
+      periodExpense += vDisplay;
+    }
   };
   const dayInMonth = (m: Date, billingDay: number) => {
     const lastDay = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
     const day = Math.min(billingDay, lastDay);
     return `${m.getFullYear()}-${String(m.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
   };
-  for (const t of periodRealTx) addPeriod(t.type, t.amount, t.currency);
+  for (const t of periodRealTx) addPeriod(t.type, t.amount, t.currency, t.source);
   for (const t of periodRecurringPast) {
     const originalDay = new Date(t.date + "T12:00:00").getDate();
     for (const m of periodMonths) {
       const dateStr = dayInMonth(m, originalDay);
       if (dateStr >= from && dateStr <= to && (!t.recurringEndsAt || dateStr <= t.recurringEndsAt)) {
-        addPeriod(t.type, t.amount, t.currency);
+        addPeriod(t.type, t.amount, t.currency, t.source);
       }
     }
   }
@@ -155,7 +162,7 @@ async function getDashboardData(from: string, to: string) {
     for (const m of periodMonths) {
       const dateStr = dayInMonth(m, c.billingDay ?? 5);
       if (dateStr >= from && dateStr <= to && dateStr >= c.startDate && (c.endDate == null || dateStr <= c.endDate)) {
-        addPeriod("income", c.fixedAmount, c.currency);
+        addPeriod("income", c.fixedAmount, c.currency, c.source);
       }
     }
   }
@@ -220,9 +227,9 @@ async function getDashboardData(from: string, to: string) {
     const key = r.source ?? "none";
     ensureSource(key).mrr += convertAmount(parseFloat(r.fixedAmount ?? "0"), (r.currency ?? "BRL") as Currency, "BRL", rate);
   }
-  for (const r of sourceIncome) {
-    const key = r.source ?? "none";
-    ensureSource(key).total += convertAmount(parseFloat(r.amount ?? "0"), (r.currency ?? "BRL") as Currency, "BRL", rate);
+  // "total" = entradas do período por canal (contratos + avulsos), já no displayCurrency
+  for (const [src, val] of incomeBySource) {
+    ensureSource(src).total += val;
   }
   for (const r of clientSourceRows) {
     ensureSource(r.source ?? "none").clients += 1;
