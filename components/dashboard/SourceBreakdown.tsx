@@ -43,7 +43,7 @@ export default function SourceBreakdown({ rows, displayCurrency, rate }: Props) 
               <tr className="border-b border-zinc-800">
                 <th className="text-left py-2 text-xs font-medium text-zinc-500 uppercase tracking-wide">Canal</th>
                 <th className="text-right py-2 text-xs font-medium text-zinc-500 uppercase tracking-wide">MRR / mês</th>
-                <th className="text-right py-2 text-xs font-medium text-zinc-500 uppercase tracking-wide">Total recebido</th>
+                <th className="text-right py-2 text-xs font-medium text-zinc-500 uppercase tracking-wide">Entradas no período</th>
               </tr>
             </thead>
             <tbody>
