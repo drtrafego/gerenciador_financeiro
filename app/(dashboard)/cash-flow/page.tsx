@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { db } from "@/lib/db";
 import { transactions, contracts, clients, exchangeRates, systemSettings } from "@/lib/db/schema";
-import { desc, eq, and, gte, lte, or, isNull, lt } from "drizzle-orm";
+import { desc, eq, and, gte, lte, or, isNull, lt, asc } from "drizzle-orm";
 import CashFlowClient from "@/components/cashflow/CashFlowClient";
 
 const iso = (d: Date) => d.toISOString().split("T")[0]!;
@@ -32,7 +32,7 @@ export default async function CashFlowPage({
     from = iso(new Date(now.getTime() - 29 * 86400000));
   }
 
-  const [txData, recurringFromPast, contractData, latestRate, displayCurrencySetting] = await Promise.all([
+  const [txData, recurringFromPast, contractData, latestRate, displayCurrencySetting, clientList] = await Promise.all([
     // Transações reais dentro do intervalo
     db
       .select()
@@ -78,6 +78,7 @@ export default async function CashFlowPage({
 
     db.select().from(exchangeRates).orderBy(desc(exchangeRates.fetchedAt)).limit(1),
     db.select().from(systemSettings).where(eq(systemSettings.key, "display_currency")),
+    db.select({ id: clients.id, name: clients.name }).from(clients).orderBy(asc(clients.name)),
   ]);
 
   const rateRow = latestRate[0];
@@ -144,6 +145,7 @@ export default async function CashFlowPage({
       displayCurrency={(displayCurrencySetting[0]?.value ?? "BRL") as any}
       from={from}
       to={to}
+      clients={clientList}
     />
   );
 }

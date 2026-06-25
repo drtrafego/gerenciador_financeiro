@@ -11,7 +11,7 @@ import {
 } from "@/server/actions/transactions";
 
 const CATEGORIES = {
-  income:  ["Mensalidade", "Projeto", "Consultoria", "Outros"],
+  income:  ["Mensalidade", "Projeto pontual", "Mentoria / Consultoria", "Comissão por venda", "Outros"],
   expense: ["Ferramentas", "Imposto", "Salário", "Contador", "Aluguel", "Assinatura", "Marketing", "Outros"],
 };
 
@@ -28,6 +28,7 @@ type TransactionData = {
   iof?: boolean | null;
   currency: string | null;
   date: string;
+  clientId?: string | null;
   isRecurring: string | null;
   recurringActive: string | null;
   recurringEndsAt: string | null;
@@ -36,9 +37,10 @@ type TransactionData = {
 interface Props {
   onClose: () => void;
   transaction?: TransactionData;
+  clients?: { id: string; name: string }[];
 }
 
-export default function TransactionModal({ onClose, transaction }: Props) {
+export default function TransactionModal({ onClose, transaction, clients = [] }: Props) {
   const router = useRouter();
   const isEdit = !!transaction;
 
@@ -59,6 +61,8 @@ export default function TransactionModal({ onClose, transaction }: Props) {
   const [date, setDate] = useState(
     transaction?.date ?? new Date().toISOString().split("T")[0]
   );
+  const [clientId, setClientId] = useState(transaction?.clientId ?? "");
+  const [installments, setInstallments] = useState("1");
 
   const [applyIof, setApplyIof] = useState(transaction?.iof === true);
   const IOF_RATE = 0.0338;
@@ -100,6 +104,7 @@ export default function TransactionModal({ onClose, transaction }: Props) {
       ? parseFloat((baseAmount * (1 + IOF_RATE)).toFixed(2))
       : baseAmount;
 
+    const n = isEdit ? 1 : Math.max(1, parseInt(installments || "1", 10));
     const data = {
       type,
       category,
@@ -109,8 +114,11 @@ export default function TransactionModal({ onClose, transaction }: Props) {
       iof: useIof,
       currency: currency as "BRL" | "USD" | "ARS",
       date,
-      isRecurring,
-      recurringEndsAt: computeEndsAt(),
+      clientId: clientId || null,
+      installments: n,
+      // Parcelado não é recorrente
+      isRecurring: n > 1 ? false : isRecurring,
+      recurringEndsAt: n > 1 ? null : computeEndsAt(),
     };
     try {
       if (isEdit && transaction) {
@@ -255,6 +263,33 @@ export default function TransactionModal({ onClose, transaction }: Props) {
                 required
               />
             </div>
+
+            <div className="col-span-2 flex flex-col gap-1">
+              <label className="text-xs font-medium text-zinc-400">Cliente (opcional)</label>
+              <select value={clientId} onChange={(e) => setClientId(e.target.value)} className={inputClass}>
+                <option value="">Sem cliente vinculado</option>
+                {clients.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {!isEdit && (
+              <div className="col-span-2 flex flex-col gap-1">
+                <label className="text-xs font-medium text-zinc-400">Parcelas</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={installments}
+                  onChange={(e) => setInstallments(e.target.value)}
+                  className={inputClass}
+                />
+                <p className="text-[10px] text-zinc-500">
+                  Acima de 1, o valor é o TOTAL e é dividido em meses (ex: 2.000 em 2x = 2 de 1.000).
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col gap-1">

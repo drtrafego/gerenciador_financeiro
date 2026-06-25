@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, FileText, RefreshCw, Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Plus, FileText, RefreshCw, Eye, EyeOff, ChevronLeft, ChevronRight } from "lucide-react";
 import { formatCurrency, convertAmount } from "@/lib/currency/format";
 import MetricCard from "@/components/dashboard/MetricCard";
 import TransactionModal from "@/components/cashflow/TransactionModal";
@@ -37,6 +38,11 @@ type AnyTransaction = {
 
 const HIDDEN = "••••••";
 
+const MONTHS = [
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+];
+
 export default function CashFlowClient({
   transactions,
   contractIncomes = [],
@@ -44,6 +50,7 @@ export default function CashFlowClient({
   displayCurrency,
   from,
   to,
+  clients = [],
 }: {
   transactions: AnyTransaction[];
   contractIncomes?: ContractIncome[];
@@ -51,10 +58,21 @@ export default function CashFlowClient({
   displayCurrency: Currency;
   from: string;
   to: string;
+  clients?: { id: string; name: string }[];
 }) {
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [editingTx, setEditingTx] = useState<AnyTransaction | null>(null);
   const { hidden: valuesHidden, toggle: toggleValues } = useValuesVisibility();
+
+  // Navegação por mês (define o período como o mês inteiro)
+  const fromD = new Date(from + "T12:00:00");
+  const goMonth = (delta: number) => {
+    const d = new Date(fromD.getFullYear(), fromD.getMonth() + delta, 1);
+    const last = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    router.push(`/cash-flow?from=${d.getFullYear()}-${mm}-01&to=${d.getFullYear()}-${mm}-${String(last).padStart(2, "0")}`);
+  };
 
   const toDisplay = (amount: number, currency: string) =>
     convertAmount(amount, currency as Currency, displayCurrency, rate);
@@ -102,6 +120,26 @@ export default function CashFlowClient({
     <div className="flex flex-col gap-4">
       {/* Seletor de período + ações */}
       <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => goMonth(-1)}
+            className="text-zinc-400 hover:text-zinc-200 p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
+            title="Mês anterior"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <span className="text-sm font-semibold text-zinc-200 min-w-[120px] text-center">
+            {MONTHS[fromD.getMonth()]} {fromD.getFullYear()}
+          </span>
+          <button
+            onClick={() => goMonth(1)}
+            className="text-zinc-400 hover:text-zinc-200 p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
+            title="Próximo mês"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+
         <DateRangePicker from={from} to={to} />
 
         <button
@@ -276,9 +314,9 @@ export default function CashFlowClient({
         </table>
       </div>
 
-      {showModal && <TransactionModal onClose={() => setShowModal(false)} />}
+      {showModal && <TransactionModal onClose={() => setShowModal(false)} clients={clients} />}
       {editingTx && (
-        <TransactionModal onClose={() => setEditingTx(null)} transaction={editingTx as any} />
+        <TransactionModal onClose={() => setEditingTx(null)} transaction={editingTx as any} clients={clients} />
       )}
     </div>
   );

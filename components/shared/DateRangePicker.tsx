@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   format,
@@ -111,15 +111,6 @@ export default function DateRangePicker({ from, to }: Props) {
   const [selFrom, setSelFrom] = useState<Date | null>(initialFrom);
   const [selTo, setSelTo] = useState<Date | null>(initialTo);
   const [leftMonth, setLeftMonth] = useState<Date>(startOfMonth(initialFrom));
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function onClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    }
-    if (open) document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
-  }, [open]);
 
   const pick = (d: Date) => {
     if (!selFrom || (selFrom && selTo)) {
@@ -167,7 +158,7 @@ export default function DateRangePicker({ from, to }: Props) {
       : "Selecionar período";
 
   return (
-    <div className="relative" ref={ref}>
+    <>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -178,9 +169,15 @@ export default function DateRangePicker({ from, to }: Props) {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-20 mt-2 flex rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl">
+        <div
+          className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 p-4 pt-24 overflow-y-auto"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setOpen(false);
+          }}
+        >
+        <div className="flex flex-col sm:flex-row rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl">
           {/* Presets */}
-          <div className="flex flex-col gap-1 border-r border-zinc-800 p-3 w-40">
+          <div className="flex flex-row sm:flex-col flex-wrap gap-1 border-b sm:border-b-0 sm:border-r border-zinc-800 p-3 sm:w-40">
             {PRESETS.map((p) => (
               <button
                 key={p.label}
@@ -225,7 +222,8 @@ export default function DateRangePicker({ from, to }: Props) {
             </div>
           </div>
         </div>
+        </div>
       )}
-    </div>
+    </>
   );
 }
