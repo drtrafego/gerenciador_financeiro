@@ -7,6 +7,7 @@ import { createClient, updateClient, deleteClient, getUser } from '@/lib/db/quer
 import { db } from '@/lib/db';
 import { contracts } from '@/lib/db/schema';
 import { eq, sql } from 'drizzle-orm';
+import { CLIENT_SOURCE_CODES } from '@/lib/clientSources';
 
 const clientSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório'),
@@ -15,6 +16,7 @@ const clientSchema = z.object({
   phone: z.string().optional(),
   currency: z.enum(['BRL', 'USD', 'ARS']).default('BRL'),
   status: z.enum(['active', 'inactive', 'overdue']).default('active'),
+  source: z.enum(CLIENT_SOURCE_CODES as [string, ...string[]]).optional().or(z.literal('')),
   notes: z.string().optional(),
 });
 
@@ -31,6 +33,7 @@ export async function createClientAction(formData: FormData): Promise<void> {
     phone: parsed.phone ?? null,
     currency: parsed.currency,
     status: parsed.status,
+    source: parsed.source || null,
     notes: parsed.notes ?? null,
   });
   revalidatePath('/clients');
@@ -50,6 +53,7 @@ export async function updateClientAction(id: string, formData: FormData): Promis
     phone: parsed.phone ?? null,
     currency: parsed.currency,
     status: parsed.status,
+    source: parsed.source || null,
     notes: parsed.notes ?? null,
   });
   revalidatePath('/clients');
