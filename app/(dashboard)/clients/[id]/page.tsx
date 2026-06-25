@@ -9,6 +9,7 @@ import type { Currency } from '@/lib/currency/format';
 import { cn } from '@/lib/utils';
 import { Mail, Phone, Pencil, FileText, Plus } from 'lucide-react';
 import DeleteClientButton from '@/components/clients/DeleteClientButton';
+import MaskedCurrency from '@/components/shared/MaskedCurrency';
 import { CLIENT_SOURCES, sourceLabel } from '@/lib/clientSources';
 import { effectiveContractStatus, CONTRACT_STATUS_LABELS } from '@/lib/contracts';
 
@@ -257,6 +258,51 @@ export default async function ClientDetailPage({
                   })()}
                 </div>
               </Link>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Receitas avulsas / Transações */}
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-medium text-zinc-400">
+            Receitas avulsas e lançamentos ({data.transactions.length})
+          </h2>
+          <Link
+            href={`/transactions/new`}
+            className="flex items-center gap-1.5 rounded-lg bg-zinc-800 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-700 transition-colors"
+          >
+            <Plus className="h-3 w-3" />
+            Novo lançamento
+          </Link>
+        </div>
+        {data.transactions.length === 0 ? (
+          <p className="text-sm text-zinc-500">
+            Nenhum lançamento avulso. Use para mentoria/consultoria pontual, comissão por venda ou parcelas.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {data.transactions.map((t) => (
+              <div
+                key={t.id}
+                className="flex items-center justify-between rounded-lg p-3 hover:bg-zinc-800 transition-colors"
+              >
+                <div>
+                  <p className="text-sm font-medium text-white">{t.description}</p>
+                  <p className="text-xs text-zinc-500">
+                    {t.category} · {new Date(t.date + 'T12:00:00').toLocaleDateString('pt-BR')}
+                  </p>
+                </div>
+                <MaskedCurrency
+                  amount={parseFloat(t.amount ?? '0')}
+                  currency={(t.currency as Currency) ?? 'BRL'}
+                  className={cn(
+                    'text-sm font-semibold',
+                    t.type === 'income' ? 'text-green-400' : 'text-red-400'
+                  )}
+                />
+              </div>
             ))}
           </div>
         )}
