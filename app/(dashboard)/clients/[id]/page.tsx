@@ -9,6 +9,7 @@ import type { Currency } from '@/lib/currency/format';
 import { cn } from '@/lib/utils';
 import { Mail, Phone, Pencil, FileText, Plus } from 'lucide-react';
 import DeleteClientButton from '@/components/clients/DeleteClientButton';
+import { CLIENT_SOURCES, sourceLabel } from '@/lib/clientSources';
 
 const statusStyles: Record<string, string> = {
   active: 'bg-green-500/10 text-green-400 border-green-500/20',
@@ -96,6 +97,9 @@ export default async function ClientDetailPage({
           <div className="text-sm text-zinc-400">
             Moeda: <span className="text-white">{data.currency ?? 'BRL'}</span>
           </div>
+          <div className="text-sm text-zinc-400">
+            Origem: <span className="text-white">{sourceLabel(data.source)}</span>
+          </div>
           {data.notes && (
             <div className="rounded-lg bg-zinc-800 p-3 text-sm text-zinc-300">
               {data.notes}
@@ -164,6 +168,19 @@ export default async function ClientDetailPage({
                   <option value="active">Ativo</option>
                   <option value="inactive">Inativo</option>
                   <option value="overdue">Inadimplente</option>
+                </select>
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-xs text-zinc-400 mb-1">Origem do Cliente</label>
+                <select
+                  name="source"
+                  defaultValue={data.source ?? ''}
+                  className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <option value="">Não informado</option>
+                  {CLIENT_SOURCES.map((s) => (
+                    <option key={s.code} value={s.code}>{s.label}</option>
+                  ))}
                 </select>
               </div>
               <div className="sm:col-span-2">

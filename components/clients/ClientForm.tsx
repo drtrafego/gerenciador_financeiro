@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/server/actions/clients";
+import { CLIENT_SOURCES, CLIENT_SOURCE_CODES } from "@/lib/clientSources";
 
 const schema = z.object({
   name:         z.string().min(2, "Nome obrigatório"),
@@ -13,6 +14,7 @@ const schema = z.object({
   phone:        z.string().optional(),
   currency:     z.enum(["BRL", "USD", "ARS"]),
   status:       z.enum(["active", "inactive"]),
+  source:       z.enum(CLIENT_SOURCE_CODES as [string, ...string[]]).optional().or(z.literal("")),
   notes:        z.string().optional(),
 });
 
@@ -102,6 +104,17 @@ export default function ClientForm({ defaultValues }: { defaultValues?: Partial<
           >
             <option value="active">Ativo</option>
             <option value="inactive">Inativo</option>
+          </select>
+        </Field>
+        <Field label="Origem do Cliente">
+          <select
+            {...register("source")}
+            className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 w-full"
+          >
+            <option value="">Selecione o canal...</option>
+            {CLIENT_SOURCES.map((s) => (
+              <option key={s.code} value={s.code}>{s.label}</option>
+            ))}
           </select>
         </Field>
       </div>

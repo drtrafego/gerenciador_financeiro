@@ -10,6 +10,7 @@ import RevenueChart from "@/components/dashboard/RevenueChart";
 import MRRChart from "@/components/dashboard/MRRChart";
 import RecentInvoices from "@/components/dashboard/RecentInvoices";
 import AlertsPanel from "@/components/dashboard/AlertsPanel";
+import SourceBreakdown from "@/components/dashboard/SourceBreakdown";
 
 async function getDashboardData() {
   const now = new Date();
@@ -31,6 +32,9 @@ async function getDashboardData() {
     monthExpense,
     allContracts,
     expenseTransactions,
+    sourceContracts,
+    sourceIncome,
+    clientSourceRows,
   ] = await Promise.all([
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "active")),
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "overdue")),
@@ -56,6 +60,18 @@ async function getDashboardData() {
     db.select({ amount: transactions.amount, date: transactions.date })
       .from(transactions)
       .where(and(eq(transactions.type, "expense"), gte(transactions.date, sixMonthsAgo.toISOString().split("T")[0]!))),
+    // Origem do cliente: MRR (contratos ativos por canal)
+    db.select({ source: clients.source, fixedAmount: contracts.fixedAmount, currency: contracts.currency })
+      .from(contracts)
+      .innerJoin(clients, eq(contracts.clientId, clients.id))
+      .where(eq(contracts.status, "active")),
+    // Origem do cliente: total já recebido (transações de receita por canal)
+    db.select({ source: clients.source, amount: transactions.amount, currency: transactions.currency })
+      .from(transactions)
+      .innerJoin(clients, eq(transactions.clientId, clients.id))
+      .where(eq(transactions.type, "income")),
+    // Contagem de clientes por origem (todos os clientes cadastrados)
+    db.select({ source: clients.source }).from(clients),
   ]);
 
   const rateRow = latestRate[0];
@@ -106,7 +122,44 @@ async function getDashboardData() {
     });
   }
 
+  // ─── Receita por origem (canal de aquisição) ───
+  // Códigos na ordem fixa de exibição; "none" = cliente sem origem definida.
+  const SOURCE_ORDER = ["referral", "organic", "meta", "google"];
+  const sourceAgg = new Map<string, { mrr: number; total: number; clients: number }>();
+  const ensureSource = (key: string) => {
+    let entry = sourceAgg.get(key);
+    if (!entry) {
+      entry = { mrr: 0, total: 0, clients: 0 };
+      sourceAgg.set(key, entry);
+    }
+    return entry;
+  };
+
+  for (const r of sourceContracts) {
+    const key = r.source ?? "none";
+    ensureSource(key).mrr += convertAmount(parseFloat(r.fixedAmount ?? "0"), (r.currency ?? "BRL") as Currency, "BRL", rate);
+  }
+  for (const r of sourceIncome) {
+    const key = r.source ?? "none";
+    ensureSource(key).total += convertAmount(parseFloat(r.amount ?? "0"), (r.currency ?? "BRL") as Currency, "BRL", rate);
+  }
+  for (const r of clientSourceRows) {
+    ensureSource(r.source ?? "none").clients += 1;
+  }
+
+  const sourceBreakdown = [...SOURCE_ORDER, "none"]
+    .filter((key) => {
+      if (key !== "none") return true;
+      const e = sourceAgg.get("none");
+      return !!e && (e.mrr > 0 || e.total > 0 || e.clients > 0);
+    })
+    .map((key) => {
+      const e = sourceAgg.get(key);
+      return { code: key, mrr: e?.mrr ?? 0, total: e?.total ?? 0, clients: e?.clients ?? 0 };
+    });
+
   return {
+    sourceBreakdown,
     activeClients: Number(activeClients[0]?.count ?? 0),
     overdueClients: Number(overdueClients[0]?.count ?? 0),
     rate,
@@ -139,6 +192,12 @@ export default async function DashboardPage() {
         <RevenueChart data={data.chartData} />
         <MRRChart data={data.chartData} />
       </div>
+
+      <SourceBreakdown
+        rows={data.sourceBreakdown}
+        displayCurrency={data.displayCurrency}
+        rate={data.rate}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <RecentInvoices invoices={data.recentInvoices} />

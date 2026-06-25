@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/db/queries";
+import { CLIENT_SOURCE_CODES } from "@/lib/clientSources";
 
 const clientSchema = z.object({
   name: z.string().min(2),
@@ -15,6 +16,7 @@ const clientSchema = z.object({
   phone: z.string().optional(),
   currency: z.enum(["BRL", "USD", "ARS"]),
   status: z.enum(["active", "inactive"]),
+  source: z.enum(CLIENT_SOURCE_CODES as [string, ...string[]]).optional().or(z.literal("")),
   notes: z.string().optional(),
 });
 
@@ -30,6 +32,7 @@ export async function createClient(data: unknown): Promise<void> {
     phone: parsed.phone || null,
     currency: parsed.currency,
     status: parsed.status,
+    source: parsed.source || null,
     notes: parsed.notes || null,
   });
   revalidatePath("/clients");
@@ -49,6 +52,7 @@ export async function updateClient(id: string, data: unknown): Promise<void> {
       phone: parsed.phone || null,
       currency: parsed.currency,
       status: parsed.status,
+      source: parsed.source || null,
       notes: parsed.notes || null,
     })
     .where(eq(clients.id, id));
