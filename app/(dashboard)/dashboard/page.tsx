@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { db } from "@/lib/db";
 import { invoices, transactions, clients, contracts, exchangeRates, systemSettings } from "@/lib/db/schema";
-import { desc, eq, gte, lte, and, sql } from "drizzle-orm";
+import { desc, eq, gte, lte, lt, or, isNull, and, sql } from "drizzle-orm";
 import DateRangePicker from "@/components/shared/DateRangePicker";
 import MaskedCurrency from "@/components/shared/MaskedCurrency";
 import { convertAmount, safeRates } from "@/lib/currency/format";
@@ -42,8 +42,9 @@ async function getDashboardData(from: string, to: string) {
     sourceIncome,
     clientSourceRows,
     contractsWithSource,
-    periodIncomeRow,
-    periodExpenseRow,
+    periodRealTx,
+    periodRecurringPast,
+    periodContracts,
   ] = await Promise.all([
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "active")),
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "overdue")),
@@ -89,13 +90,26 @@ async function getDashboardData(from: string, to: string) {
       startDate: contracts.startDate,
       endDate: contracts.endDate,
     }).from(contracts).leftJoin(clients, eq(contracts.clientId, clients.id)),
-    // Receita e despesa REAIS (transações) dentro do período selecionado
-    db.select({ total: sql<number>`coalesce(sum(amount),0)` })
+    // Resumo do período (bate com o fluxo de caixa): transações reais no intervalo,
+    // recorrentes anteriores ainda ativas (projetadas em JS) e honorários de contrato vigentes.
+    db.select({ type: transactions.type, amount: transactions.amount, currency: transactions.currency })
       .from(transactions)
-      .where(and(eq(transactions.type, "income"), gte(transactions.date, from), lte(transactions.date, to))),
-    db.select({ total: sql<number>`coalesce(sum(amount),0)` })
+      .where(and(gte(transactions.date, from), lte(transactions.date, to))),
+    db.select({ type: transactions.type, amount: transactions.amount, currency: transactions.currency, date: transactions.date, recurringEndsAt: transactions.recurringEndsAt })
       .from(transactions)
-      .where(and(eq(transactions.type, "expense"), gte(transactions.date, from), lte(transactions.date, to))),
+      .where(and(
+        eq(transactions.isRecurring, "true"),
+        eq(transactions.recurringActive, "true"),
+        lt(transactions.date, from),
+        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, from))
+      )),
+    db.select({ fixedAmount: contracts.fixedAmount, currency: contracts.currency, billingDay: contracts.billingDay, startDate: contracts.startDate, endDate: contracts.endDate })
+      .from(contracts)
+      .where(and(
+        lte(contracts.startDate, to),
+        or(isNull(contracts.endDate), gte(contracts.endDate, from)),
+        eq(contracts.status, "active")
+      )),
   ]);
 
   const rateRow = latestRate[0];
@@ -103,6 +117,48 @@ async function getDashboardData(from: string, to: string) {
     rateRow ? { usd_brl: Number(rateRow.usdBrl), usd_ars: Number(rateRow.usdArs) } : null
   );
   const displayCurrency = (displayCurrencySetting[0]?.value ?? "BRL") as Currency;
+
+  // ── Resumo do período (mesma lógica do fluxo de caixa) ──
+  const periodFromD = new Date(from + "T12:00:00");
+  const periodToD = new Date(to + "T12:00:00");
+  const periodMonths: Date[] = [];
+  for (
+    let d = new Date(periodFromD.getFullYear(), periodFromD.getMonth(), 1);
+    d <= periodToD;
+    d = new Date(d.getFullYear(), d.getMonth() + 1, 1)
+  ) {
+    periodMonths.push(new Date(d));
+  }
+  let periodIncome = 0;
+  let periodExpense = 0;
+  const addPeriod = (type: string, amount: string | null, currency: string | null) => {
+    const v = convertAmount(parseFloat(amount ?? "0"), (currency ?? "BRL") as Currency, displayCurrency, rate);
+    if (type === "income") periodIncome += v;
+    else if (type === "expense") periodExpense += v;
+  };
+  const dayInMonth = (m: Date, billingDay: number) => {
+    const lastDay = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
+    const day = Math.min(billingDay, lastDay);
+    return `${m.getFullYear()}-${String(m.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+  };
+  for (const t of periodRealTx) addPeriod(t.type, t.amount, t.currency);
+  for (const t of periodRecurringPast) {
+    const originalDay = new Date(t.date + "T12:00:00").getDate();
+    for (const m of periodMonths) {
+      const dateStr = dayInMonth(m, originalDay);
+      if (dateStr >= from && dateStr <= to && (!t.recurringEndsAt || dateStr <= t.recurringEndsAt)) {
+        addPeriod(t.type, t.amount, t.currency);
+      }
+    }
+  }
+  for (const c of periodContracts) {
+    for (const m of periodMonths) {
+      const dateStr = dayInMonth(m, c.billingDay ?? 5);
+      if (dateStr >= from && dateStr <= to && dateStr >= c.startDate && (c.endDate == null || dateStr <= c.endDate)) {
+        addPeriod("income", c.fixedAmount, c.currency);
+      }
+    }
+  }
 
   // MRR = soma dos contratos ativos, todos convertidos para BRL
   // O MetricCard recebe em BRL e converte para a moeda de exibição (sourceCurrency padrão = "BRL")
@@ -220,8 +276,8 @@ async function getDashboardData(from: string, to: string) {
   ].filter((s) => activeLabels.has(s.key));
 
   return {
-    periodIncome: Number(periodIncomeRow[0]?.total ?? 0),
-    periodExpense: Number(periodExpenseRow[0]?.total ?? 0),
+    periodIncome,
+    periodExpense,
     sourceBreakdown,
     sourceTrendData,
     sourceSeries,
@@ -261,11 +317,11 @@ export default async function DashboardPage({
       {/* Resumo do período selecionado (dinheiro real movimentado) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-          <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Recebido no período</p>
+          <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Entradas no período</p>
           <MaskedCurrency amount={data.periodIncome} currency={data.displayCurrency} className="text-xl font-bold text-green-400" />
         </div>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-          <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Pago no período</p>
+          <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Saídas no período</p>
           <MaskedCurrency amount={data.periodExpense} currency={data.displayCurrency} className="text-xl font-bold text-red-400" />
         </div>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
