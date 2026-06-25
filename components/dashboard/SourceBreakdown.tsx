@@ -1,6 +1,9 @@
+"use client";
+
 import { convertAmount, formatCurrency } from "@/lib/currency/format";
 import type { Currency } from "@/lib/currency/format";
 import { sourceLabel } from "@/lib/clientSources";
+import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 
 interface Row {
   code: string;
@@ -16,8 +19,9 @@ interface Props {
 }
 
 export default function SourceBreakdown({ rows, displayCurrency, rate }: Props) {
+  const { hidden } = useValuesVisibility();
   const fmt = (brl: number) =>
-    formatCurrency(convertAmount(brl, "BRL", displayCurrency, rate), displayCurrency);
+    hidden ? "••••••" : formatCurrency(convertAmount(brl, "BRL", displayCurrency, rate), displayCurrency);
 
   const hasData = rows.some((r) => r.mrr > 0 || r.total > 0 || r.clients > 0);
 
