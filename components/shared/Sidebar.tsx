@@ -3,14 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, ClipboardList, Briefcase, FileText, ArrowLeftRight, Bell, Settings, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, ClipboardList, FileText, ArrowLeftRight, Bell, Settings, Menu, X } from "lucide-react";
 import { UserButton } from "@stackframe/stack";
 
 const nav = [
   { href: "/dashboard",    label: "Dashboard",      icon: LayoutDashboard },
   { href: "/clients",      label: "Clientes",        icon: Users },
   { href: "/contracts",    label: "Contratos",       icon: ClipboardList },
-  { href: "/transactions", label: "Projetos",        icon: Briefcase },
   { href: "/invoices",     label: "Faturas",         icon: FileText },
   { href: "/cash-flow",    label: "Fluxo de Caixa",  icon: ArrowLeftRight },
   { href: "/reminders",    label: "Lembretes",       icon: Bell },
