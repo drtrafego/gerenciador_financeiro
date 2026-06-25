@@ -8,6 +8,7 @@ import { formatCurrency } from '@/lib/currency/format';
 import type { Currency } from '@/lib/currency/format';
 import { cn } from '@/lib/utils';
 import { Trash2, FileText } from 'lucide-react';
+import { effectiveContractStatus, CONTRACT_STATUS_LABELS, CONTRACT_STATUS_STYLES } from '@/lib/contracts';
 
 const typeLabels: Record<string, string> = {
   fixed_fee: 'Fee Fixo',
@@ -31,9 +32,19 @@ export default async function ContractDetailPage({
     <div className="max-w-2xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white">
-            {contract.name ?? typeLabels[contract.type] ?? contract.type}
-          </h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl font-bold text-white">
+              {contract.name ?? typeLabels[contract.type] ?? contract.type}
+            </h1>
+            {(() => {
+              const eff = effectiveContractStatus(contract.status, contract.endDate);
+              return (
+                <span className={cn('rounded-full border px-2.5 py-0.5 text-xs font-medium', CONTRACT_STATUS_STYLES[eff])}>
+                  {CONTRACT_STATUS_LABELS[eff]}
+                </span>
+              );
+            })()}
+          </div>
           <p className="text-sm text-zinc-400">
             {formatCurrency(parseFloat(contract.fixedAmount ?? '0'), (contract.currency as Currency) ?? 'BRL')}
             {contract.type === 'fixed_plus_percentage' && contract.percentage && (
