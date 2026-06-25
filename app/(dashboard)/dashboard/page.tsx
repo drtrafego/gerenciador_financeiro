@@ -2,7 +2,9 @@ export const dynamic = "force-dynamic";
 
 import { db } from "@/lib/db";
 import { invoices, transactions, clients, contracts, exchangeRates, systemSettings } from "@/lib/db/schema";
-import { desc, eq, gte, and, sql } from "drizzle-orm";
+import { desc, eq, gte, lte, and, sql } from "drizzle-orm";
+import DateRangePicker from "@/components/shared/DateRangePicker";
+import MaskedCurrency from "@/components/shared/MaskedCurrency";
 import { convertAmount, safeRates } from "@/lib/currency/format";
 import type { Currency } from "@/lib/currency/format";
 import DashboardMetrics from "@/components/dashboard/DashboardMetrics";
@@ -16,7 +18,7 @@ import SourceMrrTrend from "@/components/dashboard/SourceMrrTrend";
 import { CLIENT_SOURCES, NONE_LABEL, NONE_COLOR, sourceLabel } from "@/lib/clientSources";
 import { isContractEarning } from "@/lib/contracts";
 
-async function getDashboardData() {
+async function getDashboardData(from: string, to: string) {
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split("T")[0]!;
   const today = now.toISOString().split("T")[0]!;
@@ -40,6 +42,8 @@ async function getDashboardData() {
     sourceIncome,
     clientSourceRows,
     contractsWithSource,
+    periodIncomeRow,
+    periodExpenseRow,
   ] = await Promise.all([
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "active")),
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "overdue")),
@@ -85,6 +89,13 @@ async function getDashboardData() {
       startDate: contracts.startDate,
       endDate: contracts.endDate,
     }).from(contracts).leftJoin(clients, eq(contracts.clientId, clients.id)),
+    // Receita e despesa REAIS (transações) dentro do período selecionado
+    db.select({ total: sql<number>`coalesce(sum(amount),0)` })
+      .from(transactions)
+      .where(and(eq(transactions.type, "income"), gte(transactions.date, from), lte(transactions.date, to))),
+    db.select({ total: sql<number>`coalesce(sum(amount),0)` })
+      .from(transactions)
+      .where(and(eq(transactions.type, "expense"), gte(transactions.date, from), lte(transactions.date, to))),
   ]);
 
   const rateRow = latestRate[0];
@@ -209,6 +220,8 @@ async function getDashboardData() {
   ].filter((s) => activeLabels.has(s.key));
 
   return {
+    periodIncome: Number(periodIncomeRow[0]?.total ?? 0),
+    periodExpense: Number(periodExpenseRow[0]?.total ?? 0),
     sourceBreakdown,
     sourceTrendData,
     sourceSeries,
@@ -225,11 +238,42 @@ async function getDashboardData() {
   };
 }
 
-export default async function DashboardPage() {
-  const data = await getDashboardData();
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ from?: string; to?: string }>;
+}) {
+  const sp = await searchParams;
+  const today = new Date();
+  const to = sp.to ?? today.toISOString().split("T")[0]!;
+  const from = sp.from ?? new Date(today.getTime() - 29 * 86400000).toISOString().split("T")[0]!;
+  const data = await getDashboardData(from, to);
+
+  const periodBalance = data.periodIncome - data.periodExpense;
 
   return (
     <div className="flex flex-col gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h1 className="text-lg font-semibold text-zinc-200">Visão geral</h1>
+        <DateRangePicker from={from} to={to} />
+      </div>
+
+      {/* Resumo do período selecionado (dinheiro real movimentado) */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+          <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Receita no período</p>
+          <MaskedCurrency amount={data.periodIncome} currency={data.displayCurrency} className="text-xl font-bold text-green-400" />
+        </div>
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+          <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Despesa no período</p>
+          <MaskedCurrency amount={data.periodExpense} currency={data.displayCurrency} className="text-xl font-bold text-red-400" />
+        </div>
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+          <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Saldo no período</p>
+          <MaskedCurrency amount={periodBalance} currency={data.displayCurrency} className={`text-xl font-bold ${periodBalance >= 0 ? "text-white" : "text-red-400"}`} />
+        </div>
+      </div>
+
       <DashboardMetrics
         mrr={data.mrr}
         monthExpense={data.monthExpense}
