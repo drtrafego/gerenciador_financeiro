@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { formatCurrency } from "@/lib/currency/format";
 import type { Currency } from "@/lib/currency/format";
+import MaskedCurrency from "@/components/shared/MaskedCurrency";
 
 const STATUS_STYLES: Record<string, string> = {
   draft:     "text-zinc-400 bg-zinc-800",
@@ -48,9 +48,11 @@ export default function RecentInvoices({ invoices }: Props) {
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <p className="text-sm font-semibold text-zinc-200">
-                  {formatCurrency(parseFloat(inv.amount ?? "0"), (inv.currency as Currency) ?? "BRL")}
-                </p>
+                <MaskedCurrency
+                  amount={parseFloat(inv.amount ?? "0")}
+                  currency={(inv.currency as Currency) ?? "BRL"}
+                  className="text-sm font-semibold text-zinc-200"
+                />
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_STYLES[inv.status ?? "draft"]}`}>
                   {STATUS_LABELS[inv.status ?? "draft"]}
                 </span>

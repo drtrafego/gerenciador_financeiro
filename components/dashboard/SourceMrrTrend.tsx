@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 
 interface Props {
   data: Record<string, number | string>[];
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export default function SourceMrrTrend({ data, series }: Props) {
+  const { hidden } = useValuesVisibility();
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
       <p className="text-sm font-semibold text-zinc-200 mb-4">Evolução do MRR por Origem (6 meses)</p>
@@ -30,12 +32,12 @@ export default function SourceMrrTrend({ data, series }: Props) {
             <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
             <XAxis dataKey="month" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} width={50}
-              tickFormatter={(v) => `${(Number(v) / 1000).toFixed(0)}k`} />
+              tickFormatter={(v) => (hidden ? "" : `${(Number(v) / 1000).toFixed(0)}k`)} />
             <Tooltip
               contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 8 }}
               labelStyle={{ color: "#a1a1aa" }}
               itemStyle={{ color: "#e4e4e7" }}
-              formatter={(value, name) => [`R$ ${Number(value).toLocaleString("pt-BR")}`, name]}
+              formatter={(value, name) => [hidden ? "••••••" : `R$ ${Number(value).toLocaleString("pt-BR")}`, name]}
             />
             <Legend wrapperStyle={{ fontSize: 11, color: "#71717a" }} />
             {series.map((s) => (

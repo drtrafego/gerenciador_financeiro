@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { formatCurrency } from "@/lib/currency/format";
 import type { Currency } from "@/lib/currency/format";
 import { AlertCircle, Clock } from "lucide-react";
+import MaskedCurrency from "@/components/shared/MaskedCurrency";
 
 interface Invoice {
   id: string;
@@ -38,9 +38,11 @@ export default function AlertsPanel({ overdue, upcoming }: Props) {
               <Link key={inv.id} href={`/invoices/${inv.id}`}
                 className="flex items-center justify-between rounded-lg bg-red-500/5 border border-red-500/10 px-3 py-2 hover:border-red-500/20 transition-colors">
                 <span className="text-xs font-mono text-red-300">{inv.invoiceNumber ?? "—"}</span>
-                <span className="text-xs font-semibold text-red-400">
-                  {formatCurrency(parseFloat(inv.amount ?? "0"), (inv.currency as Currency) ?? "BRL")}
-                </span>
+                <MaskedCurrency
+                  amount={parseFloat(inv.amount ?? "0")}
+                  currency={(inv.currency as Currency) ?? "BRL"}
+                  className="text-xs font-semibold text-red-400"
+                />
               </Link>
             ))}
           </div>
@@ -63,9 +65,11 @@ export default function AlertsPanel({ overdue, upcoming }: Props) {
                     Vence {inv.dueDate ? new Date(inv.dueDate + "T12:00:00").toLocaleDateString("pt-BR") : "—"}
                   </p>
                 </div>
-                <span className="text-xs font-semibold text-yellow-400">
-                  {formatCurrency(parseFloat(inv.amount ?? "0"), (inv.currency as Currency) ?? "BRL")}
-                </span>
+                <MaskedCurrency
+                  amount={parseFloat(inv.amount ?? "0")}
+                  currency={(inv.currency as Currency) ?? "BRL"}
+                  className="text-xs font-semibold text-yellow-400"
+                />
               </Link>
             ))}
           </div>

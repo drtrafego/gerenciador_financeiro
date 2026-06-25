@@ -11,12 +11,14 @@ import {
   Cell,
 } from "recharts";
 import { sourceLabel, sourceColor } from "@/lib/clientSources";
+import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 
 interface Props {
   rows: { code: string; mrr: number }[];
 }
 
 export default function SourceMrrBar({ rows }: Props) {
+  const { hidden } = useValuesVisibility();
   const data = rows.map((r) => {
     const code = r.code === "none" ? null : r.code;
     return { canal: sourceLabel(code), MRR: Number(r.mrr), color: sourceColor(code) };
@@ -37,13 +39,13 @@ export default function SourceMrrBar({ rows }: Props) {
             <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
             <XAxis dataKey="canal" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} width={50}
-              tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
+              tickFormatter={(v) => (hidden ? "" : `${(v / 1000).toFixed(0)}k`)} />
             <Tooltip
               cursor={{ fill: "#27272a55" }}
               contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 8 }}
               labelStyle={{ color: "#a1a1aa" }}
               itemStyle={{ color: "#e4e4e7" }}
-              formatter={(value) => [`R$ ${Number(value).toLocaleString("pt-BR")}`, "MRR/mês"]}
+              formatter={(value) => [hidden ? "••••••" : `R$ ${Number(value).toLocaleString("pt-BR")}`, "MRR/mês"]}
             />
             <Bar dataKey="MRR" radius={[4, 4, 0, 0]}>
               {data.map((d) => (

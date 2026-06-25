@@ -4,11 +4,11 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getInvoiceWithClient } from '@/lib/db/queries';
 import { deleteInvoiceAction, markInvoicePaidAction } from '../actions';
-import { formatCurrency } from '@/lib/currency/format';
 import type { Currency } from '@/lib/currency/format';
 import { cn } from '@/lib/utils';
 import { Trash2, CheckCircle, ExternalLink, FileText } from 'lucide-react';
 import SendEmailButton from '@/components/invoices/SendEmailButton';
+import MaskedCurrency from '@/components/shared/MaskedCurrency';
 
 const statusStyles: Record<string, string> = {
   draft: 'bg-zinc-500/10 text-zinc-400 border-zinc-500/20',
@@ -155,7 +155,7 @@ export default async function InvoiceDetailPage({
                   {invoice.description ?? 'Serviços de gestão de tráfego pago'}
                 </td>
                 <td className="py-4 text-right font-semibold text-white">
-                  {formatCurrency(parseFloat(invoice.amount ?? '0'), (invoice.currency as Currency) ?? 'BRL')}
+                  <MaskedCurrency amount={parseFloat(invoice.amount ?? '0')} currency={(invoice.currency as Currency) ?? 'BRL'} />
                 </td>
               </tr>
             </tbody>
@@ -166,9 +166,11 @@ export default async function InvoiceDetailPage({
         <div className="p-8">
           <div className="flex justify-between items-center">
             <span className="text-zinc-400">Total</span>
-            <span className="text-2xl font-bold text-white">
-              {formatCurrency(parseFloat(invoice.amount ?? '0'), (invoice.currency as Currency) ?? 'BRL')}
-            </span>
+            <MaskedCurrency
+              amount={parseFloat(invoice.amount ?? '0')}
+              currency={(invoice.currency as Currency) ?? 'BRL'}
+              className="text-2xl font-bold text-white"
+            />
           </div>
           {invoice.notes && (
             <div className="mt-6 rounded-lg bg-zinc-800 p-4">
