@@ -301,8 +301,9 @@ export default async function DashboardPage({
 }) {
   const sp = await searchParams;
   const today = new Date();
-  const to = sp.to ?? today.toISOString().split("T")[0]!;
-  const from = sp.from ?? new Date(today.getTime() - 29 * 86400000).toISOString().split("T")[0]!;
+  // Padrão: mês atual inteiro
+  const to = sp.to ?? new Date(today.getFullYear(), today.getMonth() + 1, 0).toISOString().split("T")[0]!;
+  const from = sp.from ?? new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split("T")[0]!;
   const data = await getDashboardData(from, to);
 
   const periodBalance = data.periodIncome - data.periodExpense;

@@ -21,8 +21,8 @@ export default async function ContractsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-bold text-white">Contratos & Projetos</h1>
-        <p className="text-sm text-zinc-400">Honorários recorrentes e serviços pontuais</p>
+        <h1 className="text-xl font-bold text-white">Contratos e Receitas</h1>
+        <p className="text-sm text-zinc-400">Honorários recorrentes e receitas avulsas</p>
       </div>
       <ContractsView contractRows={contractRows} projects={projects} clients={clientList} />
     </div>
