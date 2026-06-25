@@ -27,9 +27,9 @@ export default async function CashFlowPage({
     from = iso(new Date(y, m - 1, 1));
     to = iso(new Date(y, m, 0));
   } else {
-    // Padrão: últimos 30 dias
-    to = iso(now);
-    from = iso(new Date(now.getTime() - 29 * 86400000));
+    // Padrão: mês atual inteiro
+    from = iso(new Date(now.getFullYear(), now.getMonth(), 1));
+    to = iso(new Date(now.getFullYear(), now.getMonth() + 1, 0));
   }
 
   const [txData, recurringFromPast, contractData, latestRate, displayCurrencySetting, clientList] = await Promise.all([
