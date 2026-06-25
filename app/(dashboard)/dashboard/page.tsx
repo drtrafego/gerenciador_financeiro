@@ -14,6 +14,7 @@ import SourceBreakdown from "@/components/dashboard/SourceBreakdown";
 import SourceMrrBar from "@/components/dashboard/SourceMrrBar";
 import SourceMrrTrend from "@/components/dashboard/SourceMrrTrend";
 import { CLIENT_SOURCES, NONE_LABEL, NONE_COLOR, sourceLabel } from "@/lib/clientSources";
+import { isContractEarning } from "@/lib/contracts";
 
 async function getDashboardData() {
   const now = new Date();
@@ -64,8 +65,8 @@ async function getDashboardData() {
     db.select({ amount: transactions.amount, date: transactions.date })
       .from(transactions)
       .where(and(eq(transactions.type, "expense"), gte(transactions.date, sixMonthsAgo.toISOString().split("T")[0]!))),
-    // Origem do cliente: MRR (contratos ativos por canal)
-    db.select({ source: clients.source, fixedAmount: contracts.fixedAmount, currency: contracts.currency })
+    // Origem do cliente: MRR (contratos ativos por canal; finalizados filtrados em JS)
+    db.select({ source: clients.source, fixedAmount: contracts.fixedAmount, currency: contracts.currency, endDate: contracts.endDate })
       .from(contracts)
       .innerJoin(clients, eq(contracts.clientId, clients.id))
       .where(eq(contracts.status, "active")),
@@ -94,7 +95,7 @@ async function getDashboardData() {
 
   // MRR = soma dos contratos ativos, todos convertidos para BRL
   // O MetricCard recebe em BRL e converte para a moeda de exibição (sourceCurrency padrão = "BRL")
-  const activeContracts = allContracts.filter((c) => c.status === "active");
+  const activeContracts = allContracts.filter((c) => isContractEarning(c.status, c.endDate));
   const mrr = activeContracts.reduce((sum, c) => {
     const amount = parseFloat(c.fixedAmount ?? "0");
     return sum + convertAmount(amount, (c.currency ?? "BRL") as Currency, "BRL", rate);
@@ -148,6 +149,7 @@ async function getDashboardData() {
   };
 
   for (const r of sourceContracts) {
+    if (!isContractEarning("active", r.endDate)) continue; // pula contratos finalizados
     const key = r.source ?? "none";
     ensureSource(key).mrr += convertAmount(parseFloat(r.fixedAmount ?? "0"), (r.currency ?? "BRL") as Currency, "BRL", rate);
   }

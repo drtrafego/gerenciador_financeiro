@@ -10,6 +10,14 @@ import { cn } from '@/lib/utils';
 import { Mail, Phone, Pencil, FileText, Plus } from 'lucide-react';
 import DeleteClientButton from '@/components/clients/DeleteClientButton';
 import { CLIENT_SOURCES, sourceLabel } from '@/lib/clientSources';
+import { effectiveContractStatus, CONTRACT_STATUS_LABELS } from '@/lib/contracts';
+
+const contractStatusText: Record<string, string> = {
+  active: 'text-green-400',
+  paused: 'text-yellow-400',
+  finished: 'text-blue-400',
+  cancelled: 'text-zinc-400',
+};
 
 const statusStyles: Record<string, string> = {
   active: 'bg-green-500/10 text-green-400 border-green-500/20',
@@ -239,9 +247,14 @@ export default async function ClientDetailPage({
                   <p className="text-sm font-semibold text-white">
                     {formatCurrency(parseFloat(c.fixedAmount ?? '0'), (c.currency as Currency) ?? 'BRL')}
                   </p>
-                  <p className={cn('text-xs', c.status === 'active' ? 'text-green-400' : 'text-yellow-400')}>
-                    {c.status === 'active' ? 'Ativo' : c.status === 'paused' ? 'Pausado' : 'Cancelado'}
-                  </p>
+                  {(() => {
+                    const eff = effectiveContractStatus(c.status, c.endDate);
+                    return (
+                      <p className={cn('text-xs', contractStatusText[eff])}>
+                        {CONTRACT_STATUS_LABELS[eff]}
+                      </p>
+                    );
+                  })()}
                 </div>
               </Link>
             ))}

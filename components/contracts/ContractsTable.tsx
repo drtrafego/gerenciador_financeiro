@@ -5,6 +5,11 @@ import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/currency/format";
 import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 import type { Currency } from "@/lib/currency/format";
+import {
+  effectiveContractStatus,
+  CONTRACT_STATUS_LABELS,
+  CONTRACT_STATUS_STYLES,
+} from "@/lib/contracts";
 
 const HIDDEN = "••••••";
 
@@ -12,18 +17,6 @@ const typeLabels: Record<string, string> = {
   fixed_fee: "Fee Fixo",
   fixed_plus_percentage: "Fixo + %",
   project: "Projeto",
-};
-
-const statusStyles: Record<string, string> = {
-  active: "bg-green-500/10 text-green-400 border-green-500/20",
-  paused: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
-  cancelled: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
-};
-
-const statusLabels: Record<string, string> = {
-  active: "Ativo",
-  paused: "Pausado",
-  cancelled: "Cancelado",
 };
 
 type ContractRow = {
@@ -36,6 +29,7 @@ type ContractRow = {
     currency: string | null;
     billingDay: number | null;
     status: string | null;
+    endDate: string | null;
   };
   clientName: string | null;
 };
@@ -63,7 +57,9 @@ export default function ContractsTable({ rows }: { rows: ContractRow[] }) {
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-800">
-          {rows.map(({ contract, clientName }) => (
+          {rows.map(({ contract, clientName }) => {
+            const eff = effectiveContractStatus(contract.status, contract.endDate);
+            return (
             <tr key={contract.id} className="hover:bg-zinc-800/50 transition-colors">
               <td className="px-4 py-3 font-medium text-white">{clientName ?? "—"}</td>
               <td className="px-4 py-3 text-zinc-300">
@@ -83,10 +79,10 @@ export default function ContractsTable({ rows }: { rows: ContractRow[] }) {
                 <span
                   className={cn(
                     "rounded-full border px-2.5 py-0.5 text-xs font-medium",
-                    statusStyles[contract.status ?? "active"]
+                    CONTRACT_STATUS_STYLES[eff]
                   )}
                 >
-                  {statusLabels[contract.status ?? "active"]}
+                  {CONTRACT_STATUS_LABELS[eff]}
                 </span>
               </td>
               <td className="px-4 py-3 text-right">
@@ -98,7 +94,8 @@ export default function ContractsTable({ rows }: { rows: ContractRow[] }) {
                 </Link>
               </td>
             </tr>
-          ))}
+            );
+          })}
         </tbody>
       </table>
     </div>
