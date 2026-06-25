@@ -11,6 +11,9 @@ import MRRChart from "@/components/dashboard/MRRChart";
 import RecentInvoices from "@/components/dashboard/RecentInvoices";
 import AlertsPanel from "@/components/dashboard/AlertsPanel";
 import SourceBreakdown from "@/components/dashboard/SourceBreakdown";
+import SourceMrrBar from "@/components/dashboard/SourceMrrBar";
+import SourceMrrTrend from "@/components/dashboard/SourceMrrTrend";
+import { CLIENT_SOURCES, NONE_LABEL, NONE_COLOR, sourceLabel } from "@/lib/clientSources";
 
 async function getDashboardData() {
   const now = new Date();
@@ -35,6 +38,7 @@ async function getDashboardData() {
     sourceContracts,
     sourceIncome,
     clientSourceRows,
+    contractsWithSource,
   ] = await Promise.all([
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "active")),
     db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "overdue")),
@@ -72,6 +76,14 @@ async function getDashboardData() {
       .where(eq(transactions.type, "income")),
     // Contagem de clientes por origem (todos os clientes cadastrados)
     db.select({ source: clients.source }).from(clients),
+    // Todos os contratos com a origem do cliente, para a evolução do MRR por canal
+    db.select({
+      source: clients.source,
+      fixedAmount: contracts.fixedAmount,
+      currency: contracts.currency,
+      startDate: contracts.startDate,
+      endDate: contracts.endDate,
+    }).from(contracts).leftJoin(clients, eq(contracts.clientId, clients.id)),
   ]);
 
   const rateRow = latestRate[0];
@@ -158,8 +170,46 @@ async function getDashboardData() {
       return { code: key, mrr: e?.mrr ?? 0, total: e?.total ?? 0, clients: e?.clients ?? 0 };
     });
 
+  // Evolução do MRR por canal nos últimos 6 meses (mesmo critério de janela do RevenueChart).
+  const sourceTrendData = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const monthStart = new Date(d.getFullYear(), d.getMonth(), 1);
+    const monthEnd = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+    const label = d.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
+
+    const row: Record<string, number | string> = { month: label };
+    for (const s of CLIENT_SOURCES) row[s.label] = 0;
+    row[NONE_LABEL] = 0;
+
+    for (const c of contractsWithSource) {
+      const start = new Date(c.startDate + "T12:00:00");
+      const end = c.endDate ? new Date(c.endDate + "T12:00:00") : null;
+      if (start <= monthEnd && (end === null || end >= monthStart)) {
+        const amount = convertAmount(parseFloat(c.fixedAmount ?? "0"), (c.currency ?? "BRL") as Currency, "BRL", rate);
+        const key = sourceLabel(c.source);
+        row[key] = (Number(row[key]) || 0) + amount;
+      }
+    }
+    sourceTrendData.push(row);
+  }
+
+  // Só desenha as linhas dos canais que têm algum valor na janela.
+  const activeLabels = new Set<string>();
+  for (const row of sourceTrendData) {
+    for (const k of Object.keys(row)) {
+      if (k !== "month" && Number(row[k]) > 0) activeLabels.add(k);
+    }
+  }
+  const sourceSeries = [
+    ...CLIENT_SOURCES.map((s) => ({ key: s.label, color: s.color })),
+    { key: NONE_LABEL, color: NONE_COLOR },
+  ].filter((s) => activeLabels.has(s.key));
+
   return {
     sourceBreakdown,
+    sourceTrendData,
+    sourceSeries,
     activeClients: Number(activeClients[0]?.count ?? 0),
     overdueClients: Number(overdueClients[0]?.count ?? 0),
     rate,
@@ -191,6 +241,11 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <RevenueChart data={data.chartData} />
         <MRRChart data={data.chartData} />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <SourceMrrBar rows={data.sourceBreakdown} />
+        <SourceMrrTrend data={data.sourceTrendData} series={data.sourceSeries} />
       </div>
 
       <SourceBreakdown

@@ -18,14 +18,12 @@ const connectionString = m[1].trim();
 //   'Gramado': 'referral',
 // ─────────────────────────────────────────────────────────────
 const MAP = {
-  'Esmalteria': 'organic',
-  'Rocha Advogados': 'organic',
-  'Ferreira Garcia': 'organic',
-  'Carvalho Teixeira': 'google',
-  'Gramado': 'google',
-  'Pontucar': 'google',
-  'Dr Lucas': 'referral',
-  'Cristina': 'organic',
+  'pra cima': 'organic',
+  'Felipe Matias': 'google',
+  'Locadora': 'organic',
+  'Paulistinha': 'organic',
+  'Ruck': 'google',
+  'Vinicius': 'google',
 };
 
 (async () => {
