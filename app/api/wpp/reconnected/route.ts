@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     try {
       await sendEmail(
         process.env.GMAIL_USER,
-        '✅ WhatsApp Reconectado — DR.TRAFEGO Financeiro',
+        '✅ WhatsApp Reconectado — Casal do Tráfego Financeiro',
         `<p>O WhatsApp reconectou em <strong>${now}</strong>. O sistema voltou a funcionar normalmente.</p>`
       );
     } catch {}
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
         headers: { 'Content-Type': 'application/json', 'x-api-key': WPP_KEY },
         body: JSON.stringify({
           phone: alertPhone,
-          message: `✅ DR.TRAFEGO Financeiro: WhatsApp reconectado em ${now}.`,
+          message: `✅ Casal do Tráfego Financeiro: WhatsApp reconectado em ${now}.`,
         }),
       });
     } catch {}

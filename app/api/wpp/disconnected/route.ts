@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   try {
     await sendEmail(
       adminEmail,
-      '⚠️ WhatsApp Desconectado — DR.TRAFEGO Financeiro',
+      '⚠️ WhatsApp Desconectado — Casal do Tráfego Financeiro',
       `<p>O WhatsApp do sistema financeiro <strong>desconectou</strong> em <strong>${now}</strong>.</p>
        <p>Acesse <a href="https://financeiro.casaldotrafego.com/reminders">financeiro.casaldotrafego.com/reminders</a> e escaneie o QR code para reconectar.</p>`
     );

@@ -109,7 +109,7 @@ export default async function InvoiceDetailPage({
                 <div className="h-8 w-8 rounded-lg bg-indigo-500 flex items-center justify-center">
                   <FileText className="h-4 w-4 text-white" />
                 </div>
-                <span className="font-bold text-white text-lg">DR.TRÁFEGO</span>
+                <span className="font-bold text-white text-lg">Casal do Tráfego</span>
               </div>
               <p className="text-xs text-zinc-500">Agência de Tráfego Pago</p>
             </div>

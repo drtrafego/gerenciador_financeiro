@@ -5,7 +5,7 @@ import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackServerApp } from "@/stack/server";
 
 export const metadata: Metadata = {
-  title: "DR.TRÁFEGO — Financeiro",
+  title: "Casal do Tráfego — Financeiro",
   description: "Gerenciador financeiro para agência de tráfego pago.",
 };
 
