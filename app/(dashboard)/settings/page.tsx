@@ -33,7 +33,7 @@ export default async function SettingsPage() {
       <HideValuesPreference />
 
       <AgencySettings
-        name={agencyName[0]?.value ?? "DR.TRÁFEGO"}
+        name={agencyName[0]?.value ?? "Casal do Tráfego"}
         email={agencyEmail[0]?.value ?? ""}
         cnpj={agencyCnpj[0]?.value ?? ""}
         address={agencyAddress[0]?.value ?? ""}
