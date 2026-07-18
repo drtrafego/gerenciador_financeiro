@@ -5,9 +5,6 @@ import { Bell, Plus, MessageSquare, Wifi, WifiOff, Loader2, Trash2, X, Check, Re
 import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction, updateTemplateAction, updateReminderAction, saveAlertPhoneAction, setDefaultTemplateAction } from "@/app/(dashboard)/reminders/actions";
 import { useRouter } from "next/navigation";
 
-const WPP_URL = process.env.NEXT_PUBLIC_WPP_URL ?? "";
-const WPP_KEY = process.env.NEXT_PUBLIC_WPP_KEY ?? "";
-
 type ReminderRow = {
   reminder: {
     id: string;
@@ -207,9 +204,8 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
   const [alertPhoneSaved, setAlertPhoneSaved] = useState(false);
 
   const fetchStatus = async () => {
-    if (!WPP_URL) return;
     try {
-      const res = await fetch(`${WPP_URL}/status`, { headers: { "x-api-key": WPP_KEY } });
+      const res = await fetch(`/api/wpp/status`, { cache: "no-store" });
       const data = await res.json();
       setWppStatus(data);
     } catch {
@@ -218,10 +214,9 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
   };
 
   const fetchQR = async () => {
-    if (!WPP_URL) return;
     setLoadingQR(true);
     try {
-      const res = await fetch(`${WPP_URL}/qr`, { headers: { "x-api-key": WPP_KEY } });
+      const res = await fetch(`/api/wpp/qr`, { cache: "no-store" });
       const data = await res.json();
       if (data.connected) {
         setWppStatus({ connected: true, hasQR: false });
@@ -386,9 +381,9 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
     setTestSending(true);
     setTestResult(null);
     try {
-      const res = await fetch(`${WPP_URL}/send`, {
+      const res = await fetch(`/api/wpp/send-test`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-api-key": WPP_KEY },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone: testPhone, message: testMessage }),
       });
       const data = await res.json();
@@ -459,11 +454,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
             <h2 className="text-sm font-semibold text-zinc-200">Status da Conexão</h2>
 
-            {!WPP_URL ? (
-              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4 text-sm text-yellow-400">
-                Configure <code className="font-mono">NEXT_PUBLIC_WPP_URL</code> e <code className="font-mono">NEXT_PUBLIC_WPP_KEY</code> nas variáveis de ambiente.
-              </div>
-            ) : wppStatus?.connected ? (
+            {wppStatus?.connected ? (
               <div className="space-y-4">
                 <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 flex items-center gap-3">
                   <Check size={20} className="text-green-400 shrink-0" />
