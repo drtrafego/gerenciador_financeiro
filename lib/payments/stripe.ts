@@ -1,4 +1,4 @@
-// Stripe não é utilizado neste projeto (DR.TRÁFEGO Financeiro)
+// Stripe não é utilizado neste projeto (Casal do Tráfego Financeiro)
 // Este arquivo é mantido para compatibilidade com imports do repo base
 
 import { redirect } from 'next/navigation';

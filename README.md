@@ -1,4 +1,4 @@
-# DR.TRÁFEGO Finance
+# Casal do Tráfego Finance
 
 Sistema financeiro completo para agências de tráfego pago. Gestão de clientes, contratos, faturas, transações e fluxo de caixa com suporte a múltiplas moedas (BRL, USD, ARS).
 

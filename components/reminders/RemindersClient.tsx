@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useTransition } from "react";
 import { Bell, Plus, MessageSquare, Wifi, WifiOff, Loader2, Trash2, X, Check, RefreshCw, Pencil, Repeat } from "lucide-react";
-import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction, updateTemplateAction, updateReminderAction, saveAlertPhoneAction } from "@/app/(dashboard)/reminders/actions";
+import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction, updateTemplateAction, updateReminderAction, saveAlertPhoneAction, setDefaultTemplateAction } from "@/app/(dashboard)/reminders/actions";
 import { useRouter } from "next/navigation";
 
 const WPP_URL = process.env.NEXT_PUBLIC_WPP_URL ?? "";
@@ -349,6 +349,19 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
     });
   };
 
+  const handleSetDefaultTemplate = (id: string, name: string) => {
+    if (
+      !window.confirm(
+        `Definir "${name}" como mensagem padrão?\n\nA partir do próximo envio automático, ela substitui a mensagem atual enviada a todos os clientes.`
+      )
+    )
+      return;
+    startTransition(async () => {
+      await setDefaultTemplateAction(id);
+      router.refresh();
+    });
+  };
+
   const handleOpenEditTemplate = (t: Template) => {
     setEditingTemplate(t);
     setEditTemplateName(t.name);
@@ -623,14 +636,24 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-white">{t.name}</p>
                         {t.isDefault === "true" && (
-                          <span className="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full px-2 py-0.5">
-                            Padrão
+                          <span className="rounded-full border border-green-500/20 bg-green-500/10 px-2.5 py-0.5 text-xs font-medium text-green-400">
+                            Mensagem padrão
                           </span>
                         )}
                       </div>
                       <p className="text-sm text-zinc-400 mt-2 whitespace-pre-wrap">{t.body}</p>
                     </div>
                     <div className="flex items-center gap-1 ml-4 shrink-0">
+                      {t.isDefault !== "true" && (
+                        <button
+                          onClick={() => handleSetDefaultTemplate(t.id, t.name)}
+                          disabled={isPending}
+                          className="text-xs text-zinc-500 hover:text-green-400 px-2 py-1 rounded transition-colors disabled:opacity-50"
+                          title="Definir como padrão"
+                        >
+                          Definir como padrão
+                        </button>
+                      )}
                       <button
                         onClick={() => handleOpenEditTemplate(t)}
                         className="text-zinc-600 hover:text-indigo-400 p-1 rounded transition-colors"
