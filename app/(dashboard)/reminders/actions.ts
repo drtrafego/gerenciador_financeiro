@@ -52,6 +52,18 @@ export async function deleteTemplateAction(id: string) {
   revalidatePath('/reminders');
 }
 
+// Marca um template como o padrão usado na automação de vencimentos.
+// Só um template fica como padrão por vez.
+export async function setDefaultTemplateAction(id: string) {
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
+  await db.transaction(async (tx) => {
+    await tx.update(messageTemplates).set({ isDefault: 'false' });
+    await tx.update(messageTemplates).set({ isDefault: 'true' }).where(eq(messageTemplates.id, id));
+  });
+  revalidatePath('/reminders');
+}
+
 // ── LEMBRETES ─────────────────────────────────
 
 const reminderSchema = z.object({

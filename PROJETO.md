@@ -1,4 +1,4 @@
-# DR.TRÁFEGO — Gerenciador Financeiro
+# Casal do Tráfego — Gerenciador Financeiro
 
 Sistema de gestão financeira completo para agência de tráfego pago (Meta Ads + Google Ads).
 
@@ -130,7 +130,7 @@ O repo base já provê:
 | value | text | Valor |
 | updated_at | timestamp | Última atualização |
 
-Registros padrão: `display_currency=BRL`, `agency_name=DR.TRÁFEGO`, `agency_email=...`
+Registros padrão: `display_currency=BRL`, `agency_name=Casal do Tráfego`, `agency_email=...`
 
 #### `clients`
 | Campo | Tipo | Descrição |
@@ -226,7 +226,7 @@ STACK_SECRET_SERVER_KEY=
 CRON_SECRET=string_aleatoria_segura
 
 # App
-NEXT_PUBLIC_APP_NAME=DR.TRÁFEGO
+NEXT_PUBLIC_APP_NAME=Casal do Tráfego
 NEXT_PUBLIC_APP_URL=https://finance.drtrafego.com.br
 ```
 

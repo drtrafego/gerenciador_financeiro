@@ -9,8 +9,9 @@ import {
   decimal,
   date,
   boolean,
+  uniqueIndex,
 } from 'drizzle-orm/pg-core';
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 
 // ─────────────────────────────────────────────
 // REPO BASE — mantido para compatibilidade com auth JWT existente
@@ -217,7 +218,12 @@ export const reminders = pgTable('reminders', {
   sentAt: timestamp('sent_at'),
   errorMessage: text('error_message'),
   createdAt: timestamp('created_at').defaultNow(),
-});
+}, (table) => ({
+  // Um contrato só pode ter um lembrete por data de vencimento (dedupe do cron)
+  contractDueDateUnique: uniqueIndex('reminders_contract_duedate_unique')
+    .on(table.contractId, table.triggerDate)
+    .where(sql`${table.contractId} IS NOT NULL`),
+}));
 
 // ─────────────────────────────────────────────
 // RELATIONS
