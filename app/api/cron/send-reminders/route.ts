@@ -84,10 +84,10 @@ export async function GET(request: Request) {
   const defaultBody = defaultTpl?.body ?? DEFAULT_TEMPLATE_BODY;
 
   // ─────────────────────────────────────────────────────────────
-  // PASSO A — Contratos ativos que vencem neste mês (dia fixo)
-  // Dispara no dia do vencimento; se o cron falhar naquele dia, faz
-  // catch-up nos dias seguintes (dayOfMonth >= dia efetivo), sem duplicar:
-  // o INSERT usa a data de vencimento canônica do mês como chave única.
+  // PASSO A — Contratos ativos que vencem HOJE (dia fixo do mês).
+  // Dispara somente no dia exato do vencimento. O INSERT usa a data de
+  // vencimento canônica do mês como chave única, então mesmo que o cron
+  // rode duas vezes no mesmo dia, o cliente recebe uma única mensagem.
   // ─────────────────────────────────────────────────────────────
   const activeContracts = await db
     .select({ contract: contracts, client: clients })
@@ -98,7 +98,7 @@ export async function GET(request: Request) {
   const dueThisMonth = activeContracts.filter(({ contract }) => {
     const bd = contract.billingDay ?? 5;
     const effectiveDay = Math.min(bd, lastDayOfMonth); // billingDay 31 em fev -> último dia
-    if (dayOfMonth < effectiveDay) return false; // ainda não chegou o dia
+    if (dayOfMonth !== effectiveDay) return false; // avisa somente no dia exato do vencimento
     if (contract.startDate && contract.startDate > todayBrt) return false; // contrato futuro
     if (contract.endDate && contract.endDate < todayBrt) return false; // contrato encerrado
     return true;
