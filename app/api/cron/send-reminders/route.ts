@@ -28,6 +28,14 @@ function formatBRL(value: string | null | undefined) {
   })}`;
 }
 
+// Saudação ao cliente: primeiro nome do contato (ex: "Isabela Franklin" -> "Isabela").
+// Se não houver contato cadastrado, usa o nome do cliente para não ficar sem nada.
+function greetingName(contactName: string | null | undefined, clientName: string | null | undefined) {
+  const contact = (contactName ?? '').trim();
+  if (contact) return contact.split(/\s+/)[0]!;
+  return clientName ?? 'Cliente';
+}
+
 async function sendWhatsApp(phone: string, message: string): Promise<boolean> {
   try {
     const res = await fetch(`${WPP_URL}/send`, {
@@ -114,7 +122,8 @@ export async function GET(request: Request) {
     // data de vencimento canônica do mês — mesma chave o mês inteiro (dedupe + catch-up)
     const dueDate = `${year}-${mm}-${String(effectiveDay).padStart(2, '0')}`;
     const valor = formatBRL(contract.fixedAmount);
-    const nome = client?.name ?? 'Cliente';
+    const nomeEmpresa = client?.name ?? 'Cliente'; // resumo do dono (identifica quem é)
+    const saudacao = greetingName(client?.contactName, client?.name); // mensagem ao cliente
 
     // Cliente sem telefone: registra falha (idempotente) e avisa no resumo do dono
     if (!client?.phone) {
@@ -133,7 +142,7 @@ export async function GET(request: Request) {
         .returning({ id: reminders.id });
       if (claimed) {
         clientFailed++;
-        dueSummary.push({ name: nome, valor, ok: false });
+        dueSummary.push({ name: nomeEmpresa, valor, ok: false });
       }
       continue;
     }
@@ -157,7 +166,7 @@ export async function GET(request: Request) {
     if (!claimed) continue; // já enviado neste mês (ou reivindicado por outra execução)
 
     const message = resolveMessage(defaultBody, {
-      nome,
+      nome: saudacao,
       valor,
       data: `${String(effectiveDay).padStart(2, '0')}/${mm}/${year}`,
       dias: '0',
@@ -165,7 +174,7 @@ export async function GET(request: Request) {
     const ok = await sendWhatsApp(client.phone, message);
     if (ok) clientSent++;
     else clientFailed++;
-    dueSummary.push({ name: nome, valor, ok });
+    dueSummary.push({ name: nomeEmpresa, valor, ok });
 
     await db
       .update(reminders)
@@ -218,7 +227,7 @@ export async function GET(request: Request) {
       const valor = invoice?.amount ? formatBRL(invoice.amount) : formatBRL(contract?.fixedAmount);
 
       message = resolveMessage(template.body, {
-        nome: client?.name ?? 'Cliente',
+        nome: greetingName(client?.contactName, client?.name),
         valor,
         data: dueDateFormatted,
         dias: daysUntil > 0 ? String(daysUntil) : '0',
