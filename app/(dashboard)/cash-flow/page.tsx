@@ -2,7 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { db } from "@/lib/db";
 import { transactions, contracts, clients, exchangeRates, systemSettings } from "@/lib/db/schema";
-import { desc, eq, and, gte, lte, or, isNull, lt, asc } from "drizzle-orm";
+import { desc, eq, and, gte, lte, or, isNull, lt, asc, getTableColumns } from "drizzle-orm";
+import { notTestClient } from "@/lib/db/filters";
 import CashFlowClient from "@/components/cashflow/CashFlowClient";
 
 const iso = (d: Date) => d.toISOString().split("T")[0]!;
@@ -35,21 +36,24 @@ export default async function CashFlowPage({
   const [txData, recurringFromPast, contractData, latestRate, displayCurrencySetting, clientList] = await Promise.all([
     // Transações reais dentro do intervalo
     db
-      .select()
+      .select(getTableColumns(transactions))
       .from(transactions)
-      .where(and(gte(transactions.date, from), lte(transactions.date, to)))
+      .leftJoin(clients, eq(transactions.clientId, clients.id))
+      .where(and(gte(transactions.date, from), lte(transactions.date, to), notTestClient))
       .orderBy(desc(transactions.date)),
 
     // Recorrentes que começaram ANTES do intervalo e seguem ativas (projetar nos meses do intervalo)
     db
-      .select()
+      .select(getTableColumns(transactions))
       .from(transactions)
+      .leftJoin(clients, eq(transactions.clientId, clients.id))
       .where(
         and(
           eq(transactions.isRecurring, "true"),
           eq(transactions.recurringActive, "true"),
           lt(transactions.date, from),
-          or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, from))
+          or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, from)),
+          notTestClient
         )
       ),
 
@@ -72,7 +76,8 @@ export default async function CashFlowPage({
         and(
           lte(contracts.startDate, to),
           or(isNull(contracts.endDate), gte(contracts.endDate, from)),
-          eq(contracts.status, "active")
+          eq(contracts.status, "active"),
+          notTestClient
         )
       ),
 

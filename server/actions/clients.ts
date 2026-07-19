@@ -17,6 +17,7 @@ const clientSchema = z.object({
   currency: z.enum(["BRL", "USD", "ARS"]),
   status: z.enum(["active", "inactive"]),
   source: z.enum(CLIENT_SOURCE_CODES as [string, ...string[]]).optional().or(z.literal("")),
+  is_test: z.boolean().optional(),
   notes: z.string().optional(),
 });
 
@@ -33,6 +34,7 @@ export async function createClient(data: unknown): Promise<void> {
     currency: parsed.currency,
     status: parsed.status,
     source: parsed.source || null,
+    isTest: parsed.is_test ?? false,
     notes: parsed.notes || null,
   });
   revalidatePath("/clients");
@@ -53,6 +55,7 @@ export async function updateClient(id: string, data: unknown): Promise<void> {
       currency: parsed.currency,
       status: parsed.status,
       source: parsed.source || null,
+      isTest: parsed.is_test ?? false,
       notes: parsed.notes || null,
     })
     .where(eq(clients.id, id));

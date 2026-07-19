@@ -110,6 +110,7 @@ export const clients = pgTable('clients', {
   currency: text('currency').default('BRL'), // BRL | USD | ARS
   status: text('status').default('active'), // active | inactive | overdue
   source: text('source'), // referral | organic | meta | google (origem/canal de aquisição)
+  isTest: boolean('is_test').notNull().default(false),
   notes: text('notes'),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),

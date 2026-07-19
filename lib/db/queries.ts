@@ -327,7 +327,7 @@ export async function getTransactions(filters?: {
   if (filters?.type) conditions.push(eq(transactions.type, filters.type));
 
   return db
-    .select({ transaction: transactions, clientName: clients.name })
+    .select({ transaction: transactions, clientName: clients.name, clientIsTest: clients.isTest })
     .from(transactions)
     .leftJoin(clients, eq(transactions.clientId, clients.id))
     .where(conditions.length > 0 ? and(...conditions) : undefined)
