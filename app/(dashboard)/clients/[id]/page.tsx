@@ -180,6 +180,17 @@ export default async function ClientDetailPage({
                 </select>
               </div>
               <div className="sm:col-span-2">
+                <label className="flex items-center gap-2 text-sm text-zinc-300">
+                  <input
+                    type="checkbox"
+                    name="isTest"
+                    defaultChecked={data.isTest}
+                    className="h-4 w-4 rounded border-zinc-700 bg-zinc-800 text-indigo-500 focus:ring-indigo-500"
+                  />
+                  Cliente de teste (fora dos números)
+                </label>
+              </div>
+              <div className="sm:col-span-2">
                 <label className="block text-xs text-zinc-400 mb-1">Origem do Cliente</label>
                 <select
                   name="source"

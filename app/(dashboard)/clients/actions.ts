@@ -17,6 +17,7 @@ const clientSchema = z.object({
   currency: z.enum(['BRL', 'USD', 'ARS']).default('BRL'),
   status: z.enum(['active', 'inactive', 'overdue']).default('active'),
   source: z.enum(CLIENT_SOURCE_CODES as [string, ...string[]]).optional().or(z.literal('')),
+  isTest: z.preprocess((v) => v === 'on', z.boolean()).optional(),
   notes: z.string().optional(),
 });
 
@@ -34,6 +35,7 @@ export async function createClientAction(formData: FormData): Promise<void> {
     currency: parsed.currency,
     status: parsed.status,
     source: parsed.source || null,
+    isTest: parsed.isTest ?? false,
     notes: parsed.notes ?? null,
   });
   revalidatePath('/clients');
@@ -54,6 +56,7 @@ export async function updateClientAction(id: string, formData: FormData): Promis
     currency: parsed.currency,
     status: parsed.status,
     source: parsed.source || null,
+    isTest: parsed.isTest ?? false,
     notes: parsed.notes ?? null,
   });
   revalidatePath('/clients');

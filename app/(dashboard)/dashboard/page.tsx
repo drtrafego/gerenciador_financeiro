@@ -2,7 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { db } from "@/lib/db";
 import { invoices, transactions, clients, contracts, exchangeRates, systemSettings } from "@/lib/db/schema";
-import { desc, eq, gte, lte, lt, or, isNull, and, sql } from "drizzle-orm";
+import { desc, eq, gte, lte, lt, or, isNull, and, sql, getTableColumns } from "drizzle-orm";
+import { notTestClient } from "@/lib/db/filters";
 import DateRangePicker from "@/components/shared/DateRangePicker";
 import MaskedCurrency from "@/components/shared/MaskedCurrency";
 import { convertAmount, safeRates } from "@/lib/currency/format";
@@ -45,18 +46,27 @@ async function getDashboardData(from: string, to: string) {
     periodRecurringPast,
     periodContracts,
   ] = await Promise.all([
-    db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "active")),
-    db.select({ count: sql<number>`count(*)` }).from(clients).where(eq(clients.status, "overdue")),
+    db.select({ count: sql<number>`count(*)` }).from(clients).where(and(eq(clients.status, "active"), notTestClient)),
+    db.select({ count: sql<number>`count(*)` }).from(clients).where(and(eq(clients.status, "overdue"), notTestClient)),
     db.select().from(exchangeRates).orderBy(desc(exchangeRates.fetchedAt)).limit(1),
     db.select().from(systemSettings).where(eq(systemSettings.key, "display_currency")),
-    db.select().from(invoices).orderBy(desc(invoices.createdAt)).limit(5),
-    db.select().from(invoices).where(eq(invoices.status, "overdue")),
-    db.select().from(invoices).where(
-      and(eq(invoices.status, "sent"), sql`due_date BETWEEN ${today} AND ${in7days}`)
-    ),
-    db.select({ total: sql<number>`coalesce(sum(amount),0)` })
+    db.select(getTableColumns(invoices))
+      .from(invoices)
+      .leftJoin(clients, eq(invoices.clientId, clients.id))
+      .where(notTestClient)
+      .orderBy(desc(invoices.createdAt)).limit(5),
+    db.select(getTableColumns(invoices))
+      .from(invoices)
+      .leftJoin(clients, eq(invoices.clientId, clients.id))
+      .where(and(eq(invoices.status, "overdue"), notTestClient)),
+    db.select(getTableColumns(invoices))
+      .from(invoices)
+      .leftJoin(clients, eq(invoices.clientId, clients.id))
+      .where(and(eq(invoices.status, "sent"), sql`due_date BETWEEN ${today} AND ${in7days}`, notTestClient)),
+    db.select({ total: sql<number>`coalesce(sum(${transactions.amount}),0)` })
       .from(transactions)
-      .where(and(eq(transactions.type, "expense"), gte(transactions.date, startOfMonth))),
+      .leftJoin(clients, eq(transactions.clientId, clients.id))
+      .where(and(eq(transactions.type, "expense"), gte(transactions.date, startOfMonth), notTestClient)),
     // Todos os contratos para calcular receita mensal
     db.select({
       fixedAmount: contracts.fixedAmount,
@@ -64,18 +74,21 @@ async function getDashboardData(from: string, to: string) {
       startDate: contracts.startDate,
       endDate: contracts.endDate,
       status: contracts.status,
-    }).from(contracts),
+    }).from(contracts)
+      .leftJoin(clients, eq(contracts.clientId, clients.id))
+      .where(notTestClient),
     // Transações de despesa dos últimos 6 meses (agrupamos em JS para evitar mismatch de locale)
     db.select({ amount: transactions.amount, date: transactions.date })
       .from(transactions)
-      .where(and(eq(transactions.type, "expense"), gte(transactions.date, sixMonthsAgo.toISOString().split("T")[0]!))),
+      .leftJoin(clients, eq(transactions.clientId, clients.id))
+      .where(and(eq(transactions.type, "expense"), gte(transactions.date, sixMonthsAgo.toISOString().split("T")[0]!), notTestClient)),
     // Origem do cliente: MRR (contratos ativos por canal; finalizados filtrados em JS)
     db.select({ source: clients.source, fixedAmount: contracts.fixedAmount, currency: contracts.currency, endDate: contracts.endDate })
       .from(contracts)
       .innerJoin(clients, eq(contracts.clientId, clients.id))
-      .where(eq(contracts.status, "active")),
+      .where(and(eq(contracts.status, "active"), notTestClient)),
     // Contagem de clientes por origem (todos os clientes cadastrados)
-    db.select({ source: clients.source }).from(clients),
+    db.select({ source: clients.source }).from(clients).where(notTestClient),
     // Todos os contratos com a origem do cliente, para a evolução do MRR por canal
     db.select({
       source: clients.source,
@@ -83,13 +96,13 @@ async function getDashboardData(from: string, to: string) {
       currency: contracts.currency,
       startDate: contracts.startDate,
       endDate: contracts.endDate,
-    }).from(contracts).leftJoin(clients, eq(contracts.clientId, clients.id)),
+    }).from(contracts).leftJoin(clients, eq(contracts.clientId, clients.id)).where(notTestClient),
     // Resumo do período (bate com o fluxo de caixa): transações reais no intervalo,
     // recorrentes anteriores ainda ativas (projetadas em JS) e honorários de contrato vigentes.
     db.select({ type: transactions.type, amount: transactions.amount, currency: transactions.currency, source: clients.source })
       .from(transactions)
       .leftJoin(clients, eq(transactions.clientId, clients.id))
-      .where(and(gte(transactions.date, from), lte(transactions.date, to))),
+      .where(and(gte(transactions.date, from), lte(transactions.date, to), notTestClient)),
     db.select({ type: transactions.type, amount: transactions.amount, currency: transactions.currency, date: transactions.date, recurringEndsAt: transactions.recurringEndsAt, source: clients.source })
       .from(transactions)
       .leftJoin(clients, eq(transactions.clientId, clients.id))
@@ -97,7 +110,8 @@ async function getDashboardData(from: string, to: string) {
         eq(transactions.isRecurring, "true"),
         eq(transactions.recurringActive, "true"),
         lt(transactions.date, from),
-        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, from))
+        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, from)),
+        notTestClient
       )),
     db.select({ fixedAmount: contracts.fixedAmount, currency: contracts.currency, billingDay: contracts.billingDay, startDate: contracts.startDate, endDate: contracts.endDate, source: clients.source })
       .from(contracts)
@@ -105,7 +119,8 @@ async function getDashboardData(from: string, to: string) {
       .where(and(
         lte(contracts.startDate, to),
         or(isNull(contracts.endDate), gte(contracts.endDate, from)),
-        eq(contracts.status, "active")
+        eq(contracts.status, "active"),
+        notTestClient
       )),
   ]);
 

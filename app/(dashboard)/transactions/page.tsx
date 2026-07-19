@@ -8,10 +8,10 @@ export default async function TransactionsPage() {
   const rows = await getTransactions();
 
   const totalIncome = rows
-    .filter((r) => r.transaction.type === "income")
+    .filter((r) => r.transaction.type === "income" && !r.clientIsTest)
     .reduce((s, r) => s + parseFloat(r.transaction.amount ?? "0"), 0);
   const totalExpense = rows
-    .filter((r) => r.transaction.type === "expense")
+    .filter((r) => r.transaction.type === "expense" && !r.clientIsTest)
     .reduce((s, r) => s + parseFloat(r.transaction.amount ?? "0"), 0);
 
   const rowsWithActions = rows.map((r) => ({

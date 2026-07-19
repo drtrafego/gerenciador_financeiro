@@ -15,6 +15,7 @@ const schema = z.object({
   currency:     z.enum(["BRL", "USD", "ARS"]),
   status:       z.enum(["active", "inactive"]),
   source:       z.enum(CLIENT_SOURCE_CODES as [string, ...string[]]).optional().or(z.literal("")),
+  is_test:      z.boolean().optional(),
   notes:        z.string().optional(),
 });
 
@@ -126,6 +127,14 @@ export default function ClientForm({ defaultValues }: { defaultValues?: Partial<
           className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 w-full resize-none"
         />
       </Field>
+      <label className="flex items-center gap-2 text-sm text-zinc-300">
+        <input
+          type="checkbox"
+          {...register("is_test")}
+          className="h-4 w-4 rounded border-zinc-700 bg-zinc-800 text-indigo-500 focus:ring-indigo-500"
+        />
+        Cliente de teste (fora dos números)
+      </label>
       <div className="flex flex-col-reverse sm:flex-row gap-2 sm:justify-end mt-2">
         <button
           type="button"
