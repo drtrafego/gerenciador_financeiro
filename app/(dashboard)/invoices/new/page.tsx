@@ -1,4 +1,4 @@
-import { getClients, getContracts } from '@/lib/db/queries';
+import { getClients, getContracts, getUninvoicedIncomeTransactions } from '@/lib/db/queries';
 import NewInvoiceForm from '@/components/invoices/NewInvoiceForm';
 
 export default async function NewInvoicePage({
@@ -7,7 +7,11 @@ export default async function NewInvoicePage({
   searchParams: Promise<{ clientId?: string; contractId?: string }>;
 }) {
   const { clientId, contractId } = await searchParams;
-  const [clients, contractRows] = await Promise.all([getClients(), getContracts()]);
+  const [clients, contractRows, avulsaRows] = await Promise.all([
+    getClients(),
+    getContracts(),
+    getUninvoicedIncomeTransactions(),
+  ]);
 
   const now = new Date();
   const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 5);
@@ -23,6 +27,16 @@ export default async function NewInvoicePage({
     clientName: clientName ?? null,
   }));
 
+  const avulsas = avulsaRows.map(({ transaction, clientName }) => ({
+    id: transaction.id,
+    description: transaction.description,
+    amount: transaction.amount,
+    currency: transaction.currency ?? 'BRL',
+    date: transaction.date,
+    clientId: transaction.clientId ?? null,
+    clientName: clientName ?? null,
+  }));
+
   return (
     <div className="max-w-2xl space-y-6">
       <div>
@@ -32,6 +46,7 @@ export default async function NewInvoicePage({
       <NewInvoiceForm
         clients={clients}
         contracts={contracts}
+        avulsas={avulsas}
         defaultClientId={clientId}
         defaultContractId={contractId}
         defaultDue={defaultDue}

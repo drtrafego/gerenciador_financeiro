@@ -45,6 +45,8 @@ async function getDashboardData(from: string, to: string) {
     periodRealTx,
     periodRecurringPast,
     periodContracts,
+    sixMonthIncomeTx,
+    sixMonthRecurringPast,
   ] = await Promise.all([
     db.select({ count: sql<number>`count(*)` }).from(clients).where(and(eq(clients.status, "active"), notTestClient)),
     db.select({ count: sql<number>`count(*)` }).from(clients).where(and(eq(clients.status, "overdue"), notTestClient)),
@@ -74,6 +76,7 @@ async function getDashboardData(from: string, to: string) {
       startDate: contracts.startDate,
       endDate: contracts.endDate,
       status: contracts.status,
+      billingDay: contracts.billingDay,
     }).from(contracts)
       .leftJoin(clients, eq(contracts.clientId, clients.id))
       .where(notTestClient),
@@ -120,6 +123,27 @@ async function getDashboardData(from: string, to: string) {
         lte(contracts.startDate, to),
         or(isNull(contracts.endDate), gte(contracts.endDate, from)),
         eq(contracts.status, "active"),
+        notTestClient
+      )),
+    // Gráfico de receita (últimos 6 meses): receitas avulsas reais na janela +
+    // recorrentes anteriores à janela ainda ativas (mesma lógica do resumo do período acima).
+    db.select({ amount: transactions.amount, currency: transactions.currency, date: transactions.date })
+      .from(transactions)
+      .leftJoin(clients, eq(transactions.clientId, clients.id))
+      .where(and(
+        eq(transactions.type, "income"),
+        gte(transactions.date, sixMonthsAgo.toISOString().split("T")[0]!),
+        notTestClient
+      )),
+    db.select({ amount: transactions.amount, currency: transactions.currency, date: transactions.date, recurringEndsAt: transactions.recurringEndsAt })
+      .from(transactions)
+      .leftJoin(clients, eq(transactions.clientId, clients.id))
+      .where(and(
+        eq(transactions.type, "income"),
+        eq(transactions.isRecurring, "true"),
+        eq(transactions.recurringActive, "true"),
+        lt(transactions.date, sixMonthsAgo.toISOString().split("T")[0]!),
+        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, sixMonthsAgo.toISOString().split("T")[0]!)),
         notTestClient
       )),
   ]);
@@ -190,6 +214,12 @@ async function getDashboardData(from: string, to: string) {
     return sum + convertAmount(amount, (c.currency ?? "BRL") as Currency, "BRL", rate);
   }, 0);
 
+  // Para o histórico mês a mês (gráficos), usamos o status BRUTO do contrato
+  // (não o derivado em relação a hoje): um contrato finalizado no mês passado
+  // ainda deve contar nos meses em que estava vigente. `isContractEarning`
+  // compara com a data de hoje, então excluiria retroativamente esses meses.
+  const nonCancelledContracts = allContracts.filter((c) => c.status === "active");
+
   // Agrupar despesas por "YYYY-MM" em JS (evita mismatch de locale com SQL)
   const expenseMap = new Map<string, number>();
   for (const t of expenseTransactions) {
@@ -197,30 +227,58 @@ async function getDashboardData(from: string, to: string) {
     expenseMap.set(key, (expenseMap.get(key) ?? 0) + parseFloat(t.amount ?? "0"));
   }
 
-  // Gerar dados do gráfico para os últimos 6 meses
+  // Agrupar receitas avulsas reais por "YYYY-MM" (mesma base usada no fluxo de caixa)
+  const incomeTxMap = new Map<string, number>();
+  for (const t of sixMonthIncomeTx) {
+    const key = t.date.slice(0, 7);
+    const v = convertAmount(parseFloat(t.amount ?? "0"), (t.currency ?? "BRL") as Currency, "BRL", rate);
+    incomeTxMap.set(key, (incomeTxMap.get(key) ?? 0) + v);
+  }
+
+  // Gerar dados do gráfico para os últimos 6 meses — mesma lógica do resumo do
+  // período e do fluxo de caixa: só contrato ATIVO no dia exato de vencimento
+  // (billingDay), recorrentes projetadas e receitas avulsas reais do mês.
   const chartData = [];
   for (let i = 5; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    const monthStart = new Date(d.getFullYear(), d.getMonth(), 1);
-    const monthEnd = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+    const monthStartStr = d.toISOString().split("T")[0]!;
+    const monthEndStr = new Date(d.getFullYear(), d.getMonth() + 1, 0).toISOString().split("T")[0]!;
     const label = d.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 
-    const monthIncome = allContracts
-      .filter((c) => {
-        const start = new Date(c.startDate + "T12:00:00");
-        const end = c.endDate ? new Date(c.endDate + "T12:00:00") : null;
-        return start <= monthEnd && (end === null || end >= monthStart);
-      })
-      .reduce((sum, c) => {
-        const amount = parseFloat(c.fixedAmount ?? "0");
-        return sum + convertAmount(amount, (c.currency ?? "BRL") as Currency, "BRL", rate);
-      }, 0);
+    let monthIncome = 0;
+    for (const c of nonCancelledContracts) {
+      const dueDate = dayInMonth(d, c.billingDay ?? 5);
+      if (dueDate >= monthStartStr && dueDate <= monthEndStr && dueDate >= c.startDate && (c.endDate == null || dueDate <= c.endDate)) {
+        monthIncome += convertAmount(parseFloat(c.fixedAmount ?? "0"), (c.currency ?? "BRL") as Currency, "BRL", rate);
+      }
+    }
+
+    // MRR do mês: contratos vigentes naquele mês (sem depender do dia exato de
+    // vencimento nem de receita avulsa) — é o "quanto estava contratado", não o caixa.
+    let monthMrr = 0;
+    for (const c of nonCancelledContracts) {
+      const cStart = c.startDate;
+      const cEnd = c.endDate;
+      if (cStart <= monthEndStr && (cEnd == null || cEnd >= monthStartStr)) {
+        monthMrr += convertAmount(parseFloat(c.fixedAmount ?? "0"), (c.currency ?? "BRL") as Currency, "BRL", rate);
+      }
+    }
+
+    for (const t of sixMonthRecurringPast) {
+      const originalDay = new Date(t.date + "T12:00:00").getDate();
+      const dateStr = dayInMonth(d, originalDay);
+      if (dateStr >= monthStartStr && dateStr <= monthEndStr && (!t.recurringEndsAt || dateStr <= t.recurringEndsAt)) {
+        monthIncome += convertAmount(parseFloat(t.amount ?? "0"), (t.currency ?? "BRL") as Currency, "BRL", rate);
+      }
+    }
+    monthIncome += incomeTxMap.get(key) ?? 0;
 
     chartData.push({
       month: label,
       income: monthIncome,
       expense: expenseMap.get(key) ?? 0,
+      mrr: monthMrr,
     });
   }
 
@@ -339,17 +397,23 @@ export default async function DashboardPage({
 
       {/* Resumo do período selecionado (dinheiro real movimentado) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+        <div className="relative overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 p-4 transition-all duration-200 hover:border-zinc-700 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/30 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both before:absolute before:inset-x-0 before:top-0 before:h-[2px] before:bg-gradient-to-r before:from-green-500 before:to-transparent">
           <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Entradas no período</p>
-          <MaskedCurrency amount={data.periodIncome} currency={data.displayCurrency} className="text-xl font-bold text-green-400" />
+          <MaskedCurrency amount={data.periodIncome} currency={data.displayCurrency} className="text-xl font-bold text-green-400 tabular-nums" />
         </div>
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+        <div
+          className="relative overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 p-4 transition-all duration-200 hover:border-zinc-700 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/30 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both before:absolute before:inset-x-0 before:top-0 before:h-[2px] before:bg-gradient-to-r before:from-red-500 before:to-transparent"
+          style={{ animationDelay: "60ms" }}
+        >
           <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Saídas no período</p>
-          <MaskedCurrency amount={data.periodExpense} currency={data.displayCurrency} className="text-xl font-bold text-red-400" />
+          <MaskedCurrency amount={data.periodExpense} currency={data.displayCurrency} className="text-xl font-bold text-red-400 tabular-nums" />
         </div>
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+        <div
+          className={`relative overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 p-4 transition-all duration-200 hover:border-zinc-700 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/30 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both before:absolute before:inset-x-0 before:top-0 before:h-[2px] before:bg-gradient-to-r before:to-transparent ${periodBalance >= 0 ? "before:from-indigo-500" : "before:from-red-500"}`}
+          style={{ animationDelay: "120ms" }}
+        >
           <p className="text-xs text-zinc-500 mb-1 uppercase tracking-wide">Saldo no período</p>
-          <MaskedCurrency amount={periodBalance} currency={data.displayCurrency} className={`text-xl font-bold ${periodBalance >= 0 ? "text-white" : "text-red-400"}`} />
+          <MaskedCurrency amount={periodBalance} currency={data.displayCurrency} className={`text-xl font-bold tabular-nums ${periodBalance >= 0 ? "text-white" : "text-red-400"}`} />
         </div>
       </div>
 
@@ -363,23 +427,25 @@ export default async function DashboardPage({
         rate={data.rate}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both [animation-delay:240ms]">
         <RevenueChart data={data.chartData} />
         <MRRChart data={data.chartData} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both [animation-delay:300ms]">
         <SourceMrrBar rows={data.sourceBreakdown} />
         <SourceMrrTrend data={data.sourceTrendData} series={data.sourceSeries} />
       </div>
 
-      <SourceBreakdown
-        rows={data.sourceBreakdown}
-        displayCurrency={data.displayCurrency}
-        rate={data.rate}
-      />
+      <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both [animation-delay:360ms]">
+        <SourceBreakdown
+          rows={data.sourceBreakdown}
+          displayCurrency={data.displayCurrency}
+          rate={data.rate}
+        />
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both [animation-delay:420ms]">
         <RecentInvoices invoices={data.recentInvoices} />
         <AlertsPanel overdue={data.overdueInvoices} upcoming={data.upcomingInvoices} />
       </div>

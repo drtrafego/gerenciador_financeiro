@@ -13,6 +13,16 @@ interface ContractOption {
   clientName: string | null;
 }
 
+interface AvulsaOption {
+  id: string;
+  description: string;
+  amount: string;
+  currency: string;
+  date: string;
+  clientId: string | null;
+  clientName: string | null;
+}
+
 interface ClientOption {
   id: string;
   name: string;
@@ -21,9 +31,14 @@ interface ClientOption {
 interface Props {
   clients: ClientOption[];
   contracts: ContractOption[];
+  avulsas: AvulsaOption[];
   defaultClientId?: string;
   defaultContractId?: string;
   defaultDue: string;
+}
+
+function formatDateBR(date: string) {
+  return new Date(date + 'T12:00:00').toLocaleDateString('pt-BR');
 }
 
 const inputClass =
@@ -32,6 +47,7 @@ const inputClass =
 export default function NewInvoiceForm({
   clients,
   contracts,
+  avulsas,
   defaultClientId,
   defaultContractId,
   defaultDue,
@@ -39,25 +55,50 @@ export default function NewInvoiceForm({
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState("BRL");
   const [contractId, setContractId] = useState(defaultContractId ?? "");
+  const [transactionId, setTransactionId] = useState("");
+  const [selectedClientId, setSelectedClientId] = useState(defaultClientId ?? "");
+  const [description, setDescription] = useState("");
 
   function handleContractChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const id = e.target.value;
     setContractId(id);
     if (!id) return;
+    setTransactionId("");
     const c = contracts.find((c) => c.id === id);
     if (!c) return;
     setAmount(parseFloat(c.fixedAmount).toFixed(2).replace(".", ","));
     setCurrency(c.currency);
+    if (c.clientId) setSelectedClientId(c.clientId);
+  }
+
+  function handleAvulsaChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const id = e.target.value;
+    setTransactionId(id);
+    if (!id) return;
+    setContractId("");
+    const t = avulsas.find((t) => t.id === id);
+    if (!t) return;
+    setAmount(parseFloat(t.amount).toFixed(2).replace(".", ","));
+    setCurrency(t.currency);
+    setDescription(t.description);
+    if (t.clientId) setSelectedClientId(t.clientId);
   }
 
   return (
     <form action={createInvoiceAction} className="space-y-5">
+      <input type="hidden" name="transactionId" value={transactionId} />
       <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 space-y-5">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
 
           <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-zinc-300 mb-1.5">Cliente *</label>
-            <select name="clientId" required defaultValue={defaultClientId ?? ""} className={inputClass}>
+            <select
+              name="clientId"
+              required
+              value={selectedClientId}
+              onChange={(e) => setSelectedClientId(e.target.value)}
+              className={inputClass}
+            >
               <option value="">Selecione um cliente</option>
               {clients.map((c) => (
                 <option key={c.id} value={c.id}>{c.name}</option>
@@ -82,6 +123,29 @@ export default function NewInvoiceForm({
                 </option>
               ))}
             </select>
+          </div>
+
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium text-zinc-300 mb-1.5">
+              Receita avulsa vinculada <span className="text-zinc-500 font-normal">(opcional, sem contrato)</span>
+            </label>
+            <select
+              value={transactionId}
+              onChange={handleAvulsaChange}
+              className={inputClass}
+            >
+              <option value="">Sem receita avulsa vinculada</option>
+              {avulsas.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.clientName ?? "Sem cliente"} — {t.description} — {formatDateBR(t.date)}
+                </option>
+              ))}
+            </select>
+            {avulsas.length === 0 && (
+              <p className="mt-1.5 text-xs text-zinc-500">
+                Nenhuma receita avulsa pendente de fatura no momento.
+              </p>
+            )}
           </div>
 
           <div>
@@ -138,6 +202,8 @@ export default function NewInvoiceForm({
             <textarea
               name="description"
               rows={3}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className={inputClass + " resize-none"}
               placeholder="Gestão de tráfego — Meta Ads — Mês de Janeiro/2026"
             />

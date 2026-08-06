@@ -23,7 +23,7 @@ export default function RevenueChart({ data }: Props) {
   }));
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 transition-colors duration-200 hover:border-zinc-700">
       <p className="text-sm font-semibold text-zinc-200 mb-4">Receitas vs Despesas (6 meses)</p>
       {normalized.length === 0 ? (
         <div className="h-48 flex items-center justify-center text-sm text-zinc-600">
@@ -41,10 +41,11 @@ export default function RevenueChart({ data }: Props) {
               labelStyle={{ color: "#a1a1aa" }}
               itemStyle={{ color: "#e4e4e7" }}
               formatter={(value) => [`R$ ${Number(value).toLocaleString("pt-BR")}`, ""]}
+              cursor={{ fill: "#ffffff08" }}
             />
             <Legend wrapperStyle={{ fontSize: 11, color: "#71717a" }} />
-            <Bar dataKey="Receitas" fill="#6366f1" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="Despesas" fill="#ef4444" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="Receitas" fill="#6366f1" radius={[4, 4, 0, 0]} animationDuration={900} animationEasing="ease-out" />
+            <Bar dataKey="Despesas" fill="#ef4444" radius={[4, 4, 0, 0]} animationDuration={900} animationEasing="ease-out" />
           </BarChart>
         </ResponsiveContainer>
       )}

@@ -334,6 +334,17 @@ export async function getTransactions(filters?: {
     .orderBy(desc(transactions.date));
 }
 
+// Receitas avulsas (sem contrato) ainda não vinculadas a nenhuma fatura —
+// usadas na tela "Nova Fatura" para emitir nota a partir de um lançamento.
+export async function getUninvoicedIncomeTransactions() {
+  return db
+    .select({ transaction: transactions, clientName: clients.name })
+    .from(transactions)
+    .leftJoin(clients, eq(transactions.clientId, clients.id))
+    .where(and(eq(transactions.type, 'income'), isNull(transactions.invoiceId)))
+    .orderBy(desc(transactions.date));
+}
+
 export async function createTransaction(data: NewTransaction) {
   const [tx] = await db.insert(transactions).values(data).returning();
   return tx;
