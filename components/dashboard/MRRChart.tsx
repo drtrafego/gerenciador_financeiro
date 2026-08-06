@@ -11,18 +11,18 @@ import {
 } from "recharts";
 
 interface Props {
-  data: { month: string; income: number | string; expense: number | string }[];
+  data: { month: string; income: number | string; expense: number | string; mrr?: number | string }[];
 }
 
 export default function MRRChart({ data }: Props) {
   const normalized = data.map((d) => ({
     month: d.month,
-    MRR: Number(d.income),
+    MRR: Number(d.mrr ?? d.income),
     Saldo: Number(d.income) - Number(d.expense),
   }));
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 transition-colors duration-200 hover:border-zinc-700">
       <p className="text-sm font-semibold text-zinc-200 mb-4">Evolução do MRR</p>
       {normalized.length === 0 ? (
         <div className="h-48 flex items-center justify-center text-sm text-zinc-600">
@@ -40,9 +40,10 @@ export default function MRRChart({ data }: Props) {
               labelStyle={{ color: "#a1a1aa" }}
               itemStyle={{ color: "#e4e4e7" }}
               formatter={(value) => [`R$ ${Number(value).toLocaleString("pt-BR")}`, ""]}
+              cursor={{ stroke: "#3f3f46", strokeWidth: 1 }}
             />
-            <Line dataKey="MRR" stroke="#6366f1" strokeWidth={2} dot={{ fill: "#6366f1", r: 3 }} />
-            <Line dataKey="Saldo" stroke="#22c55e" strokeWidth={2} dot={{ fill: "#22c55e", r: 3 }} strokeDasharray="4 4" />
+            <Line dataKey="MRR" stroke="#6366f1" strokeWidth={2} dot={{ fill: "#6366f1", r: 3 }} animationDuration={900} animationEasing="ease-out" />
+            <Line dataKey="Saldo" stroke="#22c55e" strokeWidth={2} dot={{ fill: "#22c55e", r: 3 }} strokeDasharray="4 4" animationDuration={900} animationEasing="ease-out" />
           </LineChart>
         </ResponsiveContainer>
       )}

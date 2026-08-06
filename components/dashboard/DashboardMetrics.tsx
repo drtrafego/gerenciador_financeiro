@@ -36,6 +36,7 @@ export default function DashboardMetrics({
         icon="trending-up"
         color="indigo"
         hidden={hidden}
+        delayMs={0}
       />
       <MetricCard
         label="Receita Prevista"
@@ -46,6 +47,7 @@ export default function DashboardMetrics({
         icon="check"
         color="green"
         hidden={hidden}
+        delayMs={60}
       />
       <MetricCard
         label="Despesas (mês)"
@@ -56,6 +58,7 @@ export default function DashboardMetrics({
         icon="trending-down"
         color="red"
         hidden={hidden}
+        delayMs={120}
       />
       <MetricCard
         label="Inadimplentes"
@@ -64,6 +67,7 @@ export default function DashboardMetrics({
         sub={`${overdueInvoicesCount} fatura(s) em atraso`}
         icon="alert"
         color="yellow"
+        delayMs={180}
       />
     </div>
   );

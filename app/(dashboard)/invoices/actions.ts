@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { createInvoice, updateInvoice, deleteInvoice, markInvoicePaid, getInvoiceWithClient, getUser } from '@/lib/db/queries';
+import { createInvoice, updateInvoice, deleteInvoice, markInvoicePaid, getInvoiceWithClient, getUser, updateTransaction } from '@/lib/db/queries';
 import { sendReceiptEmail } from '@/lib/email/gmail';
 import { formatCurrency } from '@/lib/currency/format';
 import type { Currency } from '@/lib/currency/format';
@@ -11,6 +11,7 @@ import type { Currency } from '@/lib/currency/format';
 const invoiceSchema = z.object({
   clientId: z.string().uuid(),
   contractId: z.string().optional().transform((v) => v || null),
+  transactionId: z.string().optional().transform((v) => v || null),
   type: z.enum(['monthly', 'project', 'proposal']),
   amount: z.string().transform((v) => v.replace(',', '.')),
   currency: z.enum(['BRL', 'USD', 'ARS']).default('BRL'),
@@ -41,7 +42,11 @@ export async function createInvoiceAction(formData: FormData): Promise<void> {
     paidAt: null,
     invoiceNumber: null,
   });
+  if (parsed.transactionId) {
+    await updateTransaction(parsed.transactionId, { invoiceId: inv.id });
+  }
   revalidatePath('/invoices');
+  revalidatePath('/transactions');
   redirect(`/invoices/${inv.id}`);
 }
 

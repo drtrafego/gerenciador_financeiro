@@ -40,7 +40,7 @@ export default function RecentInvoices({ invoices }: Props) {
         <div className="flex flex-col gap-2">
           {invoices.map((inv) => (
             <Link key={inv.id} href={`/invoices/${inv.id}`}
-              className="flex items-center justify-between py-2.5 border-b border-zinc-800/60 last:border-0 hover:opacity-80 transition-opacity">
+              className="flex items-center justify-between py-2.5 px-2 -mx-2 rounded-lg border-b border-zinc-800/60 last:border-0 hover:bg-zinc-800/40 transition-colors">
               <div>
                 <p className="text-xs font-mono text-indigo-400">{inv.invoiceNumber ?? "—"}</p>
                 <p className="text-xs text-zinc-500 mt-0.5">
