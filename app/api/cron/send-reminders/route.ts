@@ -2,56 +2,11 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { reminders, messageTemplates, clients, invoices, contracts, systemSettings } from '@/lib/db/schema';
 import { eq, and, lte } from 'drizzle-orm';
+import { sendWhatsApp, resolveMessage, formatBRL, greetingName, buildReminderMessage, DEFAULT_TEMPLATE_BODY } from '@/lib/wpp/send';
 
 export const maxDuration = 60;
 
 const WPP_URL = process.env.WPP_SERVICE_URL ?? '';
-const WPP_KEY = process.env.WPP_API_KEY ?? '';
-
-// Mensagem usada quando nenhum template foi marcado como padrão no painel.
-const DEFAULT_TEMPLATE_BODY =
-  'Olá {nome}! Passando para lembrar que o pagamento no valor de {valor} vence hoje ({data}). Qualquer dúvida, estou à disposição.';
-
-function resolveMessage(template: string, vars: Record<string, string>) {
-  return template
-    .replace(/{nome}/g, vars.nome ?? '')
-    .replace(/{valor}/g, vars.valor ?? '')
-    .replace(/{data}/g, vars.data ?? '')
-    .replace(/{dias}/g, vars.dias ?? '');
-}
-
-function formatBRL(value: string | null | undefined) {
-  if (!value) return '';
-  return `R$ ${parseFloat(value).toLocaleString('pt-BR', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
-
-// Saudação ao cliente: primeiro nome do contato (ex: "Isabela Franklin" -> "Isabela").
-// Se não houver contato cadastrado, usa o nome do cliente para não ficar sem nada.
-function greetingName(contactName: string | null | undefined, clientName: string | null | undefined) {
-  const contact = (contactName ?? '').trim();
-  if (contact) return contact.split(/\s+/)[0]!;
-  return clientName ?? 'Cliente';
-}
-
-async function sendWhatsApp(phone: string, message: string): Promise<boolean> {
-  try {
-    const res = await fetch(`${WPP_URL}/send`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': WPP_KEY,
-      },
-      body: JSON.stringify({ phone, message }),
-    });
-    const data = await res.json();
-    return data.ok === true;
-  } catch {
-    return false;
-  }
-}
 
 export async function GET(request: Request) {
   if (!process.env.CRON_SECRET) {
@@ -171,7 +126,7 @@ export async function GET(request: Request) {
       data: `${String(effectiveDay).padStart(2, '0')}/${mm}/${year}`,
       dias: '0',
     });
-    const ok = await sendWhatsApp(client.phone, message);
+    const { ok, error } = await sendWhatsApp(client.phone, message);
     if (ok) clientSent++;
     else clientFailed++;
     dueSummary.push({ name: nomeEmpresa, valor, ok });
@@ -182,7 +137,7 @@ export async function GET(request: Request) {
         customMessage: message,
         status: ok ? 'sent' : 'failed',
         sentAt: ok ? new Date() : null,
-        errorMessage: ok ? null : 'Falha no envio via WhatsApp service',
+        errorMessage: ok ? null : error,
       })
       .where(eq(reminders.id, claimed.id));
   }
@@ -216,27 +171,11 @@ export async function GET(request: Request) {
   for (const row of toSend) {
     const { reminder, template, client, invoice, contract } = row;
 
-    let message = reminder.customMessage ?? '';
-
-    if (!message && template?.body) {
-      const dueDate = invoice?.dueDate ?? reminder.triggerDate;
-      const dueDateFormatted = new Date(dueDate + 'T12:00:00').toLocaleDateString('pt-BR');
-      const daysUntil = Math.ceil(
-        (new Date(dueDate).getTime() - nowUtc.getTime()) / (1000 * 60 * 60 * 24)
-      );
-      const valor = invoice?.amount ? formatBRL(invoice.amount) : formatBRL(contract?.fixedAmount);
-
-      message = resolveMessage(template.body, {
-        nome: greetingName(client?.contactName, client?.name),
-        valor,
-        data: dueDateFormatted,
-        dias: daysUntil > 0 ? String(daysUntil) : '0',
-      });
-    }
+    const message = buildReminderMessage({ reminder, template, client, invoice, contract, now: nowUtc });
 
     if (!message) continue;
 
-    const ok = await sendWhatsApp(reminder.phone, message);
+    const { ok, error } = await sendWhatsApp(reminder.phone, message);
 
     if (ok) {
       sent++;
@@ -262,7 +201,7 @@ export async function GET(request: Request) {
       failed++;
       await db.update(reminders).set({
         status: 'failed',
-        errorMessage: 'Falha no envio via WhatsApp service',
+        errorMessage: error,
       }).where(eq(reminders.id, reminder.id));
     }
   }
@@ -285,7 +224,7 @@ export async function GET(request: Request) {
     const ownerMsg =
       `📅 Vencimentos processados hoje (${String(dayOfMonth).padStart(2, '0')}/${mm}/${year}):\n${linhas}\n\n` +
       `Mensagens enviadas aos clientes: ${clientSent}/${dueSummary.length}.`;
-    ownerNotified = await sendWhatsApp(alertPhone, ownerMsg);
+    ownerNotified = (await sendWhatsApp(alertPhone, ownerMsg)).ok;
   }
 
   return NextResponse.json({
