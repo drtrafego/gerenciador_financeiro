@@ -93,11 +93,24 @@ export async function updateContractAction(id: string, formData: FormData): Prom
   redirect('/contracts');
 }
 
-export async function deleteContractAction(id: string): Promise<void> {
+export type DeleteContractState = {
+  error?: string;
+};
+
+export async function deleteContractAction(
+  id: string,
+  _prevState: DeleteContractState,
+  _formData: FormData
+): Promise<DeleteContractState> {
   // TODO: filtrar por teamId quando o banco virar multi-tenant
   const user = await getUser();
   if (!user) throw new Error('Unauthenticated');
-  await deleteContract(id);
+  try {
+    await deleteContract(id);
+  } catch (err) {
+    console.error('Erro ao excluir contrato:', err);
+    return { error: 'Não foi possível excluir o contrato. Tente novamente em instantes ou contate o suporte.' };
+  }
   revalidatePath('/contracts');
   redirect('/contracts');
 }
