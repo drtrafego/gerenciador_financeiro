@@ -10,6 +10,8 @@ import {
   date,
   boolean,
   uniqueIndex,
+  jsonb,
+  index,
 } from 'drizzle-orm/pg-core';
 import { relations, sql } from 'drizzle-orm';
 
@@ -227,6 +229,33 @@ export const reminders = pgTable('reminders', {
 }));
 
 // ─────────────────────────────────────────────
+// MÓDULO AGENTE EXTERNO (API + auditoria)
+// ─────────────────────────────────────────────
+
+// Log de auditoria de toda chamada feita pelo super agente externo (leitura e escrita)
+export const agentAuditLog = pgTable('agent_audit_log', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  actor: text('actor').notNull().default('agent'), // texto livre do header x-agent-actor, nunca usado para autorizar
+  method: text('method').notNull(), // GET | POST | PATCH | DELETE
+  endpoint: text('endpoint').notNull(), // path chamado
+  resourceType: text('resource_type'), // client | contract | transaction | invoice | reminder | dashboard
+  resourceId: text('resource_id'),
+  requestBody: jsonb('request_body'), // payload já validado pelo Zod; null em GET
+  beforeData: jsonb('before_data'), // snapshot antes da mutação (update); null em create/read
+  afterData: jsonb('after_data'), // snapshot depois da mutação; null em read/delete
+  statusCode: integer('status_code').notNull(),
+  success: boolean('success').notNull(),
+  errorMessage: text('error_message'),
+  ip: text('ip'),
+  userAgent: text('user_agent'),
+  durationMs: integer('duration_ms'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (table) => ({
+  actorCreatedAtIdx: index('agent_audit_log_actor_created_at_idx').on(table.actor, table.createdAt),
+  endpointCreatedAtIdx: index('agent_audit_log_endpoint_created_at_idx').on(table.endpoint, table.createdAt),
+}));
+
+// ─────────────────────────────────────────────
 // RELATIONS
 // ─────────────────────────────────────────────
 
@@ -314,6 +343,8 @@ export type MessageTemplate = typeof messageTemplates.$inferSelect;
 export type NewMessageTemplate = typeof messageTemplates.$inferInsert;
 export type Reminder = typeof reminders.$inferSelect;
 export type NewReminder = typeof reminders.$inferInsert;
+export type AgentAuditLog = typeof agentAuditLog.$inferSelect;
+export type NewAgentAuditLog = typeof agentAuditLog.$inferInsert;
 
 export type ClientStatus = 'active' | 'inactive' | 'overdue';
 export type ContractType = 'fixed_fee' | 'fixed_plus_percentage' | 'project';
