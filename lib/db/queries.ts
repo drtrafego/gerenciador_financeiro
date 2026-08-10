@@ -250,7 +250,14 @@ export async function updateContract(id: string, data: Partial<NewContract>) {
 }
 
 export async function deleteContract(id: string) {
-  await db.delete(contracts).where(eq(contracts.id, id));
+  // Fatura é documento fiscal e nunca pode ser apagada: só perde o vínculo
+  // com o contrato e continua acessível pela ficha do cliente. Lembrete não
+  // é dado fiscal, pode ser removido junto com o contrato.
+  await db.transaction(async (tx) => {
+    await tx.update(invoices).set({ contractId: null }).where(eq(invoices.contractId, id));
+    await tx.delete(reminders).where(eq(reminders.contractId, id));
+    await tx.delete(contracts).where(eq(contracts.id, id));
+  });
 }
 
 // ─── FATURAS ────────────────────────────────

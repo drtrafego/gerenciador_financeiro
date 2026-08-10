@@ -3,11 +3,12 @@ export const dynamic = "force-dynamic";
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getContractById, getClients } from '@/lib/db/queries';
-import { deleteContractAction, updateContractAction } from '../actions';
+import { updateContractAction } from '../actions';
+import { DeleteContractButton } from './delete-contract-button';
 import { formatCurrency } from '@/lib/currency/format';
 import type { Currency } from '@/lib/currency/format';
 import { cn } from '@/lib/utils';
-import { Trash2, FileText } from 'lucide-react';
+import { FileText } from 'lucide-react';
 import { effectiveContractStatus, CONTRACT_STATUS_LABELS, CONTRACT_STATUS_STYLES } from '@/lib/contracts';
 
 const typeLabels: Record<string, string> = {
@@ -25,7 +26,6 @@ export default async function ContractDetailPage({
   const [contract, clients] = await Promise.all([getContractById(id), getClients()]);
   if (!contract) notFound();
 
-  const deleteWithId = deleteContractAction.bind(null, id);
   const updateWithId = updateContractAction.bind(null, id);
 
   return (
@@ -52,15 +52,7 @@ export default async function ContractDetailPage({
             )}
           </p>
         </div>
-        <form action={deleteWithId}>
-          <button
-            type="submit"
-            className="flex items-center gap-1.5 rounded-lg border border-red-500/20 px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
-          >
-            <Trash2 className="h-4 w-4" />
-            Excluir
-          </button>
-        </form>
+        <DeleteContractButton contractId={id} />
       </div>
 
       <form action={updateWithId} encType="multipart/form-data" className="space-y-5">
