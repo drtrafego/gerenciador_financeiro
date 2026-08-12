@@ -265,9 +265,42 @@ Resposta 400 se tentar `status: "paid"`:
 { "error": { "code": "VALIDATION_ERROR", "message": "Use POST /invoices/:id/mark-paid para marcar uma fatura como paga." } }
 ```
 
+Atenção: mudar o status para `"sent"` por aqui é só um flag no banco, não dispara nenhum e-mail nem qualquer outro envio. Para enviar a fatura de verdade, use `POST /invoices/:id/send-email`.
+
 #### `POST /invoices/:id/mark-paid`
 
 Marca a fatura como paga (`status: paid`, `paidAt: now()`). Nunca cria uma transaction: fatura é só documento, não entra no fluxo de caixa mesmo paga. Sem body.
+
+#### `POST /invoices/:id/send-email`
+
+Envia a fatura por e-mail de verdade (mesmo e-mail de recibo que o painel humano já envia, `lib/email/gmail.ts`). É a única rota desta API que efetivamente despacha alguma coisa para o cliente; `PATCH /invoices/:id/status` com `"sent"` NUNCA envia e-mail, é só um flag no banco, ver nota acima.
+
+Body (opcional):
+| campo | tipo | obrigatório |
+|---|---|---|
+| to | string, e-mail | não, padrão o `email` cadastrado do cliente |
+
+Corpo vazio `{}` é válido. Se `to` não for enviado e o cliente não tiver `email` cadastrado, a resposta é 400:
+```json
+{ "error": { "code": "VALIDATION_ERROR", "message": "Cliente não tem e-mail cadastrado. Informe \"to\" no body ou cadastre o e-mail do cliente antes de enviar." } }
+```
+
+Fatura com `status: cancelled` nunca é enviada, mesmo com `to` informado (evita mandar cobrança de algo já cancelado):
+```json
+{ "error": { "code": "VALIDATION_ERROR", "message": "Fatura cancelada não pode ser enviada por e-mail." } }
+```
+
+Resposta 200, mesmo quando o envio falha, por exemplo SMTP fora do ar. Quem decide o que fazer com a falha é o agente, olhando o campo `sent`:
+```json
+{ "invoice": { "...": "..." }, "sent": true, "error": null, "to": "cliente@exemplo.com" }
+```
+
+Falha de envio:
+```json
+{ "invoice": { "...": "..." }, "sent": false, "error": "mensagem do erro de SMTP", "to": "cliente@exemplo.com" }
+```
+
+Se o envio funcionar e a fatura estiver com `status: draft`, ela é promovida para `status: sent`. Fatura já `paid`, `cancelled` ou já `sent` nunca tem o status alterado por um reenvio.
 
 Não existe `DELETE /invoices/:id`.
 
