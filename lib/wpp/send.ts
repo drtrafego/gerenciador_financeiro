@@ -56,6 +56,37 @@ export async function sendWhatsApp(phone: string, message: string): Promise<{ ok
   }
 }
 
+// Monta uma única mensagem consolidada para um cliente com dois ou mais
+// contratos vencendo no mesmo dia, listando cada serviço pelo nome e o
+// valor total somado ao final. Mesmo tom, saudação, assinatura e instrução
+// de Pix do template padrão do painel (Lembrete Padrao); só a frase do
+// valor único vira uma lista com total. Se o template padrão mudar (ex:
+// chave Pix nova), atualizar aqui também, pois este texto não lê da tabela
+// message_templates.
+export function buildConsolidatedMessage({
+  saudacao,
+  data,
+  items,
+  total,
+}: {
+  saudacao: string;
+  data: string;
+  items: { name: string; valor: string }[];
+  total: string;
+}): string {
+  const linhas = items.map((i) => `• ${i.name}: *${i.valor}*`).join('\n');
+  return (
+    `Oi ${saudacao}!\n\n` +
+    `Aqui é a Juliana, assistente virtual de lembretes da Casal do Tráfego. Esta mensagem é automática.\n\n` +
+    `Hoje, ${data}, vencem os seus pagamentos:\n\n` +
+    `${linhas}\n\n` +
+    `Valor total: *${total}*\n\n` +
+    `Para facilitar, nossa chave Pix é o CNPJ *33.336.690/0001-03*.\n\n` +
+    `Se você já fez o pagamento, é só me avisar aqui embaixo, ou mandar o comprovante.\n\n` +
+    `Obrigada!`
+  );
+}
+
 // Resolve a mensagem final de um lembrete avulso (mesma lógica do "Passo B" do
 // cron): usa customMessage se preenchida, senão monta a partir do template
 // padrão substituindo {nome}, {valor}, {data} e {dias}.

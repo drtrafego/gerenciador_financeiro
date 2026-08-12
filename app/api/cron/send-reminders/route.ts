@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { reminders, messageTemplates, clients, invoices, contracts, systemSettings } from '@/lib/db/schema';
-import { eq, and, lte } from 'drizzle-orm';
-import { sendWhatsApp, resolveMessage, formatBRL, greetingName, buildReminderMessage, DEFAULT_TEMPLATE_BODY } from '@/lib/wpp/send';
+import { eq, and, lte, inArray } from 'drizzle-orm';
+import { sendWhatsApp, resolveMessage, formatBRL, greetingName, buildReminderMessage, buildConsolidatedMessage, DEFAULT_TEMPLATE_BODY } from '@/lib/wpp/send';
 
 export const maxDuration = 60;
 
@@ -71,65 +71,126 @@ export async function GET(request: Request) {
   let clientFailed = 0;
   const dueSummary: { name: string; valor: string; ok: boolean }[] = [];
 
-  for (const { contract, client } of dueThisMonth) {
-    const bd = contract.billingDay ?? 5;
-    const effectiveDay = Math.min(bd, lastDayOfMonth);
-    // data de vencimento canônica do mês — mesma chave o mês inteiro (dedupe + catch-up)
-    const dueDate = `${year}-${mm}-${String(effectiveDay).padStart(2, '0')}`;
-    const valor = formatBRL(contract.fixedAmount);
+  type DueRow = (typeof dueThisMonth)[number];
+
+  // Agrupa os contratos vencendo hoje por cliente: quando o mesmo cliente tem
+  // 2+ contratos vencendo no mesmo dia, ele recebe UMA mensagem consolidada
+  // em vez de uma por contrato.
+  const groupedByClient = new Map<string, DueRow[]>();
+  for (const row of dueThisMonth) {
+    const key = row.contract.clientId;
+    if (!key) {
+      console.error(`[cron] contrato ${row.contract.id} sem clientId, ignorado no lembrete de vencimento`);
+      continue;
+    }
+    const group = groupedByClient.get(key);
+    if (group) group.push(row);
+    else groupedByClient.set(key, [row]);
+  }
+
+  for (const group of groupedByClient.values()) {
+    const client = group[0]!.client;
     const nomeEmpresa = client?.name ?? 'Cliente'; // resumo do dono (identifica quem é)
     const saudacao = greetingName(client?.contactName, client?.name); // mensagem ao cliente
 
-    // Cliente sem telefone: registra falha (idempotente) e avisa no resumo do dono
+    // Cliente sem telefone: registra falha (idempotente) e avisa no resumo do dono, por contrato
     if (!client?.phone) {
-      const [claimed] = await db
-        .insert(reminders)
-        .values({
-          clientId: contract.clientId,
-          contractId: contract.id,
-          phone: '',
-          triggerDate: dueDate,
-          triggerTime: '09:30',
-          status: 'failed',
-          errorMessage: 'Cliente sem telefone cadastrado',
-        })
-        .onConflictDoNothing()
-        .returning({ id: reminders.id });
-      if (claimed) {
-        clientFailed++;
-        dueSummary.push({ name: nomeEmpresa, valor, ok: false });
+      for (const { contract } of group) {
+        const bd = contract.billingDay ?? 5;
+        const effectiveDay = Math.min(bd, lastDayOfMonth);
+        const dueDate = `${year}-${mm}-${String(effectiveDay).padStart(2, '0')}`;
+        const valor = formatBRL(contract.fixedAmount);
+        const [claimed] = await db
+          .insert(reminders)
+          .values({
+            clientId: contract.clientId,
+            contractId: contract.id,
+            phone: '',
+            triggerDate: dueDate,
+            triggerTime: '09:30',
+            status: 'failed',
+            errorMessage: 'Cliente sem telefone cadastrado',
+          })
+          .onConflictDoNothing()
+          .returning({ id: reminders.id });
+        if (claimed) {
+          clientFailed++;
+          dueSummary.push({ name: nomeEmpresa, valor, ok: false });
+        }
       }
       continue;
     }
 
-    // Reivindica o envio de forma atômica: só um processo consegue inserir
-    // a linha (contract_id + trigger_date é único). Evita cobrança duplicada.
-    const [claimed] = await db
-      .insert(reminders)
-      .values({
-        clientId: contract.clientId,
-        contractId: contract.id,
-        phone: client.phone,
-        templateId: defaultTpl?.id ?? null,
-        triggerDate: dueDate,
-        triggerTime: '09:30',
-        status: 'pending',
-      })
-      .onConflictDoNothing()
-      .returning({ id: reminders.id });
-
-    if (!claimed) continue; // já enviado neste mês (ou reivindicado por outra execução)
-
-    const message = resolveMessage(defaultBody, {
-      nome: saudacao,
-      valor,
-      data: `${String(effectiveDay).padStart(2, '0')}/${mm}/${year}`,
-      dias: '0',
+    // Reivindica o grupo inteiro numa única instrução INSERT (atômica em
+    // relação a outras execuções concorrentes). Um insert por contrato aqui
+    // permitiria duas execuções paralelas (ex: cron automático + disparo
+    // manual) intercalarem e cada uma reivindicar parte do grupo, quebrando
+    // a garantia de "1 mensagem só" mesmo sem duplicar cobrança.
+    const phone = client.phone; // extraído para preservar o narrowing dentro do .map
+    const groupPlanned = group.map(({ contract }) => {
+      const bd = contract.billingDay ?? 5;
+      const effectiveDay = Math.min(bd, lastDayOfMonth);
+      // data de vencimento canônica do mês — mesma chave o mês inteiro (dedupe + catch-up)
+      const dueDate = `${year}-${mm}-${String(effectiveDay).padStart(2, '0')}`;
+      return { contract, effectiveDay, dueDate };
     });
+
+    const claimedRows = groupPlanned.length
+      ? await db
+          .insert(reminders)
+          .values(
+            groupPlanned.map(({ contract, dueDate }) => ({
+              clientId: contract.clientId,
+              contractId: contract.id,
+              phone,
+              templateId: defaultTpl?.id ?? null,
+              triggerDate: dueDate,
+              triggerTime: '09:30',
+              status: 'pending' as const,
+            }))
+          )
+          .onConflictDoNothing()
+          .returning({ id: reminders.id, contractId: reminders.contractId })
+      : [];
+
+    const claimedContracts = groupPlanned
+      .map(({ contract, effectiveDay }) => {
+        const row = claimedRows.find((r) => r.contractId === contract.id);
+        return row ? { id: row.id, contract, effectiveDay } : null;
+      })
+      .filter((c): c is { id: string; contract: DueRow['contract']; effectiveDay: number } => c !== null);
+
+    if (claimedContracts.length === 0) continue; // já enviado neste mês (ou reivindicado por outra execução)
+
+    let message: string;
+    if (claimedContracts.length === 1) {
+      const { contract, effectiveDay } = claimedContracts[0]!;
+      message = resolveMessage(defaultBody, {
+        nome: saudacao,
+        valor: formatBRL(contract.fixedAmount),
+        data: `${String(effectiveDay).padStart(2, '0')}/${mm}/${year}`,
+        dias: '0',
+      });
+    } else {
+      let totalCents = 0;
+      const items = claimedContracts.map(({ contract }) => {
+        totalCents += Math.round(parseFloat(contract.fixedAmount ?? '0') * 100);
+        return { name: (contract.name ?? '').trim() || 'Serviço', valor: formatBRL(contract.fixedAmount) };
+      });
+      message = buildConsolidatedMessage({
+        saudacao,
+        data: `${String(dayOfMonth).padStart(2, '0')}/${mm}/${year}`,
+        items,
+        total: formatBRL((totalCents / 100).toFixed(2)),
+      });
+    }
+
     const { ok, error } = await sendWhatsApp(client.phone, message);
-    if (ok) clientSent++;
-    else clientFailed++;
-    dueSummary.push({ name: nomeEmpresa, valor, ok });
+    if (ok) clientSent += claimedContracts.length;
+    else clientFailed += claimedContracts.length;
+    for (const { contract } of claimedContracts) {
+      dueSummary.push({ name: nomeEmpresa, valor: formatBRL(contract.fixedAmount), ok });
+    }
 
     await db
       .update(reminders)
@@ -139,7 +200,7 @@ export async function GET(request: Request) {
         sentAt: ok ? new Date() : null,
         errorMessage: ok ? null : error,
       })
-      .where(eq(reminders.id, claimed.id));
+      .where(inArray(reminders.id, claimedContracts.map((c) => c.id)));
   }
 
   // ─────────────────────────────────────────────────────────────
