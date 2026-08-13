@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendEmail } from '@/lib/email';
+import { guardWppCallback } from '@/lib/wpp/callbackGuard';
 
 export async function POST(req: NextRequest) {
-  const secret = req.headers.get('x-wpp-secret');
-  if (!secret || secret !== process.env.WPP_CALLBACK_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const barrado = guardWppCallback(req);
+  if (barrado) return barrado;
 
   const adminEmail = process.env.GMAIL_USER ?? '';
   if (!adminEmail) return NextResponse.json({ ok: false });

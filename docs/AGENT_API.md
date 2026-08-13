@@ -17,8 +17,11 @@ No projeto na Vercel, em Settings, Environment Variables, adicionar:
 - `AGENT_API_KEY`: a chave gerada acima.
 - `AGENT_API_KEY_PREVIOUS` (opcional): usada só durante rotação de chave, ver seção 5.
 - `AGENT_RATE_LIMIT_PER_MINUTE` (opcional): padrão 60, ver seção 4.
+- `TRUSTED_IPS` (opcional): allowlist de IP das rotas de máquina, CSV. Se não definida, vale a lista embutida no código (o IP do VPS). Ver seção 7.
 
 Fazer redeploy depois de adicionar as variáveis.
+
+Variável de ambiente na Vercel só passa a valer em um novo deploy, inclusive `TRUSTED_IPS`. Alterar o valor no painel sem redeploy não muda nada no que está no ar.
 
 ### Exemplo de chamada
 
@@ -440,4 +443,61 @@ Toda chamada à API do agente, inclusive leituras (`GET`), gera exatamente uma l
 
 Tentativas com token inválido também geram uma linha, com `actor: "unknown"` e `success: false`, para dar visibilidade de acesso indevido.
 
+Tentativa vinda de um IP fora da allowlist também gera uma linha, com `actor: "blocked-ip"`, `status_code: 403` e o IP recusado no `error_message`. O `actor` gravado é sempre a constante `"blocked-ip"`, nunca o header `x-agent-actor` informado pelo chamador bloqueado, para que uma origem externa não consiga consumir o rate limit do actor legítimo.
+
 A escrita do log de auditoria nunca derruba a resposta HTTP principal: se a gravação falhar, o erro só aparece no log do servidor.
+
+## 7. Allowlist de IP
+
+Segunda camada de defesa, aplicada antes da autenticação nas rotas de máquina: a API do agente (`app/api/agent/v1/**`) e os callbacks do WhatsApp (`/api/wpp/disconnected` e `/api/wpp/reconnected`). Ela não substitui o Bearer nem o `x-wpp-secret`, só reduz a superfície: quem não vem da origem esperada nem chega a ser autenticado.
+
+A origem esperada é o VPS Hostinger, que hospeda o agente externo e o whatsapp-service.
+
+### Configuração
+
+`TRUSTED_IPS` é um CSV de IPs, sem espaços, comparados por igualdade exata (não há suporte a CIDR):
+
+```
+TRUSTED_IPS=31.97.21.249
+```
+
+Se a variável não estiver definida, vale a lista embutida no código, que hoje contém só o IP do VPS.
+
+### Resposta de bloqueio
+
+Na API do agente, o bloqueio é 403:
+
+```json
+{"error":{"code":"FORBIDDEN","message":"Origem não autorizada"}}
+```
+
+A mensagem nunca revela o IP recusado nem a allowlist, esse detalhe fica só no log de auditoria. Nos callbacks do WhatsApp, o bloqueio é 403 com `{"error":"Forbidden"}`.
+
+### Ambientes
+
+Em `pnpm dev` a checagem é ignorada automaticamente. Preview na Vercel NÃO é isento: preview também roda como `production`, então precisa de um IP autorizado igual à produção.
+
+### Kill switch
+
+Para desligar a camada de IP de propósito, use exatamente:
+
+```
+TRUSTED_IPS=*
+```
+
+Apagar a variável NÃO desliga a checagem, só faz voltar para a lista embutida no código.
+
+### Trocar o IP do VPS
+
+1. Descobrir o IP de saída novo, rodando no próprio VPS: `curl -s https://api.ipify.org`.
+2. Conferir no Neon quais IPs estão sendo recusados:
+   ```sql
+   select created_at, ip, error_message, user_agent from agent_audit_log where actor = 'blocked-ip' order by created_at desc limit 20;
+   ```
+3. Na Vercel, setar `TRUSTED_IPS=IP_NOVO,31.97.21.249` (mantendo o antigo durante a transição).
+4. Fazer o redeploy.
+5. Em emergência, `TRUSTED_IPS=*` mais redeploy libera tudo enquanto o problema é investigado.
+
+### Modo de falha por IPv6
+
+Se o VPS passar a sair por IPv6, o IP que chega deixa de bater com a lista e a chamada é bloqueada mesmo vindo da máquina certa. Resolve forçando IPv4 no agente (`curl --ipv4`) ou adicionando o endereço IPv6 à `TRUSTED_IPS`.
