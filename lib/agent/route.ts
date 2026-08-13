@@ -4,6 +4,7 @@ import { isValidAgentToken, getAgentActor } from './auth';
 import { logAgentCall } from './audit';
 import { isRateLimited } from './rateLimit';
 import { AgentApiError, errorEnvelope } from './errors';
+import { getClientIp, isTrustedIp } from '@/lib/security/ipAllowlist';
 
 export type AgentContext<TParams extends Record<string, string> = Record<string, string>> = {
   request: Request;
@@ -44,8 +45,31 @@ export function withAgentAuth<TParams extends Record<string, string> = Record<st
     const url = new URL(request.url);
     const endpoint = url.pathname;
     const method = request.method;
-    const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? null;
+    const ip = getClientIp(request);
     const userAgent = request.headers.get('user-agent');
+
+    if (!isTrustedIp(ip)) {
+      const status = 403;
+      // O actor gravado é a constante 'blocked-ip', NUNCA o header x-agent-actor:
+      // o rate limit conta linhas do agent_audit_log por actor, então deixar o
+      // chamador externo escolher o actor permitiria encher o balde do actor
+      // legítimo e derrubar o agente real com 429.
+      const declarado = (request.headers.get('x-agent-actor') ?? '-').slice(0, 64);
+      await logAgentCall({
+        actor: 'blocked-ip',
+        method,
+        endpoint,
+        statusCode: status,
+        success: false,
+        errorMessage: `IP não autorizado: ${ip ?? 'desconhecido'} (actor declarado: ${declarado})`,
+        ip,
+        userAgent,
+        durationMs: Date.now() - start,
+      });
+      // A resposta ao chamador não revela o IP recusado nem a allowlist, esse
+      // detalhe fica só no log de auditoria.
+      return NextResponse.json(errorEnvelope('FORBIDDEN', 'Origem não autorizada'), { status });
+    }
 
     if (!isValidAgentToken(request.headers.get('authorization'))) {
       const status = 401;
