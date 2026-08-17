@@ -1,12 +1,54 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { reminders, messageTemplates, clients, invoices, contracts, systemSettings } from '@/lib/db/schema';
-import { eq, and, lte, inArray } from 'drizzle-orm';
-import { sendWhatsApp, resolveMessage, formatBRL, greetingName, buildReminderMessage, buildConsolidatedMessage, DEFAULT_TEMPLATE_BODY } from '@/lib/wpp/send';
+import type { ReminderStage } from '@/lib/db/schema';
+import { eq, and, lte, inArray, notInArray } from 'drizzle-orm';
+import {
+  sendWhatsApp,
+  resolveMessage,
+  formatBRL,
+  greetingName,
+  buildReminderMessage,
+  buildConsolidatedMessage,
+  buildPostponedDueMessage,
+  buildOverdueMessage,
+  DEFAULT_TEMPLATE_BODY,
+} from '@/lib/wpp/send';
+import {
+  DUNNING_STAGES,
+  canonicalDueDateFor,
+  dueDateCandidatesFor,
+  sendDateFor,
+} from '@/lib/billing/schedule';
+import { getConfirmedKeys } from '@/lib/billing/confirmations';
 
-export const maxDuration = 60;
+// Três regras novas que este cron passou a obedecer:
+//
+// 1. O passo dos vencimentos é dirigido pela DATA DE ENVIO, não pelo dia do mês.
+//    dueDateCandidatesFor devolve quais vencimentos têm envio marcado para hoje,
+//    então um vencimento de sábado ou domingo é avisado na segunda, com o texto
+//    de "venceu no fim de semana" e a data REAL do vencimento. trigger_date
+//    continua sendo a data de vencimento canônica, nunca a data de envio.
+//
+// 2. Cobrança de atraso em duas etapas, D+2 e D+5, e para (PASSO A2). Só cobra
+//    quem comprovadamente recebeu o aviso do vencimento (linha stage 'due' com
+//    status 'sent') e quem não tem pagamento confirmado em payment_confirmations.
+//
+// 3. Barreira anti catch-up: vencimentos anteriores a dunning_start_date
+//    (gravado em system_settings na primeira execução) nunca são cobrados. Isso
+//    impede que o primeiro deploy dispare cobrança retroativa de meses passados.
+//    NUNCA remover essa barreira.
+//
+// O volume de envio pode triplicar (aviso, D+2 e D+5 no mesmo dia), por isso o
+// limite de execução subiu de 60 para 300 segundos (plano Vercel Pro).
+export const maxDuration = 300;
 
 const WPP_URL = process.env.WPP_SERVICE_URL ?? '';
+
+function formatDateBr(iso: string): string {
+  const [yyyy, mm, dd] = iso.split('-');
+  return `${dd}/${mm}/${yyyy}`;
+}
 
 export async function GET(request: Request) {
   if (!process.env.CRON_SECRET) {
@@ -30,12 +72,7 @@ export async function GET(request: Request) {
   // ── Datas no fuso de Brasília (UTC-3, sem horário de verão desde 2019) ──
   const nowUtc = new Date();
   const brt = new Date(nowUtc.getTime() - 3 * 60 * 60 * 1000);
-  const year = brt.getUTCFullYear();
-  const monthIdx = brt.getUTCMonth(); // 0-11
-  const mm = String(monthIdx + 1).padStart(2, '0');
-  const dayOfMonth = brt.getUTCDate();
   const todayBrt = brt.toISOString().split('T')[0]!; // YYYY-MM-DD
-  const lastDayOfMonth = new Date(Date.UTC(year, monthIdx + 1, 0)).getUTCDate();
   const currentTime = `${String(brt.getUTCHours()).padStart(2, '0')}:${String(brt.getUTCMinutes()).padStart(2, '0')}`;
 
   // Template padrão definido no painel (ou fallback embutido)
@@ -47,164 +84,356 @@ export async function GET(request: Request) {
   const defaultBody = defaultTpl?.body ?? DEFAULT_TEMPLATE_BODY;
 
   // ─────────────────────────────────────────────────────────────
-  // PASSO A — Contratos ativos que vencem HOJE (dia fixo do mês).
-  // Dispara somente no dia exato do vencimento. O INSERT usa a data de
-  // vencimento canônica do mês como chave única, então mesmo que o cron
-  // rode duas vezes no mesmo dia, o cliente recebe uma única mensagem.
+  // PASSO A — Vencimentos cujo aviso sai HOJE.
+  // O INSERT usa (contract_id, trigger_date, stage) como chave única, então
+  // mesmo que o cron rode duas vezes no mesmo dia o cliente recebe uma única
+  // mensagem por vencimento.
   // ─────────────────────────────────────────────────────────────
-  const activeContracts = await db
-    .select({ contract: contracts, client: clients })
-    .from(contracts)
-    .leftJoin(clients, eq(contracts.clientId, clients.id))
-    .where(eq(contracts.status, 'active'));
-
-  const dueThisMonth = activeContracts.filter(({ contract }) => {
-    const bd = contract.billingDay ?? 5;
-    const effectiveDay = Math.min(bd, lastDayOfMonth); // billingDay 31 em fev -> último dia
-    if (dayOfMonth !== effectiveDay) return false; // avisa somente no dia exato do vencimento
-    if (contract.startDate && contract.startDate > todayBrt) return false; // contrato futuro
-    if (contract.endDate && contract.endDate < todayBrt) return false; // contrato encerrado
-    return true;
-  });
+  const dueCandidates = dueDateCandidatesFor(todayBrt, 'due');
 
   let clientSent = 0;
   let clientFailed = 0;
   const dueSummary: { name: string; valor: string; ok: boolean }[] = [];
 
-  type DueRow = (typeof dueThisMonth)[number];
+  type ContractRow = { contract: typeof contracts.$inferSelect; client: typeof clients.$inferSelect | null };
 
-  // Agrupa os contratos vencendo hoje por cliente: quando o mesmo cliente tem
-  // 2+ contratos vencendo no mesmo dia, ele recebe UMA mensagem consolidada
-  // em vez de uma por contrato.
-  const groupedByClient = new Map<string, DueRow[]>();
-  for (const row of dueThisMonth) {
-    const key = row.contract.clientId;
-    if (!key) {
-      console.error(`[cron] contrato ${row.contract.id} sem clientId, ignorado no lembrete de vencimento`);
-      continue;
-    }
-    const group = groupedByClient.get(key);
-    if (group) group.push(row);
-    else groupedByClient.set(key, [row]);
+  // Uma leitura só de contratos ativos serve aos dois passos (aviso e cobrança).
+  const dunningCandidatesByStage = DUNNING_STAGES.map((stage) => ({
+    stage,
+    candidates: dueDateCandidatesFor(todayBrt, stage),
+  }));
+  const precisaDeContratos =
+    dueCandidates.length > 0 || dunningCandidatesByStage.some((s) => s.candidates.length > 0);
+
+  const activeContracts: ContractRow[] = precisaDeContratos
+    ? await db
+        .select({ contract: contracts, client: clients })
+        .from(contracts)
+        .leftJoin(clients, eq(contracts.clientId, clients.id))
+        .where(eq(contracts.status, 'active'))
+    : [];
+
+  // Contratos que vencem em "dueIso": dia de cobrança canônico igual à data e
+  // vigência conferida contra a data do VENCIMENTO, não contra hoje.
+  function contractsDueOn(dueIso: string): ContractRow[] {
+    return activeContracts.filter(({ contract }) => {
+      if (canonicalDueDateFor(dueIso, contract.billingDay) !== dueIso) return false;
+      if (contract.startDate && contract.startDate > dueIso) return false;
+      if (contract.endDate && contract.endDate < dueIso) return false;
+      return true;
+    });
   }
 
-  for (const group of groupedByClient.values()) {
-    const client = group[0]!.client;
-    const nomeEmpresa = client?.name ?? 'Cliente'; // resumo do dono (identifica quem é)
-    const saudacao = greetingName(client?.contactName, client?.name); // mensagem ao cliente
+  type DueGroupItem = ContractRow & { dueIso: string };
 
-    // Cliente sem telefone: registra falha (idempotente) e avisa no resumo do dono, por contrato
-    if (!client?.phone) {
-      for (const { contract } of group) {
-        const bd = contract.billingDay ?? 5;
-        const effectiveDay = Math.min(bd, lastDayOfMonth);
-        const dueDate = `${year}-${mm}-${String(effectiveDay).padStart(2, '0')}`;
-        const valor = formatBRL(contract.fixedAmount);
-        const [claimed] = await db
-          .insert(reminders)
-          .values({
-            clientId: contract.clientId,
-            contractId: contract.id,
-            phone: '',
-            triggerDate: dueDate,
-            triggerTime: '09:30',
-            status: 'failed',
-            errorMessage: 'Cliente sem telefone cadastrado',
-          })
-          .onConflictDoNothing()
-          .returning({ id: reminders.id });
-        if (claimed) {
-          clientFailed++;
-          dueSummary.push({ name: nomeEmpresa, valor, ok: false });
-        }
+  // Agrupa por cliente MAIS data de vencimento: dois vencimentos diferentes do
+  // mesmo cliente processados no mesmo dia continuam sendo mensagens separadas,
+  // cada uma com a sua data correta.
+  function groupByClientAndDue(items: DueGroupItem[]): Map<string, DueGroupItem[]> {
+    const grouped = new Map<string, DueGroupItem[]>();
+    for (const item of items) {
+      const clientId = item.contract.clientId;
+      if (!clientId) {
+        console.error(`[cron] contrato ${item.contract.id} sem clientId, ignorado na cobrança`);
+        continue;
       }
-      continue;
+      const key = `${clientId}|${item.dueIso}`;
+      const group = grouped.get(key);
+      if (group) group.push(item);
+      else grouped.set(key, [item]);
     }
+    return grouped;
+  }
 
-    // Reivindica o grupo inteiro numa única instrução INSERT (atômica em
-    // relação a outras execuções concorrentes). Um insert por contrato aqui
-    // permitiria duas execuções paralelas (ex: cron automático + disparo
-    // manual) intercalarem e cada uma reivindicar parte do grupo, quebrando
-    // a garantia de "1 mensagem só" mesmo sem duplicar cobrança.
-    const phone = client.phone; // extraído para preservar o narrowing dentro do .map
-    const groupPlanned = group.map(({ contract }) => {
-      const bd = contract.billingDay ?? 5;
-      const effectiveDay = Math.min(bd, lastDayOfMonth);
-      // data de vencimento canônica do mês — mesma chave o mês inteiro (dedupe + catch-up)
-      const dueDate = `${year}-${mm}-${String(effectiveDay).padStart(2, '0')}`;
-      return { contract, effectiveDay, dueDate };
-    });
+  if (dueCandidates.length > 0) {
+    const dueItems: DueGroupItem[] = dueCandidates.flatMap((dueIso) =>
+      contractsDueOn(dueIso).map((row) => ({ ...row, dueIso }))
+    );
 
-    const claimedRows = groupPlanned.length
-      ? await db
-          .insert(reminders)
-          .values(
-            groupPlanned.map(({ contract, dueDate }) => ({
+    for (const group of groupByClientAndDue(dueItems).values()) {
+      const client = group[0]!.client;
+      const dueIso = group[0]!.dueIso;
+      const nomeEmpresa = client?.name ?? 'Cliente'; // resumo do dono (identifica quem é)
+      const saudacao = greetingName(client?.contactName, client?.name); // mensagem ao cliente
+
+      // Cliente sem telefone: registra falha (idempotente) e avisa no resumo do dono, por contrato
+      if (!client?.phone) {
+        for (const { contract } of group) {
+          const valor = formatBRL(contract.fixedAmount);
+          const [claimed] = await db
+            .insert(reminders)
+            .values({
               clientId: contract.clientId,
               contractId: contract.id,
-              phone,
-              templateId: defaultTpl?.id ?? null,
-              triggerDate: dueDate,
+              phone: '',
+              triggerDate: dueIso,
               triggerTime: '09:30',
-              status: 'pending' as const,
-            }))
-          )
-          .onConflictDoNothing()
-          .returning({ id: reminders.id, contractId: reminders.contractId })
-      : [];
+              stage: 'due',
+              status: 'failed',
+              errorMessage: 'Cliente sem telefone cadastrado',
+            })
+            .onConflictDoNothing()
+            .returning({ id: reminders.id });
+          if (claimed) {
+            clientFailed++;
+            dueSummary.push({ name: nomeEmpresa, valor, ok: false });
+          }
+        }
+        continue;
+      }
 
-    const claimedContracts = groupPlanned
-      .map(({ contract, effectiveDay }) => {
-        const row = claimedRows.find((r) => r.contractId === contract.id);
-        return row ? { id: row.id, contract, effectiveDay } : null;
-      })
-      .filter((c): c is { id: string; contract: DueRow['contract']; effectiveDay: number } => c !== null);
+      // Reivindica o grupo inteiro numa única instrução INSERT (atômica em
+      // relação a outras execuções concorrentes). Um insert por contrato aqui
+      // permitiria duas execuções paralelas (ex: cron automático + disparo
+      // manual) intercalarem e cada uma reivindicar parte do grupo, quebrando
+      // a garantia de "1 mensagem só" mesmo sem duplicar cobrança.
+      const phone = client.phone; // extraído para preservar o narrowing dentro do .map
+      const claimedRows = await db
+        .insert(reminders)
+        .values(
+          group.map(({ contract }) => ({
+            clientId: contract.clientId,
+            contractId: contract.id,
+            phone,
+            templateId: defaultTpl?.id ?? null,
+            triggerDate: dueIso,
+            triggerTime: '09:30',
+            stage: 'due' as const,
+            status: 'pending' as const,
+          }))
+        )
+        .onConflictDoNothing()
+        .returning({ id: reminders.id, contractId: reminders.contractId });
 
-    if (claimedContracts.length === 0) continue; // já enviado neste mês (ou reivindicado por outra execução)
+      const claimedContracts = group
+        .map(({ contract }) => {
+          const row = claimedRows.find((r) => r.contractId === contract.id);
+          return row ? { id: row.id, contract } : null;
+        })
+        .filter((c): c is { id: string; contract: ContractRow['contract'] } => c !== null);
 
-    let message: string;
-    if (claimedContracts.length === 1) {
-      const { contract, effectiveDay } = claimedContracts[0]!;
-      message = resolveMessage(defaultBody, {
-        nome: saudacao,
-        valor: formatBRL(contract.fixedAmount),
-        data: `${String(effectiveDay).padStart(2, '0')}/${mm}/${year}`,
-        dias: '0',
-      });
-    } else {
+      if (claimedContracts.length === 0) continue; // já enviado neste mês (ou reivindicado por outra execução)
+
+      const dataBr = formatDateBr(dueIso);
+      const noPrazo = sendDateFor(dueIso, 'due') === dueIso; // false quando o vencimento caiu no fim de semana
+
       let totalCents = 0;
       const items = claimedContracts.map(({ contract }) => {
         totalCents += Math.round(parseFloat(contract.fixedAmount ?? '0') * 100);
         return { name: (contract.name ?? '').trim() || 'Serviço', valor: formatBRL(contract.fixedAmount) };
       });
-      message = buildConsolidatedMessage({
+      const total = formatBRL((totalCents / 100).toFixed(2));
+
+      let message: string;
+      if (!noPrazo) {
+        // Vencimento no fim de semana: o texto explica o adiamento e usa a data
+        // REAL do vencimento, não a data de hoje.
+        message = buildPostponedDueMessage({ saudacao, data: dataBr, items, total });
+      } else if (claimedContracts.length === 1) {
+        message = resolveMessage(defaultBody, {
+          nome: saudacao,
+          valor: items[0]!.valor,
+          data: dataBr,
+          dias: '0',
+        });
+      } else {
+        message = buildConsolidatedMessage({ saudacao, data: dataBr, items, total });
+      }
+
+      const { ok, error } = await sendWhatsApp(client.phone, message);
+      if (ok) clientSent += claimedContracts.length;
+      else clientFailed += claimedContracts.length;
+      for (const { contract } of claimedContracts) {
+        dueSummary.push({ name: nomeEmpresa, valor: formatBRL(contract.fixedAmount), ok });
+      }
+
+      await db
+        .update(reminders)
+        .set({
+          customMessage: message,
+          status: ok ? 'sent' : 'failed',
+          sentAt: ok ? new Date() : null,
+          errorMessage: ok ? null : error,
+        })
+        .where(inArray(reminders.id, claimedContracts.map((c) => c.id)));
+    }
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // PASSO A2 — Cobrança de atraso (D+2 e D+5), duas mensagens e para.
+  // ─────────────────────────────────────────────────────────────
+  let overdueSent = 0;
+  let overdueFailed = 0;
+  let overdueSkippedByConfirmation = 0;
+  const overdueSummary: { name: string; valor: string; stage: ReminderStage; dueIso: string; ok: boolean }[] = [];
+
+  // Data em que a cobrança automática entrou no ar. Vencimento anterior a ela
+  // NUNCA é cobrado: barreira anti catch-up retroativo no primeiro deploy.
+  const [dunningRow] = await db
+    .select()
+    .from(systemSettings)
+    .where(eq(systemSettings.key, 'dunning_start_date'))
+    .limit(1);
+
+  let dunningStartDate = dunningRow?.value ?? null;
+  if (!dunningStartDate) {
+    await db
+      .insert(systemSettings)
+      .values({ key: 'dunning_start_date', value: todayBrt })
+      .onConflictDoNothing();
+    const [criado] = await db
+      .select()
+      .from(systemSettings)
+      .where(eq(systemSettings.key, 'dunning_start_date'))
+      .limit(1);
+    dunningStartDate = criado?.value ?? todayBrt;
+  }
+
+  for (const { stage, candidates } of dunningCandidatesByStage) {
+    const dueDates = candidates.filter((dueIso) => dueIso >= dunningStartDate!);
+    if (dueDates.length === 0) continue;
+
+    const stageItems: DueGroupItem[] = dueDates.flatMap((dueIso) =>
+      contractsDueOn(dueIso).map((row) => ({ ...row, dueIso }))
+    );
+    if (stageItems.length === 0) continue;
+
+    // Só cobra quem comprovadamente recebeu o aviso do vencimento.
+    const avisados = await db
+      .select({ contractId: reminders.contractId, triggerDate: reminders.triggerDate })
+      .from(reminders)
+      .where(
+        and(
+          inArray(reminders.contractId, [...new Set(stageItems.map((i) => i.contract.id))]),
+          inArray(reminders.triggerDate, dueDates),
+          eq(reminders.stage, 'due'),
+          eq(reminders.status, 'sent')
+        )
+      );
+    const avisadosSet = new Set(avisados.map((a) => `${a.contractId}|${a.triggerDate}`));
+
+    const comAviso = stageItems.filter((i) => avisadosSet.has(`${i.contract.id}|${i.dueIso}`));
+    if (comAviso.length === 0) continue;
+
+    // E quem não tem pagamento confirmado naquele vencimento.
+    const confirmados = await getConfirmedKeys(
+      comAviso.map((i) => ({ contractId: i.contract.id, dueDate: i.dueIso }))
+    );
+    const aCobrar = comAviso.filter((i) => !confirmados.has(`${i.contract.id}|${i.dueIso}`));
+    overdueSkippedByConfirmation += comAviso.length - aCobrar.length;
+    if (aCobrar.length === 0) continue;
+
+    for (const group of groupByClientAndDue(aCobrar).values()) {
+      const client = group[0]!.client;
+      const dueIso = group[0]!.dueIso;
+      const nomeEmpresa = client?.name ?? 'Cliente';
+      const saudacao = greetingName(client?.contactName, client?.name);
+
+      const claimedRows = await db
+        .insert(reminders)
+        .values(
+          group.map(({ contract }) => ({
+            clientId: contract.clientId,
+            contractId: contract.id,
+            phone: client?.phone ?? '',
+            triggerDate: dueIso,
+            triggerTime: '09:30',
+            stage,
+            status: 'pending' as const,
+          }))
+        )
+        .onConflictDoNothing()
+        .returning({ id: reminders.id, contractId: reminders.contractId });
+
+      let claimed = group
+        .map(({ contract }) => {
+          const row = claimedRows.find((r) => r.contractId === contract.id);
+          return row ? { id: row.id, contract } : null;
+        })
+        .filter((c): c is { id: string; contract: ContractRow['contract'] } => c !== null);
+
+      if (claimed.length === 0) continue; // já cobrado (ou reivindicado por outra execução)
+
+      // RECHECK: alguém pode ter confirmado o pagamento entre a leitura acima e
+      // agora (painel ou agente). Se confirmou, a linha reivindicada morre como
+      // cancelada e nada é enviado.
+      const confirmadosAgora = await getConfirmedKeys(
+        claimed.map((c) => ({ contractId: c.contract.id, dueDate: dueIso }))
+      );
+      if (confirmadosAgora.size > 0) {
+        const cancelar = claimed.filter((c) => confirmadosAgora.has(`${c.contract.id}|${dueIso}`));
+        await db
+          .update(reminders)
+          .set({ status: 'cancelled', errorMessage: 'Pagamento confirmado antes do envio' })
+          .where(inArray(reminders.id, cancelar.map((c) => c.id)));
+        overdueSkippedByConfirmation += cancelar.length;
+        claimed = claimed.filter((c) => !confirmadosAgora.has(`${c.contract.id}|${dueIso}`));
+        if (claimed.length === 0) continue;
+      }
+
+      // Telefone apagado depois do aviso: registra a falha e segue.
+      if (!client?.phone) {
+        await db
+          .update(reminders)
+          .set({ status: 'failed', errorMessage: 'Cliente sem telefone cadastrado' })
+          .where(inArray(reminders.id, claimed.map((c) => c.id)));
+        overdueFailed += claimed.length;
+        for (const { contract } of claimed) {
+          overdueSummary.push({
+            name: nomeEmpresa,
+            valor: formatBRL(contract.fixedAmount),
+            stage,
+            dueIso,
+            ok: false,
+          });
+        }
+        continue;
+      }
+
+      let totalCents = 0;
+      const items = claimed.map(({ contract }) => {
+        totalCents += Math.round(parseFloat(contract.fixedAmount ?? '0') * 100);
+        return { name: (contract.name ?? '').trim() || 'Serviço', valor: formatBRL(contract.fixedAmount) };
+      });
+
+      const message = buildOverdueMessage({
         saudacao,
-        data: `${String(dayOfMonth).padStart(2, '0')}/${mm}/${year}`,
+        data: formatDateBr(dueIso),
         items,
         total: formatBRL((totalCents / 100).toFixed(2)),
+        stage,
       });
-    }
 
-    const { ok, error } = await sendWhatsApp(client.phone, message);
-    if (ok) clientSent += claimedContracts.length;
-    else clientFailed += claimedContracts.length;
-    for (const { contract } of claimedContracts) {
-      dueSummary.push({ name: nomeEmpresa, valor: formatBRL(contract.fixedAmount), ok });
-    }
+      const { ok, error } = await sendWhatsApp(client.phone, message);
+      if (ok) overdueSent += claimed.length;
+      else overdueFailed += claimed.length;
+      for (const { contract } of claimed) {
+        overdueSummary.push({
+          name: nomeEmpresa,
+          valor: formatBRL(contract.fixedAmount),
+          stage,
+          dueIso,
+          ok,
+        });
+      }
 
-    await db
-      .update(reminders)
-      .set({
-        customMessage: message,
-        status: ok ? 'sent' : 'failed',
-        sentAt: ok ? new Date() : null,
-        errorMessage: ok ? null : error,
-      })
-      .where(inArray(reminders.id, claimedContracts.map((c) => c.id)));
+      await db
+        .update(reminders)
+        .set({
+          customMessage: message,
+          status: ok ? 'sent' : 'failed',
+          sentAt: ok ? new Date() : null,
+          errorMessage: ok ? null : error,
+        })
+        .where(inArray(reminders.id, claimed.map((c) => c.id)));
+    }
   }
 
   // ─────────────────────────────────────────────────────────────
   // PASSO B — Lembretes avulsos criados manualmente no painel
+  // As linhas de cobrança de atraso ficam de fora: elas têm data de envio
+  // própria (calculada no PASSO A2) e seriam varridas fora de hora aqui, já que
+  // o trigger_date delas é a data do vencimento, sempre no passado.
   // ─────────────────────────────────────────────────────────────
   const pendingRows = await db
     .select({
@@ -219,7 +448,13 @@ export async function GET(request: Request) {
     .leftJoin(clients, eq(reminders.clientId, clients.id))
     .leftJoin(invoices, eq(reminders.invoiceId, invoices.id))
     .leftJoin(contracts, eq(reminders.contractId, contracts.id))
-    .where(and(eq(reminders.status, 'pending'), lte(reminders.triggerDate, todayBrt)));
+    .where(
+      and(
+        eq(reminders.status, 'pending'),
+        lte(reminders.triggerDate, todayBrt),
+        notInArray(reminders.stage, ['overdue_d2', 'overdue_d5'])
+      )
+    );
 
   const toSend = pendingRows.filter((r) => {
     const reminderTime = r.reminder.triggerTime ?? '08:00';
@@ -268,7 +503,7 @@ export async function GET(request: Request) {
   }
 
   // ─────────────────────────────────────────────────────────────
-  // PASSO C — Aviso para o dono (resumo dos vencimentos do dia)
+  // PASSO C — Aviso para o dono (resumo do que saiu hoje)
   // ─────────────────────────────────────────────────────────────
   const [alertRow] = await db
     .select()
@@ -278,14 +513,33 @@ export async function GET(request: Request) {
   const alertPhone = alertRow?.value;
 
   let ownerNotified = false;
-  if (alertPhone && dueSummary.length > 0) {
-    const linhas = dueSummary
-      .map((d) => `• ${d.name}: ${d.valor}${d.ok ? '' : ' (FALHA no envio)'}`)
-      .join('\n');
-    const ownerMsg =
-      `📅 Vencimentos processados hoje (${String(dayOfMonth).padStart(2, '0')}/${mm}/${year}):\n${linhas}\n\n` +
-      `Mensagens enviadas aos clientes: ${clientSent}/${dueSummary.length}.`;
-    ownerNotified = (await sendWhatsApp(alertPhone, ownerMsg)).ok;
+  if (alertPhone && (dueSummary.length > 0 || overdueSummary.length > 0)) {
+    const blocos: string[] = [];
+
+    if (dueSummary.length > 0) {
+      const linhas = dueSummary
+        .map((d) => `• ${d.name}: ${d.valor}${d.ok ? '' : ' (FALHA no envio)'}`)
+        .join('\n');
+      blocos.push(
+        `📅 Vencimentos processados hoje (${formatDateBr(todayBrt)}):\n${linhas}\n\n` +
+          `Mensagens enviadas aos clientes: ${clientSent}/${dueSummary.length}.`
+      );
+    }
+
+    if (overdueSummary.length > 0) {
+      const linhas = overdueSummary
+        .map(
+          (d) =>
+            `• ${d.name}: ${d.valor} (${d.stage === 'overdue_d2' ? 'D+2' : 'D+5'}, venceu em ${formatDateBr(d.dueIso).slice(0, 5)})${d.ok ? '' : ' (FALHA no envio)'}`
+        )
+        .join('\n');
+      blocos.push(
+        `⏰ Cobranças de atraso enviadas hoje:\n${linhas}\n\n` +
+          `Cobranças enviadas: ${overdueSent}/${overdueSummary.length}.`
+      );
+    }
+
+    ownerNotified = (await sendWhatsApp(alertPhone, blocos.join('\n\n'))).ok;
   }
 
   return NextResponse.json({
@@ -296,5 +550,9 @@ export async function GET(request: Request) {
     ownerNotified,
     avulsosSent: sent,
     avulsosFailed: failed,
+    overdueSent,
+    overdueFailed,
+    overdueSkippedByConfirmation,
+    dunningStartDate,
   });
 }

@@ -43,6 +43,8 @@ Toda resposta de erro segue o mesmo envelope:
 
 Base: `https://financeiro.casaldotrafego.com/api/agent/v1`
 
+Hoje são 37 handlers publicados (33 antes da cobrança automática, mais os 4 de `/billing`).
+
 Campos como `id`, `createdAt` e `invoiceNumber` nunca são aceitos em nenhum body de escrita. Se enviados, são silenciosamente descartados pela validação (Zod em modo "strip").
 
 ### Clientes
@@ -313,7 +315,11 @@ Não existe `DELETE /invoices/:id`.
 
 Lista lembretes, paginado.
 
-Query: `limit`, `offset`, `status` ("pending" \| "sent" \| "failed" \| "cancelled" \| "completed")
+Query: `limit`, `offset`, `status` ("pending" \| "sent" \| "failed" \| "cancelled" \| "completed"), `stage` ("due" \| "overdue_d2" \| "overdue_d5")
+
+Cada lembrete devolve também o campo `stage`, a etapa do ciclo de cobrança daquele vencimento: `due` é o aviso do dia do vencimento (é o que toda linha antiga representa), `overdue_d2` e `overdue_d5` são as cobranças de atraso. `trigger_date` é sempre a data de VENCIMENTO, nunca a data em que a mensagem saiu.
+
+`stage` é só filtro de leitura: NUNCA é aceito em body de escrita, nem em `POST /reminders` nem em `PATCH /reminders/:id`. Quem define a etapa é o cron, e editar um lembrete preserva a etapa que ele já tinha.
 
 #### `POST /reminders`
 
@@ -360,6 +366,14 @@ Resposta 400 se não houver mensagem resolvível:
 { "error": { "code": "VALIDATION_ERROR", "message": "Lembrete sem mensagem: preencha customMessage ou vincule um template." } }
 ```
 
+Em lembrete de cobrança de atraso (`stage` igual a `overdue_d2` ou `overdue_d5`) sem `customMessage` salva, quem monta o texto é o SERVIDOR: ele reconstrói a mensagem daquela etapa (o texto de cobrança, com a data do vencimento), em vez de cair no template genérico do painel, que fala em vencimento futuro. Se houver `customMessage`, ela continua tendo prioridade, igual a qualquer outro lembrete.
+
+Cobrança de atraso de um vencimento já confirmado como pago nunca é reenviada, nem por aqui. Resposta 400:
+```json
+{ "error": { "code": "VALIDATION_ERROR", "message": "Vencimento já confirmado como pago em 05/08/2026. Desfaça a confirmação antes de cobrar." } }
+```
+Para reenviar mesmo assim, use `POST /billing/payments/unconfirm` antes.
+
 #### `GET /reminders/templates`
 
 Lista templates de mensagem.
@@ -371,6 +385,166 @@ Cria um template.
 Body: `{ "name": string, "body": string, "clientId": uuid | null }`
 
 `body` aceita as variáveis `{nome}`, `{valor}`, `{data}`, `{dias}`. `clientId` nulo cria um template genérico, com `clientId` preenchido o template é específico daquele cliente.
+
+### Cobrança e confirmação de pagamento
+
+Três avisos que valem para toda esta seção:
+
+> **1. Confirmar pagamento é idempotente.** A chave de negócio é `(contractId, dueDate)`. Confirmar duas vezes devolve a mesma confirmação, com `alreadyConfirmed: true`, e não duplica nada.
+>
+> **2. Confirmar pagamento NÃO gera transaction e NÃO mexe em fatura.** Não entra no fluxo de caixa, não muda status de invoice, não muda status do cliente. O lançamento financeiro continua sendo feito à parte, como sempre foi.
+>
+> **3. Confirmar bloqueia só as COBRANÇAS DE ATRASO daquele vencimento (D+2 e D+5).** O aviso do dia do vencimento não é afetado: ele já saiu antes, e o do mês seguinte é outro vencimento, com outra chave.
+
+#### `POST /billing/payments/confirm`
+
+Confirma o pagamento de um vencimento e interrompe as cobranças de atraso dele.
+
+Body:
+| campo | tipo | obrigatório |
+|---|---|---|
+| contractId | uuid | não, se `clientId` ou `phone` resolverem para um único contrato |
+| clientId | uuid | não |
+| phone | string (telefone cadastrado do cliente) | não |
+| dueDate | string "YYYY-MM-DD" | não, padrão o vencimento em aberto mais recente na janela de 45 dias |
+| amount | number \| string | não, padrão o valor fixo do contrato |
+| note | string \| null | não |
+
+Pelo menos um entre `contractId`, `clientId` e `phone` é obrigatório.
+
+`source` é gravado pelo SERVIDOR como `"agent"`, nunca vem do body. `actor` é o valor já resolvido do header `x-agent-actor`.
+
+Resposta 200:
+```json
+{
+  "confirmation": { "id": "...", "contractId": "...", "dueDate": "2026-08-05", "amount": "1500.00", "source": "agent", "actor": "telegram:123456789", "confirmedAt": "2026-08-07T12:30:00.000Z" },
+  "alreadyConfirmed": false,
+  "dunningCancelled": ["overdue_d2", "overdue_d5"]
+}
+```
+
+`dunningCancelled` lista as etapas de cobrança que não serão mais enviadas por causa desta confirmação: as que estavam pendentes (canceladas agora) e as que ainda nem tinham sido criadas mas cuja data de envio ainda estava por vir.
+
+Resposta 409 quando o alvo é ambíguo. São dois casos, e em ambos a API se recusa a adivinhar qual pagamento foi feito.
+
+Caso 1, o telefone ou o cliente têm vencimento em aberto em mais de um contrato:
+```json
+{ "error": { "code": "AMBIGUOUS_TARGET", "message": "Mais de um vencimento em aberto para este alvo. Informe contractId e dueDate. Opções: Meta Ads (uuid, vencimento 2026-08-05); Google Ads (uuid, vencimento 2026-08-05)" } }
+```
+
+Caso 2, um contrato só, porém com dois ou mais vencimentos em aberto (cliente com mais de um mês atrasado) e sem `dueDate` no corpo:
+```json
+{ "error": { "code": "AMBIGUOUS_TARGET", "message": "Este contrato tem 2 vencimentos em aberto. Informe dueDate. Opções: Meta Ads (uuid, vencimento 2026-08-05); Meta Ads (uuid, vencimento 2026-07-05)" } }
+```
+
+Resposta 400 quando a data não é um vencimento válido daquele contrato:
+```json
+{ "error": { "code": "VALIDATION_ERROR", "message": "2026-08-07 não é uma data de vencimento deste contrato. O vencimento daquele mês é 2026-08-05." } }
+```
+
+A validação da data aceita, além do vencimento calculado pelo `billingDay` atual do contrato, qualquer data que já tenha histórico de aviso ou confirmação registrada. Isso existe porque o `billingDay` é editável: sem essa regra, mudar o dia de vencimento do contrato tornaria impossível confirmar o pagamento de qualquer mês anterior à mudança.
+
+Resposta 404 quando o contrato não existe, ou quando nada está em aberto para o alvo informado:
+```json
+{ "error": { "code": "NOT_FOUND", "message": "Vencimento em aberto não encontrado" } }
+```
+
+#### `POST /billing/payments/unconfirm`
+
+Desfaz a confirmação. Idempotente: desfazer o que não existe devolve `removed: false`.
+
+Body:
+| campo | tipo | obrigatório |
+|---|---|---|
+| contractId | uuid | sim |
+| dueDate | string "YYYY-MM-DD" | sim |
+
+Os dois são obrigatórios de propósito: não existe resolução por telefone aqui, desfazer é operação de correção e exige o alvo exato.
+
+Resposta 200:
+```json
+{ "removed": true, "contractId": "...", "dueDate": "2026-08-05" }
+```
+
+Desfazer depois que a data do D+5 já passou NÃO reenvia nada: o ciclo daquele vencimento simplesmente volta a aparecer como em aberto e encerrado. Para cobrar de novo, mande a mensagem por um lembrete avulso.
+
+#### `GET /billing/open-dues`
+
+Vencimentos de contratos ativos na janela pedida, com o estado do ciclo de cobrança de cada um.
+
+Query: `phone`, `clientId`, `contractId` (pelo menos um é obrigatório), `days` (padrão 45, máximo 120), `limit`, `offset`
+
+Resposta 200:
+```json
+{
+  "data": [
+    {
+      "contractId": "...",
+      "contractName": "Meta Ads",
+      "clientId": "...",
+      "clientName": "Cliente X",
+      "phone": "5511999999999",
+      "dueDate": "2026-08-05",
+      "amount": "1500.00",
+      "cycleStatus": "dunned_d2",
+      "stagesSent": ["due", "overdue_d2"],
+      "nextStage": "overdue_d5",
+      "nextSendDate": "2026-08-12",
+      "confirmed": false,
+      "confirmedAt": null,
+      "confirmedBy": null
+    }
+  ],
+  "count": 1
+}
+```
+
+Valores de `cycleStatus`: `pending` (nada enviado ainda), `notified` (aviso do vencimento enviado), `dunned_d2`, `dunned_d5`, `closed` (as duas cobranças já passaram, segue em aberto), `due_failed` (o aviso falhou, o cliente nem soube), `paid` (pagamento confirmado).
+
+Resposta 400 sem nenhum filtro:
+```json
+{ "error": { "code": "VALIDATION_ERROR", "message": "Informe pelo menos um filtro: phone, clientId ou contractId." } }
+```
+
+#### `GET /billing/dunning-status`
+
+O mesmo item do `open-dues` mais o histórico completo do ciclo.
+
+Query: `contractId` (obrigatório), `dueDate` (opcional, padrão o vencimento mais recente do contrato)
+
+Resposta 200: os campos do item acima, mais:
+```json
+{
+  "reminders": [
+    { "id": "...", "stage": "due", "status": "sent", "triggerDate": "2026-08-05", "sentAt": "2026-08-05T12:30:00.000Z", "errorMessage": null, "customMessage": "Oi Isabela! ..." }
+  ],
+  "confirmation": null
+}
+```
+
+#### Como a automação decide o dia do envio
+
+A data de vencimento (`dueDate`, gravada em `trigger_date`) é canônica e nunca muda. O que a automação calcula é a data de ENVIO de cada uma das três mensagens, por estas regras, nesta ordem:
+
+1. O aviso sai no dia do vencimento; o D+2, dois dias depois; o D+5, cinco dias depois.
+2. Se a data cair no sábado ou no domingo, o envio anda para a segunda-feira. Feriado nacional NÃO adia nada, por decisão do dono: mensagem em feriado é lida do mesmo jeito, e manter tabela de feriado desatualizada seria pior.
+3. Entre duas mensagens consecutivas do mesmo vencimento sempre existem pelo menos 2 dias úteis, contados a partir da data EFETIVA de envio da anterior, não da nominal.
+
+Exemplo por extenso, vencimento no sábado 15/08/2026:
+
+- Aviso: 15/08 é sábado, então o aviso sai na segunda, 17/08, com o texto explicando que o vencimento caiu no fim de semana e citando a data real, 15/08.
+- D+2: a data nominal seria 17/08, o mesmo dia do aviso. Pela regra 3, ele é empurrado para quarta, 19/08.
+- D+5: a data nominal seria quinta, 20/08, que fica a só um dia útil do D+2. Também é empurrado, para sexta, 21/08.
+
+Exemplo com vencimento em dia útil, sexta 14/08/2026: aviso na sexta 14/08, D+2 nominal cai no domingo e vira segunda 17/08, que fica a 1 dia útil do aviso, então anda para terça 18/08; D+5 sai na quinta 20/08.
+
+O campo `nextSendDate` do `open-dues` já entrega essa conta pronta, o agente não precisa recalcular nada.
+
+#### Casos que o agente precisa saber responder
+
+- **Cliente com 2 contratos e só um foi pago:** confirme um `contractId` só. A confirmação é por contrato e por data de vencimento, então o contrato não pago continua sendo cobrado normalmente. Sem `contractId`, a resposta é 409.
+- **Contrato cancelado ou pausado:** para de ser cobrado automaticamente na hora, porque o cron só olha contrato com `status: active`. Não precisa confirmar pagamento para "silenciar" um contrato encerrado, basta o status.
+- **Desconfirmar depois que a data do D+5 já passou:** não reenvia nada. As datas de envio são calculadas a partir do vencimento, e o que passou, passou.
 
 ### Dashboard e relatórios
 

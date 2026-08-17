@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
-import { Bell, Plus, MessageSquare, Wifi, WifiOff, Loader2, Trash2, X, Check, RefreshCw, Pencil, Repeat } from "lucide-react";
-import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction, updateTemplateAction, updateReminderAction, saveAlertPhoneAction, setDefaultTemplateAction } from "@/app/(dashboard)/reminders/actions";
+import { Bell, Plus, MessageSquare, Wifi, WifiOff, Loader2, Trash2, X, Check, RefreshCw, Pencil, Repeat, CalendarClock } from "lucide-react";
+import { createReminderAction, cancelReminderAction, deleteReminderAction, createTemplateAction, deleteTemplateAction, updateTemplateAction, updateReminderAction, saveAlertPhoneAction, setDefaultTemplateAction, confirmPaymentAction, undoPaymentConfirmationAction } from "@/app/(dashboard)/reminders/actions";
+import { sendDateFor } from "@/lib/billing/schedule";
 import { useRouter } from "next/navigation";
 
 type ReminderRow = {
@@ -12,6 +13,8 @@ type ReminderRow = {
     triggerDate: string;
     triggerTime: string | null;
     status: string | null;
+    stage: string;
+    contractId: string | null;
     customMessage: string | null;
     sentAt: Date | null;
     errorMessage: string | null;
@@ -21,6 +24,35 @@ type ReminderRow = {
   };
   clientName: string | null;
   templateName: string | null;
+};
+
+type BillingCycle = {
+  key: string;
+  contractId: string;
+  contractName: string | null;
+  amount: string;
+  clientId: string | null;
+  clientName: string | null;
+  clientPhone: string | null;
+  dueDate: string;
+  confirmation: {
+    id: string;
+    confirmedAt: Date;
+    actor: string | null;
+    source: string;
+    note: string | null;
+  } | null;
+  reminders: {
+    id: string;
+    stage: string;
+    status: string | null;
+    sentAt: Date | null;
+    errorMessage: string | null;
+    customMessage: string | null;
+  }[];
+  cycleStatus: string;
+  nextStage: string | null;
+  nextSendDate: string | null;
 };
 
 type Template = {
@@ -54,7 +86,140 @@ const STATUS_LABELS: Record<string, string> = {
   completed: "Concluído",
 };
 
-type Tab = "connection" | "reminders" | "sent" | "templates" | "settings";
+type Tab = "connection" | "reminders" | "billing" | "sent" | "templates" | "settings";
+
+// Etapa do ciclo de cobrança da linha de lembrete. Lembrete sem contrato é avulso.
+const STAGE_LABELS: Record<string, string> = {
+  due: "Vencimento",
+  overdue_d2: "Atraso D+2",
+  overdue_d5: "Atraso D+5",
+};
+
+const CYCLE_LABELS: Record<string, string> = {
+  paid: "Pago",
+  due_failed: "Falha no aviso",
+  closed: "Encerrado",
+  dunned_d5: "Cobrado D+5",
+  dunned_d2: "Cobrado D+2",
+  notified: "Avisado",
+  pending: "Aguardando envio",
+};
+
+const CYCLE_COLORS: Record<string, string> = {
+  paid: "bg-green-500/10 text-green-400 border-green-500/20",
+  due_failed: "bg-red-500/10 text-red-400 border-red-500/20",
+  closed: "bg-zinc-700/20 text-zinc-400 border-zinc-700/20",
+  dunned_d5: "bg-orange-500/10 text-orange-400 border-orange-500/20",
+  dunned_d2: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  notified: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
+  pending: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+};
+
+const CYCLE_STAGES: { stage: "due" | "overdue_d2" | "overdue_d5"; label: string }[] = [
+  { stage: "due", label: "Aviso do vencimento" },
+  { stage: "overdue_d2", label: "Cobrança D+2" },
+  { stage: "overdue_d5", label: "Cobrança D+5" },
+];
+
+type BillingFilter = "all" | "open" | "paid" | "failed";
+
+function formatIsoBr(iso: string) {
+  const [yyyy, mm, dd] = iso.split("-");
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+function formatBRLValue(value: string | null) {
+  if (!value) return "—";
+  return `R$ ${parseFloat(value).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function todayBrtIso() {
+  return new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString().split("T")[0]!;
+}
+
+function BillingCycleCard({ cycle, onConfirm, onUndo, busy }: {
+  cycle: BillingCycle;
+  onConfirm: (cycle: BillingCycle) => void;
+  onUndo: (cycle: BillingCycle) => void;
+  busy: boolean;
+}) {
+  const todayIso = todayBrtIso();
+  const confirmado = cycle.confirmation !== null;
+
+  return (
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-3">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-white truncate">
+            {cycle.contractName?.trim() || "Serviço"}
+          </p>
+          <p className="text-xs text-zinc-500 mt-0.5">
+            Vencimento {formatIsoBr(cycle.dueDate)} · {formatBRLValue(cycle.amount)}
+          </p>
+        </div>
+        <span className={`shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-medium ${CYCLE_COLORS[cycle.cycleStatus] ?? CYCLE_COLORS.pending}`}>
+          {confirmado && cycle.confirmation
+            ? `Pago, confirmado em ${new Date(cycle.confirmation.confirmedAt).toLocaleDateString("pt-BR")}${cycle.confirmation.actor ? ` por ${cycle.confirmation.actor}` : ""}`
+            : CYCLE_LABELS[cycle.cycleStatus] ?? CYCLE_LABELS.pending}
+        </span>
+      </div>
+
+      <ul className="space-y-1.5">
+        {CYCLE_STAGES.map(({ stage, label }) => {
+          const row = cycle.reminders.find((r) => r.stage === stage);
+          const sendDate = sendDateFor(cycle.dueDate, stage);
+
+          let detalhe: string;
+          let cor = "text-zinc-500";
+          if (row?.status === "sent") {
+            detalhe = `enviado em ${row.sentAt ? new Date(row.sentAt).toLocaleDateString("pt-BR") : formatIsoBr(sendDate)}`;
+            cor = "text-green-400";
+          } else if (row?.status === "failed") {
+            detalhe = `falhou: ${row.errorMessage ?? "erro desconhecido"}`;
+            cor = "text-red-400";
+          } else if (row?.status === "cancelled") {
+            detalhe = row.errorMessage ?? "cancelado";
+          } else if (confirmado) {
+            detalhe = "não aplicável (pagamento confirmado)";
+          } else if (sendDate >= todayIso) {
+            detalhe = `previsto para ${formatIsoBr(sendDate)}`;
+            cor = "text-zinc-400";
+          } else {
+            detalhe = "não aplicável";
+          }
+
+          return (
+            <li key={stage} className="flex items-baseline gap-2 text-xs">
+              <span className="text-zinc-300 w-40 shrink-0">{label}</span>
+              <span className={cor}>{detalhe}</span>
+            </li>
+          );
+        })}
+      </ul>
+
+      <div className="flex justify-end">
+        {confirmado ? (
+          <button
+            onClick={() => onUndo(cycle)}
+            disabled={busy}
+            className="text-xs text-zinc-500 hover:text-zinc-300 px-2 py-1 rounded transition-colors disabled:opacity-50"
+          >
+            Desfazer
+          </button>
+        ) : (
+          <button
+            onClick={() => onConfirm(cycle)}
+            disabled={busy}
+            className="flex items-center gap-1.5 bg-green-600/90 hover:bg-green-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-colors disabled:opacity-50"
+          >
+            <Check size={13} />
+            Confirmar pagamento
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function ReminderTable({ rows, templates, onEdit, onCancel, onDelete }: {
   rows: ReminderRow[];
@@ -68,7 +233,7 @@ function ReminderTable({ rows, templates, onEdit, onCancel, onDelete }: {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-zinc-800">
-            {["Cliente", "Telefone", "Data", "Template/Mensagem", "Recorrente", "Status", ""].map((h) => (
+            {["Cliente", "Telefone", "Data", "Etapa", "Template/Mensagem", "Recorrente", "Status", ""].map((h) => (
               <th key={h} className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wide">{h}</th>
             ))}
           </tr>
@@ -80,6 +245,9 @@ function ReminderTable({ rows, templates, onEdit, onCancel, onDelete }: {
               <td className="px-4 py-3 text-zinc-400 font-mono text-xs">{reminder.phone}</td>
               <td className="px-4 py-3 text-zinc-300 whitespace-nowrap">
                 {new Date(reminder.triggerDate + "T12:00:00").toLocaleDateString("pt-BR")}
+              </td>
+              <td className="px-4 py-3 text-zinc-400 text-xs whitespace-nowrap">
+                {reminder.contractId ? STAGE_LABELS[reminder.stage] ?? reminder.stage : "Avulso"}
               </td>
               <td className="px-4 py-3 text-zinc-400 max-w-xs truncate">
                 {reminder.customMessage ? (
@@ -143,11 +311,12 @@ function ReminderTable({ rows, templates, onEdit, onCancel, onDelete }: {
   );
 }
 
-export default function RemindersClient({ reminders, templates, clients, alertPhone: initialAlertPhone }: {
+export default function RemindersClient({ reminders, templates, clients, alertPhone: initialAlertPhone, billingCycles }: {
   reminders: ReminderRow[];
   templates: Template[];
   clients: Client[];
   alertPhone: string;
+  billingCycles: BillingCycle[];
 }) {
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("connection");
@@ -155,6 +324,8 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
   const [qrUrl, setQrUrl] = useState<string | null>(null);
   const [loadingQR, setLoadingQR] = useState(false);
   const [isPending, startTransition] = useTransition();
+  // Erro das ações da aba Vencimentos (confirmar ou desfazer pagamento)
+  const [billingError, setBillingError] = useState<string | null>(null);
 
   // Modais
   const [showReminderModal, setShowReminderModal] = useState(false);
@@ -395,6 +566,46 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
     }
   };
 
+  const handleConfirmPayment = (cycle: BillingCycle) => {
+    const valor = formatBRLValue(cycle.amount);
+    if (
+      !window.confirm(
+        `Confirmar o pagamento de ${valor} do vencimento ${formatIsoBr(cycle.dueDate)}?\n\n` +
+          `Isso interrompe as cobranças automáticas de atraso deste vencimento.\n` +
+          `Atenção: NÃO lança receita no fluxo de caixa.`
+      )
+    )
+      return;
+    startTransition(async () => {
+      const res = await confirmPaymentAction(cycle.contractId, cycle.dueDate);
+      if (!res.ok) {
+        setBillingError(res.error);
+        return;
+      }
+      setBillingError(null);
+      router.refresh();
+    });
+  };
+
+  const handleUndoPayment = (cycle: BillingCycle) => {
+    if (
+      !window.confirm(
+        `Desfazer a confirmação de pagamento do vencimento ${formatIsoBr(cycle.dueDate)}?\n\n` +
+          `As cobranças que ainda não passaram da data voltam a ser enviadas.`
+      )
+    )
+      return;
+    startTransition(async () => {
+      const res = await undoPaymentConfirmationAction(cycle.contractId, cycle.dueDate);
+      if (!res.ok) {
+        setBillingError(res.error);
+        return;
+      }
+      setBillingError(null);
+      router.refresh();
+    });
+  };
+
   const handleSaveAlertPhone = async () => {
     setSavingAlertPhone(true);
     await saveAlertPhoneAction(alertPhoneInput);
@@ -402,6 +613,25 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
     setAlertPhoneSaved(true);
     setTimeout(() => setAlertPhoneSaved(false), 3000);
   };
+
+  const [billingFilter, setBillingFilter] = useState<BillingFilter>("all");
+
+  const filteredCycles = billingCycles.filter((c) => {
+    if (billingFilter === "paid") return c.confirmation !== null;
+    if (billingFilter === "open") return c.confirmation === null;
+    if (billingFilter === "failed") return c.reminders.some((r) => r.status === "failed");
+    return true;
+  });
+
+  // Agrupa os ciclos por cliente para o painel ficar legível quando o mesmo
+  // cliente tem dois contratos vencendo no mesmo dia.
+  const cyclesByClient = new Map<string, BillingCycle[]>();
+  for (const cycle of filteredCycles) {
+    const nome = cycle.clientName ?? "Cliente sem nome";
+    const grupo = cyclesByClient.get(nome);
+    if (grupo) grupo.push(cycle);
+    else cyclesByClient.set(nome, [cycle]);
+  }
 
   const pendingReminders = reminders.filter((r) => r.reminder.status === "pending" || r.reminder.status === "cancelled");
   const sentReminders = reminders.filter((r) => r.reminder.status === "sent" || r.reminder.status === "failed" || r.reminder.status === "completed");
@@ -435,7 +665,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
 
       {/* Tabs */}
       <div className="flex gap-1 bg-zinc-800 rounded-lg p-1 w-fit">
-        {(["connection", "reminders", "sent", "templates", "settings"] as Tab[]).map((t) => (
+        {(["connection", "reminders", "billing", "sent", "templates", "settings"] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -443,7 +673,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
               tab === t ? "bg-zinc-700 text-white" : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
-            {t === "connection" ? "Conexão" : t === "reminders" ? "Lembretes" : t === "sent" ? "Enviados" : t === "templates" ? "Templates" : "Configurações"}
+            {t === "connection" ? "Conexão" : t === "reminders" ? "Lembretes" : t === "billing" ? "Vencimentos" : t === "sent" ? "Enviados" : t === "templates" ? "Templates" : "Configurações"}
           </button>
         ))}
       </div>
@@ -575,6 +805,79 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
           ) : (
             <ReminderTable rows={pendingReminders} templates={templates} onEdit={handleOpenEdit} onCancel={handleCancel} onDelete={handleDelete} />
           )}
+        </div>
+      )}
+
+      {/* ── ABA VENCIMENTOS ── */}
+      {tab === "billing" && (
+        <div className="space-y-4">
+          {billingError && (
+            <div className="flex items-start justify-between gap-3 rounded-lg border border-red-900 bg-red-950/40 px-4 py-3 text-sm text-red-200">
+              <span>{billingError}</span>
+              <button
+                onClick={() => setBillingError(null)}
+                className="text-red-300 hover:text-red-100 text-xs font-medium shrink-0"
+              >
+                Fechar
+              </button>
+            </div>
+          )}
+
+          <div className="flex gap-1 bg-zinc-900 border border-zinc-800 rounded-lg p-1 w-fit">
+            {([
+              ["all", "Todos"],
+              ["open", "Em aberto"],
+              ["paid", "Pagos"],
+              ["failed", "Com falha"],
+            ] as [BillingFilter, string][]).map(([value, label]) => (
+              <button
+                key={value}
+                onClick={() => setBillingFilter(value)}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                  billingFilter === value ? "bg-zinc-700 text-white" : "text-zinc-400 hover:text-zinc-200"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {filteredCycles.length === 0 ? (
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-700 py-20 text-center">
+              <CalendarClock className="h-10 w-10 text-zinc-600 mb-4" />
+              <p className="text-zinc-400 font-medium">Nenhum vencimento neste filtro</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {[...cyclesByClient.entries()].map(([clientName, cycles]) => (
+                <div key={clientName} className="space-y-2">
+                  <p className="text-xs font-medium text-zinc-500 uppercase tracking-wide">{clientName}</p>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    {cycles.map((cycle) => (
+                      <BillingCycleCard
+                        key={cycle.key}
+                        cycle={cycle}
+                        onConfirm={handleConfirmPayment}
+                        onUndo={handleUndoPayment}
+                        busy={isPending}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-3 max-w-2xl">
+            <h2 className="text-sm font-semibold text-zinc-200">Como funciona a cobrança automática</h2>
+            <ul className="text-sm text-zinc-400 space-y-2">
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">1.</span>No dia do vencimento o cliente recebe o aviso. Se o vencimento cai no sábado ou no domingo, o aviso sai na segunda, com a data real do vencimento no texto.</li>
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">2.</span>Sem confirmação de pagamento, ele recebe a cobrança D+2 e, depois, a D+5. São duas cobranças e para.</li>
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">3.</span>Entre duas mensagens do mesmo vencimento sempre existem pelo menos 2 dias úteis. Feriado não adia envio, só sábado e domingo.</li>
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">4.</span>Confirmar o pagamento interrompe as cobranças daquele vencimento. Isso NÃO lança receita no fluxo de caixa, o lançamento continua sendo feito na mão.</li>
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">5.</span>Contrato pausado ou cancelado para de ser cobrado automaticamente.</li>
+            </ul>
+          </div>
         </div>
       )}
 

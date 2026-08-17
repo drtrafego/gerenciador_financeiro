@@ -19,6 +19,13 @@ export function badRequest(message: string): AgentApiError {
   return new AgentApiError(400, 'VALIDATION_ERROR', message);
 }
 
+// Alvo ambíguo: o agente mandou um telefone ou cliente que resolve para mais de
+// um registro possível (ex: dois vencimentos em aberto). Quem chama precisa
+// escolher explicitamente qual, em vez de a API adivinhar.
+export function conflict(message: string): AgentApiError {
+  return new AgentApiError(409, 'AMBIGUOUS_TARGET', message);
+}
+
 // Envelope de erro padrão de toda resposta não-2xx da API do agente.
 export function errorEnvelope(code: string, message: string) {
   return { error: { code, message } };

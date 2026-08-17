@@ -6,6 +6,7 @@ import { reminders, messageTemplates, clients, invoices, systemSettings } from '
 import { eq, desc, and, lte, eq as eqOp } from 'drizzle-orm';
 import { z } from 'zod';
 import { getUser } from '@/lib/db/queries';
+import { confirmPayment, unconfirmPayment, cancelPendingDunning } from '@/lib/billing/confirmations';
 
 // ── TEMPLATES ─────────────────────────────────
 
@@ -163,6 +164,57 @@ export async function deleteReminderAction(id: string) {
   if (!user) throw new Error('Unauthenticated');
   await db.delete(reminders).where(eq(reminders.id, id));
   revalidatePath('/reminders');
+}
+
+// ── CONFIRMAÇÃO DE PAGAMENTO ──────────────────
+// Confirmar pagamento aqui só interrompe as cobranças automáticas de atraso
+// daquele vencimento. NÃO lança receita no fluxo de caixa, NÃO mexe em fatura.
+
+export async function confirmPaymentAction(contractId: string, dueDate: string, note?: string) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
+
+  // Devolve o erro em vez de estourar: a chamada vem de dentro de um
+  // startTransition no painel, onde uma exceção não apareceria na tela e o
+  // operador clicaria achando que confirmou.
+  try {
+    const { confirmation, alreadyConfirmed } = await confirmPayment({
+      contractId,
+      dueDate,
+      source: 'panel',
+      actor: user.email,
+      note: note ?? null,
+    });
+    const dunningCancelled = await cancelPendingDunning(contractId, dueDate);
+
+    revalidatePath('/reminders');
+    return { ok: true as const, confirmation, alreadyConfirmed, dunningCancelled };
+  } catch (err) {
+    console.error('[reminders] falha ao confirmar pagamento', err);
+    return {
+      ok: false as const,
+      error: err instanceof Error ? err.message : 'Não foi possível confirmar o pagamento.',
+    };
+  }
+}
+
+export async function undoPaymentConfirmationAction(contractId: string, dueDate: string) {
+  // TODO: filtrar por teamId quando o banco virar multi-tenant
+  const user = await getUser();
+  if (!user) throw new Error('Unauthenticated');
+
+  try {
+    const result = await unconfirmPayment({ contractId, dueDate });
+    revalidatePath('/reminders');
+    return { ok: true as const, ...result };
+  } catch (err) {
+    console.error('[reminders] falha ao desfazer confirmação de pagamento', err);
+    return {
+      ok: false as const,
+      error: err instanceof Error ? err.message : 'Não foi possível desfazer a confirmação.',
+    };
+  }
 }
 
 // Gera lembretes automáticos para faturas com vencimento próximo

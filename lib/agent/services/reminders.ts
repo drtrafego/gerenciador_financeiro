@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { desc, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
-import { clients, reminders } from '@/lib/db/schema';
+import { clients, paymentConfirmations, reminders } from '@/lib/db/schema';
 import {
   getReminderById,
   createReminder,
@@ -12,9 +12,12 @@ import {
   getMessageTemplates,
   createMessageTemplate,
 } from '@/lib/db/queries';
-import { sendWhatsApp, buildReminderMessage } from '@/lib/wpp/send';
+import { sendWhatsApp, buildReminderMessage, buildAutomaticBillingMessage } from '@/lib/wpp/send';
 import { notFound, badRequest } from '../errors';
 
+// "stage" NÃO entra neste schema de propósito: quem define a etapa do ciclo de
+// cobrança (due, overdue_d2, overdue_d5) é o cron, nunca o chamador da API.
+// Lembrete criado por aqui é sempre avulso e nasce com o default 'due' do banco.
 const reminderCreateSchema = z.object({
   clientId: z.string().uuid(),
   phone: z.string().min(10),
@@ -39,14 +42,20 @@ const templateCreateSchema = z.object({
 
 export async function listReminders({
   status,
+  stage,
   limit,
   offset,
 }: {
   status?: string;
+  stage?: string;
   limit: number;
   offset: number;
 }) {
-  const where = status ? eq(reminders.status, status) : undefined;
+  const conditions = [
+    ...(status ? [eq(reminders.status, status)] : []),
+    ...(stage ? [eq(reminders.stage, stage)] : []),
+  ];
+  const where = conditions.length > 0 ? and(...conditions) : undefined;
 
   const [rows, [{ count }]] = await Promise.all([
     db
@@ -100,6 +109,9 @@ export async function updateReminderService(id: string, input: unknown) {
     ...(parsed.endDate !== undefined && { endDate: parsed.endDate ?? null }),
     ...(parsed.recurring !== undefined && { recurring: parsed.recurring }),
     // Editar um lembrete volta o status para pendente, igual ao painel humano.
+    // O "stage" NUNCA é tocado aqui: uma linha de cobrança D+2 continua sendo
+    // D+2 depois de editada. Quem mexer neste bloco no futuro, não acrescente
+    // stage, senão a dedupe (contract_id, trigger_date, stage) quebra.
     status: 'pending',
     sentAt: null,
     errorMessage: null,
@@ -134,7 +146,33 @@ export async function sendNowReminderService(id: string) {
   if (!row) throw notFound('Lembrete');
 
   const { reminder, template, client, invoice, contract } = row;
-  const message = buildReminderMessage({ reminder, template, client, invoice, contract, now: new Date() });
+
+  // Cobrança de atraso com pagamento já confirmado não é reenviada por ninguém.
+  if (reminder.contractId && (reminder.stage === 'overdue_d2' || reminder.stage === 'overdue_d5')) {
+    const [confirmacao] = await db
+      .select()
+      .from(paymentConfirmations)
+      .where(
+        and(
+          eq(paymentConfirmations.contractId, reminder.contractId),
+          eq(paymentConfirmations.dueDate, reminder.triggerDate)
+        )
+      )
+      .limit(1);
+    if (confirmacao) {
+      const dataBr = new Date(reminder.triggerDate + 'T12:00:00').toLocaleDateString('pt-BR');
+      throw badRequest(
+        `Vencimento já confirmado como pago em ${dataBr}. Desfaça a confirmação antes de cobrar.`
+      );
+    }
+  }
+
+  // Em linha de cobrança automática sem customMessage salva, o servidor
+  // reconstrói o texto certo da etapa (D+2 ou D+5) em vez de cair no template
+  // genérico do painel, que fala em vencimento futuro.
+  const message =
+    (!reminder.customMessage ? buildAutomaticBillingMessage({ reminder, client, contract }) : null) ??
+    buildReminderMessage({ reminder, template, client, invoice, contract, now: new Date() });
 
   if (!message) {
     throw badRequest('Lembrete sem mensagem: preencha customMessage ou vincule um template.');

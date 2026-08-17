@@ -3,10 +3,11 @@ export const dynamic = 'force-dynamic';
 import { db } from '@/lib/db';
 import { reminders, messageTemplates, clients, systemSettings } from '@/lib/db/schema';
 import { desc, eq } from 'drizzle-orm';
+import { getBillingCycles } from '@/lib/db/queries';
 import RemindersClient from '@/components/reminders/RemindersClient';
 
 export default async function RemindersPage() {
-  const [reminderRows, templates, clientRows, alertPhoneSetting] = await Promise.all([
+  const [reminderRows, templates, clientRows, alertPhoneSetting, billingCycles] = await Promise.all([
     db
       .select({
         reminder: reminders,
@@ -24,6 +25,8 @@ export default async function RemindersPage() {
     db.select().from(clients).where(eq(clients.status, 'active')).orderBy(clients.name),
 
     db.select().from(systemSettings).where(eq(systemSettings.key, 'alert_phone')).limit(1),
+
+    getBillingCycles({ days: 60 }),
   ]);
 
   return (
@@ -32,6 +35,7 @@ export default async function RemindersPage() {
       templates={templates}
       clients={clientRows}
       alertPhone={alertPhoneSetting[0]?.value ?? ''}
+      billingCycles={billingCycles}
     />
   );
 }
