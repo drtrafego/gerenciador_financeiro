@@ -14,6 +14,7 @@ import {
   recurringExpenses,
   reminders,
   messageTemplates,
+  paymentConfirmations,
   type NewClient,
   type NewContract,
   type NewInvoice,
@@ -29,6 +30,7 @@ import { isContractEarning } from '@/lib/contracts';
 import { convertAmount, safeRates } from '@/lib/currency/format';
 import type { Currency } from '@/lib/currency/format';
 import { CLIENT_SOURCES, NONE_LABEL, NONE_COLOR, sourceLabel } from '@/lib/clientSources';
+import { deriveCycleStatus, deriveNextStep } from '@/lib/billing/confirmations';
 
 // ─── AUTH ─────────────────────────────────────
 // A autenticação real do app é o Stack Auth (vide app/(dashboard)/layout.tsx).
@@ -501,6 +503,119 @@ export async function getMessageTemplates() {
 export async function createMessageTemplate(data: NewMessageTemplate) {
   const [template] = await db.insert(messageTemplates).values(data).returning();
   return template;
+}
+
+// ─── CICLOS DE COBRANÇA (aba Vencimentos do painel) ───
+// Um ciclo é o par (contrato, data de vencimento) com todas as linhas de
+// reminders daquele vencimento (aviso, D+2, D+5) e a confirmação de pagamento,
+// se houver. O join com reminders é interno de propósito: lembrete avulso, sem
+// contrato, não é ciclo de cobrança e não aparece aqui.
+export async function getBillingCycles({ days = 60 }: { days?: number } = {}) {
+  const brtNow = new Date(Date.now() - 3 * 60 * 60 * 1000);
+  const from = new Date(brtNow.getTime() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0]!;
+
+  const rows = await db
+    .select({
+      reminder: reminders,
+      contract: contracts,
+      clientId: clients.id,
+      clientName: clients.name,
+      clientPhone: clients.phone,
+      confirmation: paymentConfirmations,
+    })
+    .from(reminders)
+    .innerJoin(contracts, eq(reminders.contractId, contracts.id))
+    .leftJoin(clients, eq(contracts.clientId, clients.id))
+    .leftJoin(
+      paymentConfirmations,
+      and(
+        eq(paymentConfirmations.contractId, contracts.id),
+        eq(paymentConfirmations.dueDate, reminders.triggerDate)
+      )
+    )
+    .where(gte(reminders.triggerDate, from))
+    .orderBy(desc(reminders.triggerDate));
+
+  // Estado do ciclo é derivado aqui no servidor (mesma função que a API do
+  // agente usa), para o painel não repetir a regra do lado do cliente.
+  const todayIso = brtNow.toISOString().split('T')[0]!;
+
+  const cycles = new Map<string, {
+    key: string;
+    contractId: string;
+    contractName: string | null;
+    amount: string;
+    clientId: string | null;
+    clientName: string | null;
+    clientPhone: string | null;
+    dueDate: string;
+    confirmation: {
+      id: string;
+      confirmedAt: Date;
+      actor: string | null;
+      source: string;
+      note: string | null;
+    } | null;
+    reminders: {
+      id: string;
+      stage: string;
+      status: string | null;
+      sentAt: Date | null;
+      errorMessage: string | null;
+      customMessage: string | null;
+    }[];
+  }>();
+
+  for (const row of rows) {
+    const key = `${row.contract.id}|${row.reminder.triggerDate}`;
+    let cycle = cycles.get(key);
+    if (!cycle) {
+      cycle = {
+        key,
+        contractId: row.contract.id,
+        contractName: row.contract.name,
+        amount: row.contract.fixedAmount,
+        clientId: row.clientId,
+        clientName: row.clientName,
+        clientPhone: row.clientPhone,
+        dueDate: row.reminder.triggerDate,
+        confirmation: row.confirmation
+          ? {
+              id: row.confirmation.id,
+              confirmedAt: row.confirmation.confirmedAt,
+              actor: row.confirmation.actor,
+              source: row.confirmation.source,
+              note: row.confirmation.note,
+            }
+          : null,
+        reminders: [],
+      };
+      cycles.set(key, cycle);
+    }
+    cycle.reminders.push({
+      id: row.reminder.id,
+      stage: row.reminder.stage,
+      status: row.reminder.status,
+      sentAt: row.reminder.sentAt,
+      errorMessage: row.reminder.errorMessage,
+      customMessage: row.reminder.customMessage,
+    });
+  }
+
+  return [...cycles.values()].map((cycle) => {
+    const rows = cycle.reminders.map((r) => ({
+      stage: r.stage,
+      status: r.status,
+      triggerDate: cycle.dueDate,
+    }));
+    const { nextStage, nextSendDate } = deriveNextStep(rows, cycle.confirmation, todayIso);
+    return {
+      ...cycle,
+      cycleStatus: deriveCycleStatus(rows, cycle.confirmation, todayIso),
+      nextStage,
+      nextSendDate,
+    };
+  });
 }
 
 // ─── RELATÓRIO DE INADIMPLÊNCIA ───────────────

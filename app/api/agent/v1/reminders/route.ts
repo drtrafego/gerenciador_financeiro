@@ -6,7 +6,8 @@ export const GET = withAgentAuth(async ({ request }) => {
   const url = new URL(request.url);
   const { limit, offset } = parsePagination(url);
   const status = url.searchParams.get('status') ?? undefined;
-  const { data, count } = await listReminders({ status, limit, offset });
+  const stage = url.searchParams.get('stage') ?? undefined;
+  const { data, count } = await listReminders({ status, stage, limit, offset });
   return { status: 200, body: { data, count }, resourceType: 'reminder' };
 });
 

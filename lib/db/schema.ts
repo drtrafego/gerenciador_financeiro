@@ -218,14 +218,43 @@ export const reminders = pgTable('reminders', {
   endDate: date('end_date'),
   recurring: boolean('recurring').default(false),
   status: text('status').default('pending'), // pending | sent | failed | cancelled | completed
+  // Etapa do ciclo de cobrança daquele vencimento:
+  // due = aviso do dia do vencimento (é o que toda linha histórica representa),
+  // overdue_d2 e overdue_d5 = cobranças de atraso. triggerDate continua sendo a
+  // data de VENCIMENTO canônica, nunca a data efetiva de envio.
+  stage: text('stage').notNull().default('due'), // due | overdue_d2 | overdue_d5
   sentAt: timestamp('sent_at'),
   errorMessage: text('error_message'),
   createdAt: timestamp('created_at').defaultNow(),
 }, (table) => ({
-  // Um contrato só pode ter um lembrete por data de vencimento (dedupe do cron)
-  contractDueDateUnique: uniqueIndex('reminders_contract_duedate_unique')
-    .on(table.contractId, table.triggerDate)
+  // Um contrato só pode ter um lembrete por data de vencimento E etapa (dedupe do cron)
+  contractDueDateStageUnique: uniqueIndex('reminders_contract_duedate_stage_unique')
+    .on(table.contractId, table.triggerDate, table.stage)
     .where(sql`${table.contractId} IS NOT NULL`),
+  stageTriggerDateIdx: index('reminders_stage_triggerdate_idx').on(table.stage, table.triggerDate),
+}));
+
+// Confirmação de pagamento de um vencimento (contrato + data de vencimento).
+// Tabela própria porque lembrete pode ser apagado e a confirmação não pode sumir
+// junto. Confirmar pagamento aqui NUNCA cria transaction nem mexe em fatura:
+// serve só para interromper as cobranças automáticas de atraso daquele vencimento.
+export const paymentConfirmations = pgTable('payment_confirmations', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  clientId: uuid('client_id').references(() => clients.id),
+  contractId: uuid('contract_id')
+    .notNull()
+    .references(() => contracts.id),
+  dueDate: date('due_date').notNull(),
+  amount: decimal('amount', { precision: 10, scale: 2 }),
+  source: text('source').notNull().default('panel'), // panel | agent
+  actor: text('actor'), // e-mail do usuário do painel ou x-agent-actor
+  note: text('note'),
+  confirmedAt: timestamp('confirmed_at').notNull().defaultNow(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (table) => ({
+  contractDueDateUnique: uniqueIndex('payment_confirmations_contract_duedate_unique')
+    .on(table.contractId, table.dueDate),
+  dueDateIdx: index('payment_confirmations_duedate_idx').on(table.dueDate),
 }));
 
 // ─────────────────────────────────────────────
@@ -307,6 +336,11 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
   client: one(clients, { fields: [transactions.clientId], references: [clients.id] }),
 }));
 
+export const paymentConfirmationsRelations = relations(paymentConfirmations, ({ one }) => ({
+  client: one(clients, { fields: [paymentConfirmations.clientId], references: [clients.id] }),
+  contract: one(contracts, { fields: [paymentConfirmations.contractId], references: [contracts.id] }),
+}));
+
 // ─────────────────────────────────────────────
 // TYPES
 // ─────────────────────────────────────────────
@@ -345,6 +379,8 @@ export type Reminder = typeof reminders.$inferSelect;
 export type NewReminder = typeof reminders.$inferInsert;
 export type AgentAuditLog = typeof agentAuditLog.$inferSelect;
 export type NewAgentAuditLog = typeof agentAuditLog.$inferInsert;
+export type PaymentConfirmation = typeof paymentConfirmations.$inferSelect;
+export type NewPaymentConfirmation = typeof paymentConfirmations.$inferInsert;
 
 export type ClientStatus = 'active' | 'inactive' | 'overdue';
 export type ContractType = 'fixed_fee' | 'fixed_plus_percentage' | 'project';
@@ -353,6 +389,8 @@ export type InvoiceType = 'monthly' | 'project' | 'proposal';
 export type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled';
 export type TransactionType = 'income' | 'expense';
 export type Currency = 'BRL' | 'USD' | 'ARS';
+export type ReminderStage = 'due' | 'overdue_d2' | 'overdue_d5';
+export type PaymentConfirmationSource = 'panel' | 'agent';
 
 export enum ActivityType {
   SIGN_UP = 'SIGN_UP',
