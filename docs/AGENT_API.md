@@ -43,9 +43,9 @@ Toda resposta de erro segue o mesmo envelope:
 
 Base: `https://financeiro.casaldotrafego.com/api/agent/v1`
 
-Hoje são 38 handlers publicados (33 antes da cobrança automática, mais os 4 de `/billing`, mais o upload de PDF de contrato).
+Hoje são 39 handlers publicados (33 antes da cobrança automática, mais os 4 de `/billing`, mais o upload e o download de PDF de contrato).
 
-Todos os endpoints recebem e devolvem JSON, com UMA exceção: `POST /contracts/:id/pdf` recebe `multipart/form-data`, porque manda arquivo.
+Todos os endpoints recebem e devolvem JSON, com duas exceções, as duas de arquivo: `POST /contracts/:id/pdf` recebe `multipart/form-data` e `GET /contracts/:id/pdf` responde o PDF em binário.
 
 Campos como `id`, `createdAt` e `invoiceNumber` nunca são aceitos em nenhum body de escrita. Se enviados, são silenciosamente descartados pela validação (Zod em modo "strip").
 
@@ -155,6 +155,8 @@ Body:
 
 Aqui e no `PATCH`, `pdfUrl` só aceita um link já hospedado. Para mandar o ARQUIVO em si, use `POST /contracts/:id/pdf`, descrito abaixo.
 
+Atenção ao ler contratos: o `pdfUrl` de um arquivo que subiu pelo sistema aponta para storage privado e NÃO abre no navegador. Baixe com `GET /contracts/:id/pdf`. Um `pdfUrl` que você mesmo colou aqui continua sendo o link externo que você informou.
+
 Resposta 201: objeto do contrato criado.
 
 #### `PATCH /contracts/:id`
@@ -199,7 +201,23 @@ Resposta 200:
 
 Erros: 400 (campo `file` ausente, corpo não multipart, arquivo vazio ou não é PDF), 404 (contrato não existe, conferido ANTES do upload para não deixar arquivo órfão), 413 (acima de 4MB).
 
-O arquivo fica num link público do Blob: não é listável nem indexável, mas quem tiver a URL abre sem autenticação. O pathname leva sufixo aleatório, então a URL não é adivinhável.
+O arquivo fica em storage PRIVADO. O `pdfUrl` devolvido na resposta e nos GETs de contrato **não é um link clicável**: é o identificador do arquivo no storage e responde erro se alguém tentar abrir no navegador. Para obter o documento, use o `GET` abaixo.
+
+#### `GET /contracts/:id/pdf`
+
+Baixa o PDF do contrato. Junto com o `POST` acima, é uma das duas rotas de arquivo da API; esta responde binário, não JSON.
+
+```bash
+curl -H "Authorization: Bearer $AGENT_API_KEY" \
+  "https://financeiro.casaldotrafego.com/api/agent/v1/contracts/$ID/pdf" \
+  -o contrato.pdf
+```
+
+Resposta 200: o conteúdo do PDF, com `Content-Type: application/pdf` e `Content-Disposition: attachment`.
+
+Erros:
+- 404, o contrato não existe, não tem PDF anexado, ou o arquivo não está mais no storage.
+- 409 `EXTERNAL_FILE`, o `pdfUrl` aponta para outro serviço (link colado via `PATCH`). A mensagem traz a URL, para você baixar direto da fonte. O sistema não serve conteúdo de domínio de terceiro.
 
 ### Transações
 
@@ -666,6 +684,8 @@ Tentativas com token inválido também geram uma linha, com `actor: "unknown"` e
 Tentativa vinda de um IP fora da allowlist também gera uma linha, com `actor: "blocked-ip"`, `status_code: 403` e o IP recusado no `error_message`. O `actor` gravado é sempre a constante `"blocked-ip"`, nunca o header `x-agent-actor` informado pelo chamador bloqueado, para que uma origem externa não consiga consumir o rate limit do actor legítimo.
 
 No upload de PDF (`POST /contracts/:id/pdf`) o arquivo NUNCA entra no log: o `request_data` guarda só nome tratado, tamanho, `Content-Type` declarado, se houve substituição e o `sha256` do conteúdo. O hash é o que permite provar depois qual arquivo foi anexado, sem armazenar um byte dele.
+
+No download (`GET /contracts/:id/pdf`) vale o mesmo: ficam gravados tamanho e tipo, nunca o conteúdo. A linha é escrita antes de o arquivo começar a trafegar, então um 200 no log significa "download autorizado e iniciado", não "download concluído".
 
 A escrita do log de auditoria nunca derruba a resposta HTTP principal: se a gravação falhar, o erro só aparece no log do servidor.
 

@@ -12,9 +12,11 @@ import {
 import {
   ContractPdfError,
   deleteContractPdfIfOurs,
+  isOurBlobUrl,
+  readContractPdf,
   uploadContractPdf,
 } from '@/lib/storage/contractPdf';
-import { badRequest, notFound, payloadTooLarge } from '../errors';
+import { badRequest, externalFile, notFound, payloadTooLarge } from '../errors';
 
 // No POST e no PATCH, pdfUrl só aceita link já hospedado. Para mandar o arquivo
 // em si existe POST /contracts/:id/pdf (multipart), ver attachContractPdfService
@@ -118,6 +120,26 @@ export async function updateContractService(id: string, input: unknown) {
   revalidatePath('/contracts');
   revalidatePath(`/contracts/${id}`);
   return { before, after: contract, parsed };
+}
+
+// Lê o PDF do contrato para download. O arquivo fica em storage privado, então a
+// URL gravada em pdfUrl não abre sozinha: quem entrega o conteúdo é o servidor,
+// depois de o chamador ter passado pelo Bearer e pela allowlist de IP.
+export async function getContractPdfService(id: string) {
+  const contract = await getContractById(id);
+  if (!contract) throw notFound('Contrato');
+  if (!contract.pdfUrl) throw notFound('PDF do contrato');
+
+  // Link de outro serviço colado via PATCH: não é nosso arquivo e não viramos
+  // proxy de domínio arbitrário. Quem chamou baixa direto da fonte.
+  if (!isOurBlobUrl(contract.pdfUrl)) {
+    throw externalFile(`O PDF deste contrato está hospedado fora do sistema: ${contract.pdfUrl}`);
+  }
+
+  const arquivo = await readContractPdf(contract.pdfUrl);
+  if (!arquivo) throw notFound('PDF do contrato');
+
+  return { contract, arquivo };
 }
 
 // Anexa o PDF assinado ao contrato: sobe o arquivo no Vercel Blob e grava a URL

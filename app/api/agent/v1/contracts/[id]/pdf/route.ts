@@ -1,6 +1,44 @@
 import { withAgentAuth } from '@/lib/agent/route';
 import { badRequest } from '@/lib/agent/errors';
-import { attachContractPdfService } from '@/lib/agent/services/contracts';
+import {
+  attachContractPdfService,
+  getContractPdfService,
+} from '@/lib/agent/services/contracts';
+
+// ÚNICA rota da API que responde binário. O arquivo fica em storage privado, então
+// o pdfUrl devolvido nos GETs de contrato não abre sozinho: é por aqui que o
+// agente baixa o documento.
+//
+//   curl -H "Authorization: Bearer $AGENT_API_KEY" \
+//        "$BASE/api/agent/v1/contracts/$ID/pdf" -o contrato.pdf
+//
+// A linha de auditoria é gravada antes de o stream ser consumido, então um 200
+// registrado significa "download autorizado e iniciado", não "download concluído".
+export const GET = withAgentAuth<{ id: string }>(async ({ params }) => {
+  const { contract, arquivo } = await getContractPdfService(params.id);
+
+  return {
+    status: 200,
+    body: null,
+    rawResponse: {
+      body: arquivo.stream,
+      headers: {
+        'Content-Type': arquivo.contentType,
+        'Content-Disposition': `attachment; filename="contrato-${params.id}.pdf"`,
+        'Content-Length': String(arquivo.sizeBytes),
+        'Cache-Control': 'private, no-store',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    },
+    resourceType: 'contract',
+    resourceId: params.id,
+    afterData: {
+      pdfUrl: contract.pdfUrl,
+      sizeBytes: arquivo.sizeBytes,
+      contentType: arquivo.contentType,
+    },
+  };
+});
 
 // ÚNICO endpoint multipart da API do agente. Todos os outros são JSON.
 //

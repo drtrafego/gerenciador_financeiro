@@ -20,6 +20,14 @@ export type AgentHandlerResult = {
   requestBody?: unknown;
   beforeData?: unknown;
   afterData?: unknown;
+  // Resposta que não é JSON (hoje só o download do PDF de contrato). Quando vem
+  // preenchida, o wrapper devolve este conteúdo cru em vez de serializar `body`.
+  // Tudo o que vem antes (allowlist de IP, Bearer, rate limit) e a linha única de
+  // auditoria continuam idênticos: só muda como a resposta é escrita.
+  //
+  // NUNCA colocar o conteúdo de `rawResponse.body` em requestBody/beforeData/
+  // afterData: são gravados como jsonb, e um stream ali quebra o insert.
+  rawResponse?: { body: BodyInit; headers: Record<string, string> };
 };
 
 type Handler<TParams extends Record<string, string> = Record<string, string>> = (
@@ -127,6 +135,12 @@ export function withAgentAuth<TParams extends Record<string, string> = Record<st
         userAgent,
         durationMs: Date.now() - start,
       });
+      if (result.rawResponse) {
+        return new NextResponse(result.rawResponse.body, {
+          status: result.status,
+          headers: result.rawResponse.headers,
+        });
+      }
       return NextResponse.json(result.body, { status: result.status });
     } catch (err) {
       if (err instanceof AgentApiError) {
