@@ -84,6 +84,34 @@ export function canonicalDueDateFor(iso: string, billingDay: number | null | und
   return `${yyyy}-${mm}-${String(effectiveDay).padStart(2, '0')}`;
 }
 
+// Primeiro vencimento de um contrato: o vencimento canônico mais antigo que não
+// é anterior à data de início. Contrato que começa depois do dia de cobrança do
+// mês só vence no mês seguinte (assinou dia 19 com billingDay 15 => vence 15 do
+// mês que vem).
+//
+// A virada de mês passa pelo DIA 1 de propósito. Somar um mês em cima da data
+// candidata quebraria com billingDay alto: 31/01 mais um mês vira 03/03 no
+// calendário do JavaScript, e o vencimento sairia no mês errado.
+export function firstDueDateFor(startDateIso: string, billingDay: number | null | undefined): string {
+  const candidate = canonicalDueDateFor(startDateIso, billingDay);
+  if (candidate >= startDateIso) return candidate;
+
+  const d = parseIso(startDateIso);
+  const nextMonthFirst = toIso(new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1, 12)));
+  return canonicalDueDateFor(nextMonthFirst, billingDay);
+}
+
+// Aquele vencimento é a PRIMEIRA parcela do contrato? Usado só para escolher o
+// texto da mensagem; não muda nenhuma etapa nem chave de deduplicação.
+export function isFirstBillingFor(
+  dueIso: string,
+  startDateIso: string | null | undefined,
+  billingDay: number | null | undefined
+): boolean {
+  if (!startDateIso) return false;
+  return firstDueDateFor(startDateIso, billingDay) === dueIso;
+}
+
 // Data em que a mensagem daquela etapa deve sair de fato.
 export function sendDateFor(dueIso: string, stage: ReminderStage): string {
   if (stage === 'due') return nextBusinessDay(dueIso);

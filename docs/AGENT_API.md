@@ -366,7 +366,15 @@ Resposta 400 se não houver mensagem resolvível:
 { "error": { "code": "VALIDATION_ERROR", "message": "Lembrete sem mensagem: preencha customMessage ou vincule um template." } }
 ```
 
-Em lembrete de cobrança de atraso (`stage` igual a `overdue_d2` ou `overdue_d5`) sem `customMessage` salva, quem monta o texto é o SERVIDOR: ele reconstrói a mensagem daquela etapa (o texto de cobrança, com a data do vencimento), em vez de cair no template genérico do painel, que fala em vencimento futuro. Se houver `customMessage`, ela continua tendo prioridade, igual a qualquer outro lembrete.
+Em lembrete automático sem `customMessage` salva, quem monta o texto é o SERVIDOR, em vez de cair no template genérico do painel, que fala em vencimento futuro. Ele reconstrói:
+
+- cobrança de atraso (`stage` igual a `overdue_d2` ou `overdue_d5`): o texto daquela etapa, com a data do vencimento;
+- primeira parcela de um contrato (`stage` igual a `due`, quando o vencimento é o primeiro do contrato pela conta de `start_date` mais `billing_day`): o texto de boas vindas, que avisa que o serviço está começando;
+- vencimento adiado por fim de semana (`stage` igual a `due`): o texto que explica o adiamento, com a data real do vencimento.
+
+Vencimento comum continua saindo do template padrão do painel, que é onde esse texto se edita. Se houver `customMessage`, ela tem prioridade sobre tudo isso, igual a qualquer outro lembrete.
+
+Lembrete com contrato ou fatura vinculada, sem `customMessage` e sem template próprio, usa o template padrão do painel como fallback (antes disso ele respondia 400 "Lembrete sem mensagem"; era o caso da linha que o cron cria como falha quando o cliente está sem telefone cadastrado). Lembrete avulso sem template nenhum continua respondendo 400, porque não haveria valor para preencher no texto.
 
 Cobrança de atraso de um vencimento já confirmado como pago nunca é reenviada, nem por aqui. Resposta 400:
 ```json

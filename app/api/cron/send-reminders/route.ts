@@ -12,12 +12,15 @@ import {
   buildConsolidatedMessage,
   buildPostponedDueMessage,
   buildOverdueMessage,
+  buildFirstBillingMessage,
   DEFAULT_TEMPLATE_BODY,
+  MISSING_PHONE_ERROR,
 } from '@/lib/wpp/send';
 import {
   DUNNING_STAGES,
   canonicalDueDateFor,
   dueDateCandidatesFor,
+  isFirstBillingFor,
   sendDateFor,
 } from '@/lib/billing/schedule';
 import { getConfirmedKeys } from '@/lib/billing/confirmations';
@@ -93,7 +96,7 @@ export async function GET(request: Request) {
 
   let clientSent = 0;
   let clientFailed = 0;
-  const dueSummary: { name: string; valor: string; ok: boolean }[] = [];
+  const dueSummary: { name: string; valor: string; ok: boolean; first: boolean }[] = [];
 
   type ContractRow = { contract: typeof contracts.$inferSelect; client: typeof clients.$inferSelect | null };
 
@@ -150,6 +153,49 @@ export async function GET(request: Request) {
       contractsDueOn(dueIso).map((row) => ({ ...row, dueIso }))
     );
 
+    // Quais desses vencimentos são a PRIMEIRA parcela do contrato. Só muda o
+    // texto da mensagem: a etapa continua sendo 'due' e a chave de deduplicação
+    // (contract_id, trigger_date, stage) não muda, então o D+2 e o D+5 seguem
+    // funcionando igual para quem não pagar a primeira.
+    const firstBillingIds = new Set(
+      dueItems
+        .filter(({ contract, dueIso }) =>
+          isFirstBillingFor(dueIso, contract.startDate, contract.billingDay)
+        )
+        .map(({ contract }) => contract.id)
+    );
+
+    // Guarda: contrato que já foi cobrado num vencimento anterior nunca é
+    // estreante, por mais que a conta de start_date mais billing_day diga que
+    // sim. Pega o caso de alguém editar start_date ou billing_day de um contrato
+    // que já roda há meses, que sem isso jogaria o contrato de volta na estreia.
+    //
+    // O que ela NÃO cobre, e não tem como cobrir por data: contrato de um
+    // cliente antigo cadastrado no sistema agora com start_date errado (data do
+    // cadastro em vez da data real de início). Esse contrato não tem histórico
+    // nenhum, então parece estreante mesmo. Fechar isso exigiria um campo
+    // explícito no cadastro dizendo que o cliente já era cliente antes.
+    if (firstBillingIds.size > 0) {
+      const anteriores = await db
+        .select({ contractId: reminders.contractId, triggerDate: reminders.triggerDate })
+        .from(reminders)
+        .where(inArray(reminders.contractId, [...firstBillingIds]));
+
+      for (const { contract, dueIso } of dueItems) {
+        if (!firstBillingIds.has(contract.id)) continue;
+        const temAnterior = anteriores.some(
+          (a) =>
+            a.contractId === contract.id &&
+            a.triggerDate < dueIso &&
+            // Só conta lembrete que é de fato um vencimento daquele contrato. Um
+            // lembrete avulso criado à mão para uma data qualquer, com o contrato
+            // vinculado, tiraria o cliente estreante da mensagem de boas vindas.
+            canonicalDueDateFor(a.triggerDate, contract.billingDay) === a.triggerDate
+        );
+        if (temAnterior) firstBillingIds.delete(contract.id);
+      }
+    }
+
     for (const group of groupByClientAndDue(dueItems).values()) {
       const client = group[0]!.client;
       const dueIso = group[0]!.dueIso;
@@ -170,13 +216,18 @@ export async function GET(request: Request) {
               triggerTime: '09:30',
               stage: 'due',
               status: 'failed',
-              errorMessage: 'Cliente sem telefone cadastrado',
+              errorMessage: MISSING_PHONE_ERROR,
             })
             .onConflictDoNothing()
             .returning({ id: reminders.id });
           if (claimed) {
             clientFailed++;
-            dueSummary.push({ name: nomeEmpresa, valor, ok: false });
+            dueSummary.push({
+              name: nomeEmpresa,
+              valor,
+              ok: false,
+              first: firstBillingIds.has(contract.id),
+            });
           }
         }
         continue;
@@ -224,8 +275,26 @@ export async function GET(request: Request) {
       });
       const total = formatBRL((totalCents / 100).toFixed(2));
 
+      // Nome dos serviços que estreiam neste vencimento. Vazio quando nenhum é
+      // primeira parcela, que é o caso do mês a mês de sempre.
+      const firstNames = claimedContracts
+        .filter(({ contract }) => firstBillingIds.has(contract.id))
+        .map(({ contract }) => (contract.name ?? '').trim() || 'Serviço');
+
       let message: string;
-      if (!noPrazo) {
+      if (firstNames.length > 0) {
+        // Primeira cobrança do contrato: dá as boas vindas, avisa que o serviço
+        // começa e cobra a primeira parcela. Cobre também o grupo misto (serviço
+        // novo vencendo junto com contrato antigo) e o adiamento de fim de semana.
+        message = buildFirstBillingMessage({
+          saudacao,
+          data: dataBr,
+          items,
+          total,
+          postponed: !noPrazo,
+          firstNames,
+        });
+      } else if (!noPrazo) {
         // Vencimento no fim de semana: o texto explica o adiamento e usa a data
         // REAL do vencimento, não a data de hoje.
         message = buildPostponedDueMessage({ saudacao, data: dataBr, items, total });
@@ -244,7 +313,12 @@ export async function GET(request: Request) {
       if (ok) clientSent += claimedContracts.length;
       else clientFailed += claimedContracts.length;
       for (const { contract } of claimedContracts) {
-        dueSummary.push({ name: nomeEmpresa, valor: formatBRL(contract.fixedAmount), ok });
+        dueSummary.push({
+          name: nomeEmpresa,
+          valor: formatBRL(contract.fixedAmount),
+          ok,
+          first: firstBillingIds.has(contract.id),
+        });
       }
 
       await db
@@ -375,7 +449,7 @@ export async function GET(request: Request) {
       if (!client?.phone) {
         await db
           .update(reminders)
-          .set({ status: 'failed', errorMessage: 'Cliente sem telefone cadastrado' })
+          .set({ status: 'failed', errorMessage: MISSING_PHONE_ERROR })
           .where(inArray(reminders.id, claimed.map((c) => c.id)));
         overdueFailed += claimed.length;
         for (const { contract } of claimed) {
@@ -518,7 +592,10 @@ export async function GET(request: Request) {
 
     if (dueSummary.length > 0) {
       const linhas = dueSummary
-        .map((d) => `• ${d.name}: ${d.valor}${d.ok ? '' : ' (FALHA no envio)'}`)
+        .map(
+          (d) =>
+            `• ${d.name}: ${d.valor}${d.first ? ' (primeira cobrança, contrato novo)' : ''}${d.ok ? '' : ' (FALHA no envio)'}`
+        )
         .join('\n');
       blocos.push(
         `📅 Vencimentos processados hoje (${formatDateBr(todayBrt)}):\n${linhas}\n\n` +
