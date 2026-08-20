@@ -326,6 +326,9 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
   const [isPending, startTransition] = useTransition();
   // Erro das ações da aba Vencimentos (confirmar ou desfazer pagamento)
   const [billingError, setBillingError] = useState<string | null>(null);
+  // Resultado da confirmação: qual fatura saiu e para quem o recibo foi. Sem
+  // isso o operador não tem como saber que o cliente está sem e-mail.
+  const [billingNotice, setBillingNotice] = useState<string | null>(null);
 
   // Modais
   const [showReminderModal, setShowReminderModal] = useState(false);
@@ -571,8 +574,8 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
     if (
       !window.confirm(
         `Confirmar o pagamento de ${valor} do vencimento ${formatIsoBr(cycle.dueDate)}?\n\n` +
-          `Isso interrompe as cobranças automáticas de atraso deste vencimento.\n` +
-          `Atenção: NÃO lança receita no fluxo de caixa.`
+          `Isso interrompe as cobranças automáticas de atraso deste vencimento, emite a fatura como quitada ` +
+          `e envia o recibo por e-mail para o cliente.`
       )
     )
       return;
@@ -580,9 +583,21 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
       const res = await confirmPaymentAction(cycle.contractId, cycle.dueDate);
       if (!res.ok) {
         setBillingError(res.error);
+        setBillingNotice(null);
         return;
       }
       setBillingError(null);
+      setBillingNotice(
+        res.invoiceError
+          ? `Pagamento confirmado, mas a fatura não foi emitida: ${res.invoiceError}`
+          : res.emailSkipped
+            ? `Pagamento confirmado e fatura ${res.invoiceNumber ?? ""} emitida. O recibo NÃO foi enviado: este cliente não tem e-mail cadastrado.`
+            : res.invoiceNumber
+              ? `Pagamento confirmado. Fatura ${res.invoiceNumber} emitida e recibo a caminho de ${res.emailTo}.`
+              : res.alreadyConfirmed
+                ? "Este vencimento já estava confirmado como pago."
+                : "Pagamento confirmado."
+      );
       router.refresh();
     });
   };
@@ -811,6 +826,17 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
       {/* ── ABA VENCIMENTOS ── */}
       {tab === "billing" && (
         <div className="space-y-4">
+          {billingNotice && (
+            <div className="flex items-start justify-between gap-3 rounded-lg border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-zinc-200">
+              <span>{billingNotice}</span>
+              <button
+                onClick={() => setBillingNotice(null)}
+                className="text-zinc-400 hover:text-zinc-200 text-xs font-medium shrink-0"
+              >
+                Fechar
+              </button>
+            </div>
+          )}
           {billingError && (
             <div className="flex items-start justify-between gap-3 rounded-lg border border-red-900 bg-red-950/40 px-4 py-3 text-sm text-red-200">
               <span>{billingError}</span>
@@ -874,7 +900,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
               <li className="flex gap-2"><span className="text-indigo-400 shrink-0">1.</span>No dia do vencimento o cliente recebe o aviso. Se o vencimento cai no sábado ou no domingo, o aviso sai na segunda, com a data real do vencimento no texto.</li>
               <li className="flex gap-2"><span className="text-indigo-400 shrink-0">2.</span>Sem confirmação de pagamento, ele recebe a cobrança D+2 e, depois, a D+5. São duas cobranças e para.</li>
               <li className="flex gap-2"><span className="text-indigo-400 shrink-0">3.</span>Entre duas mensagens do mesmo vencimento sempre existem pelo menos 2 dias úteis. Feriado não adia envio, só sábado e domingo.</li>
-              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">4.</span>Confirmar o pagamento interrompe as cobranças daquele vencimento. Isso NÃO lança receita no fluxo de caixa, o lançamento continua sendo feito na mão.</li>
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">4.</span>Confirmar o pagamento interrompe as cobranças daquele vencimento, emite a fatura quitada e manda o recibo por e-mail ao cliente. O honorário passa a contar como recebido no dashboard, sem precisar de lançamento à mão. Dá para confirmar por aqui ou direto no fluxo de caixa.</li>
               <li className="flex gap-2"><span className="text-indigo-400 shrink-0">5.</span>Contrato pausado ou cancelado para de ser cobrado automaticamente.</li>
             </ul>
           </div>

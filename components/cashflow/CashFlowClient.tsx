@@ -5,6 +5,7 @@ import { Plus, FileText, RefreshCw } from "lucide-react";
 import { formatCurrency, convertAmount } from "@/lib/currency/format";
 import MetricCard from "@/components/dashboard/MetricCard";
 import TransactionModal from "@/components/cashflow/TransactionModal";
+import PaymentButton from "@/components/cashflow/PaymentButton";
 import PeriodBar from "@/components/shared/PeriodBar";
 import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 import type { Currency } from "@/lib/currency/format";
@@ -18,6 +19,10 @@ type ContractIncome = {
   currency: string;
   date: string;
   isContract: true;
+  contractId: string;
+  dueDate: string;
+  clientName: string | null;
+  confirmed: boolean;
 };
 
 type AnyTransaction = {
@@ -33,6 +38,10 @@ type AnyTransaction = {
   recurringEndsAt?: string | null;
   isContract?: true;
   isProjected?: true;
+  contractId?: string;
+  dueDate?: string;
+  clientName?: string | null;
+  confirmed?: boolean;
 };
 
 const HIDDEN = "••••••";
@@ -65,8 +74,12 @@ export default function CashFlowClient({
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   })();
-  // Entrada futura dentro do intervalo (vencimento ainda não chegou)
-  const isPending = (t: AnyTransaction) => t.date > todayStr;
+  // Honorário de contrato tem estado próprio: é pago quando existe confirmação,
+  // não quando a data chega. Antes esta tela olhava só a data, e por isso um
+  // honorário vencido e não pago aparecia como entrada normal aqui enquanto o
+  // dashboard já o mostrava como "a receber".
+  const isPending = (t: AnyTransaction) =>
+    t.isContract ? !t.confirmed : t.date > todayStr;
 
   const allEntries: AnyTransaction[] = [...contractIncomes, ...transactions].sort((a, b) =>
     a.date > b.date ? -1 : a.date < b.date ? 1 : 0
@@ -88,6 +101,11 @@ export default function CashFlowClient({
   const balance = totalIn - totalOut;
   const entryCount = allEntries.length;
   const pendingCount = allEntries.filter(isPending).length;
+  // Honorário que já venceu e não foi confirmado. Separado do "a vencer" porque
+  // são coisas diferentes: um ainda não chegou a hora, o outro está atrasado.
+  const overdueCount = allEntries.filter(
+    (t) => t.isContract && !t.confirmed && t.date <= todayStr
+  ).length;
 
   const fmtValue = (value: number, currency: Currency) =>
     valuesHidden ? HIDDEN : formatCurrency(value, currency);
@@ -123,7 +141,13 @@ export default function CashFlowClient({
           icon="trending-up"
           color="green"
           hidden={valuesHidden}
-          sub={pendingCount > 0 ? `${pendingCount} a vencer no período` : undefined}
+          sub={
+            pendingCount > 0
+              ? overdueCount > 0
+                ? `${pendingCount - overdueCount} a vencer, ${overdueCount} vencido(s) em aberto`
+                : `${pendingCount} a vencer no período`
+              : undefined
+          }
         />
         <MetricCard label="Saídas" value={totalOut} currency={displayCurrency} icon="trending-down" color="red" hidden={valuesHidden} />
         <MetricCard
@@ -165,8 +189,28 @@ export default function CashFlowClient({
                 <p className="text-xs text-zinc-500 mt-0.5">
                   {t.category} · {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
                   {t.isProjected && " · recorrente"}
-                  {isPending(t) && <span className="text-amber-400/80"> · a vencer</span>}
+                  {t.isContract ? (
+                    t.confirmed ? (
+                      <span className="text-green-400/80"> · pago</span>
+                    ) : (
+                      <span className={t.date > todayStr ? "text-amber-400/80" : "text-red-400/80"}>
+                        {t.date > todayStr ? " · a vencer" : " · em aberto"}
+                      </span>
+                    )
+                  ) : (
+                    isPending(t) && <span className="text-amber-400/80"> · a vencer</span>
+                  )}
                 </p>
+                {t.isContract && t.contractId && t.dueDate && (
+                  <div className="mt-2" onClick={(e) => e.stopPropagation()}>
+                    <PaymentButton
+                      contractId={t.contractId}
+                      dueDate={t.dueDate}
+                      confirmed={!!t.confirmed}
+                      clientName={t.clientName ?? "este cliente"}
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className="ml-3 shrink-0 text-right">
@@ -189,8 +233,8 @@ export default function CashFlowClient({
         <table className="w-full min-w-[600px]">
           <thead>
             <tr className="border-b border-zinc-800">
-              {["Data", "Descrição", "Categoria", "Tipo", "Valor"].map((h) => (
-                <th key={h} className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wide">
+              {["Data", "Descrição", "Categoria", "Tipo", "Valor", ""].map((h, i) => (
+                <th key={h || `acao-${i}`} className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wide">
                   {h}
                 </th>
               ))}
@@ -223,8 +267,16 @@ export default function CashFlowClient({
                     {t.isProjected && (
                       <span className="text-xs text-zinc-600 ml-1">(recorrente)</span>
                     )}
-                    {isPending(t) && (
-                      <span className="text-xs text-amber-400/80 ml-1">a vencer</span>
+                    {t.isContract ? (
+                      t.confirmed ? (
+                        <span className="text-xs text-green-400/80 ml-1">pago</span>
+                      ) : (
+                        <span className={`text-xs ml-1 ${t.date > todayStr ? "text-amber-400/80" : "text-red-400/80"}`}>
+                          {t.date > todayStr ? "a vencer" : "em aberto"}
+                        </span>
+                      )
+                    ) : (
+                      isPending(t) && <span className="text-xs text-amber-400/80 ml-1">a vencer</span>
                     )}
                   </div>
                 </td>
@@ -253,6 +305,16 @@ export default function CashFlowClient({
                     <span className="block text-xs text-zinc-600 mt-0.5">
                       {fmtRaw(Number(t.amount), t.currency ?? "BRL")}
                     </span>
+                  )}
+                </td>
+                <td className="px-4 py-3 text-right whitespace-nowrap">
+                  {t.isContract && t.contractId && t.dueDate && (
+                    <PaymentButton
+                      contractId={t.contractId}
+                      dueDate={t.dueDate}
+                      confirmed={!!t.confirmed}
+                      clientName={t.clientName ?? "este cliente"}
+                    />
                   )}
                 </td>
               </tr>

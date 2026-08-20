@@ -1216,7 +1216,15 @@ export async function getDashboardData(from: string, to: string) {
 // quanto pela API do agente (GET /api/agent/v1/dashboard/cash-flow).
 
 export async function getCashFlowData(from: string, to: string) {
-  const [txData, recurringFromPast, contractData, latestRate, displayCurrencySetting, clientList] = await Promise.all([
+  const [
+    txData,
+    recurringFromPast,
+    contractData,
+    latestRate,
+    displayCurrencySetting,
+    clientList,
+    cashConfirmations,
+  ] = await Promise.all([
     // Transações reais dentro do intervalo
     db
       .select(getTableColumns(transactions))
@@ -1267,7 +1275,14 @@ export async function getCashFlowData(from: string, to: string) {
     db.select().from(exchangeRates).orderBy(desc(exchangeRates.fetchedAt)).limit(1),
     db.select().from(systemSettings).where(eq(systemSettings.key, 'display_currency')),
     db.select({ id: clients.id, name: clients.name }).from(clients).orderBy(asc(clients.name)),
+    // Quais honorários do intervalo já estão confirmados como pagos.
+    db
+      .select({ contractId: paymentConfirmations.contractId, dueDate: paymentConfirmations.dueDate })
+      .from(paymentConfirmations)
+      .where(and(gte(paymentConfirmations.dueDate, from), lte(paymentConfirmations.dueDate, to))),
   ]);
+
+  const confirmedKeys = new Set(cashConfirmations.map((c) => `${c.contractId}|${c.dueDate}`));
 
   // Mesma resolução de cotação do dashboard. Esta função tinha uma cópia própria
   // que, se UMA das duas taxas estivesse inválida, jogava as DUAS para o valor
@@ -1305,6 +1320,15 @@ export async function getCashFlowData(from: string, to: string) {
           currency: c.currency ?? 'BRL',
           date: dateStr,
           isContract: true as const,
+          // Para a tela poder marcar como pago e mostrar o estado real do
+          // vencimento. Antes o fluxo de caixa decidia pago ou não pago só pela
+          // data, enquanto o dashboard já decidia pela confirmação: honorário
+          // vencido e não pago aparecia como entrada normal aqui e como "a
+          // receber" lá, e as duas telas discordavam.
+          contractId: c.id,
+          dueDate: dateStr,
+          clientName: c.clientName ?? null,
+          confirmed: confirmedKeys.has(`${c.id}|${dateStr}`),
         });
       }
     }
