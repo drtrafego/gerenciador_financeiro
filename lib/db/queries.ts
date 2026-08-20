@@ -1,4 +1,4 @@
-import { desc, and, eq, isNull, gte, lte, lt, or, sql, asc, getTableColumns } from 'drizzle-orm';
+import { desc, and, eq, ne, isNull, gte, lte, lt, or, sql, asc, getTableColumns } from 'drizzle-orm';
 import { db } from './drizzle';
 import {
   activityLogs,
@@ -235,6 +235,18 @@ export async function getContracts() {
 export async function getContractById(id: string) {
   const [contract] = await db.select().from(contracts).where(eq(contracts.id, id)).limit(1);
   return contract ?? null;
+}
+
+// Antes de apagar um PDF substituído: nada impede dois contratos apontarem para
+// o mesmo arquivo (pdf_url não é único e a API aceita colar qualquer link), e
+// apagar o blob de um levaria o documento do outro junto, sem aviso.
+export async function isPdfUrlUsedByOtherContract(pdfUrl: string, excludeId: string) {
+  const [row] = await db
+    .select({ id: contracts.id })
+    .from(contracts)
+    .where(and(eq(contracts.pdfUrl, pdfUrl), ne(contracts.id, excludeId)))
+    .limit(1);
+  return !!row;
 }
 
 export async function createContract(data: NewContract) {

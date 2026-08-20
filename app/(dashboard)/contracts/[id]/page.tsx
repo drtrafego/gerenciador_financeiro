@@ -19,10 +19,13 @@ const typeLabels: Record<string, string> = {
 
 export default async function ContractDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ erroPdf?: string }>;
 }) {
   const { id } = await params;
+  const { erroPdf } = await searchParams;
   const [contract, clients] = await Promise.all([getContractById(id), getClients()]);
   if (!contract) notFound();
 
@@ -30,6 +33,13 @@ export default async function ContractDetailPage({
 
   return (
     <div className="max-w-2xl space-y-6">
+      {/* O upload recusa arquivo que não é PDF de verdade e arquivo acima de 4MB.
+          A action devolve o motivo por aqui em vez de estourar erro genérico. */}
+      {erroPdf && (
+        <div className="rounded-lg border border-red-900 bg-red-950/50 px-4 py-3 text-sm text-red-300">
+          {erroPdf}
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-3">
@@ -199,8 +209,10 @@ export default async function ContractDetailPage({
                 Contrato em PDF
                 <span className="text-zinc-600 font-normal ml-1">(deixe em branco para manter o atual)</span>
               </label>
-              {/* Preserva o PDF existente se nenhum novo arquivo for enviado */}
-              <input type="hidden" name="existingPdfUrl" value={contract.pdfUrl ?? ''} />
+              {/* Sem campo oculto com a URL atual de propósito: o servidor lê o
+                  pdfUrl do banco na hora de salvar. Mandar de volta o valor lido
+                  na renderização fazia duas abas abertas no mesmo contrato
+                  reescreverem uma o arquivo da outra. */}
               <input
                 name="pdfFile"
                 type="file"

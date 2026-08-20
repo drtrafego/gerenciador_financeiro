@@ -3,10 +3,22 @@ import { revalidatePath } from 'next/cache';
 import { desc, eq, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { clients, contracts } from '@/lib/db/schema';
-import { getContractById, createContract, updateContract } from '@/lib/db/queries';
-import { notFound } from '../errors';
+import {
+  getContractById,
+  createContract,
+  updateContract,
+  isPdfUrlUsedByOtherContract,
+} from '@/lib/db/queries';
+import {
+  ContractPdfError,
+  deleteContractPdfIfOurs,
+  uploadContractPdf,
+} from '@/lib/storage/contractPdf';
+import { badRequest, notFound, payloadTooLarge } from '../errors';
 
-// pdfUrl só aceita link já hospedado (sem upload binário via API).
+// No POST e no PATCH, pdfUrl só aceita link já hospedado. Para mandar o arquivo
+// em si existe POST /contracts/:id/pdf (multipart), ver attachContractPdfService
+// no fim deste arquivo.
 // fixedAmount/percentage/adBudget aceitam string ou number, trocam vírgula por
 // ponto e validam que o resultado é um número válido antes de virar 400 claro
 // em vez de estourar um 500 genérico no insert do Postgres (ex: "1.234,56" não
@@ -106,4 +118,47 @@ export async function updateContractService(id: string, input: unknown) {
   revalidatePath('/contracts');
   revalidatePath(`/contracts/${id}`);
   return { before, after: contract, parsed };
+}
+
+// Anexa o PDF assinado ao contrato: sobe o arquivo no Vercel Blob e grava a URL
+// em pdfUrl. Substitui o PDF anterior (contrato reassinado é o caso comum) e
+// apaga o blob antigo depois, se ele for nosso.
+//
+// A ordem importa: contrato conferido ANTES do upload, para não deixar arquivo
+// órfão no storage quando o id não existe; e se o UPDATE falhar depois do
+// upload, o arquivo novo é apagado antes de propagar o erro.
+export async function attachContractPdfService(id: string, file: File) {
+  const before = await getContractById(id);
+  if (!before) throw notFound('Contrato');
+
+  let uploaded;
+  try {
+    uploaded = await uploadContractPdf(file, id);
+  } catch (err) {
+    if (err instanceof ContractPdfError) {
+      throw err.status === 413 ? payloadTooLarge(err.message) : badRequest(err.message);
+    }
+    throw err;
+  }
+
+  let contract;
+  try {
+    contract = await updateContract(id, { pdfUrl: uploaded.url });
+  } catch (err) {
+    await deleteContractPdfIfOurs(uploaded.url);
+    throw err;
+  }
+
+  // Só apaga o anterior se nenhum outro contrato estiver apontando para o mesmo
+  // arquivo: pdf_url não é único e o PATCH aceita colar qualquer link.
+  const replacedUrl = before.pdfUrl ?? null;
+  if (replacedUrl && replacedUrl !== uploaded.url) {
+    if (!(await isPdfUrlUsedByOtherContract(replacedUrl, id))) {
+      await deleteContractPdfIfOurs(replacedUrl);
+    }
+  }
+
+  revalidatePath('/contracts');
+  revalidatePath(`/contracts/${id}`);
+  return { before, after: contract, uploaded, replacedUrl };
 }
