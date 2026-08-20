@@ -19,6 +19,13 @@ export function badRequest(message: string): AgentApiError {
   return new AgentApiError(400, 'VALIDATION_ERROR', message);
 }
 
+// Arquivo maior que o teto do endpoint. Distinto do 400 de propósito: o agente
+// precisa saber que o problema é tamanho, não conteúdo, para hospedar por fora e
+// usar PATCH pdfUrl em vez de tentar de novo.
+export function payloadTooLarge(message: string): AgentApiError {
+  return new AgentApiError(413, 'PAYLOAD_TOO_LARGE', message);
+}
+
 // Alvo ambíguo: o agente mandou um telefone ou cliente que resolve para mais de
 // um registro possível (ex: dois vencimentos em aberto). Quem chama precisa
 // escolher explicitamente qual, em vez de a API adivinhar.

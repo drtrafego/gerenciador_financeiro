@@ -43,7 +43,9 @@ Toda resposta de erro segue o mesmo envelope:
 
 Base: `https://financeiro.casaldotrafego.com/api/agent/v1`
 
-Hoje são 37 handlers publicados (33 antes da cobrança automática, mais os 4 de `/billing`).
+Hoje são 38 handlers publicados (33 antes da cobrança automática, mais os 4 de `/billing`, mais o upload de PDF de contrato).
+
+Todos os endpoints recebem e devolvem JSON, com UMA exceção: `POST /contracts/:id/pdf` recebe `multipart/form-data`, porque manda arquivo.
 
 Campos como `id`, `createdAt` e `invoiceNumber` nunca são aceitos em nenhum body de escrita. Se enviados, são silenciosamente descartados pela validação (Zod em modo "strip").
 
@@ -151,7 +153,7 @@ Body:
 | description | string \| null | não |
 | pdfUrl | string (URL já hospedada) \| null | não |
 
-`pdfUrl` só aceita um link já hospedado (ex: um arquivo já subido em algum storage), a API não recebe upload binário.
+Aqui e no `PATCH`, `pdfUrl` só aceita um link já hospedado. Para mandar o ARQUIVO em si, use `POST /contracts/:id/pdf`, descrito abaixo.
 
 Resposta 201: objeto do contrato criado.
 
@@ -162,6 +164,42 @@ Atualiza campos do contrato, incluindo mudar `status` para `cancelled` ou `pause
 Contrato "finalizado" nunca é um status gravado no banco: é derivado da data de término (`endDate`) já ter passado. Ver `lib/contracts.ts`.
 
 Não existe `DELETE /contracts/:id`.
+
+#### `POST /contracts/:id/pdf`
+
+Anexa o PDF assinado ao contrato: sobe o arquivo para o Vercel Blob e grava a URL em `pdfUrl`. É o caminho para quem tem o ARQUIVO em mãos e não um link já hospedado.
+
+Único endpoint da API que recebe `multipart/form-data`. Campo obrigatório: `file`.
+
+```bash
+curl -X POST "https://financeiro.casaldotrafego.com/api/agent/v1/contracts/$ID/pdf" \
+  -H "Authorization: Bearer $AGENT_API_KEY" \
+  -F "file=@contrato-assinado.pdf"
+```
+
+Limite de 4MB por arquivo. Acima disso a resposta é 413; se o arquivo for muito maior, a plataforma corta a requisição antes de ela chegar no handler e nem gera linha de auditoria. Nesse caso, hospede o arquivo por fora e use `PATCH /contracts/:id` com `pdfUrl`.
+
+O conteúdo é conferido pelo cabeçalho do próprio arquivo (`%PDF-`), não pelo `Content-Type` declarado: arquivo renomeado para `.pdf` é recusado com 400.
+
+Se o contrato já tinha PDF, o novo SUBSTITUI o anterior, e o arquivo antigo é apagado do Blob (só quando ele estava hospedado lá; link externo colado via `PATCH` nunca é apagado). Não existe histórico de versões do PDF.
+
+Resposta 200:
+```json
+{
+  "contract": { "...": "objeto completo do contrato, com o pdfUrl novo" },
+  "pdf": {
+    "url": "https://....blob.vercel-storage.com/contracts/contrato-assinado-a1b2c3.pdf",
+    "pathname": "contracts/contrato-assinado-a1b2c3.pdf",
+    "sizeBytes": 184320,
+    "sha256": "9f86d0818...",
+    "replacedUrl": null
+  }
+}
+```
+
+Erros: 400 (campo `file` ausente, corpo não multipart, arquivo vazio ou não é PDF), 404 (contrato não existe, conferido ANTES do upload para não deixar arquivo órfão), 413 (acima de 4MB).
+
+O arquivo fica num link público do Blob: não é listável nem indexável, mas quem tiver a URL abre sem autenticação. O pathname leva sufixo aleatório, então a URL não é adivinhável.
 
 ### Transações
 
@@ -626,6 +664,8 @@ Toda chamada à API do agente, inclusive leituras (`GET`), gera exatamente uma l
 Tentativas com token inválido também geram uma linha, com `actor: "unknown"` e `success: false`, para dar visibilidade de acesso indevido.
 
 Tentativa vinda de um IP fora da allowlist também gera uma linha, com `actor: "blocked-ip"`, `status_code: 403` e o IP recusado no `error_message`. O `actor` gravado é sempre a constante `"blocked-ip"`, nunca o header `x-agent-actor` informado pelo chamador bloqueado, para que uma origem externa não consiga consumir o rate limit do actor legítimo.
+
+No upload de PDF (`POST /contracts/:id/pdf`) o arquivo NUNCA entra no log: o `request_data` guarda só nome tratado, tamanho, `Content-Type` declarado, se houve substituição e o `sha256` do conteúdo. O hash é o que permite provar depois qual arquivo foi anexado, sem armazenar um byte dele.
 
 A escrita do log de auditoria nunca derruba a resposta HTTP principal: se a gravação falhar, o erro só aparece no log do servidor.
 

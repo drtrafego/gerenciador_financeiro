@@ -4,9 +4,9 @@ import { createContractAction } from '../actions';
 export default async function NewContractPage({
   searchParams,
 }: {
-  searchParams: Promise<{ clientId?: string }>;
+  searchParams: Promise<{ clientId?: string; erroPdf?: string }>;
 }) {
-  const { clientId } = await searchParams;
+  const { clientId, erroPdf } = await searchParams;
   const clients = await getClients();
 
   return (
@@ -15,6 +15,14 @@ export default async function NewContractPage({
         <h1 className="text-xl font-bold text-white">Novo Contrato</h1>
         <p className="text-sm text-zinc-400">Defina os termos do contrato</p>
       </div>
+
+      {/* O upload recusa arquivo que não é PDF de verdade e arquivo acima de 4MB.
+          A action devolve o motivo por aqui em vez de estourar erro genérico. */}
+      {erroPdf && (
+        <div className="rounded-lg border border-red-900 bg-red-950/50 px-4 py-3 text-sm text-red-300">
+          {erroPdf}
+        </div>
+      )}
 
       <form action={createContractAction} encType="multipart/form-data" className="space-y-5">
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 space-y-5">
