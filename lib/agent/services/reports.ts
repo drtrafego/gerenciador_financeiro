@@ -1,16 +1,11 @@
 import { getDashboardData, getCashFlowData, getOverdueReport, getLatestExchangeRate } from '@/lib/db/queries';
+import { resolvePeriod as resolvePeriodParams } from '@/lib/period';
 
-const iso = (d: Date) => d.toISOString().split('T')[0]!;
-
-// Mesmo padrão de período usado pelas páginas humanas: mês atual inteiro se
-// from/to não forem informados.
+// Mesmo padrão de período das páginas humanas, agora vindo do mesmo lugar
+// (lib/period.ts): mês atual inteiro quando from/to não são informados, com o
+// mês calculado no horário do Brasil.
 function resolvePeriod(from?: string | null, to?: string | null) {
-  if (from && to) return { from, to };
-  const now = new Date();
-  return {
-    from: iso(new Date(now.getFullYear(), now.getMonth(), 1)),
-    to: iso(new Date(now.getFullYear(), now.getMonth() + 1, 0)),
-  };
+  return resolvePeriodParams({ from: from ?? undefined, to: to ?? undefined });
 }
 
 // Fonte única com o dashboard humano (lib/db/queries.ts getDashboardData): os

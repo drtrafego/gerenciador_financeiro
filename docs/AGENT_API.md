@@ -618,7 +618,18 @@ Query: `from`, `to` (ambos "YYYY-MM-DD", opcionais, padrão o mês corrente inte
 
 Mesma fonte de dados usada pelo painel humano (`lib/db/queries.ts`, função `getDashboardData`), os números do Telegram têm que bater com o painel. Clientes com `isTest: true` já saem de todos os totais.
 
-Resposta 200 inclui, entre outros: `periodIncome`, `periodExpense`, `mrr`, `activeClients`, `overdueClients`, `monthExpense`, `overdueInvoices`, `upcomingInvoices`, `recentInvoices`, `chartData`, `sourceBreakdown`, `rate`, `displayCurrency`.
+Resposta 200 inclui, entre outros: `periodReceived`, `periodToReceive`, `periodIncome`, `periodExpense`, `previous`, `previousPeriod`, `mrr`, `activeClients`, `overdueClients`, `overdueAmount`, `contratosNovos`, `contratosEncerrados`, `overdueInvoices`, `upcomingInvoices`, `recentInvoices`, `chartData`, `sourceBreakdown`, `rate`, `displayCurrency`.
+
+Leitura dos campos de dinheiro, para não somar duas vezes:
+
+- `periodReceived` é o que entrou de fato: transação lançada com data já passada mais honorário de contrato com pagamento confirmado.
+- `periodToReceive` é o que ainda está em aberto no período.
+- `periodIncome` é a soma dos dois, ou seja, o total previsto do intervalo. Era o único número que existia antes, e é por isso que ele nunca fechava com o extrato bancário.
+- `previous` traz os mesmos totais do período anterior (`received`, `toReceive`, `expense`, `income`, `balance`, `mrr`) e `previousPeriod` diz qual intervalo é esse. Serve para responder "melhorou ou piorou" sem recalcular nada.
+- `activeClients` conta clientes com contrato vigente, derivado do contrato. Não é mais o campo `status` do cadastro do cliente.
+- `overdueClients`, `overdueAmount` e `overdueInvoices` são derivados da data de vencimento, não do status digitado no painel.
+
+O campo `monthExpense` foi REMOVIDO: ele somava moedas diferentes sem converter, não tinha data final (engolia parcelas futuras) e ignorava o período. Use `periodExpense`.
 
 #### `GET /dashboard/cash-flow`
 

@@ -34,6 +34,8 @@ interface MetricCardProps {
   icon: string;
   color?: string;
   trend?: number;
+  /** Período com que a variação está sendo comparada, ex "01/07 a 31/07". */
+  trendLabel?: string;
   rate?: RatesMap;
   hidden?: boolean;
   delayMs?: number;
@@ -49,6 +51,7 @@ export default function MetricCard({
   icon,
   color = "indigo",
   trend,
+  trendLabel,
   rate,
   hidden = false,
   delayMs = 0,
@@ -79,8 +82,12 @@ export default function MetricCard({
         {sub && <p className="text-xs text-zinc-500 mt-1 truncate">{sub}</p>}
       </div>
       {trend !== undefined && (
-        <div className={`relative inline-flex w-fit items-center gap-1 text-xs rounded-full px-2 py-0.5 ${trend >= 0 ? "text-green-400 bg-green-500/10" : "text-red-400 bg-red-500/10"}`}>
-          {trend >= 0 ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />} {Math.abs(trend)}% vs mês anterior
+        <div
+          className={`relative inline-flex w-fit items-center gap-1 text-xs rounded-full px-2 py-0.5 ${trend >= 0 ? "text-green-400 bg-green-500/10" : "text-red-400 bg-red-500/10"}`}
+          title={trendLabel ? `Comparado com ${trendLabel}` : undefined}
+        >
+          {trend >= 0 ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />} {Math.abs(trend)}%
+          {trendLabel && <span className="text-zinc-500">vs {trendLabel}</span>}
         </div>
       )}
     </div>

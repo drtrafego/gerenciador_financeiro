@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Plus, FileText, RefreshCw, Eye, EyeOff, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, FileText, RefreshCw } from "lucide-react";
 import { formatCurrency, convertAmount } from "@/lib/currency/format";
 import MetricCard from "@/components/dashboard/MetricCard";
 import TransactionModal from "@/components/cashflow/TransactionModal";
-import DateRangePicker from "@/components/shared/DateRangePicker";
+import PeriodBar from "@/components/shared/PeriodBar";
 import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 import type { Currency } from "@/lib/currency/format";
 
@@ -38,11 +37,6 @@ type AnyTransaction = {
 
 const HIDDEN = "••••••";
 
-const MONTHS = [
-  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
-];
-
 export default function CashFlowClient({
   transactions,
   contractIncomes = [],
@@ -60,19 +54,9 @@ export default function CashFlowClient({
   to: string;
   clients?: { id: string; name: string }[];
 }) {
-  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [editingTx, setEditingTx] = useState<AnyTransaction | null>(null);
-  const { hidden: valuesHidden, toggle: toggleValues } = useValuesVisibility();
-
-  // Navegação por mês (define o período como o mês inteiro)
-  const fromD = new Date(from + "T12:00:00");
-  const goMonth = (delta: number) => {
-    const d = new Date(fromD.getFullYear(), fromD.getMonth() + delta, 1);
-    const last = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    router.push(`/cash-flow?from=${d.getFullYear()}-${mm}-01&to=${d.getFullYear()}-${mm}-${String(last).padStart(2, "0")}`);
-  };
+  const { hidden: valuesHidden } = useValuesVisibility();
 
   const toDisplay = (amount: number, currency: string) =>
     convertAmount(amount, currency as Currency, displayCurrency, rate);
@@ -118,54 +102,17 @@ export default function CashFlowClient({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Seletor de período + ações */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => goMonth(-1)}
-            className="text-zinc-400 hover:text-zinc-200 p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
-            title="Mês anterior"
-          >
-            <ChevronLeft size={16} />
-          </button>
-          <span className="text-sm font-semibold text-zinc-200 min-w-[120px] text-center">
-            {MONTHS[fromD.getMonth()]} {fromD.getFullYear()}
-          </span>
-          <button
-            onClick={() => goMonth(1)}
-            className="text-zinc-400 hover:text-zinc-200 p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
-            title="Próximo mês"
-          >
-            <ChevronRight size={16} />
-          </button>
-        </div>
-
-        <DateRangePicker from={from} to={to} />
-
+      {/* Seletor de período + ações (mesma barra do dashboard, ver PeriodBar) */}
+      <PeriodBar from={from} to={to}>
         <button
-          onClick={toggleValues}
-          className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
-            valuesHidden
-              ? "bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20"
-              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
-          }`}
-          title={valuesHidden ? "Mostrar valores" : "Ocultar valores"}
+          onClick={() => setShowModal(true)}
+          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
         >
-          {valuesHidden ? <EyeOff size={14} /> : <Eye size={14} />}
-          <span className="hidden sm:inline">{valuesHidden ? "Mostrar" : "Ocultar"}</span>
+          <Plus size={14} />
+          <span className="hidden sm:inline">Novo Lançamento</span>
+          <span className="sm:hidden">Lançar</span>
         </button>
-
-        <div className="ml-auto">
-          <button
-            onClick={() => setShowModal(true)}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-          >
-            <Plus size={14} />
-            <span className="hidden sm:inline">Novo Lançamento</span>
-            <span className="sm:hidden">Lançar</span>
-          </button>
-        </div>
-      </div>
+      </PeriodBar>
 
       {/* Métricas do período */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
