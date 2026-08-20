@@ -1,6 +1,19 @@
--- Impede que um mesmo contrato gere mais de um lembrete para a mesma data de
--- vencimento (a data canônica do mês). Garante idempotência do cron de cobrança
--- automática mesmo sob execução concorrente ou reexecução (catch-up).
-CREATE UNIQUE INDEX IF NOT EXISTS reminders_contract_duedate_unique
-  ON reminders (contract_id, trigger_date)
-  WHERE contract_id IS NOT NULL;
+-- SUBSTITUÍDA pela migração 0013.
+--
+-- Esta migração criava o índice único `reminders_contract_duedate_unique` em
+-- (contract_id, trigger_date), quando um vencimento só podia gerar um lembrete.
+-- Com a cobrança em etapas (aviso, D+2 e D+5), o mesmo vencimento passou a ter
+-- várias linhas, e a 0013 trocou aquele índice por
+-- `reminders_contract_duedate_stage_unique`, que inclui o stage, dropando o
+-- antigo no fim do arquivo.
+--
+-- O conteúdo foi esvaziado porque o migrate deste projeto (lib/db/migrate.ts)
+-- reexecuta TODOS os arquivos .sql a cada build, em ordem alfabética. Como a
+-- 0010 roda antes da 0013, todo deploy tentava recriar o índice sem stage, que
+-- a 0013 havia removido. Enquanto nenhum vencimento tinha mais de uma etapa
+-- registrada isso passava despercebido; assim que a primeira cobrança D+2 foi
+-- gravada, a recriação passou a falhar por chave duplicada e derrubou o build
+-- inteiro, antes mesmo do next build.
+--
+-- Não recriar este índice aqui. O índice válido é o da 0013.
+SELECT 1;
