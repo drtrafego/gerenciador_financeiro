@@ -3,18 +3,19 @@
 // as duas pontas precisam da MESMA validação: antes disso, o painel aceitava
 // qualquer arquivo renomeado para .pdf.
 //
-// O arquivo vai para o Blob PÚBLICO (link não listável, mas quem tem a URL abre
-// sem autenticação). É como o painel sempre funcionou. O `addRandomSuffix` fecha
-// o buraco de a URL ser adivinhável: antes o pathname era só a data mais o nome
-// do arquivo, então quem soubesse o nome podia chutar o timestamp.
+// O arquivo vai para o Blob PRIVADO, por decisão do dono: contrato assinado tem
+// CPF, endereço e assinatura, e um link que abre sem autenticação vaza inteiro se
+// escapar num print ou numa conversa.
 //
-// Para tornar o PDF realmente privado seria preciso `access: 'private'` mais
-// trocar o redirect de /api/contracts/pdf por stream, porque este SDK
-// (@vercel/blob 2.x) não gera URL assinada com expiração. Decisão pendente do
-// dono: privado protege o documento, mas o link deixa de abrir fora do painel,
-// inclusive para o agente externo.
+// Consequência que vale ter em mente antes de mexer aqui: a URL gravada em
+// contracts.pdf_url NÃO abre sozinha em lugar nenhum. Ela é identificador do
+// blob, não link. Quem lê o arquivo é o servidor, pelo readContractPdf, e entrega
+// para quem já provou quem é: o painel por sessão, o agente pelo Bearer mais a
+// allowlist de IP. Este SDK (@vercel/blob 2.x) não gera link assinado com
+// validade, então mandar um contrato para fora do sistema virou feature nova, não
+// ajuste de configuração.
 
-import { del, put } from '@vercel/blob';
+import { del, get, put } from '@vercel/blob';
 import { createHash } from 'crypto';
 
 export const MAX_PDF_BYTES = 4 * 1024 * 1024; // teto real de body de uma function na Vercel é ~4,5MB
@@ -52,7 +53,7 @@ function sanitizeFileName(rawName: string | null | undefined, fallbackId: string
 // Compara o HOSTNAME, não o texto da URL: um link de terceiros com o domínio do
 // Blob na query string passaria num includes() e viraria uma tentativa de apagar
 // arquivo que não é nosso.
-function isOurBlobUrl(url: string): boolean {
+export function isOurBlobUrl(url: string): boolean {
   try {
     return new URL(url).hostname.endsWith('.blob.vercel-storage.com');
   } catch {
@@ -90,12 +91,35 @@ export async function uploadContractPdf(file: File, contractId: string): Promise
   const sha256 = createHash('sha256').update(bytes).digest('hex');
 
   const { url, pathname } = await put(`contracts/${fileName}`, bytes, {
-    access: 'public',
+    access: 'private',
     addRandomSuffix: true,
     contentType: 'application/pdf',
   });
 
   return { url, pathname, fileName, sizeBytes: file.size, sha256 };
+}
+
+export type ContractPdfContent = {
+  stream: ReadableStream<Uint8Array>;
+  contentType: string;
+  sizeBytes: number;
+};
+
+// Lê o arquivo do Blob privado para quem já foi autenticado por quem chamou.
+// Devolve `null` quando o blob não existe mais (o SDK retorna null em vez de
+// lançar), para virar 404 em vez de 500.
+//
+// O stream é repassado sem buffer: um PDF de 4MB não passa pela memória da
+// function inteira, e o `headers` que o SDK devolve NÃO é o Headers global, por
+// isso quem chama monta os próprios cabeçalhos.
+export async function readContractPdf(url: string): Promise<ContractPdfContent | null> {
+  const result = await get(url, { access: 'private' });
+  if (!result || result.statusCode !== 200) return null;
+  return {
+    stream: result.stream,
+    contentType: result.blob.contentType,
+    sizeBytes: result.blob.size,
+  };
 }
 
 // Apaga um PDF que foi substituído. Só mexe no que é nosso: pdfUrl pode ter sido

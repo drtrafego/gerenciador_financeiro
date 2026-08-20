@@ -33,6 +33,13 @@ export function conflict(message: string): AgentApiError {
   return new AgentApiError(409, 'AMBIGUOUS_TARGET', message);
 }
 
+// O arquivo pedido está hospedado fora do nosso storage (link de outro serviço
+// colado em pdfUrl). O sistema não serve conteúdo de domínio de terceiro; a
+// mensagem devolve a URL para quem chamou buscar por conta.
+export function externalFile(message: string): AgentApiError {
+  return new AgentApiError(409, 'EXTERNAL_FILE', message);
+}
+
 // Envelope de erro padrão de toda resposta não-2xx da API do agente.
 export function errorEnvelope(code: string, message: string) {
   return { error: { code, message } };
