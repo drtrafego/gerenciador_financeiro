@@ -7,6 +7,8 @@ import {
   dueDateCandidatesFor,
   sendDateFor,
   weekdayOf,
+  firstDueDateFor,
+  isFirstBillingFor,
 } from '../lib/billing/schedule';
 
 const DIAS = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
@@ -90,3 +92,33 @@ for (const dueIso of [
   }
   console.log(`vencimento ${dueIso} (${diaDaSemana(dueIso)}): ${d2} -> ${d5} = ${uteis} dia(s) útil(eis)`);
 }
+
+console.log('\n== Primeiro vencimento do contrato (firstDueDateFor) ==');
+for (const [start, billingDay, esperado] of [
+  ['2026-08-19', 25, '2026-08-25'], // assinou antes do dia de cobrança: vence no mesmo mês
+  ['2026-08-19', 15, '2026-09-15'], // assinou depois: vence no mês seguinte
+  ['2026-08-19', 19, '2026-08-19'], // assinou no próprio dia de cobrança
+  ['2026-01-31', 31, '2026-01-31'], // dia 31 em mês de 31 dias
+  ['2026-02-01', 31, '2026-02-28'], // dia 31 em fevereiro vira o último dia
+  ['2026-02-01', 30, '2026-02-28'],
+  ['2026-01-15', 5, '2026-02-05'],  // virada de ano não acontece aqui, mas mês sim
+  ['2026-12-20', 5, '2027-01-05'],  // virada de ano
+  ['2026-08-19', null, '2026-09-05'], // billingDay nulo cai no default 5
+] as [string, number | null, string][]) {
+  const calculado = firstDueDateFor(start, billingDay);
+  const ok = calculado === esperado ? 'OK ' : 'ERRO';
+  console.log(`${ok} início ${start}, billingDay ${billingDay} -> ${calculado} (esperado ${esperado})`);
+}
+
+console.log('\n== isFirstBillingFor ==');
+for (const [due, start, billingDay, esperado] of [
+  ['2026-08-24', '2026-08-19', 24, true],   // primeira parcela
+  ['2026-09-24', '2026-08-19', 24, false],  // segunda parcela
+  ['2026-09-15', '2026-08-19', 15, true],   // assinou depois do dia, primeira só no mês seguinte
+  ['2026-08-15', '2026-08-19', 15, false],  // vencimento anterior ao início nunca é o primeiro
+] as [string, string, number, boolean][]) {
+  const calculado = isFirstBillingFor(due, start, billingDay);
+  const ok = calculado === esperado ? 'OK ' : 'ERRO';
+  console.log(`${ok} vencimento ${due}, início ${start}, billingDay ${billingDay} -> ${calculado}`);
+}
+console.log(`OK  startDate nulo -> ${isFirstBillingFor('2026-08-24', null, 24)} (esperado false)`);

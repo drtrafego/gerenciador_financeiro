@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { and, desc, eq, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
-import { clients, paymentConfirmations, reminders } from '@/lib/db/schema';
+import { clients, messageTemplates, paymentConfirmations, reminders } from '@/lib/db/schema';
 import {
   getReminderById,
   createReminder,
@@ -12,7 +12,13 @@ import {
   getMessageTemplates,
   createMessageTemplate,
 } from '@/lib/db/queries';
-import { sendWhatsApp, buildReminderMessage, buildAutomaticBillingMessage } from '@/lib/wpp/send';
+import {
+  sendWhatsApp,
+  buildReminderMessage,
+  buildAutomaticBillingMessage,
+  DEFAULT_TEMPLATE_BODY,
+  MISSING_PHONE_ERROR,
+} from '@/lib/wpp/send';
 import { notFound, badRequest } from '../errors';
 
 // "stage" NÃO entra neste schema de propósito: quem define a etapa do ciclo de
@@ -168,11 +174,48 @@ export async function sendNowReminderService(id: string) {
   }
 
   // Em linha de cobrança automática sem customMessage salva, o servidor
-  // reconstrói o texto certo da etapa (D+2 ou D+5) em vez de cair no template
-  // genérico do painel, que fala em vencimento futuro.
+  // reconstrói o texto certo da etapa (primeira parcela, vencimento adiado por
+  // fim de semana, D+2 ou D+5) em vez de cair no template genérico do painel,
+  // que fala em vencimento futuro.
+  const automatica = reminder.customMessage
+    ? null
+    : buildAutomaticBillingMessage({ reminder, client, contract });
+
+  // Vencimento comum sem template vinculado: é a linha que o cron cria como
+  // falha quando o cliente está sem telefone cadastrado, cenário comum em
+  // contrato recém assinado. Sem este fallback o reenvio morre em "Lembrete sem
+  // mensagem", porque não há customMessage nem template na linha.
+  // Restrito à linha que o cron cria como falha quando o cliente está sem
+  // telefone cadastrado, que é a única que nasce sem customMessage e sem
+  // template. Qualquer outro lembrete sem texto continua recusado com 400 de
+  // propósito: a API deixa criar lembrete com contractId e sem mensagem, e sem
+  // esse freio o agente externo mandaria cobrança que ninguém revisou.
+  let templateFallback: { body: string } | null = template;
+  if (
+    !automatica &&
+    !reminder.customMessage &&
+    !templateFallback &&
+    reminder.errorMessage === MISSING_PHONE_ERROR &&
+    (reminder.contractId || reminder.invoiceId)
+  ) {
+    const [padrao] = await db
+      .select()
+      .from(messageTemplates)
+      .where(eq(messageTemplates.isDefault, 'true'))
+      .limit(1);
+    templateFallback = padrao ?? { body: DEFAULT_TEMPLATE_BODY };
+  }
+
   const message =
-    (!reminder.customMessage ? buildAutomaticBillingMessage({ reminder, client, contract }) : null) ??
-    buildReminderMessage({ reminder, template, client, invoice, contract, now: new Date() });
+    automatica ??
+    buildReminderMessage({
+      reminder,
+      template: templateFallback,
+      client,
+      invoice,
+      contract,
+      now: new Date(),
+    });
 
   if (!message) {
     throw badRequest('Lembrete sem mensagem: preencha customMessage ou vincule um template.');
