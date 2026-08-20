@@ -1,4 +1,4 @@
-import { desc, and, eq, ne, isNull, gte, lte, lt, or, sql, asc, getTableColumns } from 'drizzle-orm';
+import { desc, and, eq, ne, isNull, inArray, gte, lte, lt, or, sql, asc, getTableColumns } from 'drizzle-orm';
 import { db } from './drizzle';
 import {
   activityLogs,
@@ -28,7 +28,8 @@ import type { User } from './schema';
 import { notTestClient } from './filters';
 import { isContractEarning } from '@/lib/contracts';
 import { convertAmount, safeRates } from '@/lib/currency/format';
-import type { Currency } from '@/lib/currency/format';
+import type { Currency, RatesMap } from '@/lib/currency/format';
+import { addDaysIso, previousPeriod, todayBrt } from '@/lib/period';
 import { CLIENT_SOURCES, NONE_LABEL, NONE_COLOR, sourceLabel } from '@/lib/clientSources';
 import { deriveCycleStatus, deriveNextStep } from '@/lib/billing/confirmations';
 
@@ -666,56 +667,67 @@ export async function getOverdueReport() {
 
 export async function getDashboardData(from: string, to: string) {
   const now = new Date();
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0]!;
-  const today = now.toISOString().split('T')[0]!;
-  const in7days = new Date(now.getTime() + 7 * 86400000).toISOString().split('T')[0]!;
+  // "Hoje" no horário do Brasil. Em UTC, o dia (e no dia 31 o mês inteiro) virava
+  // às 21h, e o dashboard passava a comparar períodos errados à noite.
+  const today = todayBrt();
+  const in7days = addDaysIso(today, 7);
+
+  // Período anterior, para a comparação de cada indicador. Mês inteiro compara
+  // com o mês inteiro anterior; qualquer outro intervalo compara com um intervalo
+  // de mesma duração colado antes dele.
+  const prev = previousPeriod({ from, to });
 
   // Data de início da janela de 6 meses
   const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
 
   const [
-    activeClients,
-    overdueClients,
     latestRate,
+    rateHistory,
     displayCurrencySetting,
     recentInvoices,
     overdueInvoices,
     upcomingInvoices,
-    monthExpense,
     allContracts,
     expenseTransactions,
+    expenseRecurringPast,
     sourceContracts,
     clientSourceRows,
     contractsWithSource,
     periodRealTx,
     periodRecurringPast,
     periodContracts,
+    periodConfirmations,
     sixMonthIncomeTx,
     sixMonthRecurringPast,
   ] = await Promise.all([
-    db.select({ count: sql<number>`count(*)` }).from(clients).where(and(eq(clients.status, 'active'), notTestClient)),
-    db.select({ count: sql<number>`count(*)` }).from(clients).where(and(eq(clients.status, 'overdue'), notTestClient)),
     db.select().from(exchangeRates).orderBy(desc(exchangeRates.fetchedAt)).limit(1),
+    // Histórico de cotação: cada mês do gráfico converte pela cotação da época,
+    // senão o passado inteiro muda de forma toda vez que o dólar mexe hoje.
+    db.select().from(exchangeRates).orderBy(desc(exchangeRates.fetchedAt)).limit(500),
     db.select().from(systemSettings).where(eq(systemSettings.key, 'display_currency')),
     db.select(getTableColumns(invoices))
       .from(invoices)
       .leftJoin(clients, eq(invoices.clientId, clients.id))
       .where(notTestClient)
       .orderBy(desc(invoices.createdAt)).limit(5),
+    // Em atraso é DERIVADO do vencimento, não do status digitado à mão. Antes só
+    // aparecia aqui a fatura que alguém tinha marcado como "overdue" no painel,
+    // então uma fatura vencida há semanas continuava contando como em dia.
     db.select(getTableColumns(invoices))
       .from(invoices)
       .leftJoin(clients, eq(invoices.clientId, clients.id))
-      .where(and(eq(invoices.status, 'overdue'), notTestClient)),
+      .where(and(
+        inArray(invoices.status, ['sent', 'overdue']),
+        lt(invoices.dueDate, today),
+        notTestClient
+      )),
     db.select(getTableColumns(invoices))
       .from(invoices)
       .leftJoin(clients, eq(invoices.clientId, clients.id))
       .where(and(eq(invoices.status, 'sent'), sql`due_date BETWEEN ${today} AND ${in7days}`, notTestClient)),
-    db.select({ total: sql<number>`coalesce(sum(${transactions.amount}),0)` })
-      .from(transactions)
-      .leftJoin(clients, eq(transactions.clientId, clients.id))
-      .where(and(eq(transactions.type, 'expense'), gte(transactions.date, startOfMonth), notTestClient)),
     // Todos os contratos para calcular receita mensal
     db.select({
+      clientId: contracts.clientId,
       fixedAmount: contracts.fixedAmount,
       currency: contracts.currency,
       startDate: contracts.startDate,
@@ -726,10 +738,23 @@ export async function getDashboardData(from: string, to: string) {
       .leftJoin(clients, eq(contracts.clientId, clients.id))
       .where(notTestClient),
     // Transações de despesa dos últimos 6 meses (agrupamos em JS para evitar mismatch de locale)
-    db.select({ amount: transactions.amount, date: transactions.date })
+    db.select({ amount: transactions.amount, currency: transactions.currency, date: transactions.date })
       .from(transactions)
       .leftJoin(clients, eq(transactions.clientId, clients.id))
       .where(and(eq(transactions.type, 'expense'), gte(transactions.date, sixMonthsAgo.toISOString().split('T')[0]!), notTestClient)),
+    // Despesas recorrentes anteriores à janela: sem elas, o gráfico compara
+    // receita projetada com despesa só realizada e o saldo fica otimista.
+    db.select({ amount: transactions.amount, currency: transactions.currency, date: transactions.date, recurringEndsAt: transactions.recurringEndsAt })
+      .from(transactions)
+      .leftJoin(clients, eq(transactions.clientId, clients.id))
+      .where(and(
+        eq(transactions.type, 'expense'),
+        eq(transactions.isRecurring, 'true'),
+        eq(transactions.recurringActive, 'true'),
+        lt(transactions.date, sixMonthsAgo.toISOString().split('T')[0]!),
+        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, sixMonthsAgo.toISOString().split('T')[0]!)),
+        notTestClient
+      )),
     // Origem do cliente: MRR (contratos ativos por canal; finalizados filtrados em JS)
     db.select({ source: clients.source, fixedAmount: contracts.fixedAmount, currency: contracts.currency, endDate: contracts.endDate })
       .from(contracts)
@@ -737,39 +762,58 @@ export async function getDashboardData(from: string, to: string) {
       .where(and(eq(contracts.status, 'active'), notTestClient)),
     // Contagem de clientes por origem (todos os clientes cadastrados)
     db.select({ source: clients.source }).from(clients).where(notTestClient),
-    // Todos os contratos com a origem do cliente, para a evolução do MRR por canal
+    // Contratos com a origem do cliente, para a evolução do MRR por canal.
+    // O filtro de status existe porque o gráfico de barras ao lado só conta
+    // contrato ativo: sem ele, os dois gráficos de MRR por origem mostravam
+    // populações diferentes, um contando cancelado e pausado e o outro não.
     db.select({
       source: clients.source,
       fixedAmount: contracts.fixedAmount,
       currency: contracts.currency,
       startDate: contracts.startDate,
       endDate: contracts.endDate,
-    }).from(contracts).leftJoin(clients, eq(contracts.clientId, clients.id)).where(notTestClient),
+    }).from(contracts)
+      .leftJoin(clients, eq(contracts.clientId, clients.id))
+      .where(and(eq(contracts.status, 'active'), notTestClient)),
     // Resumo do período (bate com o fluxo de caixa): transações reais no intervalo,
     // recorrentes anteriores ainda ativas (projetadas em JS) e honorários de contrato vigentes.
-    db.select({ type: transactions.type, amount: transactions.amount, currency: transactions.currency, source: clients.source })
+    //
+    // A janela começa no período ANTERIOR porque os mesmos dados alimentam a
+    // comparação de cada indicador. Buscar duas vezes o mesmo tipo de linha só
+    // para separar os dois períodos seria o dobro de ida ao banco.
+    db.select({ type: transactions.type, amount: transactions.amount, currency: transactions.currency, date: transactions.date, source: clients.source })
       .from(transactions)
       .leftJoin(clients, eq(transactions.clientId, clients.id))
-      .where(and(gte(transactions.date, from), lte(transactions.date, to), notTestClient)),
+      .where(and(gte(transactions.date, prev.from), lte(transactions.date, to), notTestClient)),
     db.select({ type: transactions.type, amount: transactions.amount, currency: transactions.currency, date: transactions.date, recurringEndsAt: transactions.recurringEndsAt, source: clients.source })
       .from(transactions)
       .leftJoin(clients, eq(transactions.clientId, clients.id))
       .where(and(
         eq(transactions.isRecurring, 'true'),
         eq(transactions.recurringActive, 'true'),
+        // A janela é a do período ATUAL, não a do anterior. Estreitar aqui faria
+        // uma recorrente nascida no mês passado sumir do mês atual, e o mesmo mês
+        // passaria a fechar com valores diferentes conforme a tela em que aparece.
+        // Quem evita a contagem dupla no período anterior é o corte dentro de
+        // totalsFor, que ignora a ocorrência de origem.
         lt(transactions.date, from),
-        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, from)),
+        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, prev.from)),
         notTestClient
       )),
-    db.select({ fixedAmount: contracts.fixedAmount, currency: contracts.currency, billingDay: contracts.billingDay, startDate: contracts.startDate, endDate: contracts.endDate, source: clients.source })
+    db.select({ id: contracts.id, fixedAmount: contracts.fixedAmount, currency: contracts.currency, billingDay: contracts.billingDay, startDate: contracts.startDate, endDate: contracts.endDate, source: clients.source })
       .from(contracts)
       .leftJoin(clients, eq(contracts.clientId, clients.id))
       .where(and(
         lte(contracts.startDate, to),
-        or(isNull(contracts.endDate), gte(contracts.endDate, from)),
+        or(isNull(contracts.endDate), gte(contracts.endDate, prev.from)),
         eq(contracts.status, 'active'),
         notTestClient
       )),
+    // Pagamentos confirmados: é o que separa "recebido" de "a receber" num
+    // honorário de contrato, que não gera transação quando é pago.
+    db.select({ contractId: paymentConfirmations.contractId, dueDate: paymentConfirmations.dueDate })
+      .from(paymentConfirmations)
+      .where(and(gte(paymentConfirmations.dueDate, prev.from), lte(paymentConfirmations.dueDate, to))),
     // Gráfico de receita (últimos 6 meses): receitas avulsas reais na janela +
     // recorrentes anteriores à janela ainda ativas (mesma lógica do resumo do período acima).
     db.select({ amount: transactions.amount, currency: transactions.currency, date: transactions.date })
@@ -799,64 +843,145 @@ export async function getDashboardData(from: string, to: string) {
   );
   const displayCurrency = (displayCurrencySetting[0]?.value ?? 'BRL') as Currency;
 
-  // ── Resumo do período (mesma lógica do fluxo de caixa) ──
-  const periodFromD = new Date(from + 'T12:00:00');
-  const periodToD = new Date(to + 'T12:00:00');
-  const periodMonths: Date[] = [];
-  for (
-    let d = new Date(periodFromD.getFullYear(), periodFromD.getMonth(), 1);
-    d <= periodToD;
-    d = new Date(d.getFullYear(), d.getMonth() + 1, 1)
-  ) {
-    periodMonths.push(new Date(d));
-  }
-  let periodIncome = 0;
-  let periodExpense = 0;
-  // Entradas do período agrupadas por canal de aquisição (para a Receita por Origem)
-  const incomeBySource = new Map<string, number>();
-  const addPeriod = (type: string, amount: string | null, currency: string | null, source?: string | null) => {
-    const amt = parseFloat(amount ?? '0');
-    const cur = (currency ?? 'BRL') as Currency;
-    const vDisplay = convertAmount(amt, cur, displayCurrency, rate); // cards do topo
-    if (type === 'income') {
-      periodIncome += vDisplay;
-      const vBrl = convertAmount(amt, cur, 'BRL', rate); // tabela por origem converte BRL->display
-      const k = source ?? 'none';
-      incomeBySource.set(k, (incomeBySource.get(k) ?? 0) + vBrl);
-    } else if (type === 'expense') {
-      periodExpense += vDisplay;
-    }
-  };
   const dayInMonth = (m: Date, billingDay: number) => {
     const lastDay = new Date(m.getFullYear(), m.getMonth() + 1, 0).getDate();
     const day = Math.min(billingDay, lastDay);
     return `${m.getFullYear()}-${String(m.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   };
-  for (const t of periodRealTx) addPeriod(t.type, t.amount, t.currency, t.source);
-  for (const t of periodRecurringPast) {
-    const originalDay = new Date(t.date + 'T12:00:00').getDate();
-    for (const m of periodMonths) {
-      const dateStr = dayInMonth(m, originalDay);
-      if (dateStr >= from && dateStr <= to && (!t.recurringEndsAt || dateStr <= t.recurringEndsAt)) {
-        addPeriod(t.type, t.amount, t.currency, t.source);
+
+  const confirmedKeys = new Set(periodConfirmations.map((c) => `${c.contractId}|${c.dueDate}`));
+
+  // ── Totais de um intervalo (mesma lógica do fluxo de caixa) ──
+  //
+  // A diferença para a versão anterior é a separação entre RECEBIDO e A RECEBER.
+  // Antes tudo virava um número só chamado "entradas", que somava honorário de
+  // contrato ainda não pago: no dia 1 o card já mostrava o mês inteiro como se
+  // tivesse entrado, e não fechava com o extrato do banco.
+  //
+  // Um honorário de contrato não gera transação quando é pago, então o que diz se
+  // ele entrou é a confirmação de pagamento (a mesma que interrompe a cobrança
+  // automática). Transação lançada à mão conta como recebida quando a data dela
+  // já chegou, que é como o fluxo de caixa sempre tratou.
+  function totalsFor(pFrom: string, pTo: string) {
+    const fromD = new Date(pFrom + 'T12:00:00');
+    const toD = new Date(pTo + 'T12:00:00');
+    const months: Date[] = [];
+    for (
+      let d = new Date(fromD.getFullYear(), fromD.getMonth(), 1);
+      d <= toD;
+      d = new Date(d.getFullYear(), d.getMonth() + 1, 1)
+    ) {
+      months.push(new Date(d));
+    }
+
+    let received = 0;
+    let toReceive = 0;
+    let expense = 0;
+    const incomeBySource = new Map<string, number>();
+
+    const addIncome = (
+      amount: string | null,
+      currency: string | null,
+      source: string | null | undefined,
+      pago: boolean
+    ) => {
+      const amt = parseFloat(amount ?? '0');
+      const cur = (currency ?? 'BRL') as Currency;
+      if (pago) received += convertAmount(amt, cur, displayCurrency, rate);
+      else toReceive += convertAmount(amt, cur, displayCurrency, rate);
+      // A tabela por origem soma tudo do período, pago ou não, e converte de BRL
+      // para a moeda de exibição na hora de montar a linha.
+      const k = source ?? 'none';
+      incomeBySource.set(k, (incomeBySource.get(k) ?? 0) + convertAmount(amt, cur, 'BRL', rate));
+    };
+
+    const addExpense = (amount: string | null, currency: string | null) => {
+      expense += convertAmount(parseFloat(amount ?? '0'), (currency ?? 'BRL') as Currency, displayCurrency, rate);
+    };
+
+    for (const t of periodRealTx) {
+      if (t.date < pFrom || t.date > pTo) continue;
+      if (t.type === 'income') addIncome(t.amount, t.currency, t.source, t.date <= today);
+      else if (t.type === 'expense') addExpense(t.amount, t.currency);
+    }
+
+    for (const t of periodRecurringPast) {
+      // A ocorrência de origem já entra por periodRealTx quando cai dentro deste
+      // intervalo. Sem este corte, ela seria contada de novo aqui como projeção.
+      if (t.date >= pFrom) continue;
+      const originalDay = new Date(t.date + 'T12:00:00').getDate();
+      for (const m of months) {
+        const dateStr = dayInMonth(m, originalDay);
+        if (dateStr < pFrom || dateStr > pTo) continue;
+        if (t.recurringEndsAt && dateStr > t.recurringEndsAt) continue;
+        if (t.type === 'income') addIncome(t.amount, t.currency, t.source, dateStr <= today);
+        else if (t.type === 'expense') addExpense(t.amount, t.currency);
       }
     }
-  }
-  for (const c of periodContracts) {
-    for (const m of periodMonths) {
-      const dateStr = dayInMonth(m, c.billingDay ?? 5);
-      if (dateStr >= from && dateStr <= to && dateStr >= c.startDate && (c.endDate == null || dateStr <= c.endDate)) {
-        addPeriod('income', c.fixedAmount, c.currency, c.source);
+
+    for (const c of periodContracts) {
+      for (const m of months) {
+        const dateStr = dayInMonth(m, c.billingDay ?? 5);
+        if (dateStr < pFrom || dateStr > pTo) continue;
+        if (dateStr < c.startDate || (c.endDate != null && dateStr > c.endDate)) continue;
+        addIncome(c.fixedAmount, c.currency, c.source, confirmedKeys.has(`${c.id}|${dateStr}`));
       }
     }
+
+    return { received, toReceive, expense, incomeBySource };
   }
 
-  // MRR = soma dos contratos ativos, todos convertidos para BRL
-  const activeContracts = allContracts.filter((c) => isContractEarning(c.status, c.endDate));
-  const mrr = activeContracts.reduce((sum, c) => {
-    const amount = parseFloat(c.fixedAmount ?? '0');
-    return sum + convertAmount(amount, (c.currency ?? 'BRL') as Currency, 'BRL', rate);
-  }, 0);
+  const atual = totalsFor(from, to);
+  const anterior = totalsFor(prev.from, prev.to);
+
+  const periodReceived = atual.received;
+  const periodToReceive = atual.toReceive;
+  const periodExpense = atual.expense;
+  // Mantido para quem lê "entradas do período" como o total previsto do intervalo
+  // (a API do agente e a tabela por origem continuam usando esse número).
+  const periodIncome = atual.received + atual.toReceive;
+  const incomeBySource = atual.incomeBySource;
+
+  // MRR: quanto estava contratado numa data. Uma definição só, usada pelo card,
+  // pelo gráfico e pela contagem de clientes.
+  //
+  // Duas correções em relação à versão anterior: a data de referência é o fim do
+  // período escolhido (antes era sempre hoje, então o card não fechava com o
+  // último ponto do gráfico), e contrato que ainda não começou não conta (antes,
+  // um contrato assinado hoje para começar em outubro já entrava no MRR de hoje).
+  const contractsActiveOn = (refDate: string) =>
+    allContracts.filter(
+      (c) =>
+        c.status === 'active' &&
+        c.startDate <= refDate &&
+        (c.endDate == null || c.endDate >= refDate)
+    );
+
+  const mrrOn = (refDate: string) =>
+    contractsActiveOn(refDate).reduce(
+      (sum, c) => sum + convertAmount(parseFloat(c.fixedAmount ?? '0'), (c.currency ?? 'BRL') as Currency, 'BRL', rate),
+      0
+    );
+
+  const mrrRefDate = to < today ? to : today;
+  const mrr = mrrOn(mrrRefDate);
+  const mrrPrev = mrrOn(prev.to);
+
+  // Clientes que sustentam o MRR, derivado do contrato. Antes vinha de
+  // clients.status, um campo digitado à mão que não tem relação nenhuma com ter
+  // contrato vigente.
+  const activeClientIds = new Set(
+    contractsActiveOn(mrrRefDate).map((c) => c.clientId).filter((id): id is string => !!id)
+  );
+  const activeClients = activeClientIds.size;
+
+  // Movimentação do período: o que entrou e o que saiu de contrato.
+  const contratosNovos = allContracts.filter(
+    (c) => c.status === 'active' && c.startDate >= from && c.startDate <= to
+  ).length;
+  const contratosEncerrados = allContracts.filter(
+    (c) => c.endDate != null && c.endDate >= from && c.endDate <= to
+  ).length;
 
   // Para o histórico mês a mês (gráficos), usamos o status BRUTO do contrato
   // (não o derivado em relação a hoje): um contrato finalizado no mês passado
@@ -864,18 +989,40 @@ export async function getDashboardData(from: string, to: string) {
   // compara com a data de hoje, então excluiria retroativamente esses meses.
   const nonCancelledContracts = allContracts.filter((c) => c.status === 'active');
 
+  // Cotação da época de cada mês. Sem isso, todo o histórico era convertido pela
+  // cotação de hoje e o gráfico de 6 meses mudava de forma de um dia para o
+  // outro, sem nada ter acontecido no negócio.
+  const rateByMonth = new Map<string, RatesMap>();
+  for (const r of rateHistory) {
+    const key = (r.fetchedAt ?? new Date()).toISOString().slice(0, 7);
+    // A lista vem da mais recente para a mais antiga, então a primeira de cada
+    // mês é a última cotação daquele mês.
+    if (!rateByMonth.has(key)) {
+      rateByMonth.set(key, safeRates({ usd_brl: Number(r.usdBrl), usd_ars: Number(r.usdArs) }));
+    }
+  }
+  // Mês sem cotação registrada usa a mais próxima anterior, e no limite a atual.
+  const rateForMonth = (key: string): RatesMap => {
+    const exata = rateByMonth.get(key);
+    if (exata) return exata;
+    const anteriores = [...rateByMonth.keys()].filter((k) => k < key).sort();
+    const maisProxima = anteriores[anteriores.length - 1];
+    return maisProxima ? rateByMonth.get(maisProxima)! : rate;
+  };
+
   // Agrupar despesas por "YYYY-MM" em JS (evita mismatch de locale com SQL)
   const expenseMap = new Map<string, number>();
   for (const t of expenseTransactions) {
     const key = t.date.slice(0, 7); // "YYYY-MM"
-    expenseMap.set(key, (expenseMap.get(key) ?? 0) + parseFloat(t.amount ?? '0'));
+    const v = convertAmount(parseFloat(t.amount ?? '0'), (t.currency ?? 'BRL') as Currency, 'BRL', rateForMonth(key));
+    expenseMap.set(key, (expenseMap.get(key) ?? 0) + v);
   }
 
   // Agrupar receitas avulsas reais por "YYYY-MM" (mesma base usada no fluxo de caixa)
   const incomeTxMap = new Map<string, number>();
   for (const t of sixMonthIncomeTx) {
     const key = t.date.slice(0, 7);
-    const v = convertAmount(parseFloat(t.amount ?? '0'), (t.currency ?? 'BRL') as Currency, 'BRL', rate);
+    const v = convertAmount(parseFloat(t.amount ?? '0'), (t.currency ?? 'BRL') as Currency, 'BRL', rateForMonth(key));
     incomeTxMap.set(key, (incomeTxMap.get(key) ?? 0) + v);
   }
 
@@ -890,22 +1037,34 @@ export async function getDashboardData(from: string, to: string) {
     const label = d.toLocaleDateString('pt-BR', { month: 'short', year: '2-digit' });
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
 
+    const monthRate = rateForMonth(key);
+
     let monthIncome = 0;
     for (const c of nonCancelledContracts) {
       const dueDate = dayInMonth(d, c.billingDay ?? 5);
       if (dueDate >= monthStartStr && dueDate <= monthEndStr && dueDate >= c.startDate && (c.endDate == null || dueDate <= c.endDate)) {
-        monthIncome += convertAmount(parseFloat(c.fixedAmount ?? '0'), (c.currency ?? 'BRL') as Currency, 'BRL', rate);
+        monthIncome += convertAmount(parseFloat(c.fixedAmount ?? '0'), (c.currency ?? 'BRL') as Currency, 'BRL', monthRate);
       }
     }
 
     // MRR do mês: contratos vigentes naquele mês (sem depender do dia exato de
     // vencimento nem de receita avulsa) — é o "quanto estava contratado", não o caixa.
+    // O ponto do mês corrente usa a mesma régua do card MRR (contrato vigente na
+    // data de referência), para os dois números fecharem. Nos meses passados vale
+    // a vigência dentro do mês, senão um contrato encerrado sumiria dos meses em
+    // que ainda estava valendo.
     let monthMrr = 0;
+    const mesCorrente = key === today.slice(0, 7);
     for (const c of nonCancelledContracts) {
-      const cStart = c.startDate;
-      const cEnd = c.endDate;
-      if (cStart <= monthEndStr && (cEnd == null || cEnd >= monthStartStr)) {
-        monthMrr += convertAmount(parseFloat(c.fixedAmount ?? '0'), (c.currency ?? 'BRL') as Currency, 'BRL', rate);
+      // O gráfico é sempre dos últimos 6 meses reais, então a referência do mês
+      // corrente é HOJE, e não a data final do período escolhido na barra. Usar o
+      // período aqui faria o ponto do mês atual mudar de significado quando a
+      // pessoa navegasse para um mês passado.
+      const vigente = mesCorrente
+        ? c.startDate <= today && (c.endDate == null || c.endDate >= today)
+        : c.startDate <= monthEndStr && (c.endDate == null || c.endDate >= monthStartStr);
+      if (vigente) {
+        monthMrr += convertAmount(parseFloat(c.fixedAmount ?? '0'), (c.currency ?? 'BRL') as Currency, 'BRL', monthRate);
       }
     }
 
@@ -913,15 +1072,27 @@ export async function getDashboardData(from: string, to: string) {
       const originalDay = new Date(t.date + 'T12:00:00').getDate();
       const dateStr = dayInMonth(d, originalDay);
       if (dateStr >= monthStartStr && dateStr <= monthEndStr && (!t.recurringEndsAt || dateStr <= t.recurringEndsAt)) {
-        monthIncome += convertAmount(parseFloat(t.amount ?? '0'), (t.currency ?? 'BRL') as Currency, 'BRL', rate);
+        monthIncome += convertAmount(parseFloat(t.amount ?? '0'), (t.currency ?? 'BRL') as Currency, 'BRL', monthRate);
       }
     }
     monthIncome += incomeTxMap.get(key) ?? 0;
 
+    // Despesa recorrente projetada, do mesmo jeito que a receita. Sem isso, a
+    // linha de saldo do gráfico era otimista por construção: receita projetada
+    // contra despesa só realizada.
+    let monthExpenseTotal = expenseMap.get(key) ?? 0;
+    for (const t of expenseRecurringPast) {
+      const originalDay = new Date(t.date + 'T12:00:00').getDate();
+      const dateStr = dayInMonth(d, originalDay);
+      if (dateStr >= monthStartStr && dateStr <= monthEndStr && (!t.recurringEndsAt || dateStr <= t.recurringEndsAt)) {
+        monthExpenseTotal += convertAmount(parseFloat(t.amount ?? '0'), (t.currency ?? 'BRL') as Currency, 'BRL', monthRate);
+      }
+    }
+
     chartData.push({
       month: label,
       income: monthIncome,
-      expense: expenseMap.get(key) ?? 0,
+      expense: monthExpenseTotal,
       mrr: monthMrr,
     });
   }
@@ -999,21 +1170,43 @@ export async function getDashboardData(from: string, to: string) {
     { key: NONE_LABEL, color: NONE_COLOR },
   ].filter((s) => activeLabels.has(s.key));
 
+  // Valor em risco: soma das faturas vencidas e não pagas, na moeda de exibição.
+  const overdueAmount = overdueInvoices.reduce(
+    (sum, i) => sum + convertAmount(parseFloat(i.amount ?? '0'), (i.currency ?? 'BRL') as Currency, displayCurrency, rate),
+    0
+  );
+  const overdueClients = new Set(overdueInvoices.map((i) => i.clientId).filter(Boolean)).size;
+
   return {
     periodIncome,
+    periodReceived,
+    periodToReceive,
     periodExpense,
+    // Mesmos números do período anterior, para a tela mostrar a variação sem
+    // recalcular nada no componente.
+    previousPeriod: prev,
+    previous: {
+      received: anterior.received,
+      toReceive: anterior.toReceive,
+      expense: anterior.expense,
+      income: anterior.received + anterior.toReceive,
+      balance: anterior.received - anterior.expense,
+      mrr: mrrPrev,
+    },
     sourceBreakdown,
     sourceTrendData,
     sourceSeries,
-    activeClients: Number(activeClients[0]?.count ?? 0),
-    overdueClients: Number(overdueClients[0]?.count ?? 0),
+    activeClients,
+    overdueClients,
+    overdueAmount,
+    contratosNovos,
+    contratosEncerrados,
     rate,
     displayCurrency,
     recentInvoices,
     overdueInvoices,
     upcomingInvoices,
     mrr,
-    monthExpense: Number(monthExpense[0]?.total ?? 0),
     chartData,
   };
 }
@@ -1076,11 +1269,14 @@ export async function getCashFlowData(from: string, to: string) {
     db.select({ id: clients.id, name: clients.name }).from(clients).orderBy(asc(clients.name)),
   ]);
 
+  // Mesma resolução de cotação do dashboard. Esta função tinha uma cópia própria
+  // que, se UMA das duas taxas estivesse inválida, jogava as DUAS para o valor
+  // fixo antigo. Resultado: o mesmo contrato em dólar aparecia com valor
+  // diferente aqui e no dashboard, no mesmo período.
   const rateRow = latestRate[0];
-  const usdBrl = Number(rateRow?.usdBrl);
-  const usdArs = Number(rateRow?.usdArs);
-  const rate =
-    usdBrl > 0 && usdArs > 0 ? { usd_brl: usdBrl, usd_ars: usdArs } : { usd_brl: 5.87, usd_ars: 1429 };
+  const rate = safeRates(
+    rateRow ? { usd_brl: Number(rateRow.usdBrl), usd_ars: Number(rateRow.usdArs) } : null
+  );
 
   // Lista de "primeiro dia de cada mês" entre from e to
   const fromD = new Date(from + 'T12:00:00');
