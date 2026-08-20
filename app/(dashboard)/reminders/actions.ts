@@ -6,7 +6,10 @@ import { reminders, messageTemplates, clients, invoices, systemSettings } from '
 import { eq, desc, and, lte, eq as eqOp } from 'drizzle-orm';
 import { z } from 'zod';
 import { getUser } from '@/lib/db/queries';
-import { confirmPayment, unconfirmPayment, cancelPendingDunning } from '@/lib/billing/confirmations';
+import { after } from 'next/server';
+import { unconfirmPayment, cancelPendingDunning } from '@/lib/billing/confirmations';
+import { confirmPaymentAndIssueReceipt } from '@/lib/billing/receipts';
+import { sendReceiptForInvoice } from '@/lib/billing/sendReceipt';
 
 // ── TEMPLATES ─────────────────────────────────
 
@@ -167,8 +170,14 @@ export async function deleteReminderAction(id: string) {
 }
 
 // ── CONFIRMAÇÃO DE PAGAMENTO ──────────────────
-// Confirmar pagamento aqui só interrompe as cobranças automáticas de atraso
-// daquele vencimento. NÃO lança receita no fluxo de caixa, NÃO mexe em fatura.
+// Confirmar pagamento interrompe as cobranças automáticas de atraso daquele
+// vencimento E, desde a emissão automática de recibo, gera a fatura quitada e
+// manda o recibo por e-mail ao cliente. Continua sem lançar receita no fluxo de
+// caixa: quem responde por "entrou dinheiro" é a própria confirmação, e criar
+// transação aqui faria o valor contar duas vezes no dashboard.
+//
+// O mesmo caminho é usado pelo botão do fluxo de caixa
+// (app/(dashboard)/cash-flow/actions.ts), para os dois lugares se comportarem igual.
 
 export async function confirmPaymentAction(contractId: string, dueDate: string, note?: string) {
   // TODO: filtrar por teamId quando o banco virar multi-tenant
@@ -179,17 +188,40 @@ export async function confirmPaymentAction(contractId: string, dueDate: string, 
   // startTransition no painel, onde uma exceção não apareceria na tela e o
   // operador clicaria achando que confirmou.
   try {
-    const { confirmation, alreadyConfirmed } = await confirmPayment({
+    const resultado = await confirmPaymentAndIssueReceipt({
       contractId,
       dueDate,
       source: 'panel',
       actor: user.email,
       note: note ?? null,
     });
+    const { alreadyConfirmed, invoice } = resultado;
     const dunningCancelled = await cancelPendingDunning(contractId, dueDate);
 
+    if (invoice && resultado.emailStatus === 'pending') {
+      after(async () => {
+        await sendReceiptForInvoice(invoice.id);
+      });
+    }
+
     revalidatePath('/reminders');
-    return { ok: true as const, confirmation, alreadyConfirmed, dunningCancelled };
+    revalidatePath('/cash-flow');
+    revalidatePath('/dashboard');
+    revalidatePath('/invoices');
+    return {
+      ok: true as const,
+      alreadyConfirmed,
+      dunningCancelled,
+      invoiceNumber: invoice?.invoiceNumber ?? null,
+      emailTo: resultado.emailTo,
+      emailSkipped: resultado.emailStatus === 'skipped_no_email',
+      // Por que a fatura não saiu, quando não saiu. A tela precisa dizer isso:
+      // confirmar sem emitir nada, em silêncio, faz o operador achar que o
+      // cliente recebeu o recibo. Vale tanto para o caso pulado de propósito
+      // quanto para a falha real de emissão.
+      invoiceSkipped: resultado.skipped,
+      invoiceError: resultado.error,
+    };
   } catch (err) {
     console.error('[reminders] falha ao confirmar pagamento', err);
     return {

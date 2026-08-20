@@ -9,6 +9,10 @@
     {
       "path": "/api/cron/send-reminders",
       "schedule": "30 12 * * *"
+    },
+    {
+      "path": "/api/cron/send-receipts",
+      "schedule": "*/15 * * * *"
     }
   ]
 }

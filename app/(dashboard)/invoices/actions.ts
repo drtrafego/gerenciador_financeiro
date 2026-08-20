@@ -28,20 +28,35 @@ export async function createInvoiceAction(formData: FormData): Promise<void> {
   if (!user) throw new Error('Unauthenticated');
   const raw = Object.fromEntries(formData.entries());
   const parsed = invoiceSchema.parse(raw);
-  const inv = await createInvoice({
-    clientId: parsed.clientId,
-    contractId: parsed.contractId ?? null,
-    type: parsed.type,
-    amount: parsed.amount,
-    currency: parsed.currency,
-    status: parsed.status,
-    dueDate: parsed.dueDate,
-    description: parsed.description ?? null,
-    notes: parsed.notes ?? null,
-    paymentMethod: parsed.paymentMethod ?? null,
-    paidAt: null,
-    invoiceNumber: null,
-  });
+
+  let inv;
+  try {
+    inv = await createInvoice({
+      clientId: parsed.clientId,
+      contractId: parsed.contractId ?? null,
+      type: parsed.type,
+      amount: parsed.amount,
+      currency: parsed.currency,
+      status: parsed.status,
+      dueDate: parsed.dueDate,
+      description: parsed.description ?? null,
+      notes: parsed.notes ?? null,
+      paymentMethod: parsed.paymentMethod ?? null,
+      paidAt: null,
+      invoiceNumber: null,
+    });
+  } catch (err) {
+    // Desde que a confirmação de pagamento passou a emitir fatura sozinha, existe
+    // um índice que impede duas faturas vivas para o mesmo contrato e vencimento.
+    // Sem este tratamento o operador veria a mensagem crua do Postgres.
+    const codigo = err && typeof err === 'object' && 'code' in err ? (err as { code?: string }).code : undefined;
+    if (codigo === '23505') {
+      throw new Error(
+        'Já existe uma fatura em aberto para este contrato neste vencimento. Cancele a fatura existente antes de criar outra.'
+      );
+    }
+    throw err;
+  }
   if (parsed.transactionId) {
     await updateTransaction(parsed.transactionId, { invoiceId: inv.id });
   }

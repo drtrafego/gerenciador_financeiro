@@ -153,6 +153,16 @@ export const invoices = pgTable('invoices', {
   notes: text('notes'),
   paymentMethod: text('payment_method'),
   createdAt: timestamp('created_at').defaultNow(),
+  // Fila de envio do recibo (ver migração 0014). Só é preenchida em fatura
+  // emitida automaticamente pela confirmação de pagamento; fatura criada à mão
+  // continua com tudo nulo e não entra na fila.
+  // null | pending | sending | sent | skipped_no_email | failed
+  receiptEmailStatus: text('receipt_email_status'),
+  receiptEmailTo: text('receipt_email_to'),
+  receiptEmailSentAt: timestamp('receipt_email_sent_at'),
+  receiptEmailError: text('receipt_email_error'),
+  receiptEmailAttempts: integer('receipt_email_attempts').notNull().default(0),
+  receiptEmailClaimedAt: timestamp('receipt_email_claimed_at'),
 });
 
 // Transações financeiras (receitas e despesas)
