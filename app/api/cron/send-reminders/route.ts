@@ -96,7 +96,14 @@ export async function GET(request: Request) {
 
   let clientSent = 0;
   let clientFailed = 0;
+  let dueSkippedByConfirmation = 0;
   const dueSummary: { name: string; valor: string; ok: boolean; first: boolean }[] = [];
+  // Vencimentos que o cron processou hoje mas NÃO cobrou porque já constavam
+  // pagos. Ficam fora de dueSummary de propósito: o contador "enviadas: X/Y" do
+  // resumo do dono só pode falar de quem realmente entrou na fila de envio.
+  // "key" é a chave de negócio do vencimento e serve só para o PASSO C não
+  // reportar o mesmo pulo duas vezes no mesmo dia. Ela não entra no texto.
+  const skippedSummary: { key: string; name: string; valor: string; dueIso: string }[] = [];
 
   type ContractRow = { contract: typeof contracts.$inferSelect; client: typeof clients.$inferSelect | null };
 
@@ -153,16 +160,55 @@ export async function GET(request: Request) {
       contractsDueOn(dueIso).map((row) => ({ ...row, dueIso }))
     );
 
+    // Quem já pagou adiantado não recebe o aviso do vencimento. O filtro vem
+    // ANTES do agrupamento por cliente: um cliente com dois contratos no mesmo
+    // vencimento, um pago e outro não, precisa receber a mensagem só do que
+    // ficou em aberto e com o total certo. Uma consulta única para o lote todo,
+    // nunca uma por grupo.
+    const confirmados = await getConfirmedKeys(
+      dueItems.map((i) => ({ contractId: i.contract.id, dueDate: i.dueIso }))
+    );
+    const dueItemsAEnviar = dueItems.filter((i) => !confirmados.has(`${i.contract.id}|${i.dueIso}`));
+    const dueItemsPagos = dueItems.filter((i) => confirmados.has(`${i.contract.id}|${i.dueIso}`));
+
+    // Pago não vira linha em reminders. O rastro do vencimento já está em
+    // payment_confirmations, e criar uma linha aqui envenenaria a guarda dos
+    // "anteriores" do firstBillingIds e poluiria a aba de lembretes.
+    dueSkippedByConfirmation += dueItemsPagos.length;
+    for (const { contract, client, dueIso } of dueItemsPagos) {
+      skippedSummary.push({
+        key: `${contract.id}|${dueIso}`,
+        name: client?.name ?? 'Cliente',
+        valor: formatBRL(contract.fixedAmount),
+        dueIso,
+      });
+    }
+
     // Quais desses vencimentos são a PRIMEIRA parcela do contrato. Só muda o
     // texto da mensagem: a etapa continua sendo 'due' e a chave de deduplicação
     // (contract_id, trigger_date, stage) não muda, então o D+2 e o D+5 seguem
     // funcionando igual para quem não pagar a primeira.
     const firstBillingIds = new Set(
-      dueItems
+      dueItemsAEnviar
         .filter(({ contract, dueIso }) =>
           isFirstBillingFor(dueIso, contract.startDate, contract.billingDay)
         )
         .map(({ contract }) => contract.id)
+    );
+
+    // Clientes que já receberam alguma mensagem da Juliana. A apresentação dela
+    // e as boas vindas só valem para quem nunca recebeu nada: um cliente de
+    // meses que fecha um serviço novo com dia de cobrança diferente ficaria
+    // sozinho no grupo daquele dia e seria tratado como estreante.
+    const clientesJaAvisados = new Set(
+      (
+        await db
+          .select({ clientId: reminders.clientId })
+          .from(reminders)
+          .where(eq(reminders.status, 'sent'))
+      )
+        .map((r) => r.clientId)
+        .filter((id): id is string => !!id)
     );
 
     // Guarda: contrato que já foi cobrado num vencimento anterior nunca é
@@ -181,7 +227,7 @@ export async function GET(request: Request) {
         .from(reminders)
         .where(inArray(reminders.contractId, [...firstBillingIds]));
 
-      for (const { contract, dueIso } of dueItems) {
+      for (const { contract, dueIso } of dueItemsAEnviar) {
         if (!firstBillingIds.has(contract.id)) continue;
         const temAnterior = anteriores.some(
           (a) =>
@@ -196,7 +242,7 @@ export async function GET(request: Request) {
       }
     }
 
-    for (const group of groupByClientAndDue(dueItems).values()) {
+    for (const group of groupByClientAndDue(dueItemsAEnviar).values()) {
       const client = group[0]!.client;
       const dueIso = group[0]!.dueIso;
       const nomeEmpresa = client?.name ?? 'Cliente'; // resumo do dono (identifica quem é)
@@ -256,7 +302,7 @@ export async function GET(request: Request) {
         .onConflictDoNothing()
         .returning({ id: reminders.id, contractId: reminders.contractId });
 
-      const claimedContracts = group
+      let claimedContracts = group
         .map(({ contract }) => {
           const row = claimedRows.find((r) => r.contractId === contract.id);
           return row ? { id: row.id, contract } : null;
@@ -264,6 +310,34 @@ export async function GET(request: Request) {
         .filter((c): c is { id: string; contract: ContractRow['contract'] } => c !== null);
 
       if (claimedContracts.length === 0) continue; // já enviado neste mês (ou reivindicado por outra execução)
+
+      // RECHECK: alguém pode ter confirmado o pagamento entre a leitura do lote
+      // e agora (painel ou agente). Se confirmou, a linha reivindicada morre
+      // como cancelada e nada é enviado. Vem antes do cálculo do total: mandar
+      // valor somado de quem já pagou seria pior que mandar a cobrança.
+      const confirmadosAgora = await getConfirmedKeys(
+        claimedContracts.map((c) => ({ contractId: c.contract.id, dueDate: dueIso }))
+      );
+      if (confirmadosAgora.size > 0) {
+        const cancelar = claimedContracts.filter((c) => confirmadosAgora.has(`${c.contract.id}|${dueIso}`));
+        await db
+          .update(reminders)
+          .set({ status: 'cancelled', errorMessage: 'Pagamento confirmado antes do envio' })
+          .where(inArray(reminders.id, cancelar.map((c) => c.id)));
+        dueSkippedByConfirmation += cancelar.length;
+        for (const { contract } of cancelar) {
+          skippedSummary.push({
+            key: `${contract.id}|${dueIso}`,
+            name: nomeEmpresa,
+            valor: formatBRL(contract.fixedAmount),
+            dueIso,
+          });
+        }
+        claimedContracts = claimedContracts.filter(
+          (c) => !confirmadosAgora.has(`${c.contract.id}|${dueIso}`)
+        );
+        if (claimedContracts.length === 0) continue;
+      }
 
       const dataBr = formatDateBr(dueIso);
       const noPrazo = sendDateFor(dueIso, 'due') === dueIso; // false quando o vencimento caiu no fim de semana
@@ -293,6 +367,7 @@ export async function GET(request: Request) {
           total,
           postponed: !noPrazo,
           firstNames,
+          clienteNovo: !clientesJaAvisados.has(group[0]!.contract.clientId ?? ''),
         });
       } else if (!noPrazo) {
         // Vencimento no fim de semana: o texto explica o adiamento e usa a data
@@ -586,8 +661,52 @@ export async function GET(request: Request) {
     .limit(1);
   const alertPhone = alertRow?.value;
 
+  // Quais pulos deste dia já foram reportados ao dono. Necessário porque quem
+  // pagou adiantado não gera linha em reminders, então o bloco dos pulados não
+  // tem a idempotência estrutural que o onConflictDoNothing dá aos outros dois:
+  // sem isso, o disparo manual depois do cron das 9h30 repete o aviso.
+  //
+  // Uma chave só, com a data embutida. Se a data guardada não é a de hoje, o
+  // conteúdo antigo é ignorado e sobrescrito, então a chave se limpa sozinha e
+  // não vira log append only dentro de uma tabela de configuração.
+  function parseSkipsReportados(value: string | undefined): Set<string> {
+    if (!value) return new Set();
+    try {
+      const parsed: unknown = JSON.parse(value);
+      if (!parsed || typeof parsed !== 'object') return new Set();
+      const { date, keys } = parsed as { date?: unknown; keys?: unknown };
+      if (date !== todayBrt || !Array.isArray(keys)) return new Set();
+      return new Set(keys.filter((k): k is string => typeof k === 'string'));
+    } catch (e) {
+      // Valor corrompido não pode derrubar o cron que cobra cliente real: no
+      // pior caso o dono recebe o aviso repetido, que é ruído, não prejuízo.
+      console.error('[cron] owner_notified_skips ilegível, tratando como vazio', e);
+      return new Set();
+    }
+  }
+
+  const [skipsRow] = await db
+    .select()
+    .from(systemSettings)
+    .where(eq(systemSettings.key, 'owner_notified_skips'))
+    .limit(1);
+  const reportadas = parseSkipsReportados(skipsRow?.value);
+
+  // Pulos ainda não reportados, com dedup interna por chave: o mesmo vencimento
+  // pode entrar pelo filtro em lote e pelo recheck numa execução esquisita.
+  const skippedNovos: typeof skippedSummary = [];
+  const vistos = new Set<string>();
+  for (const s of skippedSummary) {
+    if (reportadas.has(s.key) || vistos.has(s.key)) continue;
+    vistos.add(s.key);
+    skippedNovos.push(s);
+  }
+  const dueSkipsAlreadyReported = skippedSummary.length - skippedNovos.length;
+
   let ownerNotified = false;
-  if (alertPhone && (dueSummary.length > 0 || overdueSummary.length > 0)) {
+  // skippedNovos entra na condição: no dia em que todo mundo pagou adiantado
+  // não sai mensagem nenhuma, e o silêncio faria o dono achar que o cron quebrou.
+  if (alertPhone && (dueSummary.length > 0 || skippedNovos.length > 0 || overdueSummary.length > 0)) {
     const blocos: string[] = [];
 
     if (dueSummary.length > 0) {
@@ -600,6 +719,16 @@ export async function GET(request: Request) {
       blocos.push(
         `📅 Vencimentos processados hoje (${formatDateBr(todayBrt)}):\n${linhas}\n\n` +
           `Mensagens enviadas aos clientes: ${clientSent}/${dueSummary.length}.`
+      );
+    }
+
+    if (skippedNovos.length > 0) {
+      const linhas = skippedNovos
+        .map((d) => `• ${d.name}: ${d.valor} (vencimento ${formatDateBr(d.dueIso).slice(0, 5)})`)
+        .join('\n');
+      blocos.push(
+        `✅ Não cobrei hoje, pagamento já confirmado:\n${linhas}\n\n` +
+          `Esses clientes tinham vencimento processado hoje e já constavam como pagos. Nenhuma mensagem foi enviada, está tudo certo.`
       );
     }
 
@@ -616,7 +745,44 @@ export async function GET(request: Request) {
       );
     }
 
-    ownerNotified = (await sendWhatsApp(alertPhone, blocos.join('\n\n'))).ok;
+    // Guarda contra mensagem vazia: hoje a condição de entrada já impede isso,
+    // mas se alguém mexer nas listas no futuro o dono receberia um texto em
+    // branco no WhatsApp, bug que ninguém revisa duas vezes.
+    if (blocos.length > 0) {
+      ownerNotified = (await sendWhatsApp(alertPhone, blocos.join('\n\n'))).ok;
+
+      // Só marca como reportado DEPOIS do envio confirmado. As falhas não são
+      // simétricas: marcar antes e o envio falhar faz o dono nunca saber que
+      // aquele cliente não foi cobrado, perda de informação em sistema
+      // financeiro. Marcar depois e o processo morrer no meio faz o dono receber
+      // duas vezes, que é só ruído. Erramos de propósito para o lado benigno.
+      //
+      // A releitura mais união preserva o que outra execução gravou entre a
+      // primeira leitura e agora. Duas execuções REALMENTE simultâneas ainda
+      // podem se sobrepor e repetir o aviso, e isso fica descoberto DE
+      // PROPÓSITO: o dano máximo é uma mensagem duplicada ao dono, e blindar
+      // com lock ou transação compraria risco de concorrência maior do que o
+      // problema que resolve.
+      if (ownerNotified && skippedNovos.length > 0) {
+        const [atual] = await db
+          .select()
+          .from(systemSettings)
+          .where(eq(systemSettings.key, 'owner_notified_skips'))
+          .limit(1);
+        const uniao = new Set([
+          ...parseSkipsReportados(atual?.value),
+          ...skippedNovos.map((s) => s.key),
+        ]);
+        const value = JSON.stringify({ date: todayBrt, keys: [...uniao] });
+        await db
+          .insert(systemSettings)
+          .values({ key: 'owner_notified_skips', value })
+          .onConflictDoUpdate({
+            target: systemSettings.key,
+            set: { value, updatedAt: new Date() },
+          });
+      }
+    }
   }
 
   return NextResponse.json({
@@ -624,6 +790,8 @@ export async function GET(request: Request) {
     contractsProcessed: dueSummary.length,
     clientSent,
     clientFailed,
+    dueSkippedByConfirmation,
+    dueSkipsAlreadyReported,
     ownerNotified,
     avulsosSent: sent,
     avulsosFailed: failed,

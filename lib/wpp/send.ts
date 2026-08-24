@@ -188,6 +188,7 @@ export function buildFirstBillingMessage({
   total,
   postponed,
   firstNames,
+  clienteNovo = true,
 }: {
   saudacao: string;
   data: string;
@@ -195,12 +196,19 @@ export function buildFirstBillingMessage({
   total: string;
   postponed: boolean;
   firstNames: string[];
+  /** Falso quando o cliente já recebeu mensagem da Juliana antes. */
+  clienteNovo?: boolean;
 }): string {
   const nomeados = firstNames
     .map((n) => n.trim())
     .filter((n) => n && n.toLowerCase() !== 'serviço');
   const nomes = joinServiceNames(nomeados);
-  const misto = firstNames.length < items.length;
+  // Trata como serviço novo de cliente conhecido em dois casos: quando o
+  // vencimento tem contrato antigo junto, e quando o cliente já recebeu mensagem
+  // da Juliana alguma vez. Sem a segunda condição, um cliente de meses que fecha
+  // um serviço novo com dia de cobrança diferente ficaria sozinho no grupo do dia
+  // e receberia a apresentação e as boas vindas como se fosse a primeira vez.
+  const misto = firstNames.length < items.length || !clienteNovo;
   // No grupo misto o plural vem da quantidade de contratos ESTREANTES, não da
   // de nomes aproveitáveis: dois serviços novos em que um está sem nome
   // cadastrado continuam sendo dois.
@@ -219,9 +227,18 @@ export function buildFirstBillingMessage({
     abertura = postponed
       ? `Boa notícia: ${servicoNovo}${complemento} já ${plural ? 'estão' : 'está'} rodando por aqui.`
       : `Boa notícia: a partir de hoje ${servicoNovo}${complemento} já ${verbo} a rodar por aqui.`;
-    cobranca = postponed
-      ? `Os seus pagamentos venceram no dia ${data}, que caiu no fim de semana, por isso estou te avisando hoje. E ${entrada} aqui:\n\n${buildItemsBlock(items, total)}`
-      : `Hoje, ${data}, vencem os seus pagamentos, e ${entrada} aqui:\n\n${buildItemsBlock(items, total)}`;
+
+    // Quando o único pagamento do dia é o do serviço novo, a lista com um item
+    // só é ruído: a frase menciona o valor direto.
+    if (items.length === 1) {
+      cobranca = postponed
+        ? `A primeira parcela, no valor de *${items[0]!.valor}*, venceu no dia ${data}, que caiu no fim de semana, por isso estou te avisando hoje.`
+        : `A primeira parcela, no valor de *${items[0]!.valor}*, vence hoje, ${data}.`;
+    } else {
+      cobranca = postponed
+        ? `Os seus pagamentos venceram no dia ${data}, que caiu no fim de semana, por isso estou te avisando hoje. E ${entrada} aqui:\n\n${buildItemsBlock(items, total)}`
+        : `Hoje, ${data}, vencem os seus pagamentos, e ${entrada} aqui:\n\n${buildItemsBlock(items, total)}`;
+    }
   } else {
     const servico = plural ? 'os seus serviços' : 'o seu serviço';
     const verbo = plural ? 'começam' : 'começa';
