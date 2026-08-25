@@ -39,9 +39,16 @@ interface Props {
   transaction?: TransactionData;
   clients?: { id: string; name: string }[];
   defaultType?: "income" | "expense";
+  /**
+   * Cliente já selecionado ao abrir em modo criação, usado pelo atalho da ficha
+   * do cliente. Nunca montar um objeto transaction falso só para isso: o
+   * isEdit ligaria, o modal viraria modo edição com botão de excluir e o submit
+   * chamaria updateTransaction com um id que não existe.
+   */
+  defaultClientId?: string;
 }
 
-export default function TransactionModal({ onClose, transaction, clients = [], defaultType = "expense" }: Props) {
+export default function TransactionModal({ onClose, transaction, clients = [], defaultType = "expense", defaultClientId }: Props) {
   const router = useRouter();
   const isEdit = !!transaction;
 
@@ -62,7 +69,7 @@ export default function TransactionModal({ onClose, transaction, clients = [], d
   const [date, setDate] = useState(
     transaction?.date ?? new Date().toISOString().split("T")[0]
   );
-  const [clientId, setClientId] = useState(transaction?.clientId ?? "");
+  const [clientId, setClientId] = useState(transaction?.clientId ?? defaultClientId ?? "");
   const [installments, setInstallments] = useState("1");
 
   const [applyIof, setApplyIof] = useState(transaction?.iof === true);

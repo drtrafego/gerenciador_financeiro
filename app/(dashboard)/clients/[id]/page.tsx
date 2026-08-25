@@ -280,8 +280,12 @@ export default async function ClientDetailPage({
           <h2 className="text-sm font-medium text-zinc-400">
             Receitas avulsas e lançamentos ({data.transactions.length})
           </h2>
+          {/* Leva para o fluxo de caixa e já abre o modal com este cliente
+              selecionado. Sem from e sem to de propósito: quem vai lançar agora
+              quer ver o mês corrente. Ao fechar o modal o usuário fica no fluxo
+              de caixa, não volta para a ficha, e isso é aceito. */}
           <Link
-            href={`/transactions/new`}
+            href={`/cash-flow?new=income&clientId=${id}`}
             className="flex items-center gap-1.5 rounded-lg bg-zinc-800 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-700 transition-colors"
           >
             <Plus className="h-3 w-3" />

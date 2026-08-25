@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { Plus, FileText, RefreshCw } from "lucide-react";
 import { formatCurrency, convertAmount } from "@/lib/currency/format";
 import MetricCard from "@/components/dashboard/MetricCard";
@@ -54,6 +55,8 @@ export default function CashFlowClient({
   from,
   to,
   clients = [],
+  abrirNovo,
+  clienteInicial,
 }: {
   transactions: AnyTransaction[];
   contractIncomes?: ContractIncome[];
@@ -62,8 +65,17 @@ export default function CashFlowClient({
   from: string;
   to: string;
   clients?: { id: string; name: string }[];
+  /** Vem do atalho ?new=income|expense da ficha do cliente. */
+  abrirNovo?: "income" | "expense";
+  /** Cliente já validado pelo servidor, vem do ?clientId do mesmo atalho. */
+  clienteInicial?: string;
 }) {
-  const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  // A prop entra SÓ como valor inicial do estado. Nada de useEffect
+  // sincronizando prop com estado: a prop continua chegando "income" no
+  // re-render seguinte ao fechamento, e o modal reabriria na cara do usuário.
+  const [showModal, setShowModal] = useState(!!abrirNovo);
   const [editingTx, setEditingTx] = useState<AnyTransaction | null>(null);
   const { hidden: valuesHidden } = useValuesVisibility();
 
@@ -112,6 +124,24 @@ export default function CashFlowClient({
 
   const fmtRaw = (amount: number, currency: string) =>
     valuesHidden ? HIDDEN : formatCurrency(Number(amount), currency as Currency);
+
+  // Limpar ?new e ?clientId ao fechar o modal é requisito funcional, não
+  // enfeite. O PeriodBar.goMonth reconstrói a URL do zero e descarta o resto,
+  // mas o DateRangePicker.apply PRESERVA todos os parâmetros. Sem limpar,
+  // fechar o modal e clicar em "Últimos 30 dias" ressuscitaria new=income e o
+  // modal reabriria sozinho, só por aquele botão. Bug intermitente.
+  //
+  // A divergência de política de query string entre os dois controles fica
+  // registrada aqui de propósito: o DateRangePicker é compartilhado com o
+  // dashboard e alinhá-lo está fora do escopo desta entrega.
+  //
+  // O from e o to são REAFIRMADOS, nunca apagados: sem eles o período volta ao
+  // mês corrente no próximo F5. E é replace, não push, senão o botão Voltar
+  // reabriria o modal.
+  const fecharAtalho = () => {
+    if (!abrirNovo) return;
+    router.replace(`${pathname}?from=${from}&to=${to}`, { scroll: false });
+  };
 
   const openEdit = (t: AnyTransaction) => {
     if (t.isContract) return;
@@ -323,7 +353,17 @@ export default function CashFlowClient({
         </table>
       </div>
 
-      {showModal && <TransactionModal onClose={() => setShowModal(false)} clients={clients} />}
+      {showModal && (
+        <TransactionModal
+          onClose={() => {
+            setShowModal(false);
+            fecharAtalho();
+          }}
+          clients={clients}
+          defaultType={abrirNovo}
+          defaultClientId={clienteInicial}
+        />
+      )}
       {editingTx && (
         <TransactionModal onClose={() => setEditingTx(null)} transaction={editingTx as any} clients={clients} />
       )}
