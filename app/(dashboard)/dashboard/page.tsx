@@ -63,8 +63,11 @@ export default async function DashboardPage({
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both [animation-delay:240ms]">
-        <RevenueChart data={data.chartData} />
-        <MRRChart data={data.chartData} />
+        {/* Os gráficos vêm sempre na moeda de chartCurrency (real), convertida pela
+            cotação da época. displayCurrency serve só para avisar quando a moeda do
+            painel é outra. */}
+        <RevenueChart data={data.chartData} currency={data.chartCurrency} />
+        <MRRChart data={data.chartData} currency={data.chartCurrency} displayCurrency={data.displayCurrency} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500 fill-mode-both [animation-delay:300ms]">

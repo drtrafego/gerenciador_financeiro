@@ -618,7 +618,7 @@ Query: `from`, `to` (ambos "YYYY-MM-DD", opcionais, padrão o mês corrente inte
 
 Mesma fonte de dados usada pelo painel humano (`lib/db/queries.ts`, função `getDashboardData`), os números do Telegram têm que bater com o painel. Clientes com `isTest: true` já saem de todos os totais.
 
-Resposta 200 inclui, entre outros: `periodReceived`, `periodToReceive`, `periodIncome`, `periodExpense`, `previous`, `previousPeriod`, `mrr`, `activeClients`, `overdueClients`, `overdueAmount`, `contratosNovos`, `contratosEncerrados`, `overdueInvoices`, `upcomingInvoices`, `recentInvoices`, `chartData`, `sourceBreakdown`, `rate`, `displayCurrency`.
+Resposta 200 inclui, entre outros: `periodReceived`, `periodToReceive`, `periodIncome`, `periodExpense`, `previous`, `previousPeriod`, `mrr`, `activeClients`, `overdueClients`, `overdueAmount`, `contratosNovos`, `contratosEncerrados`, `overdueInvoices`, `upcomingInvoices`, `recentInvoices`, `chartData`, `chartCurrency`, `sourceBreakdown`, `rate`, `displayCurrency`.
 
 Leitura dos campos de dinheiro, para não somar duas vezes:
 
@@ -628,6 +628,7 @@ Leitura dos campos de dinheiro, para não somar duas vezes:
 - `previous` traz os mesmos totais do período anterior (`received`, `toReceive`, `expense`, `income`, `balance`, `mrr`) e `previousPeriod` diz qual intervalo é esse. Serve para responder "melhorou ou piorou" sem recalcular nada.
 - `activeClients` conta clientes com contrato vigente, derivado do contrato. Não é mais o campo `status` do cadastro do cliente.
 - `overdueClients`, `overdueAmount` e `overdueInvoices` são derivados da data de vencimento, não do status digitado no painel.
+- `chartData` vem SEMPRE em reais, cada mês convertido pela cotação da época, e `chartCurrency` declara isso. Diferente dos totais do período, ele não segue o `displayCurrency`: converter os pontos do gráfico de novo seria conversão dupla, e ainda pela cotação de hoje.
 
 O campo `monthExpense` foi REMOVIDO: ele somava moedas diferentes sem converter, não tinha data final (engolia parcelas futuras) e ignorava o período. Use `periodExpense`.
 
