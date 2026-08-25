@@ -1,5 +1,16 @@
 export type Currency = "BRL" | "USD" | "ARS";
 
+const SUPPORTED_CURRENCIES: readonly Currency[] = ["BRL", "USD", "ARS"];
+
+// A coluna currency do banco é text com default 'BRL': não é enum e não é
+// notNull. Além de null, ela pode chegar como string vazia ou como uma moeda
+// que o app não suporta. Sem normalizar, o formatCurrency estoura em runtime
+// (formatters[currency] fica undefined) e o convertAmount trata o valor como
+// dólar em silêncio. Qualquer coisa fora da lista suportada vira BRL.
+export function asCurrency(value: string | null | undefined): Currency {
+  return SUPPORTED_CURRENCIES.includes(value as Currency) ? (value as Currency) : "BRL";
+}
+
 export type RatesMap = {
   usd_brl: number;
   usd_ars: number;
