@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { formatCurrency } from "@/lib/currency/format";
+import { formatCurrency, convertAmount, asCurrency } from "@/lib/currency/format";
 import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
-import type { Currency } from "@/lib/currency/format";
+import type { Currency, RatesMap } from "@/lib/currency/format";
 import {
   effectiveContractStatus,
   CONTRACT_STATUS_LABELS,
@@ -34,13 +34,30 @@ type ContractRow = {
   clientName: string | null;
 };
 
-export default function ContractsTable({ rows }: { rows: ContractRow[] }) {
+export default function ContractsTable({
+  rows,
+  displayCurrency,
+  rate,
+}: {
+  rows: ContractRow[];
+  displayCurrency: Currency;
+  rate: RatesMap;
+}) {
   const { hidden } = useValuesVisibility();
 
+  // Contrato é o maior valor desta tela e era o único que ficava só na moeda
+  // nativa: as receitas avulsas e as recorrentes já saem convertidas. Mesmo par
+  // do fluxo de caixa, valor na moeda de exibição com o original embaixo.
   const fmtAmount = (amount: string | null, currency: string | null) =>
     hidden
       ? HIDDEN
-      : formatCurrency(parseFloat(amount ?? "0"), (currency as Currency) ?? "BRL");
+      : formatCurrency(
+          convertAmount(parseFloat(amount ?? "0"), asCurrency(currency), displayCurrency, rate),
+          displayCurrency
+        );
+
+  const fmtOriginal = (amount: string | null, currency: string | null) =>
+    formatCurrency(parseFloat(amount ?? "0"), asCurrency(currency));
 
   return (
     <div className="rounded-xl border border-zinc-800 bg-zinc-900 overflow-hidden">
@@ -72,6 +89,11 @@ export default function ContractsTable({ rows }: { rows: ContractRow[] }) {
                 {fmtAmount(contract.fixedAmount, contract.currency)}
                 {contract.type === "fixed_plus_percentage" && contract.percentage && (
                   <span className="ml-1 text-zinc-500">+ {contract.percentage}%</span>
+                )}
+                {!hidden && asCurrency(contract.currency) !== displayCurrency && (
+                  <span className="block text-xs font-normal text-zinc-600">
+                    {fmtOriginal(contract.fixedAmount, contract.currency)}
+                  </span>
                 )}
               </td>
               <td className="px-4 py-3 text-zinc-400">Dia {contract.billingDay}</td>
