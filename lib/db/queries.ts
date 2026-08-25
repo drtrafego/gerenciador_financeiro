@@ -225,12 +225,74 @@ export async function getClientWithDetails(id: string) {
 
 // ─── CONTRATOS ────────────────────────────────
 
-export async function getContracts() {
+// Cliente de teste fica de fora por padrão, como em todo o resto do sistema. Sem
+// isso a tela de contratos contava contrato que o dashboard ignora, e os dois
+// números nunca fechavam.
+export async function getContracts({ includeTestClients = false } = {}) {
   return db
     .select({ contract: contracts, clientName: clients.name })
     .from(contracts)
     .leftJoin(clients, eq(contracts.clientId, clients.id))
+    .where(includeTestClients ? undefined : notTestClient)
     .orderBy(desc(contracts.createdAt));
+}
+
+// Receita avulsa: entrada lançada à mão que não é recorrente. Honorário de
+// contrato nunca aparece aqui, porque contrato não gera transação, ele é
+// projetado no fluxo de caixa a partir do próprio contrato.
+//
+// A recorrência é testada por "não é 'true'" em vez de "é 'false'": a coluna é
+// texto e linha antiga pode estar nula, o que faria a comparação direta perder
+// o lançamento.
+//
+// A tela pede uma linha a mais do que mostra (51 para exibir 50): é assim que
+// ela sabe que o limite estourou e confessa isso no rótulo, em vez de imprimir
+// "(50)" quando existem 300.
+export async function getStandaloneIncome(limit = 50) {
+  return db
+    .select({ t: transactions, clientName: clients.name })
+    .from(transactions)
+    .leftJoin(clients, eq(transactions.clientId, clients.id))
+    .where(
+      and(
+        eq(transactions.type, 'income'),
+        or(isNull(transactions.isRecurring), ne(transactions.isRecurring, 'true')),
+        notTestClient
+      )
+    )
+    .orderBy(desc(transactions.date))
+    .limit(limit);
+}
+
+// Receita recorrente, o outro lado da moeda da função acima. Sem uma lista
+// própria, o lançamento sumia da tela assim que era marcado como recorrente.
+// Traz também as recorrências já encerradas, de propósito, porque a tela serve
+// para consultar histórico. Quem separa vivo de encerrado é a própria tela.
+export async function getRecurringIncome(limit = 50) {
+  return db
+    .select({ t: transactions, clientName: clients.name })
+    .from(transactions)
+    .leftJoin(clients, eq(transactions.clientId, clients.id))
+    .where(and(eq(transactions.type, 'income'), eq(transactions.isRecurring, 'true'), notTestClient))
+    .orderBy(desc(transactions.date))
+    .limit(limit);
+}
+
+// Moeda de exibição mais a cotação vigente, resolvidas uma vez só. Este helper
+// nasceu para a tela de contratos. A mesma dupla de consultas CONTINUA copiada
+// em getDashboardData, em getCashFlowData e em app/(dashboard)/layout.tsx:
+// migrar esses três pontos para cá ficou para depois, para não mexer em
+// dashboard e fluxo de caixa nesta entrega.
+export async function getDisplaySettings(): Promise<{ displayCurrency: Currency; rate: RatesMap }> {
+  const [latestRate, setting] = await Promise.all([
+    db.select().from(exchangeRates).orderBy(desc(exchangeRates.fetchedAt)).limit(1),
+    db.select().from(systemSettings).where(eq(systemSettings.key, 'display_currency')),
+  ]);
+  const rateRow = latestRate[0];
+  return {
+    displayCurrency: (setting[0]?.value ?? 'BRL') as Currency,
+    rate: safeRates(rateRow ? { usd_brl: Number(rateRow.usdBrl), usd_ars: Number(rateRow.usdArs) } : null),
+  };
 }
 
 export async function getContractById(id: string) {
@@ -347,23 +409,10 @@ export async function deleteInvoice(id: string) {
 
 // ─── TRANSAÇÕES ────────────────────────────────
 
-export async function getTransactions(filters?: {
-  from?: string;
-  to?: string;
-  type?: 'income' | 'expense';
-}) {
-  const conditions = [];
-  if (filters?.from) conditions.push(gte(transactions.date, filters.from));
-  if (filters?.to) conditions.push(lte(transactions.date, filters.to));
-  if (filters?.type) conditions.push(eq(transactions.type, filters.type));
-
-  return db
-    .select({ transaction: transactions, clientName: clients.name, clientIsTest: clients.isTest })
-    .from(transactions)
-    .leftJoin(clients, eq(transactions.clientId, clients.id))
-    .where(conditions.length > 0 ? and(...conditions) : undefined)
-    .orderBy(desc(transactions.date));
-}
+// getTransactions foi removida junto com a tela /transactions, que virou
+// redirect para o fluxo de caixa. Era a única chamadora, e a consulta não
+// filtrava cliente de teste, então qualquer reaproveitamento dela traria de
+// volta o número que não fecha com o dashboard.
 
 // Receitas avulsas (sem contrato) ainda não vinculadas a nenhuma fatura —
 // usadas na tela "Nova Fatura" para emitir nota a partir de um lançamento.
