@@ -728,6 +728,10 @@ export async function getDashboardData(from: string, to: string) {
 
   // Data de início da janela de 6 meses
   const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
+  // Uma única string para a fronteira da janela. As queries de dentro (gte) e de
+  // fora (lt) precisam usar exatamente o mesmo valor, senão os dois conjuntos
+  // deixam de ser disjuntos e a mesma transação é contada duas vezes.
+  const sixMonthsAgoStr = sixMonthsAgo.toISOString().split('T')[0]!;
 
   const [
     latestRate,
@@ -787,10 +791,13 @@ export async function getDashboardData(from: string, to: string) {
       .leftJoin(clients, eq(contracts.clientId, clients.id))
       .where(notTestClient),
     // Transações de despesa dos últimos 6 meses (agrupamos em JS para evitar mismatch de locale)
-    db.select({ amount: transactions.amount, currency: transactions.currency, date: transactions.date })
+    // Os campos de recorrência vêm junto porque esta mesma lista projeta, no laço
+    // do gráfico, as recorrentes que NASCERAM dentro da janela. O where continua
+    // trazendo TODAS as despesas: ele também alimenta o expenseMap.
+    db.select({ amount: transactions.amount, currency: transactions.currency, date: transactions.date, isRecurring: transactions.isRecurring, recurringActive: transactions.recurringActive, recurringEndsAt: transactions.recurringEndsAt })
       .from(transactions)
       .leftJoin(clients, eq(transactions.clientId, clients.id))
-      .where(and(eq(transactions.type, 'expense'), gte(transactions.date, sixMonthsAgo.toISOString().split('T')[0]!), notTestClient)),
+      .where(and(eq(transactions.type, 'expense'), gte(transactions.date, sixMonthsAgoStr), notTestClient)),
     // Despesas recorrentes anteriores à janela: sem elas, o gráfico compara
     // receita projetada com despesa só realizada e o saldo fica otimista.
     db.select({ amount: transactions.amount, currency: transactions.currency, date: transactions.date, recurringEndsAt: transactions.recurringEndsAt })
@@ -800,8 +807,8 @@ export async function getDashboardData(from: string, to: string) {
         eq(transactions.type, 'expense'),
         eq(transactions.isRecurring, 'true'),
         eq(transactions.recurringActive, 'true'),
-        lt(transactions.date, sixMonthsAgo.toISOString().split('T')[0]!),
-        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, sixMonthsAgo.toISOString().split('T')[0]!)),
+        lt(transactions.date, sixMonthsAgoStr),
+        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, sixMonthsAgoStr)),
         notTestClient
       )),
     // Origem do cliente: MRR (contratos ativos por canal; finalizados filtrados em JS)
@@ -865,12 +872,15 @@ export async function getDashboardData(from: string, to: string) {
       .where(and(gte(paymentConfirmations.dueDate, prev.from), lte(paymentConfirmations.dueDate, to))),
     // Gráfico de receita (últimos 6 meses): receitas avulsas reais na janela +
     // recorrentes anteriores à janela ainda ativas (mesma lógica do resumo do período acima).
-    db.select({ amount: transactions.amount, currency: transactions.currency, date: transactions.date })
+    // Mesma regra da despesa: os campos de recorrência vêm junto para projetar as
+    // receitas recorrentes nascidas dentro da janela, e o where segue trazendo
+    // TODAS as receitas porque alimenta o incomeTxMap.
+    db.select({ amount: transactions.amount, currency: transactions.currency, date: transactions.date, isRecurring: transactions.isRecurring, recurringActive: transactions.recurringActive, recurringEndsAt: transactions.recurringEndsAt })
       .from(transactions)
       .leftJoin(clients, eq(transactions.clientId, clients.id))
       .where(and(
         eq(transactions.type, 'income'),
-        gte(transactions.date, sixMonthsAgo.toISOString().split('T')[0]!),
+        gte(transactions.date, sixMonthsAgoStr),
         notTestClient
       )),
     db.select({ amount: transactions.amount, currency: transactions.currency, date: transactions.date, recurringEndsAt: transactions.recurringEndsAt })
@@ -880,8 +890,8 @@ export async function getDashboardData(from: string, to: string) {
         eq(transactions.type, 'income'),
         eq(transactions.isRecurring, 'true'),
         eq(transactions.recurringActive, 'true'),
-        lt(transactions.date, sixMonthsAgo.toISOString().split('T')[0]!),
-        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, sixMonthsAgo.toISOString().split('T')[0]!)),
+        lt(transactions.date, sixMonthsAgoStr),
+        or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, sixMonthsAgoStr)),
         notTestClient
       )),
   ]);
@@ -1075,6 +1085,29 @@ export async function getDashboardData(from: string, to: string) {
     incomeTxMap.set(key, (incomeTxMap.get(key) ?? 0) + v);
   }
 
+  // Uma transação recorrente nascida DENTRO da janela também precisa aparecer nos
+  // meses seguintes, senão ela conta uma vez, no mês em que foi digitada, e some.
+  // O mês de origem já vem do expenseMap e do incomeTxMap, então a guarda compara
+  // por chave "YYYY-MM": mês do laço menor ou igual ao mês de origem não projeta.
+  // É a mesma expressão que monta aqueles mapas, então a exclusão é por construção.
+  // O filtro de recorrência fica em JS e é ESTRITO ('true'), replicando o SQL das
+  // consultas de recorrentes anteriores, inclusive a exclusão do nulo: as colunas
+  // são text sem notNull.
+  const projetaNoMes = (
+    t: { date: string; isRecurring: string | null; recurringActive: string | null; recurringEndsAt: string | null },
+    key: string,
+    d: Date,
+    monthStartStr: string,
+    monthEndStr: string
+  ): boolean => {
+    if (t.isRecurring !== 'true' || t.recurringActive !== 'true') return false;
+    if (key <= t.date.slice(0, 7)) return false;
+    const originalDay = new Date(t.date + 'T12:00:00').getDate();
+    const dateStr = dayInMonth(d, originalDay);
+    if (dateStr < monthStartStr || dateStr > monthEndStr) return false;
+    return !t.recurringEndsAt || dateStr <= t.recurringEndsAt;
+  };
+
   // Gerar dados do gráfico para os últimos 6 meses — mesma lógica do resumo do
   // período e do fluxo de caixa: só contrato ATIVO no dia exato de vencimento
   // (billingDay), recorrentes projetadas e receitas avulsas reais do mês.
@@ -1124,6 +1157,13 @@ export async function getDashboardData(from: string, to: string) {
         monthIncome += convertAmount(parseFloat(t.amount ?? '0'), (t.currency ?? 'BRL') as Currency, 'BRL', monthRate);
       }
     }
+    // Espelho da despesa: receita recorrente nascida DENTRO da janela também se
+    // repete nos meses seguintes. Hoje esse conjunto está vazio no banco.
+    for (const t of sixMonthIncomeTx) {
+      if (projetaNoMes(t, key, d, monthStartStr, monthEndStr)) {
+        monthIncome += convertAmount(parseFloat(t.amount ?? '0'), (t.currency ?? 'BRL') as Currency, 'BRL', monthRate);
+      }
+    }
     monthIncome += incomeTxMap.get(key) ?? 0;
 
     // Despesa recorrente projetada, do mesmo jeito que a receita. Sem isso, a
@@ -1134,6 +1174,13 @@ export async function getDashboardData(from: string, to: string) {
       const originalDay = new Date(t.date + 'T12:00:00').getDate();
       const dateStr = dayInMonth(d, originalDay);
       if (dateStr >= monthStartStr && dateStr <= monthEndStr && (!t.recurringEndsAt || dateStr <= t.recurringEndsAt)) {
+        monthExpenseTotal += convertAmount(parseFloat(t.amount ?? '0'), (t.currency ?? 'BRL') as Currency, 'BRL', monthRate);
+      }
+    }
+    // Recorrentes nascidas DENTRO da janela. Conjunto disjunto do laço acima (lá
+    // é data anterior à janela, aqui é data dentro dela), somando no mesmo total.
+    for (const t of expenseTransactions) {
+      if (projetaNoMes(t, key, d, monthStartStr, monthEndStr)) {
         monthExpenseTotal += convertAmount(parseFloat(t.amount ?? '0'), (t.currency ?? 'BRL') as Currency, 'BRL', monthRate);
       }
     }
@@ -1257,6 +1304,10 @@ export async function getDashboardData(from: string, to: string) {
     upcomingInvoices,
     mrr,
     chartData,
+    // O chartData é montado SEMPRE em BRL, com a cotação da época de cada mês.
+    // Os gráficos usam esta moeda para formatar; converter de novo lá seria
+    // conversão dupla, e pela cotação errada.
+    chartCurrency: 'BRL' as Currency,
   };
 }
 
