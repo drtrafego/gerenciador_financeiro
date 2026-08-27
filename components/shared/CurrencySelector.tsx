@@ -20,7 +20,7 @@ export default function CurrencySelector({ defaultCurrency = "BRL" }: { defaultC
         <button
           key={c}
           onClick={() => handleChange(c)}
-          className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+          className={`h-10 md:h-6 px-3 flex items-center justify-center rounded-md text-xs font-medium transition-all ${
             currency === c
               ? "bg-indigo-600 text-white"
               : "text-zinc-400 hover:text-zinc-200"

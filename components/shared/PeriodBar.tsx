@@ -52,44 +52,49 @@ export default function PeriodBar({ from, to, children }: Props) {
     router.push(`${pathname}?from=${iso(inicio)}&to=${iso(fim)}`);
   };
 
+  // No mobile os controles de período ficam agrupados em cima e o children ganha
+  // a linha de baixo inteira. A partir de sm tudo volta para a mesma linha, com o
+  // children empurrado para a direita.
   return (
-    <div className="flex items-center gap-2 flex-wrap">
-      <div className="flex items-center gap-1">
+    <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+      <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => goMonth(-1)}
+            className="text-zinc-400 hover:text-zinc-200 p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
+            title="Mês anterior"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <span className="text-sm font-semibold text-zinc-200 min-w-[120px] text-center">
+            {MONTHS[fromD.getMonth()]} {fromD.getFullYear()}
+          </span>
+          <button
+            onClick={() => goMonth(1)}
+            className="text-zinc-400 hover:text-zinc-200 p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
+            title="Próximo mês"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+
+        <DateRangePicker from={from} to={to} />
+
         <button
-          onClick={() => goMonth(-1)}
-          className="text-zinc-400 hover:text-zinc-200 p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
-          title="Mês anterior"
+          onClick={toggleValues}
+          className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
+            valuesHidden
+              ? "bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20"
+              : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
+          }`}
+          title={valuesHidden ? "Mostrar valores" : "Ocultar valores"}
         >
-          <ChevronLeft size={16} />
-        </button>
-        <span className="text-sm font-semibold text-zinc-200 min-w-[120px] text-center">
-          {MONTHS[fromD.getMonth()]} {fromD.getFullYear()}
-        </span>
-        <button
-          onClick={() => goMonth(1)}
-          className="text-zinc-400 hover:text-zinc-200 p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
-          title="Próximo mês"
-        >
-          <ChevronRight size={16} />
+          {valuesHidden ? <EyeOff size={14} /> : <Eye size={14} />}
+          <span className="hidden sm:inline">{valuesHidden ? "Mostrar" : "Ocultar"}</span>
         </button>
       </div>
 
-      <DateRangePicker from={from} to={to} />
-
-      <button
-        onClick={toggleValues}
-        className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
-          valuesHidden
-            ? "bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20"
-            : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
-        }`}
-        title={valuesHidden ? "Mostrar valores" : "Ocultar valores"}
-      >
-        {valuesHidden ? <EyeOff size={14} /> : <Eye size={14} />}
-        <span className="hidden sm:inline">{valuesHidden ? "Mostrar" : "Ocultar"}</span>
-      </button>
-
-      {children && <div className="ml-auto">{children}</div>}
+      {children && <div className="sm:ml-auto">{children}</div>}
     </div>
   );
 }

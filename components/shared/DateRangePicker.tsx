@@ -58,8 +58,10 @@ function MonthGrid({
   const days = eachDayOfInterval({ start: gridStart, end: gridEnd });
   const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
+  // No mobile só um mês aparece e ele ocupa a largura do popover, limitado a
+  // 280px. A partir de sm volta à largura fixa dos dois meses lado a lado.
   return (
-    <div className="w-56">
+    <div className="w-full max-w-[280px] sm:w-56">
       <p className="text-center text-sm font-medium text-zinc-200 capitalize mb-2">
         {format(month, "MMMM yyyy", { locale: ptBR })}
       </p>
@@ -170,12 +172,12 @@ export default function DateRangePicker({ from, to }: Props) {
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 p-4 pt-24 overflow-y-auto"
+          className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 p-4 pt-24 overflow-y-auto overflow-x-hidden"
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) setOpen(false);
           }}
         >
-        <div className="flex flex-col sm:flex-row rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl">
+        <div className="flex flex-col sm:flex-row max-w-[92vw] rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl">
           {/* Presets */}
           <div className="flex flex-row sm:flex-col flex-wrap gap-1 border-b sm:border-b-0 sm:border-r border-zinc-800 p-3 sm:w-40">
             {PRESETS.map((p) => (
@@ -202,9 +204,14 @@ export default function DateRangePicker({ from, to }: Props) {
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>
+            {/* O segundo mês some abaixo de sm. As setas continuam movendo o
+                leftMonth de um em um, então dá para chegar em qualquer mês e
+                marcar um intervalo que cruza meses com um calendário só. */}
             <div className="flex gap-4">
               <MonthGrid month={leftMonth} from={selFrom} to={selTo} onPick={pick} />
-              <MonthGrid month={addMonths(leftMonth, 1)} from={selFrom} to={selTo} onPick={pick} />
+              <div className="hidden sm:block">
+                <MonthGrid month={addMonths(leftMonth, 1)} from={selFrom} to={selTo} onPick={pick} />
+              </div>
             </div>
             <div className="flex items-center justify-end gap-2 mt-3 pt-3 border-t border-zinc-800">
               <button type="button" onClick={() => setOpen(false)}

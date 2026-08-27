@@ -59,9 +59,66 @@ export default function ContractsTable({
   const fmtOriginal = (amount: string | null, currency: string | null) =>
     formatCurrency(parseFloat(amount ?? "0"), asCurrency(currency));
 
+  // Valor fixo montado uma única vez e reusado no card do celular e na linha da
+  // tabela. Duplicar a expressão nos dois blocos é o jeito garantido de um dia o
+  // celular mostrar um número e o computador mostrar outro.
+  const valorFixo = (contract: ContractRow["contract"]) => (
+    <>
+      {fmtAmount(contract.fixedAmount, contract.currency)}
+      {contract.type === "fixed_plus_percentage" && contract.percentage && (
+        <span className="ml-1 font-normal text-zinc-500">+ {contract.percentage}%</span>
+      )}
+      {!hidden && asCurrency(contract.currency) !== displayCurrency && (
+        <span className="block text-xs font-normal text-zinc-600">
+          {fmtOriginal(contract.fixedAmount, contract.currency)}
+        </span>
+      )}
+    </>
+  );
+
+  const chipStatus = (eff: keyof typeof CONTRACT_STATUS_LABELS) => (
+    <span
+      className={cn(
+        "shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-medium",
+        CONTRACT_STATUS_STYLES[eff]
+      )}
+    >
+      {CONTRACT_STATUS_LABELS[eff]}
+    </span>
+  );
+
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900 overflow-hidden">
-      <table className="w-full text-sm">
+    <div className="flex flex-col gap-2">
+      {/* Celular: card clicável inteiro, então a coluna "Ver" não precisa existir aqui */}
+      <div className="flex flex-col gap-2 sm:hidden">
+        {rows.map(({ contract, clientName }) => {
+          const eff = effectiveContractStatus(contract.status, contract.endDate);
+          return (
+            <Link
+              key={contract.id}
+              href={`/contracts/${contract.id}`}
+              className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 hover:border-zinc-700 transition-colors"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-sm font-medium text-white">{clientName ?? "—"}</p>
+                {chipStatus(eff)}
+              </div>
+              <p className="mt-0.5 text-xs text-zinc-500">
+                {contract.name ?? "—"} · {typeLabels[contract.type] ?? contract.type}
+              </p>
+              <div className="mt-2 flex items-end justify-between gap-3">
+                <p className="text-sm font-semibold text-white">{valorFixo(contract)}</p>
+                <span className="shrink-0 text-xs text-zinc-500">Dia {contract.billingDay}</span>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* Computador: sete colunas, largura mínima explícita para o overflow-x-auto
+          do pai ter o que rolar. Sem o min-w a tabela encolhe e espreme. */}
+      <div className="hidden sm:block rounded-xl border border-zinc-800 bg-zinc-900 overflow-x-auto">
+      <table className="w-full min-w-[820px] text-sm">
         <thead>
           <tr className="border-b border-zinc-800">
             <th className="text-left px-4 py-3 text-xs font-medium text-zinc-400">Cliente</th>
@@ -85,28 +142,9 @@ export default function ContractsTable({
               <td className="px-4 py-3 text-zinc-400">
                 {typeLabels[contract.type] ?? contract.type}
               </td>
-              <td className="px-4 py-3 text-white">
-                {fmtAmount(contract.fixedAmount, contract.currency)}
-                {contract.type === "fixed_plus_percentage" && contract.percentage && (
-                  <span className="ml-1 text-zinc-500">+ {contract.percentage}%</span>
-                )}
-                {!hidden && asCurrency(contract.currency) !== displayCurrency && (
-                  <span className="block text-xs font-normal text-zinc-600">
-                    {fmtOriginal(contract.fixedAmount, contract.currency)}
-                  </span>
-                )}
-              </td>
-              <td className="px-4 py-3 text-zinc-400">Dia {contract.billingDay}</td>
-              <td className="px-4 py-3">
-                <span
-                  className={cn(
-                    "rounded-full border px-2.5 py-0.5 text-xs font-medium",
-                    CONTRACT_STATUS_STYLES[eff]
-                  )}
-                >
-                  {CONTRACT_STATUS_LABELS[eff]}
-                </span>
-              </td>
+              <td className="px-4 py-3 text-white">{valorFixo(contract)}</td>
+              <td className="px-4 py-3 text-zinc-400 whitespace-nowrap">Dia {contract.billingDay}</td>
+              <td className="px-4 py-3">{chipStatus(eff)}</td>
               <td className="px-4 py-3 text-right">
                 <Link
                   href={`/contracts/${contract.id}`}
@@ -120,6 +158,7 @@ export default function ContractsTable({
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

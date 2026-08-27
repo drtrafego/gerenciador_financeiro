@@ -20,7 +20,7 @@ interface Props {
 export default function SourceMrrTrend({ data, series }: Props) {
   const { hidden } = useValuesVisibility();
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 sm:p-5">
       <p className="text-sm font-semibold text-zinc-200 mb-4">Evolução do MRR por Origem (6 meses)</p>
       {series.length === 0 ? (
         <div className="h-48 flex items-center justify-center text-sm text-zinc-600">
@@ -30,7 +30,10 @@ export default function SourceMrrTrend({ data, series }: Props) {
         <ResponsiveContainer width="100%" height={200}>
           <LineChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-            <XAxis dataKey="month" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} />
+            {/* Série temporal: o recharts pula os rótulos que não couberem e mantém
+                o primeiro e o último mês visíveis. */}
+            <XAxis dataKey="month" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false}
+              minTickGap={24} interval="preserveStartEnd" />
             <YAxis tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} width={50}
               tickFormatter={(v) => (hidden ? "" : `${(Number(v) / 1000).toFixed(0)}k`)} />
             <Tooltip

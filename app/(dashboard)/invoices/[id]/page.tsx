@@ -42,7 +42,8 @@ export default async function InvoiceDetailPage({
   return (
     <div className="max-w-3xl space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      {/* No celular as ações vão para baixo do título em vez de espremer os dois blocos */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <div className="flex items-center gap-3 mb-1">
             <h1 className="text-xl font-bold text-white font-mono">

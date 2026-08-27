@@ -41,14 +41,16 @@ export default function MRRChart({ data, currency, displayCurrency }: Props) {
   );
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 transition-colors duration-200 hover:border-zinc-700">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 sm:p-5 transition-colors duration-200 hover:border-zinc-700">
       {/* Legenda escrita fora do ResponsiveContainer: não custa altura do gráfico,
           e explica o que cada linha significa. O <Legend> do recharts devolveria
           só as duas palavras "MRR" e "Saldo", e ainda comeria altura. */}
       <div className="mb-4">
-        <div className="flex items-start justify-between gap-3">
+        {/* Os dois flex precisam de `flex-wrap`: título, chips e o selo de moeda
+            somam mais que a largura do card no celular e vazavam a borda. */}
+        <div className="flex flex-wrap items-start justify-between gap-2">
           <p className="text-sm font-semibold text-zinc-200">Evolução do MRR</p>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="flex items-center gap-1.5 text-xs text-zinc-400">
               <span className="h-2 w-2 rounded-full" style={{ background: "#6366f1" }} />
               MRR
@@ -76,7 +78,11 @@ export default function MRRChart({ data, currency, displayCurrency }: Props) {
         <ResponsiveContainer width="100%" height={240}>
           <LineChart data={normalized} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-            <XAxis dataKey="month" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} />
+            {/* `minTickGap` deixa o próprio recharts pular rótulos quando não cabem,
+                sem ninguém precisar medir largura em JavaScript. O `preserveStartEnd`
+                garante que o primeiro e o último mês nunca somem. */}
+            <XAxis dataKey="month" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false}
+              minTickGap={24} interval="preserveStartEnd" />
             {/* O domínio nunca corta o zero: o único mês negativo da série é o dado
                 mais importante do gráfico, e forçar o eixo a começar em zero o apagaria
                 em troca de pouco ganho de resolução. */}

@@ -1,5 +1,5 @@
 import "./globals.css";
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackServerApp } from "@/stack/server";
@@ -7,10 +7,6 @@ import { stackServerApp } from "@/stack/server";
 export const metadata: Metadata = {
   title: "Casal do Tráfego — Financeiro",
   description: "Gerenciador financeiro para agência de tráfego pago.",
-};
-
-export const viewport: Viewport = {
-  maximumScale: 1,
 };
 
 const inter = Inter({ subsets: ["latin"] });

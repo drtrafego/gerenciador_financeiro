@@ -60,7 +60,8 @@ export default async function ClientDetailPage({
   return (
     <div className="space-y-6 max-w-4xl">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      {/* No celular o nome do cliente e o botão de excluir não dividem a mesma linha */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 font-bold">
             {data.name.slice(0, 2).toUpperCase()}
