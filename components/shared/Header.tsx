@@ -1,9 +1,11 @@
 "use client";
 
-import { Bell, Eye, EyeOff } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { Eye, EyeOff, Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import CurrencySelector from "@/components/shared/CurrencySelector";
 import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
+import { useSidebar } from "@/lib/contexts/SidebarContext";
 
 const titles: Record<string, string> = {
   "/dashboard":    "Dashboard",
@@ -20,11 +22,32 @@ export default function Header({ displayCurrency = "BRL" }: { displayCurrency?: 
   const path = usePathname();
   const title = Object.entries(titles).find(([k]) => path.startsWith(k))?.[1] ?? "";
   const { hidden, toggle } = useValuesVisibility();
+  const { mobileOpen, toggleMobile } = useSidebar();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const wasOpen = useRef(false);
+
+  // Ao fechar o drawer, o foco volta para o hambúrguer que o abriu.
+  useEffect(() => {
+    if (wasOpen.current && !mobileOpen) triggerRef.current?.focus();
+    wasOpen.current = mobileOpen;
+  }, [mobileOpen]);
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 border-b border-zinc-800 bg-zinc-900/50 backdrop-blur">
-      <h1 className="text-sm font-semibold text-zinc-200">{title}</h1>
-      <div className="flex items-center gap-2">
+    <header className="flex items-center justify-between px-4 py-3 md:px-6 md:py-4 border-b border-zinc-800 bg-zinc-900/50 backdrop-blur">
+      <div className="flex items-center gap-2 min-w-0">
+        <button
+          ref={triggerRef}
+          onClick={toggleMobile}
+          aria-label="Abrir menu"
+          aria-expanded={mobileOpen}
+          aria-controls="sidebar-nav"
+          className="md:hidden -ml-1.5 w-10 h-10 flex items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
+        >
+          <Menu size={20} />
+        </button>
+        <h1 className="text-sm font-semibold text-zinc-200 truncate">{title}</h1>
+      </div>
+      <div className="flex items-center gap-2 flex-shrink-0">
         <CurrencySelector defaultCurrency={displayCurrency} />
         <button
           onClick={toggle}
@@ -36,10 +59,6 @@ export default function Header({ displayCurrency = "BRL" }: { displayCurrency?: 
           }`}
         >
           {hidden ? <EyeOff size={16} /> : <Eye size={16} />}
-        </button>
-        <button className="relative text-zinc-400 hover:text-zinc-200 p-1.5 rounded-lg hover:bg-zinc-800">
-          <Bell size={16} />
-          <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full" />
         </button>
       </div>
     </header>

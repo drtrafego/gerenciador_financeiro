@@ -112,7 +112,7 @@ export default function ClientsTable({ clients }: { clients: any[] }) {
                   <div className="relative">
                     <button
                       onClick={() => setOpenMenu(openMenu === c.id ? null : c.id)}
-                      className="text-zinc-500 hover:text-zinc-300 p-1 rounded hover:bg-zinc-700"
+                      className="text-zinc-500 hover:text-zinc-300 p-2.5 -m-1.5 rounded hover:bg-zinc-700"
                     >
                       <MoreHorizontal size={14} />
                     </button>

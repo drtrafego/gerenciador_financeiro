@@ -228,86 +228,159 @@ function ReminderTable({ rows, templates, onEdit, onCancel, onDelete }: {
   onCancel: (id: string) => void;
   onDelete: (id: string) => void;
 }) {
+  // Formatação resolvida uma única vez e reusada pelos cards do mobile e pela tabela do desktop.
+  const items = rows.map((row) => {
+    const { reminder, clientName, templateName } = row;
+    return {
+      row,
+      reminder,
+      clientName,
+      templateName,
+      nome: clientName ?? "—",
+      dataBr: new Date(reminder.triggerDate + "T12:00:00").toLocaleDateString("pt-BR"),
+      etapa: reminder.contractId ? STAGE_LABELS[reminder.stage] ?? reminder.stage : "Avulso",
+      trechoMensagem: reminder.customMessage ? `${reminder.customMessage.slice(0, 40)}…` : null,
+      statusKey: reminder.status ?? "pending",
+      erro: reminder.status === "failed" && reminder.errorMessage ? reminder.errorMessage : null,
+    };
+  });
+
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="border-b border-zinc-800">
-            {["Cliente", "Telefone", "Data", "Etapa", "Template/Mensagem", "Recorrente", "Status", ""].map((h) => (
-              <th key={h} className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wide">{h}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-zinc-800">
-          {rows.map(({ reminder, clientName, templateName }) => (
-            <tr key={reminder.id} className="hover:bg-zinc-800/30 transition-colors">
-              <td className="px-4 py-3 font-medium text-white">{clientName ?? "—"}</td>
-              <td className="px-4 py-3 text-zinc-400 font-mono text-xs">{reminder.phone}</td>
-              <td className="px-4 py-3 text-zinc-300 whitespace-nowrap">
-                {new Date(reminder.triggerDate + "T12:00:00").toLocaleDateString("pt-BR")}
-              </td>
-              <td className="px-4 py-3 text-zinc-400 text-xs whitespace-nowrap">
-                {reminder.contractId ? STAGE_LABELS[reminder.stage] ?? reminder.stage : "Avulso"}
-              </td>
-              <td className="px-4 py-3 text-zinc-400 max-w-xs truncate">
-                {reminder.customMessage ? (
-                  <span className="text-zinc-300">{reminder.customMessage.slice(0, 40)}…</span>
-                ) : (
-                  <span className="text-indigo-400">{templateName ?? "—"}</span>
-                )}
-              </td>
-              <td className="px-4 py-3">
-                {reminder.recurring ? (
-                  <span className="flex items-center gap-1 text-xs text-indigo-400">
-                    <Repeat size={12} />
-                    Mensal
-                  </span>
-                ) : (
-                  <span className="text-zinc-600 text-xs">—</span>
-                )}
-              </td>
-              <td className="px-4 py-3">
-                <div className="space-y-1">
-                  <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[reminder.status ?? "pending"]}`}>
-                    {STATUS_LABELS[reminder.status ?? "pending"]}
-                  </span>
-                  {reminder.status === "failed" && reminder.errorMessage && (
-                    <p className="text-xs text-red-400/70 max-w-[160px] truncate" title={reminder.errorMessage}>{reminder.errorMessage}</p>
-                  )}
-                </div>
-              </td>
-              <td className="px-4 py-3">
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => onEdit({ reminder, clientName, templateName })}
-                    className="text-zinc-600 hover:text-indigo-400 p-1 rounded transition-colors"
-                    title="Editar"
-                  >
-                    <Pencil size={14} />
-                  </button>
-                  {reminder.status === "pending" && (
-                    <button
-                      onClick={() => onCancel(reminder.id)}
-                      className="text-zinc-600 hover:text-yellow-400 p-1 rounded transition-colors"
-                      title="Cancelar"
-                    >
-                      <X size={14} />
-                    </button>
-                  )}
-                  <button
-                    onClick={() => onDelete(reminder.id)}
-                    className="text-zinc-600 hover:text-red-400 p-1 rounded transition-colors"
-                    title="Excluir"
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              </td>
+    <>
+      {/* Cards do mobile. O telefone fica de fora de propósito: é dado de conferência, o nome do cliente já identifica a linha. */}
+      <div className="flex flex-col gap-2 sm:hidden">
+        {items.map(({ row, reminder, nome, templateName, dataBr, etapa, trechoMensagem, statusKey, erro }) => (
+          <div key={reminder.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-2">
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-sm font-medium text-white min-w-0 break-words">{nome}</p>
+              <span className={`shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[statusKey]}`}>
+                {STATUS_LABELS[statusKey]}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap text-xs text-zinc-400">
+              <span>{dataBr} · {etapa}</span>
+              {reminder.recurring && (
+                <span className="flex items-center gap-1 text-indigo-400">
+                  <Repeat size={12} />
+                  mensal
+                </span>
+              )}
+            </div>
+
+            <p className="text-xs truncate">
+              {trechoMensagem ? (
+                <span className="text-zinc-300">{trechoMensagem}</span>
+              ) : (
+                <span className="text-indigo-400">{templateName ?? "—"}</span>
+              )}
+            </p>
+
+            {erro && <p className="text-xs text-red-400/80">{erro}</p>}
+
+            <div className="flex items-center gap-2 pt-1">
+              <button
+                onClick={() => onEdit(row)}
+                className="flex-1 h-10 rounded-lg bg-zinc-800 text-zinc-200 text-xs font-medium hover:bg-zinc-700 transition-colors"
+              >
+                Editar
+              </button>
+              {reminder.status === "pending" && (
+                <button
+                  onClick={() => onCancel(reminder.id)}
+                  className="flex-1 h-10 rounded-lg bg-zinc-800 text-yellow-400 text-xs font-medium hover:bg-zinc-700 transition-colors"
+                >
+                  Cancelar
+                </button>
+              )}
+              <button
+                onClick={() => onDelete(reminder.id)}
+                className="flex-1 h-10 rounded-lg bg-zinc-800 text-red-400 text-xs font-medium hover:bg-zinc-700 transition-colors"
+              >
+                Excluir
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Tabela do desktop. O min-w é o que faz o overflow-x-auto funcionar. */}
+      <div className="hidden sm:block bg-zinc-900 border border-zinc-800 rounded-xl overflow-x-auto">
+        <table className="w-full min-w-[900px] text-sm">
+          <thead>
+            <tr className="border-b border-zinc-800">
+              {["Cliente", "Telefone", "Data", "Etapa", "Template/Mensagem", "Recorrente", "Status", ""].map((h) => (
+                <th key={h} className="text-left px-4 py-3 text-xs font-medium text-zinc-500 uppercase tracking-wide">{h}</th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className="divide-y divide-zinc-800">
+            {items.map(({ row, reminder, nome, templateName, dataBr, etapa, trechoMensagem, statusKey, erro }) => (
+              <tr key={reminder.id} className="hover:bg-zinc-800/30 transition-colors">
+                <td className="px-4 py-3 font-medium text-white">{nome}</td>
+                <td className="px-4 py-3 text-zinc-400 font-mono text-xs">{reminder.phone}</td>
+                <td className="px-4 py-3 text-zinc-300 whitespace-nowrap">{dataBr}</td>
+                <td className="px-4 py-3 text-zinc-400 text-xs whitespace-nowrap">{etapa}</td>
+                <td className="px-4 py-3 text-zinc-400 max-w-xs truncate">
+                  {trechoMensagem ? (
+                    <span className="text-zinc-300">{trechoMensagem}</span>
+                  ) : (
+                    <span className="text-indigo-400">{templateName ?? "—"}</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  {reminder.recurring ? (
+                    <span className="flex items-center gap-1 text-xs text-indigo-400">
+                      <Repeat size={12} />
+                      Mensal
+                    </span>
+                  ) : (
+                    <span className="text-zinc-600 text-xs">—</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  <div className="space-y-1">
+                    <span className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[statusKey]}`}>
+                      {STATUS_LABELS[statusKey]}
+                    </span>
+                    {erro && (
+                      <p className="text-xs text-red-400/70 max-w-[160px] truncate" title={erro}>{erro}</p>
+                    )}
+                  </div>
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => onEdit(row)}
+                      className="text-zinc-600 hover:text-indigo-400 p-1 rounded transition-colors"
+                      title="Editar"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    {reminder.status === "pending" && (
+                      <button
+                        onClick={() => onCancel(reminder.id)}
+                        className="text-zinc-600 hover:text-yellow-400 p-1 rounded transition-colors"
+                        title="Cancelar"
+                      >
+                        <X size={14} />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => onDelete(reminder.id)}
+                      className="text-zinc-600 hover:text-red-400 p-1 rounded transition-colors"
+                      title="Excluir"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 
@@ -679,12 +752,12 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-zinc-800 rounded-lg p-1 w-fit">
+      <div className="flex flex-nowrap gap-1 bg-zinc-800 rounded-lg p-1 overflow-x-auto">
         {(["connection", "reminders", "billing", "sent", "templates", "settings"] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            className={`shrink-0 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               tab === t ? "bg-zinc-700 text-white" : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
@@ -849,7 +922,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
             </div>
           )}
 
-          <div className="flex gap-1 bg-zinc-900 border border-zinc-800 rounded-lg p-1 w-fit">
+          <div className="flex flex-nowrap gap-1 bg-zinc-900 border border-zinc-800 rounded-lg p-1 overflow-x-auto">
             {([
               ["all", "Todos"],
               ["open", "Em aberto"],
@@ -859,7 +932,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
               <button
                 key={value}
                 onClick={() => setBillingFilter(value)}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                className={`shrink-0 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
                   billingFilter === value ? "bg-zinc-700 text-white" : "text-zinc-400 hover:text-zinc-200"
                 }`}
               >
@@ -1185,7 +1258,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
       {/* ── MODAL EDITAR TEMPLATE ── */}
       {editingTemplate && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-zinc-800">
               <h2 className="text-sm font-semibold text-white">Editar Template</h2>
               <button onClick={() => setEditingTemplate(null)} className="text-zinc-400 hover:text-zinc-200">
@@ -1363,7 +1436,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
       {/* ── MODAL NOVO TEMPLATE ── */}
       {showTemplateModal && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-zinc-800">
               <h2 className="text-sm font-semibold text-white">Novo Template</h2>
               <button onClick={() => setShowTemplateModal(false)} className="text-zinc-400 hover:text-zinc-200">

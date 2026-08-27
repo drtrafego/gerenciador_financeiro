@@ -78,7 +78,10 @@ export default function MetricCard({
         </div>
       </div>
       <div className="relative">
-        <p className="text-xl sm:text-2xl font-bold text-zinc-100 truncate tabular-nums">{displayValue}</p>
+        {/* Sem `truncate` aqui: em grid de 2 colunas no celular sobram cerca de 140px
+            por card e o valor era cortado com reticências. Cortar dinheiro não é
+            aceitável, então o número quebra a linha em vez de sumir. */}
+        <p className="text-lg sm:text-2xl font-bold text-zinc-100 leading-tight break-words tabular-nums">{displayValue}</p>
         {sub && <p className="text-xs text-zinc-500 mt-1 truncate">{sub}</p>}
       </div>
       {trend !== undefined && (
@@ -87,7 +90,11 @@ export default function MetricCard({
           title={trendLabel ? `Comparado com ${trendLabel}` : undefined}
         >
           {trend >= 0 ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />} {Math.abs(trend)}%
-          {trendLabel && <span className="text-zinc-500">vs {trendLabel}</span>}
+          {/* O rótulo do período ("vs 01/07 a 31/07") estoura a largura do card no
+              celular e era cortado em silêncio pelo overflow-hidden. No mobile fica
+              só o percentual, que é a informação essencial; o período continua no
+              atributo title e volta a aparecer a partir de sm. */}
+          {trendLabel && <span className="hidden sm:inline text-zinc-500">vs {trendLabel}</span>}
         </div>
       )}
     </div>

@@ -64,7 +64,7 @@ export default function PaymentButton({ contractId, dueDate, confirmed, clientNa
           confirmed ? desfazer() : confirmar();
         }}
         disabled={pending}
-        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-colors disabled:opacity-50 ${
+        className={`inline-flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-colors disabled:opacity-50 ${
           confirmed
             ? "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
             : "bg-green-500/10 text-green-400 hover:bg-green-500/20"
@@ -78,7 +78,9 @@ export default function PaymentButton({ contractId, dueDate, confirmed, clientNa
         ) : (
           <Check size={12} />
         )}
-        <span className="hidden md:inline">{confirmed ? "Desfazer" : "Marcar pago"}</span>
+        {/* Rótulo sempre visível, inclusive no celular. Um ícone de 12px sozinho não
+            avisa que o clique emite fatura e dispara e-mail ao cliente. */}
+        <span>{confirmed ? "Desfazer" : "Marcar pago"}</span>
       </button>
       {mensagem && (
         <span className={`text-xs max-w-[260px] text-right ${erro ? "text-red-400" : "text-zinc-500"}`}>

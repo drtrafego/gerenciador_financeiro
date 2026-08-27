@@ -183,7 +183,9 @@ export default function TransactionModal({ onClose, transaction, clients = [], d
               </p>
             )}
           </div>
-          <button onClick={onClose} className="text-zinc-500 hover:text-zinc-300">
+          {/* O p-3 cria o alvo de toque e o -m-3 devolve o espaço, então o X continua
+              exatamente no mesmo lugar, com a folga sobrando dentro do p-5 do header. */}
+          <button onClick={onClose} className="flex p-3 -m-3 text-zinc-500 hover:text-zinc-300" aria-label="Fechar">
             <X size={16} />
           </button>
         </div>
@@ -238,19 +240,24 @@ export default function TransactionModal({ onClose, transaction, clients = [], d
                 <div>
                   <p className="text-xs font-medium text-amber-400">IOF — Cartão Internacional</p>
                   {applyIof && amount ? (
-                    <p className="text-[10px] text-amber-300/70 mt-0.5">
+                    <p className="text-xs text-amber-300/70 mt-0.5">
                       USD {parseFloat(amount).toFixed(2)} + IOF = USD {(parseFloat(amount) * (1 + IOF_RATE)).toFixed(2)} (3,38%)
                     </p>
                   ) : (
-                    <p className="text-[10px] text-amber-300/50 mt-0.5">3,38% sobre o valor em dólar</p>
+                    <p className="text-xs text-amber-300/50 mt-0.5">3,38% sobre o valor em dólar</p>
                   )}
                 </div>
+                {/* O padding cria a área de toque de 44px e o -m-3 devolve o espaço ao layout,
+                    então o switch continua com o mesmo desenho de 40x20. */}
                 <button
                   type="button"
                   onClick={() => setApplyIof((v) => !v)}
-                  className={`w-10 h-5 rounded-full transition-colors relative shrink-0 ${applyIof ? "bg-amber-500" : "bg-zinc-600"}`}
+                  className="p-3 -m-3 shrink-0"
+                  aria-pressed={applyIof}
                 >
-                  <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${applyIof ? "left-5" : "left-0.5"}`} />
+                  <span className={`block w-10 h-5 rounded-full transition-colors relative ${applyIof ? "bg-amber-500" : "bg-zinc-600"}`}>
+                    <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${applyIof ? "left-5" : "left-0.5"}`} />
+                  </span>
                 </button>
               </div>
             )}
@@ -293,7 +300,7 @@ export default function TransactionModal({ onClose, transaction, clients = [], d
                   onChange={(e) => setInstallments(e.target.value)}
                   className={inputClass}
                 />
-                <p className="text-[10px] text-zinc-500">
+                <p className="text-xs text-zinc-500">
                   Acima de 1, o valor é o TOTAL e é dividido em meses (ex: 2.000 em 2x = 2 de 1.000).
                 </p>
               </div>
@@ -313,18 +320,21 @@ export default function TransactionModal({ onClose, transaction, clients = [], d
 
           {/* Recorrência */}
           <div className="rounded-xl border border-zinc-700 bg-zinc-800/40 p-4 flex flex-col gap-3">
+            {/* A linha inteira é o alvo de toque: py-3 leva a altura real a 44px e o
+                -my-3 devolve o espaço, então o cartão continua com o mesmo respiro. */}
             <button
               type="button"
               onClick={() => setIsRecurring((v) => !v)}
-              className="flex items-center justify-between w-full"
+              className="flex items-center justify-between w-full py-3 -my-3"
+              aria-pressed={isRecurring}
             >
               <div className="flex items-center gap-2 text-sm font-medium text-zinc-300">
                 <RefreshCw size={14} className={isRecurring ? "text-orange-400" : "text-zinc-500"} />
                 Lançamento recorrente
               </div>
-              <div className={`w-10 h-5 rounded-full transition-colors relative ${isRecurring ? "bg-orange-500" : "bg-zinc-600"}`}>
-                <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${isRecurring ? "left-5" : "left-0.5"}`} />
-              </div>
+              <span className={`block w-10 h-5 rounded-full transition-colors relative shrink-0 ${isRecurring ? "bg-orange-500" : "bg-zinc-600"}`}>
+                <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${isRecurring ? "left-5" : "left-0.5"}`} />
+              </span>
             </button>
 
             {isRecurring && (
@@ -334,7 +344,7 @@ export default function TransactionModal({ onClose, transaction, clients = [], d
                   <button
                     type="button"
                     onClick={() => setPeriodType("forever")}
-                    className={`flex-1 py-2 rounded-lg text-xs font-medium border transition-colors ${
+                    className={`flex-1 py-3 rounded-lg text-xs font-medium border transition-colors ${
                       periodType === "forever"
                         ? "border-orange-500 bg-orange-500/10 text-orange-400"
                         : "border-zinc-700 text-zinc-500 hover:border-zinc-600"
@@ -345,7 +355,7 @@ export default function TransactionModal({ onClose, transaction, clients = [], d
                   <button
                     type="button"
                     onClick={() => setPeriodType("months")}
-                    className={`flex-1 py-2 rounded-lg text-xs font-medium border transition-colors ${
+                    className={`flex-1 py-3 rounded-lg text-xs font-medium border transition-colors ${
                       periodType === "months"
                         ? "border-orange-500 bg-orange-500/10 text-orange-400"
                         : "border-zinc-700 text-zinc-500 hover:border-zinc-600"
@@ -387,14 +397,14 @@ export default function TransactionModal({ onClose, transaction, clients = [], d
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2 text-sm rounded-lg border border-zinc-700 text-zinc-400 hover:bg-zinc-800 transition-colors"
+              className="flex-1 py-3 text-sm rounded-lg border border-zinc-700 text-zinc-400 hover:bg-zinc-800 transition-colors"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-2 text-sm rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors disabled:opacity-50"
+              className="flex-1 py-3 text-sm rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors disabled:opacity-50"
             >
               {loading ? "Salvando..." : isEdit ? "Salvar" : "Lançar"}
             </button>
@@ -408,7 +418,7 @@ export default function TransactionModal({ onClose, transaction, clients = [], d
                   type="button"
                   onClick={handleDeactivate}
                   disabled={loading}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/10 transition-colors disabled:opacity-50"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-3 text-xs rounded-lg border border-orange-500/30 text-orange-400 hover:bg-orange-500/10 transition-colors disabled:opacity-50"
                 >
                   <PauseCircle size={12} />
                   Parar recorrência
@@ -418,7 +428,7 @@ export default function TransactionModal({ onClose, transaction, clients = [], d
                 <button
                   type="button"
                   onClick={() => setConfirmDelete(true)}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-3 text-xs rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors"
                 >
                   <Trash2 size={12} />
                   Excluir
@@ -428,7 +438,7 @@ export default function TransactionModal({ onClose, transaction, clients = [], d
                   type="button"
                   onClick={handleDelete}
                   disabled={loading}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs rounded-lg bg-red-600 hover:bg-red-500 text-white transition-colors disabled:opacity-50"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-3 text-xs rounded-lg bg-red-600 hover:bg-red-500 text-white transition-colors disabled:opacity-50"
                 >
                   <Trash2 size={12} />
                   Confirmar exclusão

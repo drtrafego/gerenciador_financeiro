@@ -112,8 +112,11 @@ export default async function PublicInvoicePage({
           <div className="h-2 bg-gradient-to-r from-emerald-600 to-emerald-400" />
 
           {/* Header: empresa + número */}
-          <div className="px-10 py-8 border-b border-dashed border-gray-200">
-            <div className="flex justify-between items-start">
+          {/* px-5 no celular devolve 40px de largura útil de cada lado. O print
+              força o px-10 original porque a impressão sai na largura do papel. */}
+          <div className="px-5 sm:px-10 print:px-10 py-8 border-b border-dashed border-gray-200">
+            {/* Agência e número do recibo não cabem lado a lado em 375px, então empilham */}
+            <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-start sm:gap-0 print:flex-row print:justify-between print:items-start print:gap-0">
               <div>
                 <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Emitido por</p>
                 <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Construa Seu Sucesso</h1>
@@ -127,7 +130,7 @@ export default async function PublicInvoicePage({
                   <p className="text-xs text-gray-500">{agencyAddress}</p>
                 )}
               </div>
-              <div className="text-right">
+              <div className="sm:text-right print:text-right">
                 <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Recibo</p>
                 <p className="font-mono text-xl font-bold text-gray-900">
                   {invoice.invoiceNumber ?? `REC-${id.slice(0, 8).toUpperCase()}`}
@@ -144,8 +147,9 @@ export default async function PublicInvoicePage({
           </div>
 
           {/* Datas */}
-          <div className="px-10 py-5 border-b border-dashed border-gray-200">
-            <div className={`grid gap-4 ${paidDate ? 'grid-cols-3' : 'grid-cols-2'}`}>
+          <div className="px-5 sm:px-10 print:px-10 py-5 border-b border-dashed border-gray-200">
+            {/* Uma coluna no celular: data por extenso não cabe em 76px de coluna */}
+            <div className={`grid gap-4 grid-cols-1 ${paidDate ? 'sm:grid-cols-3 print:grid-cols-3' : 'sm:grid-cols-2 print:grid-cols-2'}`}>
               {emittedDate && (
                 <div>
                   <p className="text-[10px] text-gray-400 uppercase tracking-wider mb-1">Emissão</p>
@@ -171,16 +175,17 @@ export default async function PublicInvoicePage({
           </div>
 
           {/* Recebemos de */}
-          <div className="px-10 py-6 border-b border-dashed border-gray-200">
+          <div className="px-5 sm:px-10 print:px-10 py-6 border-b border-dashed border-gray-200">
             <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Recebemos de</p>
             <p className="text-xl font-bold text-gray-900">{client?.name ?? '—'}</p>
             {client?.email && <p className="text-sm text-gray-500 mt-1">{client.email}</p>}
           </div>
 
           {/* Referente a */}
-          <div className="px-10 py-6 border-b border-dashed border-gray-200">
+          <div className="px-5 sm:px-10 print:px-10 py-6 border-b border-dashed border-gray-200">
             <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-3">Referente a</p>
-            <div className="flex justify-between items-start gap-8">
+            {/* Folga menor no celular devolve 16px para a descrição do serviço */}
+            <div className="flex justify-between items-start gap-4 sm:gap-8 print:gap-8">
               <p className="text-gray-700 flex-1">
                 {invoice.description ?? 'Serviços de gestão de tráfego pago'}
               </p>
@@ -192,17 +197,18 @@ export default async function PublicInvoicePage({
 
           {/* Forma de pagamento */}
           {invoicePaymentMethod && (
-            <div className="px-10 py-5 border-b border-dashed border-gray-200">
+            <div className="px-5 sm:px-10 print:px-10 py-5 border-b border-dashed border-gray-200">
               <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Forma de pagamento</p>
               <p className="text-sm text-gray-700">{invoicePaymentMethod}</p>
             </div>
           )}
 
           {/* Total */}
-          <div className="px-10 py-7 bg-gray-50">
+          <div className="px-5 sm:px-10 print:px-10 py-7 bg-gray-50">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-500 font-medium">Valor Total</span>
-              <span className="text-4xl font-black text-gray-900">{amount}</span>
+              {/* Valor um passo menor no celular: em text-4xl uma fatura de cinco dígitos estoura a linha */}
+              <span className="text-3xl sm:text-4xl print:text-4xl font-black text-gray-900">{amount}</span>
             </div>
             <p className="mt-2 text-xs text-gray-400 italic text-right">({amountWords})</p>
 
@@ -231,7 +237,7 @@ export default async function PublicInvoicePage({
           </div>
 
           {/* Assinatura */}
-          <div className="px-10 py-8 border-t border-dashed border-gray-200 print:py-12">
+          <div className="px-5 sm:px-10 print:px-10 py-8 border-t border-dashed border-gray-200 print:py-12">
             {emittedDate && (
               <p className="text-xs text-gray-400 mb-8">
                 {agencyCity ? `${agencyCity}, ` : ''}{emittedDate}
@@ -250,7 +256,7 @@ export default async function PublicInvoicePage({
           </div>
 
           {/* Rodapé */}
-          <div className="px-10 py-4 bg-gray-50 border-t border-gray-100 text-center">
+          <div className="px-5 sm:px-10 print:px-10 py-4 bg-gray-50 border-t border-gray-100 text-center">
             <p className="text-[10px] text-gray-400">
               Este documento é válido como comprovante de pagamento &middot; Construa Seu Sucesso
             </p>

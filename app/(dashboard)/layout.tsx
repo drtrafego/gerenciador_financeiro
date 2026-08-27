@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import Sidebar from "@/components/shared/Sidebar";
 import Header from "@/components/shared/Header";
 import { ValuesVisibilityProvider } from "@/lib/contexts/ValuesVisibilityContext";
+import { SidebarProvider } from "@/lib/contexts/SidebarContext";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   await stackServerApp.getUser({ or: "redirect" });
@@ -19,13 +20,17 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <ValuesVisibilityProvider>
-      <div className="flex h-screen bg-zinc-950 text-zinc-100 overflow-hidden">
-        <Sidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <Header displayCurrency={displayCurrency} />
-          <main className="flex-1 overflow-auto p-6">{children}</main>
+      <SidebarProvider>
+        <div className="flex h-[100dvh] bg-zinc-950 text-zinc-100 overflow-hidden">
+          <Sidebar />
+          {/* min-w-0 é obrigatório: sem ele, flex-1 tem min-width auto e qualquer
+              filho largo estica o container em vez de rolar dentro dele. */}
+          <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
+            <Header displayCurrency={displayCurrency} />
+            <main className="flex-1 overflow-auto p-4 md:p-6">{children}</main>
+          </div>
         </div>
-      </div>
+      </SidebarProvider>
     </ValuesVisibilityProvider>
   );
 }

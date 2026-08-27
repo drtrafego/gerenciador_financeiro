@@ -34,7 +34,7 @@ export default function RevenueChart({ data, currency }: Props) {
   );
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 transition-colors duration-200 hover:border-zinc-700">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 sm:p-5 transition-colors duration-200 hover:border-zinc-700">
       <p className="text-sm font-semibold text-zinc-200 mb-4">Receitas vs Despesas (6 meses)</p>
       {normalized.length === 0 ? (
         <div className="h-48 flex items-center justify-center text-sm text-zinc-600">
@@ -44,7 +44,10 @@ export default function RevenueChart({ data, currency }: Props) {
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={normalized} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-            <XAxis dataKey="month" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} />
+            {/* Rótulos de mês colidiam no celular. O recharts pula os que não cabem
+                e preserva o primeiro e o último ponto da série. */}
+            <XAxis dataKey="month" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false}
+              minTickGap={24} interval="preserveStartEnd" />
             <YAxis tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} width={72}
               tickFormatter={(v) => eixo.format(Number(v))} />
             <Tooltip

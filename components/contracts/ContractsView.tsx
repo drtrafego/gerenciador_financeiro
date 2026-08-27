@@ -71,6 +71,22 @@ export default function ContractsView({
   const fmtOriginal = (amount: string | null, currency: string | null) =>
     hidden ? null : formatCurrency(parseFloat(amount ?? "0"), asCurrency(currency));
 
+  // Valor montado uma única vez e reusado pelo card do celular e pela linha da
+  // tabela. Cada bloco escrever a sua própria expressão é o caminho curto para o
+  // celular mostrar um número diferente do computador.
+  const valorReceita = (t: TxRow) => (
+    <>
+      {fmt(t.amount, t.currency)}
+      {!hidden && asCurrency(t.currency) !== displayCurrency && (
+        <span className="block text-xs font-normal text-zinc-600">
+          {fmtOriginal(t.amount, t.currency)}
+        </span>
+      )}
+    </>
+  );
+
+  const fmtData = (iso: string) => new Date(iso + "T12:00:00").toLocaleDateString("pt-BR");
+
   // Contrato que forma o MRR: ativo e dentro do prazo. É o mesmo critério do
   // dashboard, para os dois números fecharem.
   const contratosAtivos = contractRows.filter(
@@ -83,6 +99,17 @@ export default function ContractsView({
   const hojeIso = todayBrt();
   const recorrenteViva = (t: TxRow) =>
     t.recurringActive !== "false" && (!t.recurringEndsAt || t.recurringEndsAt >= hojeIso);
+
+  // Situação da recorrência escrita num lugar só, para o chip do celular e a
+  // célula da tabela nunca discordarem.
+  const situacaoRecorrente = (t: TxRow) =>
+    !recorrenteViva(t) ? (
+      <span className="text-zinc-500">encerrada</span>
+    ) : t.recurringEndsAt ? (
+      <span className="text-zinc-400">até {fmtData(t.recurringEndsAt)}</span>
+    ) : (
+      <span className="text-green-400/80">ativa</span>
+    );
 
   // Regra dos rótulos desta tela: o número mostra o que a tabela realmente traz,
   // a tabela nunca é filtrada (contrato encerrado e recorrência parada precisam
@@ -152,8 +179,33 @@ export default function ContractsView({
             </button>
           </div>
         ) : (
-          <div className="rounded-xl border border-zinc-800 bg-zinc-900 overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="flex flex-col gap-2">
+            {/* Celular */}
+            <div className="flex flex-col gap-2 sm:hidden">
+              {projetosVisiveis.map(({ t, clientName }) => (
+                <div
+                  key={t.id}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setEditing(t)}
+                  className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 flex items-start justify-between gap-3 hover:border-zinc-700 transition-colors cursor-pointer"
+                >
+                  <div className="min-w-0">
+                    <p className="text-sm text-zinc-200 break-words">{t.description}</p>
+                    <p className="mt-0.5 text-xs text-zinc-500">
+                      {t.category} · {clientName ?? "—"} · {fmtData(t.date)}
+                    </p>
+                  </div>
+                  <p className="shrink-0 text-right text-sm font-semibold text-green-400">
+                    {valorReceita(t)}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Computador: cinco colunas, min-w explícito para o overflow-x-auto rolar */}
+            <div className="hidden sm:block rounded-xl border border-zinc-800 bg-zinc-900 overflow-x-auto">
+            <table className="w-full min-w-[680px] text-sm">
               <thead>
                 <tr className="border-b border-zinc-800">
                   {["Descrição", "Categoria", "Cliente", "Data", "Valor"].map((h) => (
@@ -172,20 +224,16 @@ export default function ContractsView({
                     <td className="px-4 py-3 text-zinc-400 text-xs">{t.category}</td>
                     <td className="px-4 py-3 text-zinc-400 text-xs">{clientName ?? "—"}</td>
                     <td className="px-4 py-3 text-zinc-500 text-xs whitespace-nowrap">
-                      {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
+                      {fmtData(t.date)}
                     </td>
                     <td className="px-4 py-3 text-right font-semibold text-green-400 whitespace-nowrap">
-                      {fmt(t.amount, t.currency)}
-                      {!hidden && asCurrency(t.currency) !== displayCurrency && (
-                        <span className="block text-xs font-normal text-zinc-600">
-                          {fmtOriginal(t.amount, t.currency)}
-                        </span>
-                      )}
+                      {valorReceita(t)}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         )}
       </div>
@@ -206,8 +254,39 @@ export default function ContractsView({
             </h2>
             <p className="text-xs text-zinc-500">Entradas que se repetem todo mês e não vêm de contrato. São projetadas no fluxo de caixa.</p>
           </div>
-          <div className="rounded-xl border border-zinc-800 bg-zinc-900 overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="flex flex-col gap-2">
+            {/* Celular */}
+            <div className="flex flex-col gap-2 sm:hidden">
+              {recorrentesVisiveis.map(({ t, clientName }) => (
+                <div
+                  key={t.id}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setEditing(t)}
+                  className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 flex items-start justify-between gap-3 hover:border-zinc-700 transition-colors cursor-pointer"
+                >
+                  <div className="min-w-0">
+                    <p className="text-sm text-zinc-200 break-words">{t.description}</p>
+                    <p className="mt-0.5 text-xs text-zinc-500">
+                      {t.category} · {clientName ?? "—"}
+                    </p>
+                    <p className="mt-1.5 flex items-center gap-2 text-xs">
+                      <span className="rounded-full border border-zinc-700 bg-zinc-800/60 px-2 py-0.5">
+                        {situacaoRecorrente(t)}
+                      </span>
+                      <span className="text-xs text-zinc-600">desde {fmtData(t.date)}</span>
+                    </p>
+                  </div>
+                  <p className="shrink-0 text-right text-sm font-semibold text-green-400">
+                    {valorReceita(t)}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Computador: seis colunas, min-w explícito para o overflow-x-auto rolar */}
+            <div className="hidden sm:block rounded-xl border border-zinc-800 bg-zinc-900 overflow-x-auto">
+            <table className="w-full min-w-[800px] text-sm">
               <thead>
                 <tr className="border-b border-zinc-800">
                   {["Descrição", "Categoria", "Cliente", "Início", "Situação", "Valor"].map((h) => (
@@ -226,31 +305,19 @@ export default function ContractsView({
                     <td className="px-4 py-3 text-zinc-400 text-xs">{t.category}</td>
                     <td className="px-4 py-3 text-zinc-400 text-xs">{clientName ?? "—"}</td>
                     <td className="px-4 py-3 text-zinc-500 text-xs whitespace-nowrap">
-                      {new Date(t.date + "T12:00:00").toLocaleDateString("pt-BR")}
+                      {fmtData(t.date)}
                     </td>
                     <td className="px-4 py-3 text-xs whitespace-nowrap">
-                      {!recorrenteViva(t) ? (
-                        <span className="text-zinc-500">encerrada</span>
-                      ) : t.recurringEndsAt ? (
-                        <span className="text-zinc-400">
-                          até {new Date(t.recurringEndsAt + "T12:00:00").toLocaleDateString("pt-BR")}
-                        </span>
-                      ) : (
-                        <span className="text-green-400/80">ativa</span>
-                      )}
+                      {situacaoRecorrente(t)}
                     </td>
                     <td className="px-4 py-3 text-right font-semibold text-green-400 whitespace-nowrap">
-                      {fmt(t.amount, t.currency)}
-                      {!hidden && asCurrency(t.currency) !== displayCurrency && (
-                        <span className="block text-xs font-normal text-zinc-600">
-                          {fmtOriginal(t.amount, t.currency)}
-                        </span>
-                      )}
+                      {valorReceita(t)}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       )}

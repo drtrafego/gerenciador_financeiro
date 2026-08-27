@@ -26,8 +26,14 @@ export default function SourceMrrBar({ rows }: Props) {
 
   const hasData = data.some((d) => d.MRR > 0);
 
+  // Eixo categórico: pular tick esconderia uma barra inteira, então todos ficam
+  // visíveis e o rótulo comprido é abreviado. "Não informado" vira "Não info.".
+  // O nome completo continua no tooltip.
+  const abreviarCanal = (nome: string) =>
+    nome.length <= 9 ? nome : `${nome.slice(0, 8).trimEnd()}.`;
+
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 sm:p-5">
       <p className="text-sm font-semibold text-zinc-200 mb-4">MRR por Origem</p>
       {!hasData ? (
         <div className="h-48 flex items-center justify-center text-sm text-zinc-600">
@@ -37,7 +43,8 @@ export default function SourceMrrBar({ rows }: Props) {
         <ResponsiveContainer width="100%" height={200}>
           <BarChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-            <XAxis dataKey="canal" tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} />
+            <XAxis dataKey="canal" tick={{ fill: "#71717a", fontSize: 10 }} axisLine={false} tickLine={false}
+              interval={0} tickFormatter={abreviarCanal} />
             <YAxis tick={{ fill: "#71717a", fontSize: 11 }} axisLine={false} tickLine={false} width={50}
               tickFormatter={(v) => (hidden ? "" : `${(v / 1000).toFixed(0)}k`)} />
             <Tooltip

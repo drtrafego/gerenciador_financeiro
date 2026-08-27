@@ -145,7 +145,7 @@ export default function InvoicesTable({ invoices }: { invoices: any[] }) {
                   <div className="relative">
                     <button
                       onClick={() => setOpenMenu(openMenu === inv.id ? null : inv.id)}
-                      className="text-zinc-500 hover:text-zinc-300 p-1 rounded hover:bg-zinc-700"
+                      className="text-zinc-500 hover:text-zinc-300 p-2.5 -m-1.5 rounded hover:bg-zinc-700"
                     >
                       <MoreHorizontal size={14} />
                     </button>
