@@ -49,10 +49,13 @@ export default function Header({ displayCurrency = "BRL" }: { displayCurrency?: 
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
         <CurrencySelector defaultCurrency={displayCurrency} />
+        {/* 40x40 no celular, o mesmo alvo do hambúrguer. A partir de md volta o
+            28x28 de hoje, que era o que o p-1.5 dava, então o header não engorda
+            no computador. */}
         <button
           onClick={toggle}
           title={hidden ? "Mostrar valores" : "Ocultar valores"}
-          className={`p-1.5 rounded-lg transition-colors ${
+          className={`flex h-10 w-10 md:h-7 md:w-7 items-center justify-center rounded-lg transition-colors ${
             hidden
               ? "text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20"
               : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"

@@ -59,9 +59,12 @@ export default function PeriodBar({ from, to, children }: Props) {
     <div className="flex flex-col sm:flex-row sm:items-center gap-2">
       <div className="flex items-center gap-2 flex-wrap">
         <div className="flex items-center gap-1">
+          {/* 40x40 no celular, 32x32 a partir de sm, que é o tamanho de hoje e o
+              ponto em que a barra volta a ser uma linha só. Sem o sm as setas
+              engordariam a barra no computador. */}
           <button
             onClick={() => goMonth(-1)}
-            className="text-zinc-400 hover:text-zinc-200 p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
+            className="text-zinc-400 hover:text-zinc-200 flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
             title="Mês anterior"
           >
             <ChevronLeft size={16} />
@@ -71,7 +74,7 @@ export default function PeriodBar({ from, to, children }: Props) {
           </span>
           <button
             onClick={() => goMonth(1)}
-            className="text-zinc-400 hover:text-zinc-200 p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
+            className="text-zinc-400 hover:text-zinc-200 flex h-10 w-10 sm:h-8 sm:w-8 items-center justify-center bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
             title="Próximo mês"
           >
             <ChevronRight size={16} />
@@ -80,9 +83,12 @@ export default function PeriodBar({ from, to, children }: Props) {
 
         <DateRangePicker from={from} to={to} />
 
+        {/* No celular o rótulo some e sobra o ícone de 14px, o que dava um alvo de
+            38x30. O h-10 mais o min-w-10 levam a 40x40. A partir de sm o h-auto e
+            o min-w-0 devolvem os 36px de altura e a largura do rótulo. */}
         <button
           onClick={toggleValues}
-          className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
+          className={`flex items-center justify-center gap-1.5 px-3 py-2 h-10 min-w-10 sm:h-auto sm:min-w-0 rounded-lg text-sm transition-colors ${
             valuesHidden
               ? "bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20"
               : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"

@@ -197,12 +197,14 @@ function BillingCycleCard({ cycle, onConfirm, onUndo, busy }: {
         })}
       </ul>
 
+      {/* Confirmar emite fatura e dispara e-mail ao cliente, então no celular o
+          alvo é de 40px cheios. A partir de sm os dois voltam ao tamanho atual. */}
       <div className="flex justify-end">
         {confirmado ? (
           <button
             onClick={() => onUndo(cycle)}
             disabled={busy}
-            className="text-xs text-zinc-500 hover:text-zinc-300 px-2 py-1 rounded transition-colors disabled:opacity-50"
+            className="inline-flex items-center h-10 sm:h-auto px-2 sm:py-1 text-xs text-zinc-500 hover:text-zinc-300 rounded transition-colors disabled:opacity-50"
           >
             Desfazer
           </button>
@@ -210,7 +212,7 @@ function BillingCycleCard({ cycle, onConfirm, onUndo, busy }: {
           <button
             onClick={() => onConfirm(cycle)}
             disabled={busy}
-            className="flex items-center gap-1.5 bg-green-600/90 hover:bg-green-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 bg-green-600/90 hover:bg-green-500 text-white px-3 py-1.5 h-10 sm:h-auto rounded-lg text-xs font-medium transition-colors disabled:opacity-50"
           >
             <Check size={13} />
             Confirmar pagamento
@@ -902,9 +904,11 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
           {billingNotice && (
             <div className="flex items-start justify-between gap-3 rounded-lg border border-zinc-700 bg-zinc-800/60 px-4 py-3 text-sm text-zinc-200">
               <span>{billingNotice}</span>
+              {/* O -my-2.5 devolve exatamente a altura do rótulo, então o alvo vira
+                  40px sem o aviso engordar. A partir de sm nada disso vale. */}
               <button
                 onClick={() => setBillingNotice(null)}
-                className="text-zinc-400 hover:text-zinc-200 text-xs font-medium shrink-0"
+                className="inline-flex items-center h-10 px-2 -my-2.5 -mx-2 sm:h-auto sm:m-0 sm:p-0 text-zinc-400 hover:text-zinc-200 text-xs font-medium shrink-0"
               >
                 Fechar
               </button>
@@ -915,13 +919,15 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
               <span>{billingError}</span>
               <button
                 onClick={() => setBillingError(null)}
-                className="text-red-300 hover:text-red-100 text-xs font-medium shrink-0"
+                className="inline-flex items-center h-10 px-2 -my-2.5 -mx-2 sm:h-auto sm:m-0 sm:p-0 text-red-300 hover:text-red-100 text-xs font-medium shrink-0"
               >
                 Fechar
               </button>
             </div>
           )}
 
+          {/* Mesmo tratamento dos filtros de /invoices: 40px de altura no celular,
+              os 28px de hoje de volta a partir de sm. */}
           <div className="flex flex-nowrap gap-1 bg-zinc-900 border border-zinc-800 rounded-lg p-1 overflow-x-auto">
             {([
               ["all", "Todos"],
@@ -932,7 +938,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
               <button
                 key={value}
                 onClick={() => setBillingFilter(value)}
-                className={`shrink-0 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                className={`shrink-0 inline-flex items-center h-10 sm:h-auto px-3 sm:py-1.5 rounded-md text-xs font-medium transition-colors ${
                   billingFilter === value ? "bg-zinc-700 text-white" : "text-zinc-400 hover:text-zinc-200"
                 }`}
               >
@@ -1024,7 +1030,11 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
             <div className="flex flex-col gap-3">
               {templates.map((t) => (
                 <div key={t.id} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-                  <div className="flex items-start justify-between">
+                  {/* No celular as ações descem para uma linha própria, como já
+                      acontece no card de lembrete. Sem isso, três alvos de 40px na
+                      mesma linha do texto espremem a mensagem do template a nada
+                      numa tela de 320px. A partir de sm volta tudo para a direita. */}
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-white">{t.name}</p>
@@ -1036,12 +1046,12 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
                       </div>
                       <p className="text-sm text-zinc-400 mt-2 whitespace-pre-wrap">{t.body}</p>
                     </div>
-                    <div className="flex items-center gap-1 ml-4 shrink-0">
+                    <div className="flex items-center gap-2 sm:gap-1 mt-3 sm:mt-0 sm:ml-4 shrink-0">
                       {t.isDefault !== "true" && (
                         <button
                           onClick={() => handleSetDefaultTemplate(t.id, t.name)}
                           disabled={isPending}
-                          className="text-xs text-zinc-500 hover:text-green-400 px-2 py-1 rounded transition-colors disabled:opacity-50"
+                          className="inline-flex items-center h-10 sm:h-auto px-2 sm:py-1 text-xs text-zinc-500 hover:text-green-400 rounded transition-colors disabled:opacity-50"
                           title="Definir como padrão"
                         >
                           Definir como padrão
@@ -1049,16 +1059,18 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
                       )}
                       <button
                         onClick={() => handleOpenEditTemplate(t)}
-                        className="text-zinc-600 hover:text-indigo-400 p-1 rounded transition-colors"
+                        className="text-zinc-600 hover:text-indigo-400 flex h-10 w-10 sm:h-auto sm:w-auto sm:p-1 items-center justify-center rounded transition-colors"
                         title="Editar"
+                        aria-label="Editar template"
                       >
                         <Pencil size={14} />
                       </button>
                       {t.isDefault !== "true" && (
                         <button
                           onClick={() => handleDeleteTemplate(t.id)}
-                          className="text-zinc-600 hover:text-red-400 p-1 rounded transition-colors"
+                          className="text-zinc-600 hover:text-red-400 flex h-10 w-10 sm:h-auto sm:w-auto sm:p-1 items-center justify-center rounded transition-colors"
                           title="Excluir"
+                          aria-label="Excluir template"
                         >
                           <Trash2 size={14} />
                         </button>
@@ -1115,7 +1127,10 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-zinc-800">
               <h2 className="text-sm font-semibold text-white">Novo Lembrete</h2>
-              <button onClick={() => setShowReminderModal(false)} className="text-zinc-400 hover:text-zinc-200">
+              {/* Mesmo X do TransactionModal: o p-3 cria o alvo de 40x40 e o -m-3
+                  devolve o espaço, então o ícone não sai do lugar e o cabeçalho do
+                  modal não cresce. A folga sobra dentro do p-5. */}
+              <button onClick={() => setShowReminderModal(false)} aria-label="Fechar" className="flex p-3 -m-3 text-zinc-400 hover:text-zinc-200">
                 <X size={16} />
               </button>
             </div>
@@ -1261,7 +1276,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-zinc-800">
               <h2 className="text-sm font-semibold text-white">Editar Template</h2>
-              <button onClick={() => setEditingTemplate(null)} className="text-zinc-400 hover:text-zinc-200">
+              <button onClick={() => setEditingTemplate(null)} aria-label="Fechar" className="flex p-3 -m-3 text-zinc-400 hover:text-zinc-200">
                 <X size={16} />
               </button>
             </div>
@@ -1307,7 +1322,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-zinc-800">
               <h2 className="text-sm font-semibold text-white">Editar Lembrete</h2>
-              <button onClick={() => setEditingReminder(null)} className="text-zinc-400 hover:text-zinc-200">
+              <button onClick={() => setEditingReminder(null)} aria-label="Fechar" className="flex p-3 -m-3 text-zinc-400 hover:text-zinc-200">
                 <X size={16} />
               </button>
             </div>
@@ -1439,7 +1454,7 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-5 border-b border-zinc-800">
               <h2 className="text-sm font-semibold text-white">Novo Template</h2>
-              <button onClick={() => setShowTemplateModal(false)} className="text-zinc-400 hover:text-zinc-200">
+              <button onClick={() => setShowTemplateModal(false)} aria-label="Fechar" className="flex p-3 -m-3 text-zinc-400 hover:text-zinc-200">
                 <X size={16} />
               </button>
             </div>

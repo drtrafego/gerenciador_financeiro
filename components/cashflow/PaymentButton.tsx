@@ -58,13 +58,16 @@ export default function PaymentButton({ contractId, dueDate, confirmed, clientNa
 
   return (
     <div className="inline-flex flex-col items-end gap-1">
+      {/* 40px de altura no celular, onde o botão vive sozinho no card. A partir de
+          sm o h-auto devolve os 32px de hoje, senão ele passaria a ditar a altura
+          da linha da tabela do fluxo de caixa. */}
       <button
         onClick={(e) => {
           e.stopPropagation();
           confirmed ? desfazer() : confirmar();
         }}
         disabled={pending}
-        className={`inline-flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-colors disabled:opacity-50 ${
+        className={`inline-flex items-center gap-1.5 px-2.5 py-2 h-10 sm:h-auto rounded-lg text-xs font-medium transition-colors disabled:opacity-50 ${
           confirmed
             ? "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
             : "bg-green-500/10 text-green-400 hover:bg-green-500/20"
