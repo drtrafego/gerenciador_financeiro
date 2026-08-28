@@ -42,13 +42,15 @@ export default function InvoicesTable({ invoices }: { invoices: any[] }) {
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Status Filter */}
+      {/* Status Filter. No celular cada filtro tem 40px de altura, que é o alvo
+          do dedo. A partir de sm o h-auto mais o py-1.5 devolvem os 28px de hoje,
+          para a barra de filtros não crescer no computador. */}
       <div className="flex items-center gap-1 bg-zinc-800 rounded-lg p-1 overflow-x-auto">
         {STATUSES.map((s) => (
           <button
             key={s}
             onClick={() => setFilter(s)}
-            className={`flex-shrink-0 px-3 py-1.5 rounded-md text-xs font-medium transition-all
+            className={`flex-shrink-0 inline-flex items-center h-10 sm:h-auto px-3 sm:py-1.5 rounded-md text-xs font-medium transition-all
               ${filter === s ? "bg-zinc-700 text-zinc-200" : "text-zinc-500 hover:text-zinc-300"}`}
           >
             {STATUS_LABELS[s]}
@@ -81,9 +83,13 @@ export default function InvoicesTable({ invoices }: { invoices: any[] }) {
                     ? new Date(inv.due_date + "T12:00:00").toLocaleDateString("pt-BR")
                     : "—"}
                 </span>
+                {/* Bloco só do celular: alvo de 40x40 para o dedo. As margens
+                    negativas devolvem o espaço ao redor, então o desenho e a
+                    altura da linha continuam os mesmos de antes. */}
                 <Link
                   href={`/invoices/${inv.id}`}
-                  className="text-zinc-500 hover:text-zinc-300 p-1"
+                  aria-label={`Ver fatura ${inv.invoice_number}`}
+                  className="text-zinc-500 hover:text-zinc-300 flex h-10 w-10 items-center justify-center -my-2.5 -mr-2.5"
                 >
                   <Eye size={14} />
                 </Link>

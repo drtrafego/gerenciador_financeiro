@@ -161,10 +161,13 @@ export default function DateRangePicker({ from, to }: Props) {
 
   return (
     <>
+      {/* O h-10 leva o gatilho a 40px de altura no celular. A partir de sm o
+          h-auto devolve os 38px que o py-2 mais a borda já davam, para a barra de
+          período não crescer no computador. */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-700 transition-colors"
+        className="flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 h-10 sm:h-auto text-sm text-zinc-200 hover:bg-zinc-700 transition-colors"
       >
         <CalendarIcon className="h-4 w-4 text-zinc-400" />
         {label}

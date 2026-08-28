@@ -126,18 +126,18 @@ export default function ContractsView({
 
   return (
     <div className="space-y-8">
-      {/* Botões */}
+      {/* Botões. 40px de altura no celular, os 36px de hoje de volta a partir de sm. */}
       <div className="flex items-center gap-2 flex-wrap justify-end">
         <Link
           href="/contracts/new"
-          className="flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600 transition-colors"
+          className="flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 h-10 sm:h-auto text-sm font-medium text-white hover:bg-indigo-600 transition-colors"
         >
           <Plus className="h-4 w-4" />
           Novo Contrato
         </Link>
         <button
           onClick={() => setShowNew(true)}
-          className="flex items-center gap-2 rounded-lg border border-indigo-500/40 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-indigo-300 hover:bg-indigo-500/20 transition-colors"
+          className="flex items-center gap-2 rounded-lg border border-indigo-500/40 bg-indigo-500/10 px-4 py-2 h-10 sm:h-auto text-sm font-medium text-indigo-300 hover:bg-indigo-500/20 transition-colors"
         >
           <Plus className="h-4 w-4" />
           Nova Receita
@@ -172,7 +172,7 @@ export default function ContractsView({
             <p className="text-zinc-500 text-sm">Nenhuma receita avulsa lançada</p>
             <button
               onClick={() => setShowNew(true)}
-              className="mt-3 flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600 transition-colors"
+              className="mt-3 flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 h-10 sm:h-auto text-sm font-medium text-white hover:bg-indigo-600 transition-colors"
             >
               <Plus className="h-4 w-4" />
               Nova Receita
