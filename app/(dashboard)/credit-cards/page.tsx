@@ -61,7 +61,7 @@ const INITIAL_CARDS: CreditCardItem[] = [
     closingDay: 24,
     dueDay: 5,
     limit: 3500000,
-    baseInvoice: 642000,
+    baseInvoice: 0,
     color: "from-amber-600 to-orange-700"
   },
   {
@@ -72,7 +72,7 @@ const INITIAL_CARDS: CreditCardItem[] = [
     closingDay: 15,
     dueDay: 22,
     limit: 25000,
-    baseInvoice: 4180.50,
+    baseInvoice: 0,
     color: "from-purple-600 to-indigo-800"
   }
 ];
