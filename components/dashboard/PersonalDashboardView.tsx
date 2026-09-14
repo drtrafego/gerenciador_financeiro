@@ -18,7 +18,8 @@ import {
   DollarSign,
   Tag,
   CheckCircle2,
-  X
+  X,
+  PieChart as PieIcon
 } from "lucide-react";
 
 export interface PersonalTransaction {
@@ -34,12 +35,31 @@ export interface PersonalTransaction {
   language: 'pt' | 'es';
 }
 
+interface CustomCategory {
+  id: string;
+  namePt: string;
+  nameEs: string;
+  limit: number;
+  spent?: number;
+  color: string;
+  emoji?: string;
+}
+
+const DEFAULT_CATEGORIES: CustomCategory[] = [
+  { id: "cat-children", namePt: "Filhos & Família", nameEs: "Hijos y Familia", limit: 3500, color: "bg-pink-500/20 text-pink-400 border-pink-500/30", emoji: "👦" },
+  { id: "cat-food", namePt: "Alimentação & Supermercado", nameEs: "Alimentación y Supermercado", limit: 4500, color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30", emoji: "🍕" },
+  { id: "cat-leisure", namePt: "Lazer & Entretenimento", nameEs: "Ocio y Entretenimiento", limit: 2000, color: "bg-purple-500/20 text-purple-400 border-purple-500/30", emoji: "🥳" },
+  { id: "cat-housing", namePt: "Moradia & Serviços", nameEs: "Vivienda y Servicios", limit: 5000, color: "bg-blue-500/20 text-blue-400 border-blue-500/30", emoji: "🏠" },
+  { id: "cat-health", namePt: "Saúde & Bem-Estar", nameEs: "Salud y Bienestar", limit: 2500, color: "bg-rose-500/20 text-rose-400 border-rose-500/30", emoji: "💊" },
+  { id: "cat-transport", namePt: "Transporte & Veículo", nameEs: "Transporte y Vehículo", limit: 1800, color: "bg-amber-500/20 text-amber-400 border-amber-500/30", emoji: "🚗" },
+];
+
 export default function PersonalDashboardView() {
   const { lang } = useProfile();
   const dict = DICTIONARY[lang];
 
-  // Iniciar sem receitas/despesas falsas (estado limpo)
   const [transactions, setTransactions] = useState<PersonalTransaction[]>([]);
+  const [categories, setCategories] = useState<CustomCategory[]>(DEFAULT_CATEGORIES);
   const [showManualModal, setShowManualModal] = useState(false);
 
   // Manual Form State
@@ -52,12 +72,19 @@ export default function PersonalDashboardView() {
   const [category, setCategory] = useState('Alimentação & Supermercado');
   const [childTag, setChildTag] = useState('');
 
-  // Carregar transações pessoais limpas salvas no localStorage
+  // Carregar transações e categorias
   useEffect(() => {
-    const saved = localStorage.getItem('user_personal_transactions');
-    if (saved) {
+    const savedTxs = localStorage.getItem('user_personal_transactions');
+    if (savedTxs) {
       try {
-        setTransactions(JSON.parse(saved));
+        setTransactions(JSON.parse(savedTxs));
+      } catch (e) {}
+    }
+
+    const storedCats = localStorage.getItem('personal_custom_categories');
+    if (storedCats) {
+      try {
+        setCategories(JSON.parse(storedCats));
       } catch (e) {}
     }
   }, []);
@@ -119,6 +146,18 @@ export default function PersonalDashboardView() {
   const sofiaTotalBRL = transactions
     .filter(t => t.childTag === 'Sofia' && t.type === 'expense')
     .reduce((acc, t) => acc + (t.currency === 'ARS' ? t.amount / rates.ARS : t.amount), 0);
+
+  // Helper para buscar emoji e cor da categoria
+  const getCatBadgeInfo = (catName: string) => {
+    const found = categories.find(c => c.namePt === catName || c.nameEs === catName);
+    if (found) {
+      return {
+        emoji: found.emoji || "📂",
+        color: found.color || "bg-zinc-800 text-zinc-300 border-zinc-700"
+      };
+    }
+    return { emoji: "📂", color: "bg-zinc-800 text-zinc-300 border-zinc-700" };
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
@@ -191,6 +230,56 @@ export default function PersonalDashboardView() {
             R$ {balanceBRL.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
           <p className="text-xs text-zinc-500">Saldo líquido pessoal no mês</p>
+        </div>
+      </div>
+
+      {/* Categorias & Orçamento Resumo no Dashboard */}
+      <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold text-white flex items-center gap-2">
+            <PieIcon className="w-4 h-4 text-indigo-400" />
+            Categorias & Orçamento Pessoal
+          </h3>
+          <Link href="/personal-categories" className="text-xs text-indigo-400 hover:underline font-semibold">
+            Gerenciar Categorias & Emojis →
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {categories.map((cat) => {
+            const catName = lang === 'pt' ? cat.namePt : cat.nameEs;
+            const spentBRL = transactions
+              .filter(t => t.type === 'expense' && (t.category === cat.namePt || t.category === cat.nameEs))
+              .reduce((acc, t) => acc + (t.currency === 'ARS' ? t.amount / rates.ARS : t.currency === 'USD' ? t.amount * 5.65 : t.amount), 0);
+
+            const pct = Math.min(Math.round((spentBRL / (cat.limit || 1)) * 100), 100);
+
+            return (
+              <div key={cat.id} className="p-3.5 rounded-xl bg-zinc-950 border border-zinc-800/80 space-y-2 hover:border-zinc-700 transition-all">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className={`w-8 h-8 rounded-lg border flex items-center justify-center text-base ${cat.color}`}>
+                      {cat.emoji || "📂"}
+                    </span>
+                    <div>
+                      <h4 className="text-xs font-bold text-white">{catName}</h4>
+                      <p className="text-[10px] text-zinc-400 font-mono">Meta: R$ {cat.limit.toLocaleString()}</p>
+                    </div>
+                  </div>
+                  <span className="text-xs font-bold text-zinc-300 font-mono">{pct}%</span>
+                </div>
+
+                <div className="w-full h-1.5 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
+                  <div 
+                    className={`h-full rounded-full transition-all duration-500 ${
+                      pct > 80 ? 'bg-rose-500' : 'bg-indigo-500'
+                    }`}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -300,45 +389,54 @@ export default function PersonalDashboardView() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800/60">
-                {transactions.map(tx => (
-                  <tr key={tx.id} className="hover:bg-zinc-800/40 transition-colors">
-                    <td className="p-3 font-mono text-zinc-400">{tx.date}</td>
-                    <td className="p-3 font-semibold text-white">
-                      {tx.merchant}
-                      {tx.currency === 'ARS' && (
-                        <span className="text-[10px] bg-sky-500/10 text-sky-400 px-1.5 py-0.5 rounded ml-1 border border-sky-500/20">
-                          🇦🇷 AR
+                {transactions.map(tx => {
+                  const catBadge = getCatBadgeInfo(tx.category);
+
+                  return (
+                    <tr key={tx.id} className="hover:bg-zinc-800/40 transition-colors">
+                      <td className="p-3 font-mono text-zinc-400">{tx.date}</td>
+                      <td className="p-3 font-semibold text-white">
+                        {tx.merchant}
+                        {tx.currency === 'ARS' && (
+                          <span className="text-[10px] bg-sky-500/10 text-sky-400 px-1.5 py-0.5 rounded ml-1 border border-sky-500/20">
+                            🇦🇷 AR
+                          </span>
+                        )}
+                        {tx.currency === 'BRL' && (
+                          <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded ml-1 border border-emerald-500/20">
+                            🇧🇷 BR
+                          </span>
+                        )}
+                      </td>
+                      <td className="p-3">
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg border text-xs font-medium ${catBadge.color}`}>
+                          <span>{catBadge.emoji}</span>
+                          <span>{tx.category}</span>
                         </span>
-                      )}
-                      {tx.currency === 'BRL' && (
-                        <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded ml-1 border border-emerald-500/20">
-                          🇧🇷 BR
-                        </span>
-                      )}
-                    </td>
-                    <td className="p-3"><span className="bg-zinc-800 px-2 py-0.5 rounded">{tx.category}</span></td>
-                    <td className="p-3">
-                      {tx.childTag ? (
-                        <span className="bg-pink-500/20 text-pink-300 border border-pink-500/30 px-2 py-0.5 rounded-full font-bold">
-                          👶 {tx.childTag}
-                        </span>
-                      ) : (
-                        <span className="text-zinc-600">-</span>
-                      )}
-                    </td>
-                    <td className={`p-3 text-right font-mono font-bold ${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                      {tx.type === 'income' ? '+' : '-'}{tx.currency === 'ARS' ? `$ ${tx.amount.toLocaleString()}` : `R$ ${tx.amount.toFixed(2)}`}
-                    </td>
-                    <td className="p-3 text-center">
-                      <button
-                        onClick={() => handleDeleteTransaction(tx.id)}
-                        className="p-1.5 text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="p-3">
+                        {tx.childTag ? (
+                          <span className="bg-pink-500/20 text-pink-300 border border-pink-500/30 px-2 py-0.5 rounded-full font-bold">
+                            👶 {tx.childTag}
+                          </span>
+                        ) : (
+                          <span className="text-zinc-600">-</span>
+                        )}
+                      </td>
+                      <td className={`p-3 text-right font-mono font-bold ${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                        {tx.type === 'income' ? '+' : '-'}{tx.currency === 'ARS' ? `$ ${tx.amount.toLocaleString()}` : `R$ ${tx.amount.toFixed(2)}`}
+                      </td>
+                      <td className="p-3 text-center">
+                        <button
+                          onClick={() => handleDeleteTransaction(tx.id)}
+                          className="p-1.5 text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           )}
@@ -449,13 +547,15 @@ export default function PersonalDashboardView() {
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:border-purple-500 outline-none"
                 >
-                  <option value="Filhos & Família">Filhos & Família</option>
-                  <option value="Alimentação & Supermercado">Alimentação & Supermercado</option>
-                  <option value="Lazer & Entretenimento">Lazer & Entretenimento</option>
-                  <option value="Moradia & Serviços">Moradia & Serviços</option>
-                  <option value="Saúde & Bem-Estar">Saúde & Bem-Estar</option>
-                  <option value="Transporte & Veículo">Transporte & Veículo</option>
-                  <option value="Receita / Pró-labore">Receita / Pró-labore</option>
+                  {categories.map((c) => {
+                    const label = lang === 'pt' ? c.namePt : c.nameEs;
+                    return (
+                      <option key={c.id} value={c.namePt}>
+                        {c.emoji ? `${c.emoji} ` : ''}{label}
+                      </option>
+                    );
+                  })}
+                  <option value="Receita / Pró-labore">💰 Receita / Pró-labore</option>
                 </select>
               </div>
 
