@@ -75,31 +75,56 @@ export default function PersonalDashboardView() {
 
   // Carregar transações, categorias e lista de dependentes
   useEffect(() => {
-    const savedTxs = localStorage.getItem('user_personal_transactions');
-    if (savedTxs) {
-      try {
-        setTransactions(JSON.parse(savedTxs));
-      } catch (e) {}
-    }
+    const loadAllPersonalData = () => {
+      const savedTxs = localStorage.getItem('user_personal_transactions');
+      if (savedTxs) {
+        try {
+          setTransactions(JSON.parse(savedTxs));
+        } catch (e) {}
+      }
 
-    const storedCats = localStorage.getItem('personal_custom_categories');
-    if (storedCats) {
-      try {
-        setCategories(JSON.parse(storedCats));
-      } catch (e) {}
-    }
+      const storedCats = localStorage.getItem('personal_custom_categories');
+      if (storedCats) {
+        try {
+          const parsed = JSON.parse(storedCats);
+          if (Array.isArray(parsed)) {
+            const merged = parsed.map((sc: any) => {
+              const defaultMatch = DEFAULT_CATEGORIES.find(dc => dc.id === sc.id || dc.namePt === sc.namePt);
+              return {
+                ...defaultMatch,
+                ...sc,
+                emoji: sc.emoji || defaultMatch?.emoji || "📂",
+                color: sc.color || defaultMatch?.color || "bg-indigo-500/20 text-indigo-400 border-indigo-500/30"
+              };
+            });
+            setCategories(merged);
+          }
+        } catch (e) {}
+      }
 
-    const storedChildren = localStorage.getItem('user_personal_children');
-    if (storedChildren) {
-      try {
-        setChildrenList(JSON.parse(storedChildren));
-      } catch (e) {}
-    }
+      const storedChildren = localStorage.getItem('user_personal_children');
+      if (storedChildren) {
+        try {
+          setChildrenList(JSON.parse(storedChildren));
+        } catch (e) {}
+      }
+    };
+
+    loadAllPersonalData();
+
+    window.addEventListener('user_pf_data_changed', loadAllPersonalData);
+    window.addEventListener('storage', loadAllPersonalData);
+
+    return () => {
+      window.removeEventListener('user_pf_data_changed', loadAllPersonalData);
+      window.removeEventListener('storage', loadAllPersonalData);
+    };
   }, []);
 
   const saveTransactions = (updated: PersonalTransaction[]) => {
     setTransactions(updated);
     localStorage.setItem('user_personal_transactions', JSON.stringify(updated));
+    window.dispatchEvent(new Event('user_pf_data_changed'));
   };
 
   const handleAddManualTransaction = (e: React.FormEvent) => {

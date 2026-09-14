@@ -83,38 +83,62 @@ export default function PersonalCategoriesPage() {
   const [selectedColor, setSelectedColor] = useState(COLOR_OPTIONS[0].class);
 
   useEffect(() => {
-    const storedCats = localStorage.getItem('personal_custom_categories');
-    let currentCats = INITIAL_CATEGORIES;
-    if (storedCats) {
-      try {
-        currentCats = JSON.parse(storedCats);
-      } catch (e) {}
-    }
+    const loadCategories = () => {
+      const storedCats = localStorage.getItem('personal_custom_categories');
+      let currentCats = INITIAL_CATEGORIES;
+      if (storedCats) {
+        try {
+          const parsed = JSON.parse(storedCats);
+          if (Array.isArray(parsed)) {
+            currentCats = parsed.map((sc: any) => {
+              const defaultMatch = INITIAL_CATEGORIES.find(ic => ic.id === sc.id || ic.namePt === sc.namePt);
+              return {
+                ...defaultMatch,
+                ...sc,
+                emoji: sc.emoji || defaultMatch?.emoji || "📂",
+                color: sc.color || defaultMatch?.color || "bg-indigo-500/20 text-indigo-400 border-indigo-500/30"
+              };
+            });
+          }
+        } catch (e) {}
+      }
 
-    const storedTxs = localStorage.getItem('user_personal_transactions');
-    let personalTxs: any[] = [];
-    if (storedTxs) {
-      try {
-        personalTxs = JSON.parse(storedTxs);
-      } catch (e) {}
-    }
+      const storedTxs = localStorage.getItem('user_personal_transactions');
+      let personalTxs: any[] = [];
+      if (storedTxs) {
+        try {
+          personalTxs = JSON.parse(storedTxs);
+        } catch (e) {}
+      }
 
-    const rates: Record<string, number> = { ARS: 233.6, BRL: 1, USD: 0.177 };
+      const rates: Record<string, number> = { ARS: 233.6, BRL: 1, USD: 0.177 };
 
-    const calculated = currentCats.map(cat => {
-      const actualSpentBRL = personalTxs
-        .filter(t => t.type === 'expense' && (t.category === cat.namePt || t.category === cat.nameEs))
-        .reduce((sum, t) => sum + (t.currency === 'ARS' ? t.amount / rates.ARS : t.currency === 'USD' ? t.amount * 5.65 : t.amount), 0);
+      const calculated = currentCats.map(cat => {
+        const actualSpentBRL = personalTxs
+          .filter(t => t.type === 'expense' && (t.category === cat.namePt || t.category === cat.nameEs))
+          .reduce((sum, t) => sum + (t.currency === 'ARS' ? t.amount / rates.ARS : t.currency === 'USD' ? t.amount * 5.65 : t.amount), 0);
 
-      return { ...cat, spent: actualSpentBRL };
-    });
+        return { ...cat, spent: actualSpentBRL };
+      });
 
-    setCategories(calculated);
+      setCategories(calculated);
+    };
+
+    loadCategories();
+
+    window.addEventListener('user_pf_data_changed', loadCategories);
+    window.addEventListener('storage', loadCategories);
+
+    return () => {
+      window.removeEventListener('user_pf_data_changed', loadCategories);
+      window.removeEventListener('storage', loadCategories);
+    };
   }, []);
 
   const saveToStorage = (updated: CustomCategory[]) => {
     setCategories(updated);
     localStorage.setItem('personal_custom_categories', JSON.stringify(updated));
+    window.dispatchEvent(new Event('user_pf_data_changed'));
   };
 
   const handleOpenAddModal = () => {

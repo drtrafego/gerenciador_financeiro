@@ -14,17 +14,30 @@ export default function PersonalSettingsView() {
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("user_personal_children");
-    if (stored) {
-      try {
-        setChildrenList(JSON.parse(stored));
-      } catch (e) {}
-    }
+    const loadChildren = () => {
+      const stored = localStorage.getItem("user_personal_children");
+      if (stored) {
+        try {
+          setChildrenList(JSON.parse(stored));
+        } catch (e) {}
+      }
+    };
+
+    loadChildren();
+
+    window.addEventListener("user_pf_data_changed", loadChildren);
+    window.addEventListener("storage", loadChildren);
+
+    return () => {
+      window.removeEventListener("user_pf_data_changed", loadChildren);
+      window.removeEventListener("storage", loadChildren);
+    };
   }, []);
 
   const saveChildren = (updated: string[]) => {
     setChildrenList(updated);
     localStorage.setItem("user_personal_children", JSON.stringify(updated));
+    window.dispatchEvent(new Event("user_pf_data_changed"));
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 2000);
   };
