@@ -20,8 +20,7 @@ import {
   Baby,
   Building2,
   Home,
-  Globe,
-  Code
+  Globe
 } from "lucide-react";
 import { UserButton } from "@stackframe/stack";
 import { useSidebar } from "@/lib/contexts/SidebarContext";
@@ -34,7 +33,6 @@ const navPJ = [
   { href: "/invoices",     label: "Faturas",            icon: FileText },
   { href: "/cash-flow",    label: "Fluxo de Caixa",     icon: ArrowLeftRight },
   { href: "/reminders",    label: "Lembretes WhatsApp", icon: Bell },
-  { href: "/api-docs",     label: "Documentação API",   icon: Code, badge: "Agente" },
   { href: "/settings",     label: "Configurações",      icon: Settings },
 ];
 
@@ -43,7 +41,6 @@ const navPF = [
   { href: "/scan",                label: "Escanear Foto/Print", icon: Sparkles, badge: "IA" },
   { href: "/personal-categories", label: "Categorias & Metas",  icon: PieChart },
   { href: "/credit-cards",        label: "Cartões (ARS/BRL)",   icon: CreditCard },
-  { href: "/api-docs",            label: "Documentação API",   icon: Code, badge: "Agente" },
   { href: "/settings",            label: "Configurações",       icon: Settings },
 ];
 
