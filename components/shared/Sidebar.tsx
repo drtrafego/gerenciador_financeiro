@@ -62,12 +62,24 @@ export default function Sidebar() {
   };
 
   useEffect(() => {
-    const storedChildren = localStorage.getItem("user_personal_children");
-    if (storedChildren) {
-      try {
-        setChildrenList(JSON.parse(storedChildren));
-      } catch (e) {}
-    }
+    const loadChildren = () => {
+      const storedChildren = localStorage.getItem("user_personal_children");
+      if (storedChildren) {
+        try {
+          setChildrenList(JSON.parse(storedChildren));
+        } catch (e) {}
+      }
+    };
+
+    loadChildren();
+
+    window.addEventListener("user_pf_data_changed", loadChildren);
+    window.addEventListener("storage", loadChildren);
+
+    return () => {
+      window.removeEventListener("user_pf_data_changed", loadChildren);
+      window.removeEventListener("storage", loadChildren);
+    };
   }, []);
 
   useEffect(() => {
