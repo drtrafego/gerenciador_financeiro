@@ -7,6 +7,7 @@ import { ExchangeRateWidget } from "@/components/settings/ExchangeRateWidget";
 import CurrencyPreference from "@/components/settings/CurrencyPreference";
 import AgencySettings from "@/components/settings/AgencySettings";
 import HideValuesPreference from "@/components/settings/HideValuesPreference";
+import SettingsViewContainer from "@/components/settings/SettingsViewContainer";
 
 export default async function SettingsPage() {
   const [latestRate, displayCurrencySetting, agencyName, agencyEmail, agencyCnpj, agencyAddress, agencyCity, agencyPaymentMethods] = await Promise.all([
@@ -23,23 +24,25 @@ export default async function SettingsPage() {
   const cronSecret = process.env.CRON_SECRET ?? "";
 
   return (
-    <div className="flex flex-col gap-6 max-w-2xl">
-      <h1 className="text-xl font-bold text-white">Configurações</h1>
+    <SettingsViewContainer>
+      <div className="flex flex-col gap-6 max-w-2xl">
+        <h1 className="text-xl font-bold text-white">Configurações da Empresa</h1>
 
-      <ExchangeRateWidget rate={latestRate[0] ?? null} cronSecret={cronSecret} />
+        <ExchangeRateWidget rate={latestRate[0] ?? null} cronSecret={cronSecret} />
 
-      <CurrencyPreference current={(displayCurrencySetting[0]?.value ?? "BRL") as any} />
+        <CurrencyPreference current={(displayCurrencySetting[0]?.value ?? "BRL") as any} />
 
-      <HideValuesPreference />
+        <HideValuesPreference />
 
-      <AgencySettings
-        name={agencyName[0]?.value ?? "Casal do Tráfego"}
-        email={agencyEmail[0]?.value ?? ""}
-        cnpj={agencyCnpj[0]?.value ?? ""}
-        address={agencyAddress[0]?.value ?? ""}
-        city={agencyCity[0]?.value ?? ""}
-        paymentMethods={agencyPaymentMethods[0]?.value ?? ""}
-      />
-    </div>
+        <AgencySettings
+          name={agencyName[0]?.value ?? "Casal do Tráfego"}
+          email={agencyEmail[0]?.value ?? ""}
+          cnpj={agencyCnpj[0]?.value ?? ""}
+          address={agencyAddress[0]?.value ?? ""}
+          city={agencyCity[0]?.value ?? ""}
+          paymentMethods={agencyPaymentMethods[0]?.value ?? ""}
+        />
+      </div>
+    </SettingsViewContainer>
   );
 }
