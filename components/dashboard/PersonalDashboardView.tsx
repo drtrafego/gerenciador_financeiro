@@ -19,8 +19,28 @@ import {
   Tag,
   CheckCircle2,
   X,
-  PieChart as PieIcon
+  PieChart as PieIcon,
+  TrendingUp,
+  TrendingDown,
+  Filter,
+  BarChart3,
+  Flame,
+  Award
 } from "lucide-react";
+
+import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip as RechartsTooltip,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend
+} from "recharts";
 
 export interface PersonalTransaction {
   id: string;
@@ -54,14 +74,30 @@ const DEFAULT_CATEGORIES: CustomCategory[] = [
   { id: "cat-transport", namePt: "Transporte & Veículo", nameEs: "Transporte y Vehículo", limit: 1800, color: "bg-amber-500/20 text-amber-400 border-amber-500/30", emoji: "🚗" },
 ];
 
+const CATEGORY_PIE_COLORS = [
+  "#ec4899", // pink
+  "#10b981", // emerald
+  "#a855f7", // purple
+  "#3b82f6", // blue
+  "#f43f5e", // rose
+  "#f59e0b", // amber
+  "#8b5cf6", // violet
+  "#06b6d4", // cyan
+  "#eab308", // yellow
+];
+
 export default function PersonalDashboardView() {
   const { lang } = useProfile();
   const dict = DICTIONARY[lang];
 
+  const [mounted, setMounted] = useState(false);
   const [transactions, setTransactions] = useState<PersonalTransaction[]>([]);
   const [categories, setCategories] = useState<CustomCategory[]>(DEFAULT_CATEGORIES);
   const [childrenList, setChildrenList] = useState<string[]>(["Matheus", "Sofia"]);
   const [showManualModal, setShowManualModal] = useState(false);
+
+  // Period Filter State: 'current_month' | 'previous_month' | 'last_3_months' | 'all'
+  const [periodFilter, setPeriodFilter] = useState<'current_month' | 'previous_month' | 'last_3_months' | 'all'>('current_month');
 
   // Manual Form State
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
@@ -73,8 +109,11 @@ export default function PersonalDashboardView() {
   const [category, setCategory] = useState('Alimentação & Supermercado');
   const [childTag, setChildTag] = useState('');
 
-  // Carregar transações, categorias e lista de dependentes
+  // Rate table for multi-currency conversion
+  const rates = { ARS: 233.6, BRL: 1, USD: 0.177 };
+
   useEffect(() => {
+    setMounted(true);
     const loadAllPersonalData = () => {
       const savedTxs = localStorage.getItem('user_personal_transactions');
       if (savedTxs) {
@@ -162,19 +201,12 @@ export default function PersonalDashboardView() {
     saveTransactions(updated);
   };
 
-  // Cotação base de conversão para BRL no resumo
-  const rates = { ARS: 233.6, BRL: 1, USD: 0.177 };
-
-  // Totais convertidos dinâmicos
-  const totalIncomeBRL = transactions
-    .filter(t => t.type === 'income')
-    .reduce((acc, t) => acc + (t.currency === 'ARS' ? t.amount / rates.ARS : t.currency === 'USD' ? t.amount * 5.65 : t.amount), 0);
-
-  const totalExpensesBRL = transactions
-    .filter(t => t.type === 'expense')
-    .reduce((acc, t) => acc + (t.currency === 'ARS' ? t.amount / rates.ARS : t.currency === 'USD' ? t.amount * 5.65 : t.amount), 0);
-
-  const balanceBRL = totalIncomeBRL - totalExpensesBRL;
+  // Helper para converter valor para BRL
+  const toBRL = (amount: number, curr: Currency) => {
+    if (curr === 'ARS') return amount / rates.ARS;
+    if (curr === 'USD') return amount * 5.65;
+    return amount;
+  };
 
   // Helper para buscar emoji e cor da categoria
   const getCatBadgeInfo = (catName: string) => {
@@ -188,8 +220,132 @@ export default function PersonalDashboardView() {
     return { emoji: "📂", color: "bg-zinc-800 text-zinc-300 border-zinc-700" };
   };
 
+  // -------------------------------------------------------------
+  // PERÍODOS & FILTROS
+  // -------------------------------------------------------------
+  const now = new Date();
+  const currentMonthYear = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  
+  const prevMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const prevMonthYear = `${prevMonthDate.getFullYear()}-${String(prevMonthDate.getMonth() + 1).padStart(2, '0')}`;
+
+  const threeMonthsAgoDate = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+
+  // Transações filtradas pelo período selecionado
+  const filteredTransactions = transactions.filter(t => {
+    if (periodFilter === 'all') return true;
+    if (!t.date) return true;
+    
+    if (periodFilter === 'current_month') {
+      return t.date.startsWith(currentMonthYear);
+    }
+    if (periodFilter === 'previous_month') {
+      return t.date.startsWith(prevMonthYear);
+    }
+    if (periodFilter === 'last_3_months') {
+      const txDate = new Date(t.date);
+      return txDate >= threeMonthsAgoDate;
+    }
+    return true;
+  });
+
+  // Totais convertidos dinâmicos no período filtrado
+  const totalIncomeBRL = filteredTransactions
+    .filter(t => t.type === 'income')
+    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+
+  const totalExpensesBRL = filteredTransactions
+    .filter(t => t.type === 'expense')
+    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+
+  const balanceBRL = totalIncomeBRL - totalExpensesBRL;
+
+  // -------------------------------------------------------------
+  // CÁLCULO COMPARATIVO MÊS A MÊS (MoM)
+  // -------------------------------------------------------------
+  const currentMonthExpensesBRL = transactions
+    .filter(t => t.type === 'expense' && t.date?.startsWith(currentMonthYear))
+    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+
+  const prevMonthExpensesBRL = transactions
+    .filter(t => t.type === 'expense' && t.date?.startsWith(prevMonthYear))
+    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+
+  const momExpensesDiffBRL = currentMonthExpensesBRL - prevMonthExpensesBRL;
+  const momExpensesPct = prevMonthExpensesBRL > 0 
+    ? ((momExpensesDiffBRL / prevMonthExpensesBRL) * 100) 
+    : 0;
+
+  // Categoria de maior gasto no mês
+  const categorySpendingMap: Record<string, number> = {};
+  filteredTransactions
+    .filter(t => t.type === 'expense')
+    .forEach(t => {
+      categorySpendingMap[t.category] = (categorySpendingMap[t.category] || 0) + toBRL(t.amount, t.currency);
+    });
+
+  let topCategoryName = "";
+  let topCategoryAmount = 0;
+  Object.entries(categorySpendingMap).forEach(([cat, val]) => {
+    if (val > topCategoryAmount) {
+      topCategoryAmount = val;
+      topCategoryName = cat;
+    }
+  });
+
+  // -------------------------------------------------------------
+  // DADOS PARA OS GRÁFICOS (RECHARTS)
+  // -------------------------------------------------------------
+  
+  // 1. Gráfico Rosca / Pie de Categorias
+  const pieChartData = Object.entries(categorySpendingMap).map(([name, value]) => {
+    const info = getCatBadgeInfo(name);
+    return {
+      name,
+      value: Math.round(value * 100) / 100,
+      emoji: info.emoji
+    };
+  }).sort((a, b) => b.value - a.value);
+
+  // 2. Gráfico de Histórico Mensal (Receitas vs Despesas)
+  const monthlyDataMap: Record<string, { monthKey: string; monthLabel: string; income: number; expense: number }> = {};
+
+  // Gerar slots para os últimos 6 meses caso o usuário não tenha muitas txs antigas
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    const label = d.toLocaleDateString(lang === 'es' ? 'es-AR' : 'pt-BR', { month: 'short' }).replace('.', '');
+    monthlyDataMap[key] = { monthKey: key, monthLabel: label.toUpperCase(), income: 0, expense: 0 };
+  }
+
+  // Preencher com os dados reais do usuário
+  transactions.forEach(t => {
+    if (!t.date) return;
+    const key = t.date.substring(0, 7);
+    if (!monthlyDataMap[key]) {
+      const txDate = new Date(t.date);
+      const label = txDate.toLocaleDateString(lang === 'es' ? 'es-AR' : 'pt-BR', { month: 'short' }).replace('.', '');
+      monthlyDataMap[key] = { monthKey: key, monthLabel: label.toUpperCase(), income: 0, expense: 0 };
+    }
+
+    const val = toBRL(t.amount, t.currency);
+    if (t.type === 'income') {
+      monthlyDataMap[key].income += val;
+    } else {
+      monthlyDataMap[key].expense += val;
+    }
+  });
+
+  const barTrendData = Object.values(monthlyDataMap)
+    .sort((a, b) => a.monthKey.localeCompare(b.monthKey))
+    .map(d => ({
+      Mês: d.monthLabel,
+      Receitas: Math.round(d.income),
+      Despesas: Math.round(d.expense)
+    }));
+
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
+    <div className="space-y-6 animate-in fade-in duration-300 pb-10">
       {/* Banner Superior com Ações */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-gradient-to-r from-purple-950 via-zinc-900 to-indigo-950 p-6 rounded-2xl border border-purple-500/20 shadow-xl">
         <div className="space-y-1">
@@ -217,6 +373,60 @@ export default function PersonalDashboardView() {
             <Sparkles className="w-4 h-4 text-yellow-300 animate-spin" />
             <span>{dict.dashboard.scanQuickBtn}</span>
           </Link>
+        </div>
+      </div>
+
+      {/* Bar de Seleção de Perfil Temporal */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-zinc-900/60 p-4 rounded-2xl border border-zinc-800">
+        <div className="flex items-center gap-2 text-xs text-zinc-400 font-bold">
+          <Filter size={15} className="text-purple-400" />
+          <span>Filtrar Período de Visualização:</span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-1.5 p-1 bg-zinc-950 rounded-xl border border-zinc-800 w-full sm:w-auto">
+          <button
+            onClick={() => setPeriodFilter('current_month')}
+            className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              periodFilter === 'current_month'
+                ? 'bg-purple-600 text-white shadow-md'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            Mês Atual
+          </button>
+
+          <button
+            onClick={() => setPeriodFilter('previous_month')}
+            className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              periodFilter === 'previous_month'
+                ? 'bg-purple-600 text-white shadow-md'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            Mês Anterior
+          </button>
+
+          <button
+            onClick={() => setPeriodFilter('last_3_months')}
+            className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              periodFilter === 'last_3_months'
+                ? 'bg-purple-600 text-white shadow-md'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            Últimos 3 Meses
+          </button>
+
+          <button
+            onClick={() => setPeriodFilter('all')}
+            className={`flex-1 sm:flex-none px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              periodFilter === 'all'
+                ? 'bg-purple-600 text-white shadow-md'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            Todos ({transactions.length})
+          </button>
         </div>
       </div>
 
@@ -258,9 +468,167 @@ export default function PersonalDashboardView() {
           <p className={`text-2xl font-bold font-mono ${balanceBRL >= 0 ? 'text-purple-400' : 'text-rose-500'}`}>
             R$ {balanceBRL.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
-          <p className="text-xs text-zinc-500">Saldo líquido pessoal no mês</p>
+          <p className="text-xs text-zinc-500">Saldo líquido pessoal no período</p>
         </div>
       </div>
+
+      {/* Cards de Métricas Comparativas MoM & Categoria Destaque */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Card MoM Comparativo */}
+        <div className="p-5 rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900 to-purple-950/30 flex items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-purple-400" />
+              <span className="text-xs font-bold text-zinc-300">Comparativo Mês a Mês (MoM)</span>
+            </div>
+            <p className="text-sm font-semibold text-white">
+              {momExpensesDiffBRL <= 0 ? (
+                <span className="text-emerald-400 flex items-center gap-1 font-mono">
+                  <TrendingDown size={16} />
+                  -R$ {Math.abs(momExpensesDiffBRL).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} (-{Math.abs(momExpensesPct).toFixed(1)}%)
+                </span>
+              ) : (
+                <span className="text-rose-400 flex items-center gap-1 font-mono">
+                  <TrendingUp size={16} />
+                  +R$ {momExpensesDiffBRL.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} (+{momExpensesPct.toFixed(1)}%)
+                </span>
+              )}
+            </p>
+            <p className="text-[11px] text-zinc-400">
+              Variação dos gastos em relação ao mês anterior (Mês Atual: R$ {currentMonthExpensesBRL.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} vs Mês Anterior: R$ {prevMonthExpensesBRL.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}).
+            </p>
+          </div>
+
+          <div className={`p-3 rounded-2xl border flex flex-col items-center justify-center flex-shrink-0 ${
+            momExpensesDiffBRL <= 0 
+              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' 
+              : 'bg-rose-500/10 border-rose-500/30 text-rose-400'
+          }`}>
+            <span className="text-lg font-black font-mono">
+              {momExpensesDiffBRL <= 0 ? `${Math.abs(momExpensesPct).toFixed(0)}%` : `+${momExpensesPct.toFixed(0)}%`}
+            </span>
+            <span className="text-[10px] font-bold uppercase">{momExpensesDiffBRL <= 0 ? 'Economia' : 'Aumento'}</span>
+          </div>
+        </div>
+
+        {/* Card Maior Categoria de Gasto */}
+        <div className="p-5 rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900 to-indigo-950/30 flex items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <Flame className="w-4 h-4 text-amber-400" />
+              <span className="text-xs font-bold text-zinc-300">Maior Gasto do Período</span>
+            </div>
+            <p className="text-sm font-bold text-white flex items-center gap-2">
+              <span>{getCatBadgeInfo(topCategoryName).emoji}</span>
+              <span>{topCategoryName || "Nenhum lançamento"}</span>
+            </p>
+            <p className="text-[11px] text-zinc-400">
+              Corresponde a <strong className="text-purple-300 font-mono">R$ {topCategoryAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong> do total gasto no período selecionado.
+            </p>
+          </div>
+
+          <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex flex-col items-center justify-center flex-shrink-0">
+            <Award size={24} />
+            <span className="text-[10px] font-bold uppercase mt-1">Topo #1</span>
+          </div>
+        </div>
+      </div>
+
+      {/* GRÁFICOS VISUAIS INTERATIVOS (RECHARTS) */}
+      {mounted && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Gráfico 1: Distribuição de Gastos por Categoria (Rosca / Pie) */}
+          <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 space-y-4 hover:border-zinc-700 transition-all">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <PieIcon className="w-4 h-4 text-purple-400" />
+                Distribuição de Gastos por Categoria
+              </h3>
+              <span className="text-[10px] text-zinc-500 font-mono uppercase">Equivalente em BRL</span>
+            </div>
+
+            {pieChartData.length === 0 ? (
+              <div className="h-64 flex items-center justify-center text-xs text-zinc-500 border border-dashed border-zinc-800 rounded-xl">
+                Sem despesas registradas no período selecionado.
+              </div>
+            ) : (
+              <div className="h-64 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={pieChartData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={55}
+                      outerRadius={85}
+                      paddingAngle={4}
+                      dataKey="value"
+                    >
+                      {pieChartData.map((entry, index) => (
+                        <Cell 
+                          key={`cell-${index}`} 
+                          fill={CATEGORY_PIE_COLORS[index % CATEGORY_PIE_COLORS.length]} 
+                          stroke="#18181b" 
+                          strokeWidth={2}
+                        />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip
+                      contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 12 }}
+                      labelStyle={{ color: "#ffffff", fontWeight: "bold" }}
+                      formatter={(val: any, name: any) => [
+                        `R$ ${Number(val).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
+                        `${name}`
+                      ]}
+                    />
+                    <Legend
+                      verticalAlign="bottom"
+                      height={36}
+                      formatter={(value, entry: any) => {
+                        const item = pieChartData.find(p => p.name === value);
+                        return (
+                          <span className="text-[11px] text-zinc-300 font-medium">
+                            {item?.emoji || "📂"} {value}
+                          </span>
+                        );
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </div>
+
+          {/* Gráfico 2: Evolução Histórica de Receitas vs Despesas (Barras) */}
+          <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 space-y-4 hover:border-zinc-700 transition-all">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-indigo-400" />
+                Histórico & Tendências (Últimos Meses)
+              </h3>
+              <span className="text-[10px] text-zinc-500 font-mono uppercase">Valores em R$</span>
+            </div>
+
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={barTrendData} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
+                  <XAxis dataKey="Mês" tick={{ fill: "#9ca3af", fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fill: "#9ca3af", fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <RechartsTooltip
+                    contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 12 }}
+                    labelStyle={{ color: "#ffffff", fontWeight: "bold" }}
+                    formatter={(val: any) => [`R$ ${Number(val).toLocaleString('pt-BR')}`]}
+                  />
+                  <Legend wrapperStyle={{ fontSize: 11, color: "#9ca3af" }} />
+                  <Bar dataKey="Receitas" fill="#10b981" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Despesas" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Categorias & Orçamento Resumo no Dashboard */}
       <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 space-y-4">
@@ -277,9 +645,9 @@ export default function PersonalDashboardView() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {categories.map((cat) => {
             const catName = lang === 'pt' ? cat.namePt : cat.nameEs;
-            const spentBRL = transactions
+            const spentBRL = filteredTransactions
               .filter(t => t.type === 'expense' && (t.category === cat.namePt || t.category === cat.nameEs))
-              .reduce((acc, t) => acc + (t.currency === 'ARS' ? t.amount / rates.ARS : t.currency === 'USD' ? t.amount * 5.65 : t.amount), 0);
+              .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
 
             const pct = Math.min(Math.round((spentBRL / (cat.limit || 1)) * 100), 100);
 
@@ -292,7 +660,9 @@ export default function PersonalDashboardView() {
                     </span>
                     <div>
                       <h4 className="text-xs font-bold text-white">{catName}</h4>
-                      <p className="text-[10px] text-zinc-400 font-mono">Meta: R$ {cat.limit.toLocaleString()}</p>
+                      <p className="text-[10px] text-zinc-400 font-mono">
+                        Gasto: R$ {spentBRL.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} / Meta: R$ {cat.limit.toLocaleString()}
+                      </p>
                     </div>
                   </div>
                   <span className="text-xs font-bold text-zinc-300 font-mono">{pct}%</span>
@@ -331,9 +701,9 @@ export default function PersonalDashboardView() {
               <p className="text-xs text-zinc-500 italic p-3">Nenhum dependente cadastrado. Adicione em Configurações.</p>
             ) : (
               childrenList.map((child) => {
-                const childTotalBRL = transactions
+                const childTotalBRL = filteredTransactions
                   .filter(t => t.childTag === child && t.type === 'expense')
-                  .reduce((acc, t) => acc + (t.currency === 'ARS' ? t.amount / rates.ARS : t.currency === 'USD' ? t.amount * 5.65 : t.amount), 0);
+                  .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
 
                 return (
                   <div key={child} className="p-4 rounded-xl bg-zinc-900/90 border border-zinc-800 flex justify-between items-center">
@@ -395,9 +765,9 @@ export default function PersonalDashboardView() {
         </div>
 
         <div className="overflow-x-auto">
-          {transactions.length === 0 ? (
+          {filteredTransactions.length === 0 ? (
             <div className="p-8 text-center border border-dashed border-zinc-800 rounded-xl space-y-2">
-              <p className="text-sm font-semibold text-zinc-400">Nenhum gasto pessoal registrado ainda.</p>
+              <p className="text-sm font-semibold text-zinc-400">Nenhum gasto pessoal registrado no período selecionado.</p>
               <p className="text-xs text-zinc-500">
                 Utilize os botões <strong className="text-purple-400">+ Lançar Gasto Manual</strong> ou <strong className="text-purple-400">Escanear Foto / Print</strong> acima para adicionar seus gastos!
               </p>
@@ -415,7 +785,7 @@ export default function PersonalDashboardView() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800/60">
-                {transactions.map(tx => {
+                {filteredTransactions.map(tx => {
                   const catBadge = getCatBadgeInfo(tx.category);
 
                   return (
@@ -431,6 +801,11 @@ export default function PersonalDashboardView() {
                         {tx.currency === 'BRL' && (
                           <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded ml-1 border border-emerald-500/20">
                             🇧🇷 BR
+                          </span>
+                        )}
+                        {tx.currency === 'USD' && (
+                          <span className="text-[10px] bg-purple-500/10 text-purple-400 px-1.5 py-0.5 rounded ml-1 border border-purple-500/20">
+                            🇺🇸 US
                           </span>
                         )}
                       </td>
@@ -450,7 +825,7 @@ export default function PersonalDashboardView() {
                         )}
                       </td>
                       <td className={`p-3 text-right font-mono font-bold ${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                        {tx.type === 'income' ? '+' : '-'}{tx.currency === 'ARS' ? `$ ${tx.amount.toLocaleString()}` : `R$ ${tx.amount.toFixed(2)}`}
+                        {tx.type === 'income' ? '+' : '-'}{tx.currency === 'ARS' ? `$ ${tx.amount.toLocaleString()}` : tx.currency === 'USD' ? `$ ${tx.amount.toFixed(2)}` : `R$ ${tx.amount.toFixed(2)}`}
                       </td>
                       <td className="p-3 text-center">
                         <button
