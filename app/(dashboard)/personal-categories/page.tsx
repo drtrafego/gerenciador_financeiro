@@ -82,6 +82,14 @@ export default function PersonalCategoriesPage() {
   const [selectedEmoji, setSelectedEmoji] = useState('📂');
   const [selectedColor, setSelectedColor] = useState(COLOR_OPTIONS[0].class);
 
+  const handleResetDefaultCategories = () => {
+    if (confirm("Deseja restaurar as categorias, emojis e cores padrão do sistema?")) {
+      localStorage.setItem('personal_custom_categories', JSON.stringify(INITIAL_CATEGORIES));
+      window.dispatchEvent(new Event('user_pf_data_changed'));
+      alert("Categorias e emojis padrão restaurados com sucesso!");
+    }
+  };
+
   useEffect(() => {
     const loadCategories = () => {
       const storedCats = localStorage.getItem('personal_custom_categories');
@@ -89,18 +97,23 @@ export default function PersonalCategoriesPage() {
       if (storedCats) {
         try {
           const parsed = JSON.parse(storedCats);
-          if (Array.isArray(parsed)) {
+          if (Array.isArray(parsed) && parsed.length > 0) {
             currentCats = parsed.map((sc: any) => {
               const defaultMatch = INITIAL_CATEGORIES.find(ic => ic.id === sc.id || ic.namePt === sc.namePt);
+              const emoji = (sc.emoji && sc.emoji !== "📂") ? sc.emoji : (defaultMatch?.emoji || sc.emoji || "📂");
+              const color = (sc.color && sc.color !== "bg-indigo-500/20 text-indigo-400 border-indigo-500/30") ? sc.color : (defaultMatch?.color || sc.color || "bg-indigo-500/20 text-indigo-400 border-indigo-500/30");
+
               return {
                 ...defaultMatch,
                 ...sc,
-                emoji: sc.emoji || defaultMatch?.emoji || "📂",
-                color: sc.color || defaultMatch?.color || "bg-indigo-500/20 text-indigo-400 border-indigo-500/30"
+                emoji,
+                color
               };
             });
           }
         } catch (e) {}
+      } else {
+        localStorage.setItem('personal_custom_categories', JSON.stringify(INITIAL_CATEGORIES));
       }
 
       const storedTxs = localStorage.getItem('user_personal_transactions');
@@ -224,13 +237,22 @@ export default function PersonalCategoriesPage() {
           </p>
         </div>
 
-        <button
-          onClick={handleOpenAddModal}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/20 transition-all text-xs"
-        >
-          <Plus className="w-4 h-4" />
-          <span>+ Criar Nova Categoria Pessoal</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={handleResetDefaultCategories}
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs transition-all border border-zinc-700"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+            <span>Restaurar Emojis Padrão</span>
+          </button>
+          <button
+            onClick={handleOpenAddModal}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/20 transition-all text-xs"
+          >
+            <Plus className="w-4 h-4" />
+            <span>+ Criar Nova Categoria Pessoal</span>
+          </button>
+        </div>
       </div>
 
       {/* Categories Grid */}

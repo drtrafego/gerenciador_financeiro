@@ -87,19 +87,24 @@ export default function PersonalDashboardView() {
       if (storedCats) {
         try {
           const parsed = JSON.parse(storedCats);
-          if (Array.isArray(parsed)) {
+          if (Array.isArray(parsed) && parsed.length > 0) {
             const merged = parsed.map((sc: any) => {
               const defaultMatch = DEFAULT_CATEGORIES.find(dc => dc.id === sc.id || dc.namePt === sc.namePt);
+              const emoji = (sc.emoji && sc.emoji !== "📂") ? sc.emoji : (defaultMatch?.emoji || sc.emoji || "📂");
+              const color = (sc.color && sc.color !== "bg-indigo-500/20 text-indigo-400 border-indigo-500/30") ? sc.color : (defaultMatch?.color || sc.color || "bg-indigo-500/20 text-indigo-400 border-indigo-500/30");
+
               return {
                 ...defaultMatch,
                 ...sc,
-                emoji: sc.emoji || defaultMatch?.emoji || "📂",
-                color: sc.color || defaultMatch?.color || "bg-indigo-500/20 text-indigo-400 border-indigo-500/30"
+                emoji,
+                color
               };
             });
             setCategories(merged);
           }
         } catch (e) {}
+      } else {
+        setCategories(DEFAULT_CATEGORIES);
       }
 
       const storedChildren = localStorage.getItem('user_personal_children');
