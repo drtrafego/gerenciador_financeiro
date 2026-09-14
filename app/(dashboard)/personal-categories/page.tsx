@@ -30,15 +30,40 @@ interface CustomCategory {
   limit: number;
   spent: number;
   color: string;
+  emoji?: string;
 }
 
+const EMOJI_OPTIONS = [
+  "👦", "🍕", "🥳", "🏠", "💊", "🚗", "✈️", "🎓", 
+  "🐾", "🛒", "⚡", "🩺", "⛽", "💰", "🎮", "👗", 
+  "⚽", "🏖️", "🎁", "📚", "💼", "👶", "🐶", "☕", 
+  "🏋️", "🎨", "🎬", "🍔", "📱", "💡", "🛠️", "🚲"
+];
+
+const COLOR_OPTIONS = [
+  { name: "Rosa", class: "bg-pink-500/20 text-pink-400 border-pink-500/30", bgDot: "bg-pink-500" },
+  { name: "Esmeralda", class: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30", bgDot: "bg-emerald-500" },
+  { name: "Roxo", class: "bg-purple-500/20 text-purple-400 border-purple-500/30", bgDot: "bg-purple-500" },
+  { name: "Azul", class: "bg-blue-500/20 text-blue-400 border-blue-500/30", bgDot: "bg-blue-500" },
+  { name: "Rose", class: "bg-rose-500/20 text-rose-400 border-rose-500/30", bgDot: "bg-rose-500" },
+  { name: "Âmbar", class: "bg-amber-500/20 text-amber-400 border-amber-500/30", bgDot: "bg-amber-500" },
+  { name: "Ciano", class: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30", bgDot: "bg-cyan-500" },
+  { name: "Índigo", class: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30", bgDot: "bg-indigo-500" },
+  { name: "Violeta", class: "bg-violet-500/20 text-violet-400 border-violet-500/30", bgDot: "bg-violet-500" },
+  { name: "Laranja", class: "bg-orange-500/20 text-orange-400 border-orange-500/30", bgDot: "bg-orange-500" },
+  { name: "Teal", class: "bg-teal-500/20 text-teal-400 border-teal-500/30", bgDot: "bg-teal-500" },
+  { name: "Limão", class: "bg-lime-500/20 text-lime-400 border-lime-500/30", bgDot: "bg-lime-500" },
+  { name: "Fúcsia", class: "bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/30", bgDot: "bg-fuchsia-500" },
+  { name: "Sky", class: "bg-sky-500/20 text-sky-400 border-sky-500/30", bgDot: "bg-sky-500" },
+];
+
 const INITIAL_CATEGORIES: CustomCategory[] = [
-  { id: "cat-children", namePt: "Filhos & Família", nameEs: "Hijos y Familia", subcategories: ["Escola / Colegiatura", "Natação & Esportes", "Vestuário Infantil", "Brinquedos"], limit: 3500, spent: 0, color: "bg-pink-500/20 text-pink-400 border-pink-500/30" },
-  { id: "cat-food", namePt: "Alimentação & Supermercado", nameEs: "Alimentación y Supermercado", subcategories: ["Supermercado (Coto / Carrefour)", "Feira & Orgânicos", "Restaurantes & Delivery (iFood/PedidosYa)"], limit: 4500, spent: 0, color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" },
-  { id: "cat-leisure", namePt: "Lazer & Entretenimento", nameEs: "Ocio y Entretenimiento", subcategories: ["Passeios em Família", "Cinema & Shows", "Assinaturas (Netflix/Spotify)", "Viagens"], limit: 2000, spent: 0, color: "bg-purple-500/20 text-purple-400 border-purple-500/30" },
-  { id: "cat-housing", namePt: "Moradia & Serviços", nameEs: "Vivienda y Servicios", subcategories: ["Aluguel / Condomínio", "Energia (Edesur/Luz)", "Gás & Água", "Internet & Wifi"], limit: 5000, spent: 0, color: "bg-blue-500/20 text-blue-400 border-blue-500/30" },
-  { id: "cat-health", namePt: "Saúde & Bem-Estar", nameEs: "Salud y Bienestar", subcategories: ["Plano de Saúde (Prepaga/OSDE)", "Farmácia (Farmacity)", "Consultas & Exames"], limit: 2500, spent: 0, color: "bg-rose-500/20 text-rose-400 border-rose-500/30" },
-  { id: "cat-transport", namePt: "Transporte & Veículo", nameEs: "Transporte y Vehículo", subcategories: ["Combustível (YPF/Shell)", "Uber / Cabify", "Manutenção Veicular", "Seguro Auto"], limit: 1800, spent: 0, color: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
+  { id: "cat-children", namePt: "Filhos & Família", nameEs: "Hijos y Familia", subcategories: ["Escola / Colegiatura", "Natação & Esportes", "Vestuário Infantil", "Brinquedos"], limit: 3500, spent: 0, color: "bg-pink-500/20 text-pink-400 border-pink-500/30", emoji: "👦" },
+  { id: "cat-food", namePt: "Alimentação & Supermercado", nameEs: "Alimentación y Supermercado", subcategories: ["Supermercado (Coto / Carrefour)", "Feira & Orgânicos", "Restaurantes & Delivery (iFood/PedidosYa)"], limit: 4500, spent: 0, color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30", emoji: "🍕" },
+  { id: "cat-leisure", namePt: "Lazer & Entretenimento", nameEs: "Ocio y Entretenimiento", subcategories: ["Passeios em Família", "Cinema & Shows", "Assinaturas (Netflix/Spotify)", "Viagens"], limit: 2000, spent: 0, color: "bg-purple-500/20 text-purple-400 border-purple-500/30", emoji: "🥳" },
+  { id: "cat-housing", namePt: "Moradia & Serviços", nameEs: "Vivienda y Servicios", subcategories: ["Aluguel / Condomínio", "Energia (Edesur/Luz)", "Gás & Água", "Internet & Wifi"], limit: 5000, spent: 0, color: "bg-blue-500/20 text-blue-400 border-blue-500/30", emoji: "🏠" },
+  { id: "cat-health", namePt: "Saúde & Bem-Estar", nameEs: "Salud y Bienestar", subcategories: ["Plano de Saúde (Prepaga/OSDE)", "Farmácia (Farmacity)", "Consultas & Exames"], limit: 2500, spent: 0, color: "bg-rose-500/20 text-rose-400 border-rose-500/30", emoji: "💊" },
+  { id: "cat-transport", namePt: "Transporte & Veículo", nameEs: "Transporte y Vehículo", subcategories: ["Combustível (YPF/Shell)", "Uber / Cabify", "Manutenção Veicular", "Seguro Auto"], limit: 1800, spent: 0, color: "bg-amber-500/20 text-amber-400 border-amber-500/30", emoji: "🚗" },
 ];
 
 export default function PersonalCategoriesPage() {
@@ -54,6 +79,8 @@ export default function PersonalCategoriesPage() {
   const [nameEs, setNameEs] = useState('');
   const [limit, setLimit] = useState<number>(1000);
   const [subcategoriesInput, setSubcategoriesInput] = useState('');
+  const [selectedEmoji, setSelectedEmoji] = useState('📂');
+  const [selectedColor, setSelectedColor] = useState(COLOR_OPTIONS[0].class);
 
   useEffect(() => {
     const storedCats = localStorage.getItem('personal_custom_categories');
@@ -96,6 +123,8 @@ export default function PersonalCategoriesPage() {
     setNameEs('');
     setLimit(1500);
     setSubcategoriesInput('');
+    setSelectedEmoji('📂');
+    setSelectedColor(COLOR_OPTIONS[0].class);
     setShowModal(true);
   };
 
@@ -105,6 +134,8 @@ export default function PersonalCategoriesPage() {
     setNameEs(cat.nameEs);
     setLimit(cat.limit);
     setSubcategoriesInput(cat.subcategories.join(', '));
+    setSelectedEmoji(cat.emoji || '📂');
+    setSelectedColor(cat.color || COLOR_OPTIONS[0].class);
     setShowModal(true);
   };
 
@@ -119,7 +150,15 @@ export default function PersonalCategoriesPage() {
     if (editingId) {
       const updated = categories.map(c => 
         c.id === editingId 
-          ? { ...c, namePt, nameEs: nameEs || namePt, limit, subcategories: subcats }
+          ? { 
+              ...c, 
+              namePt, 
+              nameEs: nameEs || namePt, 
+              limit, 
+              subcategories: subcats,
+              emoji: selectedEmoji,
+              color: selectedColor
+            }
           : c
       );
       saveToStorage(updated);
@@ -131,7 +170,8 @@ export default function PersonalCategoriesPage() {
         subcategories: subcats.length ? subcats : ["Geral"],
         limit,
         spent: 0,
-        color: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30"
+        color: selectedColor,
+        emoji: selectedEmoji
       };
       saveToStorage([...categories, newCat]);
     }
@@ -156,7 +196,7 @@ export default function PersonalCategoriesPage() {
             {dict.categories.title}
           </h2>
           <p className="text-sm text-zinc-400">
-            Personalize suas categorias de gastos pessoais, defina limites mensais e adicione subcategorias
+            Personalize suas categorias de gastos pessoais com emojis, temas de cores vibrantes, limites mensais e subcategorias
           </p>
         </div>
 
@@ -180,11 +220,13 @@ export default function PersonalCategoriesPage() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className={`p-2.5 rounded-xl border ${cat.color}`}>
-                      <PieIcon className="w-5 h-5" />
+                    <div className={`w-10 h-10 rounded-xl border flex items-center justify-center text-xl shadow-inner ${cat.color}`}>
+                      {cat.emoji ? <span>{cat.emoji}</span> : <PieIcon className="w-5 h-5" />}
                     </div>
                     <div>
-                      <h3 className="text-sm font-bold text-white">{name}</h3>
+                      <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+                        <span>{name}</span>
+                      </h3>
                       <p className="text-xs text-zinc-400">
                         Meta Mensal: <strong className="text-zinc-200">R$ {cat.limit.toLocaleString()}</strong>
                       </p>
@@ -193,7 +235,7 @@ export default function PersonalCategoriesPage() {
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => handleOpenEditModal(cat)}
-                      title="Editar limite/subcategorias"
+                      title="Editar limite/subcategorias/emoji/cor"
                       className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
                     >
                       <Edit2 size={14} />
@@ -255,13 +297,57 @@ export default function PersonalCategoriesPage() {
       {/* Modal Criar / Editar Categoria */}
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="p-6 rounded-2xl border border-zinc-800 w-full max-w-md bg-zinc-900 space-y-4 shadow-2xl">
+          <div className="p-6 rounded-2xl border border-zinc-800 w-full max-w-lg bg-zinc-900 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
             <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <PieIcon className="w-5 h-5 text-indigo-400" />
+              <span className="text-xl">{selectedEmoji}</span>
               {editingId ? "Editar Categoria Pessoal" : "Criar Nova Categoria Pessoal"}
             </h3>
 
             <form onSubmit={handleSaveCategory} className="space-y-4">
+              {/* Emoji Picker Grid */}
+              <div className="space-y-1.5">
+                <label className="text-xs text-zinc-400 font-semibold">Escolha um Emoji 🎨</label>
+                <div className="grid grid-cols-8 gap-1.5 bg-zinc-950 p-2.5 rounded-xl border border-zinc-800 max-h-32 overflow-y-auto">
+                  {EMOJI_OPTIONS.map((em) => (
+                    <button
+                      key={em}
+                      type="button"
+                      onClick={() => setSelectedEmoji(em)}
+                      className={`p-1.5 text-lg rounded-lg transition-all text-center flex items-center justify-center ${
+                        selectedEmoji === em
+                          ? 'bg-indigo-600/30 border border-indigo-500 scale-110'
+                          : 'hover:bg-zinc-800 border border-transparent'
+                      }`}
+                    >
+                      {em}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Color Theme Selector Grid */}
+              <div className="space-y-1.5">
+                <label className="text-xs text-zinc-400 font-semibold">Cor do Tema 🌈</label>
+                <div className="flex flex-wrap gap-2 bg-zinc-950 p-2.5 rounded-xl border border-zinc-800">
+                  {COLOR_OPTIONS.map((col) => (
+                    <button
+                      key={col.name}
+                      type="button"
+                      onClick={() => setSelectedColor(col.class)}
+                      title={col.name}
+                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
+                        selectedColor === col.class
+                          ? 'border-white bg-zinc-800 text-white shadow-md'
+                          : 'border-zinc-800 text-zinc-400 hover:text-zinc-200'
+                      }`}
+                    >
+                      <span className={`w-3 h-3 rounded-full ${col.bgDot}`} />
+                      <span>{col.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div className="space-y-1">
                 <label className="text-xs text-zinc-400 font-semibold">Nome em Português 🇧🇷</label>
                 <input
