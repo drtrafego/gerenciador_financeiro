@@ -52,6 +52,7 @@ export default function Sidebar() {
   const { mode, setMode, lang, setLang } = useProfile();
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const [isDesktop, setIsDesktop] = useState(true);
+  const [childrenList, setChildrenList] = useState<string[]>(["Matheus", "Sofia"]);
 
   const nav = mode === "pf" ? navPF : navPJ;
 
@@ -59,6 +60,15 @@ export default function Sidebar() {
     setMode(newMode);
     router.push("/dashboard");
   };
+
+  useEffect(() => {
+    const storedChildren = localStorage.getItem("user_personal_children");
+    if (storedChildren) {
+      try {
+        setChildrenList(JSON.parse(storedChildren));
+      } catch (e) {}
+    }
+  }, []);
 
   useEffect(() => {
     const mql = window.matchMedia("(min-width: 768px)");
@@ -122,7 +132,7 @@ export default function Sidebar() {
             <span className="text-[10px] text-zinc-400 font-medium truncate flex items-center gap-1">
               {mode === "pf" ? (
                 <>
-                  <Baby className="w-3 h-3 text-pink-400 inline" /> Matheus & Sofia
+                  <Baby className="w-3 h-3 text-pink-400 inline" /> {childrenList.length > 0 ? childrenList.join(" & ") : "Família"}
                 </>
               ) : (
                 "Agência de Tráfego"
