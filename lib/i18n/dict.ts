@@ -48,6 +48,19 @@ export const DICTIONARY = {
       childTag: "Vincular a Filho/Dependente?",
       saveTransaction: "Confirmar e Salvar Transação Pessoal",
       sampleReceiptsTitle: "Ou testar com comprovantes de exemplo:"
+    },
+    categories: {
+      title: "Categorias & Orçamento Pessoal",
+      subtitle: "Defina metas mensais por categoria para manter o orçamento familiar sob controle",
+      spentOfLimit: "gasto de"
+    },
+    creditCards: {
+      title: "Cartões de Crédito (ARS & BRL)",
+      subtitle: "Acompanhe faturas em Pesos Argentinos (ARS) e Reais (BRL)",
+      closingDay: "Dia do Fechamento",
+      dueDate: "Dia do Vencimento",
+      currentInvoice: "Fatura Atual",
+      limit: "Limite Total"
     }
   },
   es: {
@@ -96,6 +109,19 @@ export const DICTIONARY = {
       childTag: "¿Vincular a Hijo/Dependiente?",
       saveTransaction: "Confirmar y Guardar Transacción Personal",
       sampleReceiptsTitle: "O probar con comprobantes de ejemplo:"
+    },
+    categories: {
+      title: "Categorías y Presupuesto Personal",
+      subtitle: "Define metas mensuales por categoría para mantener el presupuesto familiar bajo control",
+      spentOfLimit: "gastado de"
+    },
+    creditCards: {
+      title: "Tarjetas de Crédito (ARS y BRL)",
+      subtitle: "Sigue tus resúmenes en Pesos Argentinos (ARS) y Reales (BRL)",
+      closingDay: "Día de Cierre",
+      dueDate: "Día de Vencimiento",
+      currentInvoice: "Resumen Actual",
+      limit: "Límite Total"
     }
   }
 };
