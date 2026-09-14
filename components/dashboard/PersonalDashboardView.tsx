@@ -682,65 +682,45 @@ export default function PersonalDashboardView() {
         </div>
       </div>
 
-      {/* Grid Central */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Card Filhos Dinâmico */}
-        <div className="lg:col-span-2 p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-pink-950/20 to-zinc-900 space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-pink-300 flex items-center gap-2">
-              <Baby className="w-4 h-4 text-pink-400" />
-              {dict.dashboard.childExpenses}
-            </h3>
-            <span className="text-[10px] bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full font-medium">
-              {childrenList.length > 0 ? childrenList.join(" & ") : "Sem dependentes"}
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {childrenList.length === 0 ? (
-              <p className="text-xs text-zinc-500 italic p-3">Nenhum dependente cadastrado. Adicione em Configurações.</p>
-            ) : (
-              childrenList.map((child) => {
-                const childTotalBRL = filteredTransactions
-                  .filter(t => t.childTag === child && t.type === 'expense')
-                  .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
-
-                return (
-                  <div key={child} className="p-4 rounded-xl bg-zinc-900/90 border border-zinc-800 flex justify-between items-center">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="w-6 h-6 rounded-full bg-pink-500/20 text-pink-300 flex items-center justify-center font-bold text-xs">
-                          {child.charAt(0).toUpperCase()}
-                        </span>
-                        <h4 className="text-sm font-bold text-white">{child}</h4>
-                      </div>
-                      <p className="text-xs text-zinc-400">Escola, vestuário & saúde</p>
-                    </div>
-                    <span className="text-sm font-bold text-pink-400 font-mono">
-                      R$ {childTotalBRL.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    </span>
-                  </div>
-                );
-              })
-            )}
-          </div>
+      {/* Card Filhos Dinâmico */}
+      <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-pink-950/20 to-zinc-900 space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold text-pink-300 flex items-center gap-2">
+            <Baby className="w-4 h-4 text-pink-400" />
+            {dict.dashboard.childExpenses}
+          </h3>
+          <span className="text-[10px] bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full font-medium">
+            {childrenList.length > 0 ? childrenList.join(" & ") : "Sem dependentes"}
+          </span>
         </div>
 
-        {/* Cotações */}
-        <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 space-y-3">
-          <h4 className="text-xs font-bold text-zinc-300 uppercase tracking-wider">
-            {dict.dashboard.exchangeRates}
-          </h4>
-          <div className="space-y-2 text-xs">
-            <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 flex justify-between items-center">
-              <span className="text-zinc-400">1 USD (Dólar)</span>
-              <span className="font-mono font-bold text-white">5.65 BRL</span>
-            </div>
-            <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 flex justify-between items-center">
-              <span className="text-zinc-400">1 BRL (Real)</span>
-              <span className="font-mono font-bold text-white">233.60 ARS</span>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {childrenList.length === 0 ? (
+            <p className="text-xs text-zinc-500 italic p-3">Nenhum dependente cadastrado. Adicione em Configurações.</p>
+          ) : (
+            childrenList.map((child) => {
+              const childTotalBRL = filteredTransactions
+                .filter(t => t.childTag === child && t.type === 'expense')
+                .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+
+              return (
+                <div key={child} className="p-4 rounded-xl bg-zinc-900/90 border border-zinc-800 flex justify-between items-center">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-pink-500/20 text-pink-300 flex items-center justify-center font-bold text-xs">
+                        {child.charAt(0).toUpperCase()}
+                      </span>
+                      <h4 className="text-sm font-bold text-white">{child}</h4>
+                    </div>
+                    <p className="text-xs text-zinc-400">Escola, vestuário & saúde</p>
+                  </div>
+                  <span className="text-sm font-bold text-pink-400 font-mono">
+                    R$ {childTotalBRL.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </span>
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
 
