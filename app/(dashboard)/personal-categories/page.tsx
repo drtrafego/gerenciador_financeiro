@@ -33,12 +33,12 @@ interface CustomCategory {
 }
 
 const INITIAL_CATEGORIES: CustomCategory[] = [
-  { id: "cat-children", namePt: "Filhos & Família", nameEs: "Hijos y Familia", subcategories: ["Escola / Colegiatura", "Natação & Esportes", "Vestuário Infantil", "Brinquedos"], limit: 3500, spent: 2850, color: "bg-pink-500/20 text-pink-400 border-pink-500/30" },
-  { id: "cat-food", namePt: "Alimentação & Supermercado", nameEs: "Alimentación y Supermercado", subcategories: ["Supermercado (Coto / Carrefour)", "Feira & Orgânicos", "Restaurantes & Delivery (iFood/PedidosYa)"], limit: 4500, spent: 3420, color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" },
-  { id: "cat-leisure", namePt: "Lazer & Entretenimento", nameEs: "Ocio y Entretenimiento", subcategories: ["Passeios em Família", "Cinema & Shows", "Assinaturas (Netflix/Spotify)", "Viagens"], limit: 2000, spent: 1200, color: "bg-purple-500/20 text-purple-400 border-purple-500/30" },
-  { id: "cat-housing", namePt: "Moradia & Serviços", nameEs: "Vivienda y Servicios", subcategories: ["Aluguel / Condomínio", "Energia (Edesur/Luz)", "Gás & Água", "Internet & Wifi"], limit: 5000, spent: 4100, color: "bg-blue-500/20 text-blue-400 border-blue-500/30" },
-  { id: "cat-health", namePt: "Saúde & Bem-Estar", nameEs: "Salud y Bienestar", subcategories: ["Plano de Saúde (Prepaga/OSDE)", "Farmácia (Farmacity)", "Consultas & Exames"], limit: 2500, spent: 1840, color: "bg-rose-500/20 text-rose-400 border-rose-500/30" },
-  { id: "cat-transport", namePt: "Transporte & Veículo", nameEs: "Transporte y Vehículo", subcategories: ["Combustível (YPF/Shell)", "Uber / Cabify", "Manutenção Veicular", "Seguro Auto"], limit: 1800, spent: 1450, color: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
+  { id: "cat-children", namePt: "Filhos & Família", nameEs: "Hijos y Familia", subcategories: ["Escola / Colegiatura", "Natação & Esportes", "Vestuário Infantil", "Brinquedos"], limit: 3500, spent: 0, color: "bg-pink-500/20 text-pink-400 border-pink-500/30" },
+  { id: "cat-food", namePt: "Alimentação & Supermercado", nameEs: "Alimentación y Supermercado", subcategories: ["Supermercado (Coto / Carrefour)", "Feira & Orgânicos", "Restaurantes & Delivery (iFood/PedidosYa)"], limit: 4500, spent: 0, color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30" },
+  { id: "cat-leisure", namePt: "Lazer & Entretenimento", nameEs: "Ocio y Entretenimiento", subcategories: ["Passeios em Família", "Cinema & Shows", "Assinaturas (Netflix/Spotify)", "Viagens"], limit: 2000, spent: 0, color: "bg-purple-500/20 text-purple-400 border-purple-500/30" },
+  { id: "cat-housing", namePt: "Moradia & Serviços", nameEs: "Vivienda y Servicios", subcategories: ["Aluguel / Condomínio", "Energia (Edesur/Luz)", "Gás & Água", "Internet & Wifi"], limit: 5000, spent: 0, color: "bg-blue-500/20 text-blue-400 border-blue-500/30" },
+  { id: "cat-health", namePt: "Saúde & Bem-Estar", nameEs: "Salud y Bienestar", subcategories: ["Plano de Saúde (Prepaga/OSDE)", "Farmácia (Farmacity)", "Consultas & Exames"], limit: 2500, spent: 0, color: "bg-rose-500/20 text-rose-400 border-rose-500/30" },
+  { id: "cat-transport", namePt: "Transporte & Veículo", nameEs: "Transporte y Vehículo", subcategories: ["Combustível (YPF/Shell)", "Uber / Cabify", "Manutenção Veicular", "Seguro Auto"], limit: 1800, spent: 0, color: "bg-amber-500/20 text-amber-400 border-amber-500/30" },
 ];
 
 export default function PersonalCategoriesPage() {
@@ -56,12 +56,33 @@ export default function PersonalCategoriesPage() {
   const [subcategoriesInput, setSubcategoriesInput] = useState('');
 
   useEffect(() => {
-    const stored = localStorage.getItem('personal_custom_categories');
-    if (stored) {
+    const storedCats = localStorage.getItem('personal_custom_categories');
+    let currentCats = INITIAL_CATEGORIES;
+    if (storedCats) {
       try {
-        setCategories(JSON.parse(stored));
+        currentCats = JSON.parse(storedCats);
       } catch (e) {}
     }
+
+    const storedTxs = localStorage.getItem('user_personal_transactions');
+    let personalTxs: any[] = [];
+    if (storedTxs) {
+      try {
+        personalTxs = JSON.parse(storedTxs);
+      } catch (e) {}
+    }
+
+    const rates: Record<string, number> = { ARS: 233.6, BRL: 1, USD: 0.177 };
+
+    const calculated = currentCats.map(cat => {
+      const actualSpentBRL = personalTxs
+        .filter(t => t.type === 'expense' && (t.category === cat.namePt || t.category === cat.nameEs))
+        .reduce((sum, t) => sum + (t.currency === 'ARS' ? t.amount / rates.ARS : t.currency === 'USD' ? t.amount * 5.65 : t.amount), 0);
+
+      return { ...cat, spent: actualSpentBRL };
+    });
+
+    setCategories(calculated);
   }, []);
 
   const saveToStorage = (updated: CustomCategory[]) => {
