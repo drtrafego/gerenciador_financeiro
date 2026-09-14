@@ -60,6 +60,7 @@ export default function PersonalDashboardView() {
 
   const [transactions, setTransactions] = useState<PersonalTransaction[]>([]);
   const [categories, setCategories] = useState<CustomCategory[]>(DEFAULT_CATEGORIES);
+  const [childrenList, setChildrenList] = useState<string[]>(["Matheus", "Sofia"]);
   const [showManualModal, setShowManualModal] = useState(false);
 
   // Manual Form State
@@ -72,7 +73,7 @@ export default function PersonalDashboardView() {
   const [category, setCategory] = useState('Alimentação & Supermercado');
   const [childTag, setChildTag] = useState('');
 
-  // Carregar transações e categorias
+  // Carregar transações, categorias e lista de dependentes
   useEffect(() => {
     const savedTxs = localStorage.getItem('user_personal_transactions');
     if (savedTxs) {
@@ -85,6 +86,13 @@ export default function PersonalDashboardView() {
     if (storedCats) {
       try {
         setCategories(JSON.parse(storedCats));
+      } catch (e) {}
+    }
+
+    const storedChildren = localStorage.getItem('user_personal_children');
+    if (storedChildren) {
+      try {
+        setChildrenList(JSON.parse(storedChildren));
       } catch (e) {}
     }
   }, []);
@@ -137,15 +145,6 @@ export default function PersonalDashboardView() {
     .reduce((acc, t) => acc + (t.currency === 'ARS' ? t.amount / rates.ARS : t.currency === 'USD' ? t.amount * 5.65 : t.amount), 0);
 
   const balanceBRL = totalIncomeBRL - totalExpensesBRL;
-
-  // Gastos por dependente
-  const matheusTotalBRL = transactions
-    .filter(t => t.childTag === 'Matheus' && t.type === 'expense')
-    .reduce((acc, t) => acc + (t.currency === 'ARS' ? t.amount / rates.ARS : t.amount), 0);
-
-  const sofiaTotalBRL = transactions
-    .filter(t => t.childTag === 'Sofia' && t.type === 'expense')
-    .reduce((acc, t) => acc + (t.currency === 'ARS' ? t.amount / rates.ARS : t.amount), 0);
 
   // Helper para buscar emoji e cor da categoria
   const getCatBadgeInfo = (catName: string) => {
@@ -285,7 +284,7 @@ export default function PersonalDashboardView() {
 
       {/* Grid Central */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Card Filhos */}
+        {/* Card Filhos Dinâmico */}
         <div className="lg:col-span-2 p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-pink-950/20 to-zinc-900 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-pink-300 flex items-center gap-2">
@@ -293,40 +292,37 @@ export default function PersonalDashboardView() {
               {dict.dashboard.childExpenses}
             </h3>
             <span className="text-[10px] bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full font-medium">
-              Matheus & Sofia
+              {childrenList.length > 0 ? childrenList.join(" & ") : "Sem dependentes"}
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="p-4 rounded-xl bg-zinc-900/90 border border-zinc-800 flex justify-between items-center">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-pink-500/20 text-pink-300 flex items-center justify-center font-bold text-xs">
-                    M
-                  </span>
-                  <h4 className="text-sm font-bold text-white">Matheus</h4>
-                </div>
-                <p className="text-xs text-zinc-400">Escola, materiais e atividades</p>
-              </div>
-              <span className="text-sm font-bold text-pink-400 font-mono">
-                R$ {matheusTotalBRL.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-              </span>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {childrenList.length === 0 ? (
+              <p className="text-xs text-zinc-500 italic p-3">Nenhum dependente cadastrado. Adicione em Configurações.</p>
+            ) : (
+              childrenList.map((child) => {
+                const childTotalBRL = transactions
+                  .filter(t => t.childTag === child && t.type === 'expense')
+                  .reduce((acc, t) => acc + (t.currency === 'ARS' ? t.amount / rates.ARS : t.currency === 'USD' ? t.amount * 5.65 : t.amount), 0);
 
-            <div className="p-4 rounded-xl bg-zinc-900/90 border border-zinc-800 flex justify-between items-center">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-pink-500/20 text-pink-300 flex items-center justify-center font-bold text-xs">
-                    S
-                  </span>
-                  <h4 className="text-sm font-bold text-white">Sofia</h4>
-                </div>
-                <p className="text-xs text-zinc-400">Natação, vestuário e saúde</p>
-              </div>
-              <span className="text-sm font-bold text-pink-400 font-mono">
-                R$ {sofiaTotalBRL.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-              </span>
-            </div>
+                return (
+                  <div key={child} className="p-4 rounded-xl bg-zinc-900/90 border border-zinc-800 flex justify-between items-center">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full bg-pink-500/20 text-pink-300 flex items-center justify-center font-bold text-xs">
+                          {child.charAt(0).toUpperCase()}
+                        </span>
+                        <h4 className="text-sm font-bold text-white">{child}</h4>
+                      </div>
+                      <p className="text-xs text-zinc-400">Escola, vestuário & saúde</p>
+                    </div>
+                    <span className="text-sm font-bold text-pink-400 font-mono">
+                      R$ {childTotalBRL.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 
@@ -564,8 +560,19 @@ export default function PersonalDashboardView() {
                   <Baby size={13} className="text-pink-400" />
                   Vincular a Filho / Dependente
                 </label>
-                <div className="flex gap-2">
-                  {["", "Matheus", "Sofia"].map((child) => (
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setChildTag('')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                      !childTag
+                        ? 'bg-purple-500/20 border-purple-500/40 text-purple-300 font-bold'
+                        : 'border-zinc-800 text-zinc-400 hover:text-white'
+                    }`}
+                  >
+                    Nenhum
+                  </button>
+                  {childrenList.map((child) => (
                     <button
                       key={child}
                       type="button"
@@ -576,7 +583,7 @@ export default function PersonalDashboardView() {
                           : 'border-zinc-800 text-zinc-400 hover:text-white'
                       }`}
                     >
-                      {child ? `👶 ${child}` : 'Nenhum'}
+                      👶 {child}
                     </button>
                   ))}
                 </div>

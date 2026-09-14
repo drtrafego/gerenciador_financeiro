@@ -25,6 +25,7 @@ export default function ScanPage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState<ScannedReceiptResult | null>(null);
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [childrenList, setChildrenList] = useState<string[]>(["Matheus", "Sofia"]);
 
   // Form State
   const [date, setDate] = useState('');
@@ -34,6 +35,15 @@ export default function ScanPage() {
   const [category, setCategory] = useState('');
   const [childTag, setChildTag] = useState('');
   const [languageDetected, setLanguageDetected] = useState<'pt' | 'es'>('es');
+
+  React.useEffect(() => {
+    const storedChildren = localStorage.getItem('user_personal_children');
+    if (storedChildren) {
+      try {
+        setChildrenList(JSON.parse(storedChildren));
+      } catch (e) {}
+    }
+  }, []);
 
   const handleSelectSample = async (sample: typeof SAMPLE_RECEIPTS[0]) => {
     setAnalyzing(true);
@@ -237,8 +247,19 @@ export default function ScanPage() {
                 <Baby className="w-3.5 h-3.5 text-pink-400" />
                 {dict.scan.childTag}
               </label>
-              <div className="flex gap-3">
-                {["", "Matheus", "Sofia"].map((child) => (
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => setChildTag('')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                    !childTag
+                      ? 'bg-purple-500/20 border-purple-500/40 text-purple-300 font-bold'
+                      : 'border-zinc-800 text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  Não vincular
+                </button>
+                {childrenList.map((child) => (
                   <button
                     key={child}
                     type="button"
@@ -249,7 +270,7 @@ export default function ScanPage() {
                         : 'border-zinc-800 text-zinc-400 hover:text-white'
                     }`}
                   >
-                    {child ? `👶 ${child}` : 'Não vincular'}
+                    👶 {child}
                   </button>
                 ))}
               </div>
