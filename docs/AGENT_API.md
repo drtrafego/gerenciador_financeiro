@@ -658,6 +658,129 @@ Resposta 200:
 
 Resposta 404 se ainda não houver nenhuma cotação salva.
 
+### Finanças Pessoais (PF)
+
+Endpoints dedicados à gestão financeira pessoal (PF), transações pessoais em multi-moeda (ARS, BRL, USD), controle de dependentes/filhos, categorias customizadas com emojis e cartões de crédito.
+
+Base das rotas: `/api/agent/v1/personal`
+
+#### `GET /personal/transactions`
+
+Lista transações pessoais.
+
+Headers: `Authorization: Bearer <token>`
+Query: `type` ("expense" | "income"), `category` (string), `childTag` (string), `currency` ("ARS" | "BRL" | "USD")
+
+Resposta 200:
+```json
+{
+  "data": [
+    {
+      "id": "tx-pf-178941",
+      "date": "2026-09-14",
+      "merchant": "Colegio / Escolar",
+      "description": "Mensalidade escolar",
+      "amount": 45000,
+      "currency": "ARS",
+      "type": "expense",
+      "category": "Filhos & Família",
+      "childTag": "Matheus",
+      "language": "pt"
+    }
+  ],
+  "count": 1
+}
+```
+
+#### `POST /personal/transactions`
+
+Lança ou atualiza uma transação pessoal.
+
+Body:
+| campo | tipo | obrigatório |
+|---|---|---|
+| date | string "YYYY-MM-DD" | sim |
+| merchant | string | sim |
+| description | string \| null | não |
+| amount | number | sim |
+| currency | "ARS" \| "BRL" \| "USD" | sim |
+| type | "expense" \| "income" | sim |
+| category | string | sim |
+| childTag | string \| null | não |
+
+Resposta 201: objeto da transação criada.
+
+#### `DELETE /personal/transactions`
+
+Remove uma transação pessoal por ID.
+
+Query: `id` (string)
+
+Resposta 200:
+```json
+{ "success": true, "deletedId": "tx-pf-178941" }
+```
+
+#### `GET /personal/categories`
+
+Lista categorias pessoais ativas com metas de orçamento, emojis e tema de cores.
+
+Resposta 200:
+```json
+{
+  "data": [
+    {
+      "id": "cat-children",
+      "namePt": "Filhos & Família",
+      "nameEs": "Hijos y Familia",
+      "limit": 3500,
+      "color": "bg-pink-500/20 text-pink-400 border-pink-500/30",
+      "emoji": "👦"
+    }
+  ]
+}
+```
+
+#### `POST /personal/categories`
+
+Salva ou reescreve o catálogo de categorias pessoais e metas.
+
+Body: array de objetos `CustomCategory`.
+
+Resposta 200:
+```json
+{ "success": true, "count": 6 }
+```
+
+#### `GET /personal/credit-cards`
+
+Lista cartões de crédito pessoais, limites, faturas bases e compras parceladas.
+
+#### `POST /personal/credit-cards`
+
+Atualiza cartões ou registra nova compra parcelada.
+
+#### `GET /personal/dependents`
+
+Lista dependentes/filhos vinculados às finanças pessoais.
+
+Resposta 200:
+```json
+{ "data": ["Matheus", "Sofia"] }
+```
+
+#### `POST /personal/dependents`
+
+Atualiza a lista de dependentes.
+
+Body: `{ "dependents": ["Matheus", "Sofia", "Lucas"] }`
+
+#### `POST /personal/scan`
+
+Processa imagem ou comprovante via Inteligência Artificial para extração automática de gasto (estabelecimento, valor, moeda, categoria e data).
+
+Body: `{ "receiptText": "comprovante de texto..." }` ou `{ "imageBase64": "..." }`
+
 ## 3. Paginação
 
 Toda lista aceita `limit` (padrão 50, máximo 200) e `offset` (padrão 0) na query string. Resposta sempre no formato:
