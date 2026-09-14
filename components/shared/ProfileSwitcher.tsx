@@ -3,55 +3,66 @@
 import React from "react";
 import { useProfile } from "@/lib/contexts/ProfileContext";
 import { Building2, Home, Globe } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function ProfileSwitcher() {
   const { mode, setMode, lang, setLang } = useProfile();
+  const router = useRouter();
+
+  const handleSwitchMode = (newMode: "pj" | "pf") => {
+    setMode(newMode);
+    if (newMode === "pf") {
+      router.push("/dashboard");
+    } else {
+      router.push("/dashboard");
+    }
+  };
 
   return (
     <div className="flex items-center gap-2">
-      {/* Selector de Perfil PJ vs PF */}
-      <div className="flex items-center bg-zinc-900 border border-zinc-800 rounded-lg p-1">
+      {/* Selector de Perfil PJ vs PF super visível */}
+      <div className="flex items-center bg-zinc-950 p-1 rounded-xl border border-zinc-800 shadow-md">
         <button
-          onClick={() => setMode("pj")}
-          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${
+          onClick={() => handleSwitchMode("pj")}
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
             mode === "pj"
-              ? "bg-indigo-600 text-white shadow-sm"
-              : "text-zinc-400 hover:text-zinc-200"
+              ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 ring-2 ring-indigo-500/50"
+              : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
           }`}
         >
-          <Building2 size={14} />
-          <span>Empresa (PJ)</span>
+          <Building2 size={15} />
+          <span>🏢 EMPRESA (PJ)</span>
         </button>
 
         <button
-          onClick={() => setMode("pf")}
-          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition-all ${
+          onClick={() => handleSwitchMode("pf")}
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all ${
             mode === "pf"
-              ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm"
-              : "text-zinc-400 hover:text-zinc-200"
+              ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-600/30 ring-2 ring-purple-500/50 animate-pulse"
+              : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900"
           }`}
         >
-          <Home size={14} />
-          <span>Pessoal (PF)</span>
+          <Home size={15} />
+          <span>🏠 PESSOAL (PF)</span>
         </button>
       </div>
 
       {/* Selector Bilíngue (Visível no modo PF) */}
       {mode === "pf" && (
-        <div className="hidden sm:flex items-center bg-zinc-900 border border-zinc-800 rounded-lg p-1">
-          <Globe size={13} className="text-indigo-400 ml-1.5 mr-0.5" />
+        <div className="hidden sm:flex items-center bg-zinc-950 border border-zinc-800 rounded-xl p-1">
+          <Globe size={13} className="text-purple-400 ml-1.5 mr-1" />
           <button
             onClick={() => setLang("pt")}
-            className={`px-1.5 py-0.5 rounded text-[11px] font-bold ${
-              lang === "pt" ? "bg-indigo-600 text-white" : "text-zinc-400 hover:text-white"
+            className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all ${
+              lang === "pt" ? "bg-purple-600 text-white shadow" : "text-zinc-400 hover:text-white"
             }`}
           >
             PT 🇧🇷
           </button>
           <button
             onClick={() => setLang("es")}
-            className={`px-1.5 py-0.5 rounded text-[11px] font-bold ${
-              lang === "es" ? "bg-indigo-600 text-white" : "text-zinc-400 hover:text-white"
+            className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all ${
+              lang === "es" ? "bg-purple-600 text-white shadow" : "text-zinc-400 hover:text-white"
             }`}
           >
             ES 🇦🇷
