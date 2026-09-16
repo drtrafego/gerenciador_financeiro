@@ -43,5 +43,7 @@ postgres_data/
 # Local private data & exports (never committed to git)
 data/
 *.local.json
+*.local.ts
+lib/localData.ts
 personal_data/
 *.private.*

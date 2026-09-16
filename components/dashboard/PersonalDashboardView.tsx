@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useProfile } from "@/lib/contexts/ProfileContext";
 import { DICTIONARY, Currency } from "@/lib/i18n/dict";
-import { REAL_GALICIA_TRANSACTIONS } from "@/lib/ai/receiptScanner";
+import { DEMO_PERSONAL_TRANSACTIONS } from "@/lib/ai/receiptScanner";
 import PeriodBar from "@/components/shared/PeriodBar";
 import { resolvePeriod } from "@/lib/period";
 import DateRangePicker from "@/components/shared/DateRangePicker";
@@ -129,10 +129,10 @@ export default function PersonalDashboardView() {
   };
 
   const [mounted, setMounted] = useState(false);
-  const [transactions, setTransactions] = useState<PersonalTransaction[]>([]);
+  const [transactions, setTransactions] = useState<PersonalTransaction[]>(DEMO_PERSONAL_TRANSACTIONS || []);
   const [categories, setCategories] = useState<CustomCategory[]>(DEFAULT_CATEGORIES);
   const [childrenList, setChildrenList] = useState<string[]>([]);
-  const [parentsList, setParentsList] = useState<string[]>([]);
+  const [parentsList, setParentsList] = useState<string[]>(["Gastão", "Amanda"]);
   const [showManualModal, setShowManualModal] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
@@ -172,54 +172,20 @@ export default function PersonalDashboardView() {
 
     const loadAllPersonalData = () => {
       const savedTxs = localStorage.getItem('user_personal_transactions');
+      let baseTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
+
       if (savedTxs) {
         try {
           const parsed = JSON.parse(savedTxs);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            const deduped = deduplicateTransactions(parsed);
-            setTransactions(deduped);
-            if (deduped.length !== parsed.length) {
-              localStorage.setItem('user_personal_transactions', JSON.stringify(deduped));
-            }
-          } else {
-            // Se estiver vazio no localStorage, tenta carregar da base local privada (se existir)
-            fetchLocalData();
+            baseTxs = parsed;
           }
-        } catch (e) {
-          fetchLocalData();
-        }
-      } else {
-        fetchLocalData();
+        } catch (e) {}
       }
 
-      function fetchLocalData() {
-        fetch('/api/personal/local-data')
-          .then(res => res.json())
-          .then(data => {
-            if (data?.success && Array.isArray(data.transactions) && data.transactions.length > 0) {
-              const deduped = deduplicateTransactions(data.transactions);
-              setTransactions(deduped);
-              localStorage.setItem('user_personal_transactions', JSON.stringify(deduped));
-              
-              // Extrair pais e filhos automaticamente se não existirem
-              const parents = Array.from(new Set(deduped.map(t => t.parentTag).filter(Boolean))) as string[];
-              if (parents.length > 0 && !localStorage.getItem('user_personal_parents')) {
-                setParentsList(parents);
-                localStorage.setItem('user_personal_parents', JSON.stringify(parents));
-              }
-              const children = Array.from(new Set(deduped.map(t => t.childTag).filter(Boolean))) as string[];
-              if (children.length > 0 && !localStorage.getItem('user_personal_children')) {
-                setChildrenList(children);
-                localStorage.setItem('user_personal_children', JSON.stringify(children));
-              }
-            } else {
-              setTransactions([]);
-            }
-          })
-          .catch(() => {
-            setTransactions([]);
-          });
-      }
+      const deduped = deduplicateTransactions(baseTxs);
+      setTransactions(deduped);
+      localStorage.setItem('user_personal_transactions', JSON.stringify(deduped));
 
       const storedCats = localStorage.getItem('personal_custom_categories');
       if (storedCats) {
@@ -257,22 +223,32 @@ export default function PersonalDashboardView() {
       if (storedParents) {
         try {
           const parsed = JSON.parse(storedParents);
-          if (Array.isArray(parsed)) {
+          if (Array.isArray(parsed) && parsed.length > 0) {
             setParentsList(parsed);
+          } else {
+            const found = Array.from(new Set(deduped.map(t => t.childTag || t.parentTag).filter(Boolean))) as string[];
+            const p = found.length > 0 ? found : ["Gastão", "Amanda"];
+            setParentsList(p);
+            localStorage.setItem('user_personal_parents', JSON.stringify(p));
           }
         } catch (e) {
-          setParentsList([]);
+          setParentsList(["Gastão", "Amanda"]);
         }
       } else {
-        setParentsList([]);
+        const found = Array.from(new Set(deduped.map(t => t.childTag || t.parentTag).filter(Boolean))) as string[];
+        const p = found.length > 0 ? found : ["Gastão", "Amanda"];
+        setParentsList(p);
+        localStorage.setItem('user_personal_parents', JSON.stringify(p));
       }
 
       const storedChildren = localStorage.getItem('user_personal_children');
       if (storedChildren) {
         try {
           const parsed = JSON.parse(storedChildren);
-          if (Array.isArray(parsed)) {
+          if (Array.isArray(parsed) && parsed.length > 0) {
             setChildrenList(parsed);
+          } else {
+            setChildrenList([]);
           }
         } catch (e) {
           setChildrenList([]);
@@ -281,6 +257,7 @@ export default function PersonalDashboardView() {
         setChildrenList([]);
       }
     };
+
 
     loadAllPersonalData();
 
