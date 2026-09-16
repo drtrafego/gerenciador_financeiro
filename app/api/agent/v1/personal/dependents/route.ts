@@ -9,7 +9,7 @@ export const GET = withAgentAuth(async () => {
   return {
     status: 200,
     body: {
-      data: ["Matheus", "Sofia"],
+      data: [],
     },
     resourceType: 'personal_dependents',
   };

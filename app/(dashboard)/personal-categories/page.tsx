@@ -60,10 +60,13 @@ const COLOR_OPTIONS = [
 const INITIAL_CATEGORIES: CustomCategory[] = [
   { id: "cat-children", namePt: "Filhos & Família", nameEs: "Hijos y Familia", subcategories: ["Escola / Colegiatura", "Natação & Esportes", "Vestuário Infantil", "Brinquedos"], limit: 3500, spent: 0, color: "bg-pink-500/20 text-pink-400 border-pink-500/30", emoji: "👦" },
   { id: "cat-food", namePt: "Alimentação & Supermercado", nameEs: "Alimentación y Supermercado", subcategories: ["Supermercado (Coto / Carrefour)", "Feira & Orgânicos", "Restaurantes & Delivery (iFood/PedidosYa)"], limit: 4500, spent: 0, color: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30", emoji: "🍕" },
-  { id: "cat-leisure", namePt: "Lazer & Entretenimento", nameEs: "Ocio y Entretenimiento", subcategories: ["Passeios em Família", "Cinema & Shows", "Assinaturas (Netflix/Spotify)", "Viagens"], limit: 2000, spent: 0, color: "bg-purple-500/20 text-purple-400 border-purple-500/30", emoji: "🥳" },
-  { id: "cat-housing", namePt: "Moradia & Serviços", nameEs: "Vivienda y Servicios", subcategories: ["Aluguel / Condomínio", "Energia (Edesur/Luz)", "Gás & Água", "Internet & Wifi"], limit: 5000, spent: 0, color: "bg-blue-500/20 text-blue-400 border-blue-500/30", emoji: "🏠" },
-  { id: "cat-health", namePt: "Saúde & Bem-Estar", nameEs: "Salud y Bienestar", subcategories: ["Plano de Saúde (Prepaga/OSDE)", "Farmácia (Farmacity)", "Consultas & Exames"], limit: 2500, spent: 0, color: "bg-rose-500/20 text-rose-400 border-rose-500/30", emoji: "💊" },
-  { id: "cat-transport", namePt: "Transporte & Veículo", nameEs: "Transporte y Vehículo", subcategories: ["Combustível (YPF/Shell)", "Uber / Cabify", "Manutenção Veicular", "Seguro Auto"], limit: 1800, spent: 0, color: "bg-amber-500/20 text-amber-400 border-amber-500/30", emoji: "🚗" },
+  { id: "cat-transport", namePt: "Transporte & Veículo", nameEs: "Transporte y Vehículo", subcategories: ["Uber / Cabify", "Oficina & Manutenção", "Transporte Público (SUBE/Subte)", "Combustível & Estacionamento"], limit: 1800, spent: 0, color: "bg-amber-500/20 text-amber-400 border-amber-500/30", emoji: "🚗" },
+  { id: "cat-housing", namePt: "Moradia & Serviços", nameEs: "Vivienda y Servicios", subcategories: ["Aluguel / Condomínio", "Energia (Edesur/Luz)", "Gás & Água", "Internet & Wifi", "Assinaturas & Software"], limit: 5000, spent: 0, color: "bg-blue-500/20 text-blue-400 border-blue-500/30", emoji: "🏠" },
+  { id: "cat-health", namePt: "Saúde & Bem-Estar", nameEs: "Salud y Bienestar", subcategories: ["Plano de Saúde (Prepaga/OSDE)", "Farmácia (Farmacity)", "Consultas & Exames", "Academia & Esportes"], limit: 2500, spent: 0, color: "bg-rose-500/20 text-rose-400 border-rose-500/30", emoji: "💊" },
+  { id: "cat-shopping", namePt: "Compras & Vestuário", nameEs: "Compras y Vestuario", subcategories: ["Roupas & Calçados", "Eletrônicos & Casa", "Compras Gerais (Mercado Livre)"], limit: 3000, spent: 0, color: "bg-purple-500/20 text-purple-400 border-purple-500/30", emoji: "🛍️" },
+  { id: "cat-transfers", namePt: "Transferências & Outros", nameEs: "Transferencias y Otros", subcategories: ["Transferências Gerais", "Taxas & Tarifas"], limit: 10000, spent: 0, color: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30", emoji: "💸" },
+  { id: "cat-leisure", namePt: "Lazer & Entretenimento", nameEs: "Ocio y Entretenimiento", subcategories: ["Passeios em Família", "Cinema & Shows", "Assinaturas (Netflix/Spotify)", "Viagens"], limit: 2000, spent: 0, color: "bg-violet-500/20 text-violet-400 border-violet-500/30", emoji: "🥳" },
+  { id: "cat-general", namePt: "Geral & Diversos", nameEs: "General y Diversos", subcategories: ["Despesas Gerais", "Lançamentos Históricos", "Não Identificados"], limit: 5000, spent: 0, color: "bg-slate-500/20 text-slate-400 border-slate-500/30", emoji: "📦" },
 ];
 
 export default function PersonalCategoriesPage() {
@@ -127,8 +130,25 @@ export default function PersonalCategoriesPage() {
       const rates: Record<string, number> = { ARS: 233.6, BRL: 1, USD: 0.177 };
 
       const calculated = currentCats.map(cat => {
+        const matchesCategory = (txCat: string, catPt: string, catEs: string) => {
+          const t = (txCat || '').toLowerCase().trim();
+          const p = (catPt || '').toLowerCase().trim();
+          const e = (catEs || '').toLowerCase().trim();
+          if (!t) return false;
+          if (t === p || t === e || t.includes(p) || p.includes(t) || t.includes(e) || e.includes(t)) return true;
+          if (p.includes('alimenta') && t.includes('alimenta')) return true;
+          if (p.includes('transporte') && t.includes('transporte')) return true;
+          if (p.includes('moradia') && t.includes('moradia')) return true;
+          if (p.includes('saúde') && t.includes('saúde')) return true;
+          if (p.includes('compras') && t.includes('compras')) return true;
+          if (p.includes('transfer') && t.includes('transfer')) return true;
+          if (p.includes('filhos') && t.includes('filhos')) return true;
+          if (p.includes('lazer') && t.includes('lazer')) return true;
+          return false;
+        };
+
         const actualSpentBRL = personalTxs
-          .filter(t => t.type === 'expense' && (t.category === cat.namePt || t.category === cat.nameEs))
+          .filter(t => t.type === 'expense' && matchesCategory(t.category, cat.namePt, cat.nameEs))
           .reduce((sum, t) => sum + (t.currency === 'ARS' ? t.amount / rates.ARS : t.currency === 'USD' ? t.amount * 5.65 : t.amount), 0);
 
         return { ...cat, spent: actualSpentBRL };

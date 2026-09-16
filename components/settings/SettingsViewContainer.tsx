@@ -7,7 +7,9 @@ import PersonalSettingsView from "@/components/settings/PersonalSettingsView";
 export default function SettingsViewContainer({ children }: { children: React.ReactNode }) {
   const { mode } = useProfile();
 
-  if (mode === "pf") {
+  const isPF = mode === "pf" || (typeof window !== "undefined" && (localStorage.getItem("app_profile_mode") === "pf" || document.cookie.includes("app_profile_mode=pf")));
+
+  if (isPF) {
     return <PersonalSettingsView />;
   }
 

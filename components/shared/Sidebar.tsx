@@ -16,32 +16,95 @@ import {
   Sparkles,
   PieChart,
   CreditCard,
-  Receipt,
   Baby,
   Building2,
   Home,
-  Globe
+  Globe,
+  ChevronDown,
+  ChevronRight
 } from "lucide-react";
 import { UserButton } from "@stackframe/stack";
 import { useSidebar } from "@/lib/contexts/SidebarContext";
 import { useProfile } from "@/lib/contexts/ProfileContext";
 
-const navPJ = [
-  { href: "/dashboard",    label: "Dashboard Empresa", icon: LayoutDashboard },
-  { href: "/clients",      label: "Clientes",           icon: Users },
-  { href: "/contracts",    label: "Contratos",          icon: ClipboardList },
-  { href: "/invoices",     label: "Faturas",            icon: FileText },
-  { href: "/cash-flow",    label: "Fluxo de Caixa",     icon: ArrowLeftRight },
-  { href: "/reminders",    label: "Lembretes WhatsApp", icon: Bell },
-  { href: "/settings",     label: "Configurações",      icon: Settings },
+interface NavSubitem {
+  href: string;
+  label: string;
+  icon: any;
+  badge?: string;
+}
+
+interface NavSection {
+  id: string;
+  title: string;
+  badge?: string;
+  badgeColor?: string;
+  items: NavSubitem[];
+}
+
+const navSectionsPJ: NavSection[] = [
+  {
+    id: "operacoes_pj",
+    title: "Atendimento & Operações",
+    badge: "ADMIN",
+    badgeColor: "bg-indigo-500/10 text-indigo-400 border border-indigo-500/30",
+    items: [
+      { href: "/dashboard", label: "Dashboard Empresa", icon: LayoutDashboard },
+      { href: "/reminders", label: "Lembretes WhatsApp", icon: Bell },
+    ],
+  },
+  {
+    id: "comercial_pj",
+    title: "Comercial & Clientes",
+    items: [
+      { href: "/clients", label: "Clientes", icon: Users },
+      { href: "/contracts", label: "Contratos", icon: ClipboardList },
+    ],
+  },
+  {
+    id: "financeiro_pj",
+    title: "Financeiro & Faturamento",
+    items: [
+      { href: "/invoices", label: "Faturas", icon: FileText },
+      { href: "/cash-flow", label: "Fluxo de Caixa", icon: ArrowLeftRight },
+    ],
+  },
+  {
+    id: "config_pj",
+    title: "Configurações",
+    items: [
+      { href: "/settings", label: "Geral", icon: Settings },
+      { href: "/settings/exchange-rates", label: "Taxas de Câmbio", icon: Globe },
+    ],
+  },
 ];
 
-const navPF = [
-  { href: "/dashboard",           label: "Visão Geral Pessoal", icon: LayoutDashboard },
-  { href: "/scan",                label: "Escanear Foto/Print", icon: Sparkles, badge: "IA" },
-  { href: "/personal-categories", label: "Categorias & Metas",  icon: PieChart },
-  { href: "/credit-cards",        label: "Cartões (ARS/BRL)",   icon: CreditCard },
-  { href: "/settings",            label: "Configurações",       icon: Settings },
+const navSectionsPF: NavSection[] = [
+  {
+    id: "visao_pf",
+    title: "Visão Geral Pessoal",
+    badge: "PESSOAL",
+    badgeColor: "bg-purple-500/10 text-purple-400 border border-purple-500/30",
+    items: [
+      { href: "/dashboard", label: "Visão Geral Pessoal", icon: LayoutDashboard },
+      { href: "/scan", label: "Escanear Foto/Print", icon: Sparkles, badge: "IA" },
+    ],
+  },
+  {
+    id: "gestao_pf",
+    title: "Gestão Financeira",
+    items: [
+      { href: "/credit-cards", label: "Cartões (ARS/BRL)", icon: CreditCard },
+      { href: "/personal-categories", label: "Categorias & Metas", icon: PieChart },
+    ],
+  },
+  {
+    id: "config_pf",
+    title: "Configurações & Família",
+    items: [
+      { href: "/settings", label: "Configurações & Filhos", icon: Settings },
+    ],
+  },
 ];
 
 export default function Sidebar() {
@@ -49,16 +112,27 @@ export default function Sidebar() {
   const path = usePathname();
   const router = useRouter();
   const { mobileOpen, closeMobile } = useSidebar();
-  const { mode, setMode, lang, setLang } = useProfile();
+  const { mode, setMode } = useProfile();
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const [isDesktop, setIsDesktop] = useState(true);
-  const [childrenList, setChildrenList] = useState<string[]>(["Matheus", "Sofia"]);
+  const [childrenList, setChildrenList] = useState<string[]>([]);
 
-  const nav = mode === "pf" ? navPF : navPJ;
+  // Estado das seções recolhidas/encolhidas
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
+
+  const isPF = mode === "pf" || (typeof window !== "undefined" && (localStorage.getItem("app_profile_mode") === "pf" || document.cookie.includes("app_profile_mode=pf")));
+  const sections = isPF ? navSectionsPF : navSectionsPJ;
 
   const handleSwitchMode = (newMode: "pj" | "pf") => {
     setMode(newMode);
     router.push("/dashboard");
+  };
+
+  const toggleSection = (sectionId: string) => {
+    setCollapsedSections((prev) => ({
+      ...prev,
+      [sectionId]: !prev[sectionId],
+    }));
   };
 
   useEffect(() => {
@@ -127,7 +201,7 @@ export default function Sidebar() {
         className={`fixed inset-y-0 left-0 z-50 w-64 transition-transform duration-200 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         } md:static md:inset-auto md:z-auto md:translate-x-0 md:flex-shrink-0 md:transition-all ${
-          open ? "md:w-60" : "md:w-16"
+          open ? "md:w-64" : "md:w-16"
         } bg-zinc-900 border-r border-zinc-800 flex flex-col overflow-hidden`}
       >
         {/* Logo + Header */}
@@ -200,36 +274,75 @@ export default function Sidebar() {
           </div>
         )}
 
-        {/* Nav Links */}
-        <nav className="flex-1 px-2 py-2 flex flex-col gap-1 overflow-y-auto">
-          {nav.map(({ href, label, icon: Icon, badge }: any) => {
-            const active =
-              href === "/dashboard"
-                ? path === "/dashboard"
-                : path.startsWith(href);
+        {/* Seções Principais & Subpáginas Encolhíveis */}
+        <nav className="flex-1 px-2 py-2 flex flex-col gap-3 overflow-y-auto">
+          {sections.map((sec) => {
+            const isCollapsed = collapsedSections[sec.id] === true;
+            const hasActiveChild = sec.items.some((item) =>
+              item.href === "/dashboard" ? path === "/dashboard" : path.startsWith(item.href)
+            );
+
             return (
-              <Link
-                key={href}
-                href={href}
-                onClick={closeMobile}
-                className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-all ${
-                  active
-                    ? mode === "pf"
-                      ? "bg-purple-600/20 text-purple-300 border border-purple-600/40"
-                      : "bg-indigo-600/20 text-indigo-400 border border-indigo-600/30"
-                    : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
-                }`}
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <Icon size={16} className={`flex-shrink-0 ${active && mode === "pf" ? "text-purple-400" : ""}`} />
-                  <span className={`whitespace-nowrap truncate ${open ? "" : "md:hidden"}`}>{label}</span>
-                </div>
-                {badge && open && (
-                  <span className="text-[10px] bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold px-1.5 py-0.5 rounded-md">
-                    {badge}
-                  </span>
+              <div key={sec.id} className="space-y-1">
+                {/* Cabeçalho da Seção Principal (Com botão de expandir/encolher) */}
+                {open ? (
+                  <button
+                    onClick={() => toggleSection(sec.id)}
+                    className="w-full flex items-center justify-between px-2 py-1 text-[10px] uppercase font-bold text-zinc-400 hover:text-zinc-200 transition-colors group"
+                  >
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="truncate tracking-wider">{sec.title}</span>
+                      {sec.badge && (
+                        <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono ${sec.badgeColor || "bg-zinc-800 text-zinc-300"}`}>
+                          {sec.badge}
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-zinc-500 group-hover:text-zinc-300">
+                      {isCollapsed ? <ChevronRight size={13} /> : <ChevronDown size={13} />}
+                    </div>
+                  </button>
+                ) : (
+                  <div className="h-px bg-zinc-800 my-1" />
                 )}
-              </Link>
+
+                {/* Subpáginas da Seção (Mostra se não estiver encolhida) */}
+                {(!isCollapsed || !open) && (
+                  <div className={`space-y-0.5 ${open ? "ml-1 pl-2 border-l border-zinc-800/80" : ""}`}>
+                    {sec.items.map(({ href, label, icon: Icon, badge }) => {
+                      const active =
+                        href === "/dashboard"
+                          ? path === "/dashboard"
+                          : path.startsWith(href);
+
+                      return (
+                        <Link
+                          key={href}
+                          href={href}
+                          onClick={closeMobile}
+                          className={`flex items-center justify-between px-2.5 py-2 rounded-lg text-xs transition-all ${
+                            active
+                              ? mode === "pf"
+                                ? "bg-purple-600/20 text-purple-300 border border-purple-600/40 font-bold shadow-sm"
+                                : "bg-indigo-600/20 text-indigo-400 border border-indigo-600/30 font-bold shadow-sm"
+                              : "text-zinc-400 hover:bg-zinc-800/70 hover:text-zinc-200"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <Icon size={15} className={`flex-shrink-0 ${active ? (mode === "pf" ? "text-purple-400" : "text-indigo-400") : "text-zinc-400"}`} />
+                            <span className={`whitespace-nowrap truncate ${open ? "" : "md:hidden"}`}>{label}</span>
+                          </div>
+                          {badge && open && (
+                            <span className="text-[10px] bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold px-1.5 py-0.5 rounded-md">
+                              {badge}
+                            </span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             );
           })}
         </nav>
