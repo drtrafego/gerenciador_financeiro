@@ -63,7 +63,9 @@ export interface PersonalTransaction {
   category: string;
   subcategory?: string;
   childTag?: string;
+  parentTag?: string;
   language: 'pt' | 'es';
+  selected?: boolean;
 }
 
 interface CustomCategory {
