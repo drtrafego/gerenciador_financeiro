@@ -129,7 +129,13 @@ export default function PersonalDashboardView() {
   };
 
   const [mounted, setMounted] = useState(false);
-  const [transactions, setTransactions] = useState<PersonalTransaction[]>(DEMO_PERSONAL_TRANSACTIONS || []);
+  const [transactions, setTransactions] = useState<PersonalTransaction[]>(
+    (DEMO_PERSONAL_TRANSACTIONS || []).map(t => ({
+      ...t,
+      type: (t.type || 'expense') as 'expense' | 'income',
+      language: (t.language || 'es') as 'pt' | 'es'
+    })) as PersonalTransaction[]
+  );
   const [categories, setCategories] = useState<CustomCategory[]>(DEFAULT_CATEGORIES);
   const [childrenList, setChildrenList] = useState<string[]>([]);
   const [parentsList, setParentsList] = useState<string[]>(["Gastão", "Amanda"]);
@@ -189,7 +195,11 @@ export default function PersonalDashboardView() {
         } catch (e) {}
       }
 
-      const deduped = deduplicateTransactions(combined);
+      const deduped: PersonalTransaction[] = deduplicateTransactions(combined).map((t: any) => ({
+        ...t,
+        type: (t.type || 'expense') as 'expense' | 'income',
+        language: (t.language || 'es') as 'pt' | 'es'
+      }));
       setTransactions(deduped);
       localStorage.setItem('user_personal_transactions', JSON.stringify(deduped));
 
