@@ -141,6 +141,7 @@ export default function PersonalDashboardView() {
   const [categories, setCategories] = useState<CustomCategory[]>(DEFAULT_CATEGORIES);
   const [childrenList, setChildrenList] = useState<string[]>([]);
   const [parentsList, setParentsList] = useState<string[]>(["Gastão", "Amanda"]);
+  const [selectedMember, setSelectedMember] = useState<string>('all');
   const [showManualModal, setShowManualModal] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
@@ -393,11 +394,15 @@ export default function PersonalDashboardView() {
 
   const now = new Date();
 
-  // Transações filtradas pelo período selecionado (Usa sempre from e to resolvidos, garantindo o mês corrente por padrão)
+  // Transações filtradas pelo período selecionado e membro familiar
   const filteredTransactions = transactions.filter(t => {
     if (!t.date) return false;
     if (from && t.date < from) return false;
     if (to && t.date > to) return false;
+    if (selectedMember !== 'all') {
+      const tag = t.childTag || t.parentTag || '';
+      if (tag !== selectedMember) return false;
+    }
     return true;
   });
 
@@ -1058,7 +1063,7 @@ export default function PersonalDashboardView() {
 
       {/* Lista de Transações Recentes Pessoais (Com Botão de Edição) */}
       <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="space-y-0.5">
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
               <Receipt className="w-4 h-4 text-purple-400" />
@@ -1067,13 +1072,51 @@ export default function PersonalDashboardView() {
             <p className="text-xs text-zinc-400">Visualização de despesas e receitas organizadas por data.</p>
           </div>
 
-          <button
-            onClick={() => setShowManualModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow transition-all"
-          >
-            <Plus size={14} />
-            <span>Novo Gasto</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center bg-zinc-950 p-1 rounded-xl border border-zinc-800 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setSelectedMember('all')}
+                className={`px-3 py-1 rounded-lg transition-all ${
+                  selectedMember === 'all'
+                    ? 'bg-purple-600 text-white shadow'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                Todos
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedMember('Gastão')}
+                className={`px-3 py-1 rounded-lg transition-all ${
+                  selectedMember === 'Gastão'
+                    ? 'bg-indigo-600 text-white shadow'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                👤 Gastão
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedMember('Amanda')}
+                className={`px-3 py-1 rounded-lg transition-all ${
+                  selectedMember === 'Amanda'
+                    ? 'bg-pink-600 text-white shadow'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                👤 Amanda
+              </button>
+            </div>
+
+            <button
+              onClick={() => setShowManualModal(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow transition-all"
+            >
+              <Plus size={14} />
+              <span>Novo Gasto</span>
+            </button>
+          </div>
         </div>
 
         <div>
