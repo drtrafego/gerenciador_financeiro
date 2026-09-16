@@ -171,19 +171,25 @@ export default function PersonalDashboardView() {
     };
 
     const loadAllPersonalData = () => {
-      const savedTxs = localStorage.getItem('user_personal_transactions');
-      let baseTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
+      // Sempre começa com os dados builtin (653 transações)
+      const builtinTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
+      let combined: any[] = [...builtinTxs];
 
+      // Mescla com localStorage (transações adicionadas manualmente pelo usuário)
+      const savedTxs = localStorage.getItem('user_personal_transactions');
       if (savedTxs) {
         try {
           const parsed = JSON.parse(savedTxs);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            baseTxs = parsed;
+            // Adiciona somente transações do localStorage que NÃO estão no builtin
+            const builtinIds = new Set(builtinTxs.map((t: any) => t.id));
+            const extraTxs = parsed.filter((t: any) => !builtinIds.has(t.id));
+            combined = [...builtinTxs, ...extraTxs];
           }
         } catch (e) {}
       }
 
-      const deduped = deduplicateTransactions(baseTxs);
+      const deduped = deduplicateTransactions(combined);
       setTransactions(deduped);
       localStorage.setItem('user_personal_transactions', JSON.stringify(deduped));
 
