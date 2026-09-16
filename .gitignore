@@ -39,3 +39,9 @@ next-env.d.ts
 # Docker
 postgres_data/
 .env*.local
+
+# Local private data & exports (never committed to git)
+data/
+*.local.json
+personal_data/
+*.private.*
