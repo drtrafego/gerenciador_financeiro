@@ -232,7 +232,9 @@ Se você é um **Agente de IA** (Antigravity, Claude, Cursor, Devin, Windsurf) t
 
 ### 2. Estrutura Principal de Arquivos
 - `app/(dashboard)/layout.tsx`: Layout mestre contendo os Provedores de Estado (`ProfileProvider`, `SidebarProvider`, `ValuesVisibilityProvider`), `Sidebar` e `Header`.
-- `components/dashboard/PersonalDashboardView.tsx`: Dashboard Pessoal (PF) completo com métricas, seletor de datas `PeriodBar`, gráficos Recharts, cards de orçamento e lista responsiva de lançamentos.
+- `components/dashboard/PersonalDashboardView.tsx`: Dashboard Pessoal (PF) completo com métricas, seletor de datas `PeriodBar`, gráficos Recharts, cards de orçamento, seletor de membro (`Todos` / `👤 Gastão` / `👤 Amanda`) e lista responsiva de lançamentos.
+- `lib/transactionData.ts`: Base de dados consolidada com **1.846 lançamentos reais** de Gastão (Banco Galicia) e Amanda (Mercado Pago).
+- `docs/FINANCAS_PESSOAIS.md`: Documentação técnica completa do módulo de finanças pessoais, auditoria de extratos e categorização.
 - `lib/ai/receiptScanner.ts`: Módulo de inteligência artificial e OCR para leitura e extração de comprovantes, cupons fiscais e extratos bancários.
 - `lib/contexts/ProfileContext.tsx`: Gerencia a alternância entre os perfis **PJ (Empresa)** e **PF (Pessoal)**.
 - `lib/db/schema.ts`: Schemas de tabelas do banco de dados Drizzle ORM (clientes, contratos, faturas, transações, etc.).
