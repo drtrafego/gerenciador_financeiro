@@ -13,7 +13,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-179002081054",
@@ -26,7 +27,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178025817273",
@@ -39,7 +41,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177674307581",
@@ -52,7 +55,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177675618169",
@@ -65,7 +69,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178648107800",
@@ -76,9 +81,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-178669073440",
@@ -91,7 +97,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177714097461",
@@ -104,7 +111,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Lazer & Entretenimento",
     "subcategory": "Assinaturas & Lazer",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178711332888",
@@ -115,9 +123,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-177747663313",
@@ -130,7 +139,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177755340665",
@@ -143,7 +153,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178450019530",
@@ -156,7 +167,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177478933699",
@@ -169,7 +181,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178487941854",
@@ -182,7 +195,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178493001628",
@@ -193,9 +207,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-178492285360",
@@ -206,9 +221,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-178495581418",
@@ -221,7 +237,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177581550405",
@@ -234,7 +251,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178552267648",
@@ -247,7 +265,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178598277528",
@@ -260,7 +279,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178601884990",
@@ -273,7 +293,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177280725429",
@@ -286,7 +307,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178249816442",
@@ -299,7 +321,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178252462304",
@@ -312,7 +335,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178263279696",
@@ -325,7 +349,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177295610995",
@@ -338,7 +363,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177298782183",
@@ -351,7 +377,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177373096699",
@@ -364,7 +391,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178344820526",
@@ -377,20 +405,22 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177376218579",
     "date": "2026-09-10",
-    "merchant": "Colegio Misericordia",
+    "merchant": "Colegio Misericordia (Escola)",
     "description": "Mercado Pago Amanda - Transferencia enviada Colegio Misericordia Belgrano",
     "amount": 475532.4,
     "currency": "ARS",
     "type": "expense",
     "category": "Filhos & Família",
-    "subcategory": "Escola / Filhos",
+    "subcategory": "Escola / Colegiatura",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178345680916",
@@ -401,9 +431,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-178346849086",
@@ -416,7 +447,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178346761448",
@@ -429,7 +461,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177380919473",
@@ -442,7 +475,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177381260797",
@@ -455,7 +489,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177390642395",
@@ -468,7 +503,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178369730918",
@@ -481,7 +517,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178061759420",
@@ -492,9 +529,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-177095757337",
@@ -507,7 +545,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178063507882",
@@ -520,7 +559,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178076380106",
@@ -533,7 +573,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178077936804",
@@ -546,7 +587,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178131035630",
@@ -559,7 +601,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178130290058",
@@ -572,7 +615,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177165518483",
@@ -585,7 +629,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178132970714",
@@ -598,7 +643,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177167683491",
@@ -611,7 +657,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177169897787",
@@ -624,7 +671,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178138846944",
@@ -637,7 +685,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177170916093",
@@ -650,7 +699,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177174750897",
@@ -663,7 +713,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177176472079",
@@ -676,7 +727,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177211205761",
@@ -689,7 +741,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-178195528304",
@@ -702,7 +755,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260908-0",
@@ -715,7 +769,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260908-1",
@@ -728,7 +783,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260908-2",
@@ -741,7 +797,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260908-3",
@@ -754,7 +811,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260908-4",
@@ -767,7 +825,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260908-5",
@@ -780,7 +839,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260908-6",
@@ -793,7 +853,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260908-7",
@@ -806,7 +867,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260908-8",
@@ -819,7 +881,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260908-9",
@@ -832,7 +895,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-10",
@@ -845,7 +909,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-11",
@@ -858,7 +923,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-12",
@@ -871,7 +937,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-13",
@@ -884,7 +951,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-14",
@@ -897,7 +965,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-15",
@@ -910,7 +979,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-16",
@@ -923,7 +993,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-17",
@@ -936,7 +1007,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-18",
@@ -949,7 +1021,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-19",
@@ -962,7 +1035,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-20",
@@ -975,7 +1049,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260907-21",
@@ -988,7 +1063,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176739000637",
@@ -1001,7 +1077,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176739026705",
@@ -1014,7 +1091,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176740725471",
@@ -1027,7 +1105,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176749660073",
@@ -1040,7 +1119,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176751039643",
@@ -1053,7 +1133,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177788691164",
@@ -1066,7 +1147,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177788539800",
@@ -1079,7 +1161,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177791746932",
@@ -1092,7 +1175,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177832269108",
@@ -1105,7 +1189,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176659290865",
@@ -1118,7 +1203,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176662637723",
@@ -1131,7 +1217,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176442264005",
@@ -1144,7 +1231,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177420898216",
@@ -1157,7 +1245,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176460642187",
@@ -1170,7 +1259,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176475842923",
@@ -1183,7 +1273,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176475842923",
@@ -1196,7 +1287,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177440951992",
@@ -1209,7 +1301,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177441385836",
@@ -1222,7 +1315,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176481451305",
@@ -1235,7 +1329,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177441385836",
@@ -1248,7 +1343,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176489292557",
@@ -1261,7 +1357,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177510856636",
@@ -1274,7 +1371,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176574019701",
@@ -1287,7 +1385,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176579292141",
@@ -1300,7 +1399,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176579171221",
@@ -1313,7 +1413,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260904-22",
@@ -1326,7 +1427,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260904-23",
@@ -1339,7 +1441,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260904-24",
@@ -1352,7 +1455,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260904-25",
@@ -1365,7 +1469,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260904-26",
@@ -1378,7 +1483,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260904-27",
@@ -1391,7 +1497,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177186893548",
@@ -1404,7 +1511,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176227845395",
@@ -1417,7 +1525,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177189592788",
@@ -1430,7 +1539,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177195752042",
@@ -1443,7 +1553,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177272678702",
@@ -1456,7 +1567,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177280300804",
@@ -1469,7 +1581,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177301340732",
@@ -1482,7 +1595,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177303556604",
@@ -1495,7 +1609,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176343175421",
@@ -1508,7 +1623,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260903-28",
@@ -1521,7 +1637,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260903-29",
@@ -1534,7 +1651,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260903-30",
@@ -1547,7 +1665,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260903-31",
@@ -1560,7 +1679,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260903-32",
@@ -1573,7 +1693,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260903-33",
@@ -1586,7 +1707,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260903-34",
@@ -1599,7 +1721,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260903-35",
@@ -1612,7 +1735,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176049047767",
@@ -1625,7 +1749,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177007670292",
@@ -1638,7 +1763,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176050715845",
@@ -1651,7 +1777,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177010321100",
@@ -1664,7 +1791,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176106149897",
@@ -1677,7 +1805,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "subcategory": "Contas & Serviços",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177066498334",
@@ -1690,7 +1819,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176108835155",
@@ -1703,7 +1833,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176109454631",
@@ -1716,7 +1847,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176143361481",
@@ -1729,7 +1861,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177102348648",
@@ -1742,7 +1875,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176145442183",
@@ -1755,7 +1889,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-177103729964",
@@ -1768,7 +1903,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176171227235",
@@ -1781,7 +1917,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260902-36",
@@ -1794,7 +1931,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260902-37",
@@ -1807,7 +1945,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260902-38",
@@ -1820,7 +1959,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260902-39",
@@ -1833,7 +1973,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260902-40",
@@ -1846,7 +1987,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175915700577",
@@ -1859,7 +2001,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175921409313",
@@ -1872,7 +2015,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176889420964",
@@ -1885,7 +2029,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176890478940",
@@ -1898,7 +2043,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176912632016",
@@ -1909,9 +2055,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-176940262528",
@@ -1924,7 +2071,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-41",
@@ -1937,7 +2085,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-42",
@@ -1950,7 +2099,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-43",
@@ -1963,7 +2113,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-44",
@@ -1976,7 +2127,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-45",
@@ -1989,7 +2141,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-46",
@@ -2002,7 +2155,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-47",
@@ -2015,7 +2169,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-48",
@@ -2028,7 +2183,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-49",
@@ -2041,7 +2197,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-50",
@@ -2054,7 +2211,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-51",
@@ -2067,7 +2225,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Assinaturas & Software"
+    "subcategory": "Assinaturas & Software",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260901-52",
@@ -2080,7 +2239,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176723859176",
@@ -2093,7 +2253,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175770091479",
@@ -2106,7 +2267,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176724415204",
@@ -2119,7 +2281,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175774392849",
@@ -2130,9 +2293,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-176740171514",
@@ -2145,7 +2309,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175788794123",
@@ -2158,7 +2323,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176757608834",
@@ -2171,7 +2337,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176759592574",
@@ -2184,7 +2351,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-53",
@@ -2197,7 +2365,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-54",
@@ -2210,7 +2379,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-55",
@@ -2223,7 +2393,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-56",
@@ -2236,7 +2407,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-57",
@@ -2249,7 +2421,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-58",
@@ -2262,7 +2435,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-59",
@@ -2275,7 +2449,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-60",
@@ -2288,7 +2463,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-61",
@@ -2301,7 +2477,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-62",
@@ -2314,7 +2491,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-63",
@@ -2327,7 +2505,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-64",
@@ -2340,7 +2519,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-65",
@@ -2353,7 +2533,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-66",
@@ -2366,7 +2547,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-67",
@@ -2379,7 +2561,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-68",
@@ -2392,7 +2575,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-69",
@@ -2405,7 +2589,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-70",
@@ -2418,7 +2603,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-71",
@@ -2431,7 +2617,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-72",
@@ -2444,7 +2631,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-73",
@@ -2457,7 +2645,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-74",
@@ -2470,7 +2659,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260831-75",
@@ -2483,7 +2673,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175516544823",
@@ -2496,7 +2687,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175516710373",
@@ -2509,7 +2701,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175517836049",
@@ -2522,7 +2715,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175523455865",
@@ -2535,7 +2729,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175527765717",
@@ -2548,7 +2743,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "subcategory": "Farmácia & Saúde",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176480582934",
@@ -2561,7 +2757,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175529255531",
@@ -2574,7 +2771,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175246506545",
@@ -2585,9 +2783,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-176196567610",
@@ -2600,7 +2799,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176196567610",
@@ -2613,7 +2813,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176199372294",
@@ -2626,7 +2827,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176199656576",
@@ -2639,7 +2841,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175271914759",
@@ -2652,7 +2855,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176221753152",
@@ -2665,7 +2869,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175273616281",
@@ -2678,7 +2883,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175344934295",
@@ -2689,9 +2895,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260828-76",
@@ -2704,7 +2911,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260828-77",
@@ -2717,7 +2925,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260828-78",
@@ -2730,7 +2939,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260828-79",
@@ -2743,7 +2953,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260828-80",
@@ -2756,7 +2967,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260828-81",
@@ -2769,7 +2981,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260828-82",
@@ -2782,7 +2995,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260828-83",
@@ -2795,7 +3009,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175999489922",
@@ -2808,7 +3023,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175053016849",
@@ -2821,7 +3037,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176001406816",
@@ -2834,7 +3051,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175057371963",
@@ -2847,7 +3065,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176005815936",
@@ -2860,7 +3079,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176008678772",
@@ -2873,7 +3093,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-176074502298",
@@ -2884,9 +3105,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-175169619389",
@@ -2899,7 +3121,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175171262659",
@@ -2912,7 +3135,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175175658299",
@@ -2923,9 +3147,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260827-84",
@@ -2938,7 +3163,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260827-85",
@@ -2951,7 +3177,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260827-86",
@@ -2964,7 +3191,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260827-87",
@@ -2977,7 +3205,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260827-88",
@@ -2990,7 +3219,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175839210826",
@@ -3003,7 +3233,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174894718137",
@@ -3016,7 +3247,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175840153210",
@@ -3029,7 +3261,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175840527730",
@@ -3042,7 +3275,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "subcategory": "Farmácia & Saúde",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174965646551",
@@ -3055,7 +3289,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175910922818",
@@ -3066,9 +3301,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-175920287916",
@@ -3081,7 +3317,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174977242339",
@@ -3094,7 +3331,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175922780140",
@@ -3107,7 +3345,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174983897629",
@@ -3120,7 +3359,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175937943792",
@@ -3133,7 +3373,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175937943792",
@@ -3146,7 +3387,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174997247045",
@@ -3159,7 +3401,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260826-89",
@@ -3172,7 +3415,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260826-90",
@@ -3185,7 +3429,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175757439272",
@@ -3198,7 +3443,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174819020977",
@@ -3211,7 +3457,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175762420738",
@@ -3224,7 +3471,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175764468512",
@@ -3237,7 +3485,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174830872691",
@@ -3248,9 +3497,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-174835675827",
@@ -3263,7 +3513,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174852598463",
@@ -3276,7 +3527,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260825-91",
@@ -3289,7 +3541,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260825-92",
@@ -3302,7 +3555,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260825-93",
@@ -3315,7 +3569,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260825-94",
@@ -3328,7 +3583,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260825-95",
@@ -3341,7 +3597,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260825-96",
@@ -3354,7 +3611,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260825-97",
@@ -3367,7 +3625,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175564996120",
@@ -3380,7 +3639,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175563881098",
@@ -3391,9 +3651,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-174669638411",
@@ -3406,7 +3667,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174685577801",
@@ -3419,7 +3681,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175627830742",
@@ -3432,7 +3695,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175628891688",
@@ -3445,7 +3709,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-98",
@@ -3458,7 +3723,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-99",
@@ -3471,7 +3737,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-100",
@@ -3484,7 +3751,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-101",
@@ -3497,7 +3765,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-102",
@@ -3510,7 +3779,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-103",
@@ -3523,7 +3793,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Restaurantes & Delivery (iFood/PedidosYa)"
+    "subcategory": "Restaurantes & Delivery (iFood/PedidosYa)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-104",
@@ -3536,7 +3807,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-105",
@@ -3549,7 +3821,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-106",
@@ -3562,7 +3835,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Restaurantes & Delivery (iFood/PedidosYa)"
+    "subcategory": "Restaurantes & Delivery (iFood/PedidosYa)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-107",
@@ -3575,7 +3849,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-108",
@@ -3588,7 +3863,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260824-109",
@@ -3601,7 +3877,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175362797358",
@@ -3614,7 +3891,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175362616056",
@@ -3627,7 +3905,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175364273730",
@@ -3640,7 +3919,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175373788206",
@@ -3653,7 +3933,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175374864778",
@@ -3666,7 +3947,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175254013758",
@@ -3679,7 +3961,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174318315067",
@@ -3692,7 +3975,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175275586916",
@@ -3705,7 +3989,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175275990294",
@@ -3718,7 +4003,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174341656659",
@@ -3731,7 +4017,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "subcategory": "Farmácia & Saúde",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174157882429",
@@ -3744,7 +4031,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174157861657",
@@ -3757,7 +4045,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174162855563",
@@ -3770,7 +4059,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175118933338",
@@ -3783,7 +4073,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174183357999",
@@ -3796,7 +4087,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174184093771",
@@ -3809,7 +4101,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175118933338",
@@ -3822,7 +4115,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174184093771",
@@ -3835,7 +4129,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175121206632",
@@ -3848,7 +4143,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174183357999",
@@ -3861,7 +4157,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174188505987",
@@ -3874,7 +4171,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175124416016",
@@ -3887,7 +4185,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174190172201",
@@ -3900,7 +4199,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175148674072",
@@ -3913,7 +4213,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-175148674082",
@@ -3926,7 +4227,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174217182659",
@@ -3939,7 +4241,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260821-110",
@@ -3952,7 +4255,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260821-111",
@@ -3965,7 +4269,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260821-112",
@@ -3978,7 +4283,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260821-113",
@@ -3991,7 +4297,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260821-114",
@@ -4004,7 +4311,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260821-115",
@@ -4017,7 +4325,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260821-116",
@@ -4030,7 +4339,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260821-117",
@@ -4043,7 +4353,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260821-118",
@@ -4056,7 +4367,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260821-119",
@@ -4069,7 +4381,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174905649806",
@@ -4082,7 +4395,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173974015661",
@@ -4095,7 +4409,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174916817236",
@@ -4108,7 +4423,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "subcategory": "Farmácia & Saúde",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174918447558",
@@ -4121,7 +4437,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174919606722",
@@ -4134,7 +4451,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174921240976",
@@ -4147,7 +4465,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260820-120",
@@ -4160,7 +4479,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260820-121",
@@ -4173,7 +4493,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260820-122",
@@ -4186,7 +4507,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Academia & Esportes"
+    "subcategory": "Academia & Esportes",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260820-123",
@@ -4199,7 +4521,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260820-124",
@@ -4212,7 +4535,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260820-125",
@@ -4225,7 +4549,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174732828228",
@@ -4238,7 +4563,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173800031343",
@@ -4251,7 +4577,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174734872906",
@@ -4264,7 +4591,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174742866084",
@@ -4277,7 +4605,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174744445804",
@@ -4290,7 +4619,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173811975455",
@@ -4303,7 +4633,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174745466148",
@@ -4316,7 +4647,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173815625085",
@@ -4329,7 +4661,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174815446668",
@@ -4342,7 +4675,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174820634824",
@@ -4355,7 +4689,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174821334556",
@@ -4368,7 +4703,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173888557199",
@@ -4381,7 +4717,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173888499389",
@@ -4394,7 +4731,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173891143849",
@@ -4405,9 +4743,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-173894669947",
@@ -4420,7 +4759,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174830430194",
@@ -4431,9 +4771,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-173907725569",
@@ -4446,7 +4787,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260819-126",
@@ -4459,7 +4801,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260819-127",
@@ -4472,7 +4815,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260819-128",
@@ -4485,7 +4829,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260819-129",
@@ -4498,7 +4843,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260819-130",
@@ -4511,7 +4857,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173635387985",
@@ -4524,7 +4871,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3418223201",
@@ -4537,7 +4885,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173643103493",
@@ -4550,7 +4899,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3418408231",
@@ -4563,7 +4913,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174583897670",
@@ -4576,7 +4927,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174585470300",
@@ -4589,7 +4941,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174586343438",
@@ -4602,7 +4955,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174644917266",
@@ -4615,7 +4969,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174643855742",
@@ -4626,9 +4981,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-174646241564",
@@ -4641,7 +4997,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173715420515",
@@ -4654,7 +5011,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174646757230",
@@ -4667,7 +5025,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173718702563",
@@ -4680,7 +5039,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174650220314",
@@ -4693,7 +5053,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174652228254",
@@ -4706,7 +5067,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174668826100",
@@ -4719,7 +5081,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174685527362",
@@ -4732,7 +5095,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-131",
@@ -4745,7 +5109,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-132",
@@ -4758,7 +5123,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-133",
@@ -4771,7 +5137,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-134",
@@ -4784,7 +5151,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-135",
@@ -4797,7 +5165,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-136",
@@ -4810,7 +5179,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-137",
@@ -4823,7 +5193,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-138",
@@ -4836,7 +5207,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-139",
@@ -4849,7 +5221,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-140",
@@ -4862,7 +5235,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-141",
@@ -4875,7 +5249,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-142",
@@ -4888,7 +5263,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-143",
@@ -4901,7 +5277,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-144",
@@ -4914,7 +5291,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-145",
@@ -4927,7 +5305,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-146",
@@ -4940,7 +5319,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-147",
@@ -4953,7 +5333,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-148",
@@ -4966,7 +5347,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-149",
@@ -4979,7 +5361,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-150",
@@ -4992,7 +5375,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-151",
@@ -5005,7 +5389,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260818-152",
@@ -5018,7 +5403,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3416290857",
@@ -5031,7 +5417,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173327143373",
@@ -5044,7 +5431,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173338685037",
@@ -5057,7 +5445,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174285302696",
@@ -5068,9 +5457,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-174330461930",
@@ -5083,7 +5473,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173408166739",
@@ -5096,7 +5487,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173408122795",
@@ -5109,7 +5501,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173445352521",
@@ -5120,9 +5513,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-173221960461",
@@ -5133,9 +5527,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-173228054515",
@@ -5148,7 +5543,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174185281406",
@@ -5161,7 +5557,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174188297370",
@@ -5174,7 +5571,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174188191566",
@@ -5187,7 +5585,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173270945229",
@@ -5200,7 +5599,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173278565391",
@@ -5213,7 +5613,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173969057138",
@@ -5226,7 +5627,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173067974681",
@@ -5239,7 +5641,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173071514267",
@@ -5252,7 +5655,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-174016699148",
@@ -5265,7 +5669,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173101370769",
@@ -5278,7 +5683,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173101668225",
@@ -5291,7 +5697,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173111924255",
@@ -5304,7 +5711,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173124360299",
@@ -5317,7 +5725,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260814-153",
@@ -5330,7 +5739,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260814-154",
@@ -5343,7 +5753,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260814-155",
@@ -5356,7 +5767,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260814-156",
@@ -5369,7 +5781,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173767818346",
@@ -5382,7 +5795,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172843565133",
@@ -5395,7 +5809,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173769549506",
@@ -5408,7 +5823,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172856244621",
@@ -5421,7 +5837,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172856882209",
@@ -5434,7 +5851,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173781284962",
@@ -5447,7 +5865,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173783868282",
@@ -5460,7 +5879,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172950685845",
@@ -5473,7 +5893,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173893095388",
@@ -5486,7 +5907,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260813-157",
@@ -5499,7 +5921,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260813-158",
@@ -5512,7 +5935,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Assinaturas & Software"
+    "subcategory": "Assinaturas & Software",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260813-159",
@@ -5525,7 +5949,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260813-160",
@@ -5538,7 +5963,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172677206267",
@@ -5551,7 +5977,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172677268107",
@@ -5564,7 +5991,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172679184731",
@@ -5577,7 +6005,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172748680039",
@@ -5588,9 +6017,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-172756029503",
@@ -5603,7 +6033,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172761042735",
@@ -5616,7 +6047,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172762806571",
@@ -5629,7 +6061,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173685554862",
@@ -5642,7 +6075,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172767569339",
@@ -5655,7 +6089,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172770156935",
@@ -5668,7 +6103,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Lazer & Entretenimento",
     "subcategory": "Assinaturas & Lazer",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173705250324",
@@ -5681,7 +6117,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172791759119",
@@ -5694,7 +6131,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260812-161",
@@ -5707,7 +6145,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260812-162",
@@ -5720,7 +6159,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260812-163",
@@ -5733,7 +6173,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173403536324",
@@ -5744,9 +6185,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-172487375701",
@@ -5759,7 +6201,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "subcategory": "Farmácia & Saúde",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173405251118",
@@ -5772,7 +6215,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172512240781",
@@ -5785,7 +6229,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172514528283",
@@ -5798,7 +6243,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173448436724",
@@ -5811,7 +6257,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172533109449",
@@ -5824,7 +6271,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173450658718",
@@ -5837,7 +6285,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172533391381",
@@ -5850,7 +6299,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260811-164",
@@ -5863,7 +6313,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260811-165",
@@ -5876,7 +6327,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260811-166",
@@ -5889,7 +6341,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260811-167",
@@ -5902,7 +6355,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260811-168",
@@ -5915,7 +6369,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260811-169",
@@ -5928,7 +6383,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260811-170",
@@ -5941,7 +6397,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260811-171",
@@ -5954,7 +6411,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260811-172",
@@ -5967,7 +6425,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260811-173",
@@ -5980,7 +6439,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172343597011",
@@ -5991,9 +6451,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-172348710031",
@@ -6006,7 +6467,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172349425215",
@@ -6019,7 +6481,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "subcategory": "Contas & Serviços",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172348811107",
@@ -6030,9 +6493,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260810-174",
@@ -6045,7 +6509,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-175",
@@ -6058,7 +6523,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Energia, Luz & Serviços"
+    "subcategory": "Energia, Luz & Serviços",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-176",
@@ -6071,7 +6537,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-177",
@@ -6084,7 +6551,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-178",
@@ -6097,7 +6565,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-179",
@@ -6110,7 +6579,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-180",
@@ -6123,7 +6593,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-181",
@@ -6136,7 +6607,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-182",
@@ -6149,7 +6621,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-183",
@@ -6162,7 +6635,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-184",
@@ -6175,7 +6649,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-185",
@@ -6188,7 +6663,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-186",
@@ -6201,7 +6677,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260810-187",
@@ -6214,7 +6691,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172998477538",
@@ -6227,7 +6705,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172998607384",
@@ -6240,7 +6719,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172087795347",
@@ -6253,7 +6733,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173011477064",
@@ -6266,7 +6747,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173012882156",
@@ -6279,7 +6761,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-173012722638",
@@ -6292,7 +6775,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172100918309",
@@ -6305,7 +6789,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171975780637",
@@ -6318,7 +6803,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171980982685",
@@ -6331,7 +6817,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171802009429",
@@ -6344,7 +6831,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172710812318",
@@ -6357,7 +6845,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172710070088",
@@ -6370,7 +6859,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172722059424",
@@ -6383,7 +6873,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171828867995",
@@ -6396,7 +6887,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172745938192",
@@ -6409,7 +6901,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171849518965",
@@ -6422,7 +6915,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172758103660",
@@ -6435,7 +6929,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172816179556",
@@ -6446,9 +6941,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260807-188",
@@ -6461,7 +6957,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260807-189",
@@ -6474,7 +6971,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260807-190",
@@ -6487,7 +6985,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260807-191",
@@ -6500,7 +6999,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260807-192",
@@ -6513,7 +7013,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260807-193",
@@ -6526,7 +7027,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260807-194",
@@ -6539,7 +7041,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260807-195",
@@ -6552,7 +7055,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260807-196",
@@ -6565,7 +7069,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172503000560",
@@ -6578,7 +7083,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171599679255",
@@ -6591,7 +7097,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171601813027",
@@ -6604,7 +7111,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171611647553",
@@ -6617,7 +7125,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172515171694",
@@ -6630,7 +7139,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171612984365",
@@ -6643,7 +7153,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172517609108",
@@ -6656,7 +7167,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171621276903",
@@ -6669,7 +7181,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "subcategory": "Contas & Serviços",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172617851714",
@@ -6682,7 +7195,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172617789530",
@@ -6695,7 +7209,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172618268008",
@@ -6706,9 +7221,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-171715836009",
@@ -6721,7 +7237,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171721249941",
@@ -6734,20 +7251,22 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171727529415",
     "date": "2026-08-07",
-    "merchant": "Colegio Misericordia",
+    "merchant": "Colegio Misericordia (Escola)",
     "description": "Mercado Pago Amanda - Pago Colegio Misericordia Belgrano",
     "amount": 439832.77,
     "currency": "ARS",
     "type": "expense",
     "category": "Filhos & Família",
-    "subcategory": "Escola / Filhos",
+    "subcategory": "Escola / Colegiatura",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260806-197",
@@ -6760,7 +7279,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260806-198",
@@ -6773,7 +7293,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Mercado Pago / Mercado Livre"
+    "subcategory": "Mercado Pago / Mercado Livre",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260806-199",
@@ -6786,7 +7307,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260806-200",
@@ -6799,7 +7321,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172320813782",
@@ -6812,7 +7335,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172321368414",
@@ -6825,7 +7349,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171421384319",
@@ -6838,7 +7363,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172414909388",
@@ -6849,9 +7375,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260805-201",
@@ -6864,7 +7391,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260805-202",
@@ -6877,7 +7405,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260805-203",
@@ -6890,7 +7419,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260805-204",
@@ -6903,7 +7433,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260805-205",
@@ -6916,7 +7447,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260805-206",
@@ -6929,7 +7461,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260805-207",
@@ -6942,7 +7475,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260805-208",
@@ -6955,7 +7489,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260805-209",
@@ -6968,7 +7503,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171239530829",
@@ -6981,7 +7517,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172145371832",
@@ -6994,7 +7531,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172158494806",
@@ -7007,7 +7545,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171259555165",
@@ -7020,7 +7559,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172160165014",
@@ -7033,7 +7573,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172160149046",
@@ -7046,7 +7587,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172231029682",
@@ -7057,9 +7599,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-171349188285",
@@ -7070,9 +7613,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-171349959315",
@@ -7085,7 +7629,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171367122097",
@@ -7098,7 +7643,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260804-210",
@@ -7111,7 +7657,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260804-211",
@@ -7124,7 +7671,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260804-212",
@@ -7137,7 +7685,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260804-213",
@@ -7150,7 +7699,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172057842030",
@@ -7163,7 +7713,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171163549255",
@@ -7174,9 +7725,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-172064244778",
@@ -7187,9 +7739,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-172065212112",
@@ -7202,7 +7755,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171164549755",
@@ -7215,7 +7769,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171168502437",
@@ -7228,7 +7783,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172071418070",
@@ -7241,7 +7797,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172083717182",
@@ -7254,7 +7811,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171212502007",
@@ -7267,7 +7825,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171213588037",
@@ -7280,7 +7839,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-172113727766",
@@ -7293,7 +7853,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-214",
@@ -7306,7 +7867,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-215",
@@ -7319,7 +7881,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-216",
@@ -7332,7 +7895,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-217",
@@ -7345,7 +7909,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Assinaturas & Software"
+    "subcategory": "Assinaturas & Software",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-218",
@@ -7358,7 +7923,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-219",
@@ -7371,7 +7937,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-220",
@@ -7384,7 +7951,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-221",
@@ -7397,7 +7965,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-222",
@@ -7410,7 +7979,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-223",
@@ -7423,7 +7993,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-224",
@@ -7436,7 +8007,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-225",
@@ -7449,7 +8021,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-226",
@@ -7462,7 +8035,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-227",
@@ -7475,7 +8049,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-228",
@@ -7488,7 +8063,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-229",
@@ -7501,7 +8077,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-230",
@@ -7514,7 +8091,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260803-231",
@@ -7527,7 +8105,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171810163080",
@@ -7540,7 +8119,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170913598113",
@@ -7553,7 +8133,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170923828407",
@@ -7566,7 +8147,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171823563230",
@@ -7579,7 +8161,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171823355842",
@@ -7592,7 +8175,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171697040002",
@@ -7603,9 +8187,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-170827634515",
@@ -7618,7 +8203,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171724113768",
@@ -7631,7 +8217,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171724307388",
@@ -7644,7 +8231,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170847166593",
@@ -7657,7 +8245,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170849888303",
@@ -7670,7 +8259,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171752303592",
@@ -7683,7 +8273,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171752758638",
@@ -7696,7 +8287,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170640337247",
@@ -7709,7 +8301,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171537084572",
@@ -7722,7 +8315,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170651511477",
@@ -7735,7 +8329,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171565133316",
@@ -7748,7 +8343,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170670969619",
@@ -7761,7 +8357,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171568263682",
@@ -7772,9 +8369,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-171572507492",
@@ -7787,7 +8385,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171575668438",
@@ -7800,7 +8399,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170681225669",
@@ -7813,7 +8413,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170705687099",
@@ -7826,7 +8427,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170708251207",
@@ -7839,7 +8441,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170723205241",
@@ -7852,7 +8455,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170722869377",
@@ -7865,7 +8469,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171644222276",
@@ -7878,7 +8483,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171643758582",
@@ -7889,9 +8495,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260731-232",
@@ -7904,7 +8511,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260731-233",
@@ -7917,7 +8525,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260731-234",
@@ -7930,7 +8539,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170465251243",
@@ -7943,7 +8553,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170465664529",
@@ -7956,7 +8567,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171361501540",
@@ -7969,7 +8581,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170466661175",
@@ -7982,7 +8595,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171373240860",
@@ -7995,7 +8609,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170478650353",
@@ -8008,7 +8623,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170478351045",
@@ -8021,7 +8637,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170480446945",
@@ -8034,7 +8651,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171391141798",
@@ -8047,7 +8665,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171426306046",
@@ -8060,7 +8679,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260730-235",
@@ -8073,7 +8693,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260730-236",
@@ -8086,7 +8707,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260730-237",
@@ -8099,7 +8721,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260730-238",
@@ -8112,7 +8735,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260730-239",
@@ -8125,7 +8749,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260730-240",
@@ -8138,7 +8763,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171200536928",
@@ -8151,7 +8777,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170316389483",
@@ -8164,7 +8791,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170317369335",
@@ -8177,7 +8805,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171211539050",
@@ -8190,7 +8819,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170332870311",
@@ -8201,9 +8831,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-171243291656",
@@ -8216,7 +8847,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171244619378",
@@ -8229,7 +8861,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171259070336",
@@ -8242,7 +8875,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170369597389",
@@ -8253,9 +8887,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-170370641527",
@@ -8268,7 +8903,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170380178261",
@@ -8281,7 +8917,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171286144818",
@@ -8294,7 +8931,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260729-241",
@@ -8307,7 +8945,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260729-242",
@@ -8320,7 +8959,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260729-243",
@@ -8333,7 +8973,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171044725052",
@@ -8344,9 +8985,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-170153265291",
@@ -8359,7 +9001,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171045941460",
@@ -8372,7 +9015,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171058563906",
@@ -8385,7 +9029,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171059603654",
@@ -8398,7 +9043,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170171390317",
@@ -8411,7 +9057,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170182283895",
@@ -8424,7 +9071,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170182768763",
@@ -8437,7 +9085,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171077567880",
@@ -8450,7 +9099,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171105271970",
@@ -8463,7 +9113,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171123856404",
@@ -8476,7 +9127,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170231577079",
@@ -8489,7 +9141,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-171123856404",
@@ -8502,7 +9155,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170246123725",
@@ -8515,7 +9169,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170247863637",
@@ -8528,7 +9183,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260728-244",
@@ -8541,7 +9197,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260728-245",
@@ -8554,7 +9211,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260728-246",
@@ -8567,7 +9225,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260728-247",
@@ -8580,7 +9239,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260728-248",
@@ -8593,7 +9253,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260728-249",
@@ -8606,7 +9267,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170914795524",
@@ -8617,9 +9279,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-170026863359",
@@ -8632,7 +9295,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170027478851",
@@ -8645,7 +9309,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170029282295",
@@ -8656,9 +9321,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-170920332850",
@@ -8671,7 +9337,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170029820423",
@@ -8684,7 +9351,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170925544130",
@@ -8697,7 +9365,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260727-250",
@@ -8710,7 +9379,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260727-251",
@@ -8723,7 +9393,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260727-252",
@@ -8736,7 +9407,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260727-253",
@@ -8749,7 +9421,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260727-254",
@@ -8762,7 +9435,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260727-255",
@@ -8775,7 +9449,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260727-256",
@@ -8788,7 +9463,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260727-257",
@@ -8801,7 +9477,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170744862038",
@@ -8814,7 +9491,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169858732231",
@@ -8827,7 +9505,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170756661530",
@@ -8840,7 +9519,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170757394154",
@@ -8853,7 +9533,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170757502160",
@@ -8866,7 +9547,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169868341731",
@@ -8879,7 +9561,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169868176079",
@@ -8892,7 +9575,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170803852854",
@@ -8903,9 +9587,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-170805132552",
@@ -8918,7 +9603,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169919830693",
@@ -8931,7 +9617,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170809446616",
@@ -8944,7 +9631,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170811329302",
@@ -8957,7 +9645,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170660422876",
@@ -8970,7 +9659,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170661707394",
@@ -8983,7 +9673,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170661529918",
@@ -8996,7 +9687,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170676277656",
@@ -9009,7 +9701,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170677038848",
@@ -9022,7 +9715,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169790286937",
@@ -9035,7 +9729,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169636876989",
@@ -9048,7 +9743,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170522476832",
@@ -9061,7 +9757,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169639462367",
@@ -9074,7 +9771,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169641617099",
@@ -9087,7 +9785,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169643580185",
@@ -9100,7 +9799,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170574916494",
@@ -9113,7 +9813,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260724-258",
@@ -9126,7 +9827,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260724-259",
@@ -9139,7 +9841,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260724-260",
@@ -9152,7 +9855,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260724-261",
@@ -9165,7 +9869,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169421788789",
@@ -9178,7 +9883,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169423279579",
@@ -9191,7 +9897,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170317185558",
@@ -9204,7 +9911,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169434808675",
@@ -9217,7 +9925,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170319923244",
@@ -9230,7 +9939,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169436557677",
@@ -9243,7 +9953,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169495451021",
@@ -9254,9 +9965,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-169495498395",
@@ -9267,9 +9979,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-169496117007",
@@ -9282,7 +9995,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169495641869",
@@ -9295,7 +10009,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169499586877",
@@ -9308,7 +10023,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260723-262",
@@ -9321,7 +10037,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260723-263",
@@ -9334,7 +10051,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Energia, Luz & Serviços"
+    "subcategory": "Energia, Luz & Serviços",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260723-264",
@@ -9347,7 +10065,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260723-265",
@@ -9360,7 +10079,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260723-266",
@@ -9373,7 +10093,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260723-267",
@@ -9386,7 +10107,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260723-268",
@@ -9399,7 +10121,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169284972183",
@@ -9412,7 +10135,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169284569163",
@@ -9425,7 +10149,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169285060179",
@@ -9436,9 +10161,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-170170934902",
@@ -9451,7 +10177,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170170067456",
@@ -9462,9 +10189,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-169288826211",
@@ -9475,9 +10203,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-169287609727",
@@ -9488,9 +10217,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-169300560669",
@@ -9503,7 +10233,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170183472340",
@@ -9514,9 +10245,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-170183372966",
@@ -9529,7 +10261,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170184267680",
@@ -9542,7 +10275,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169305913527",
@@ -9555,7 +10289,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170217296946",
@@ -9568,7 +10303,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169336823433",
@@ -9581,7 +10317,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169342816167",
@@ -9594,7 +10331,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169348040483",
@@ -9607,7 +10345,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169354141499",
@@ -9620,7 +10359,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260722-269",
@@ -9633,7 +10373,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260722-270",
@@ -9646,7 +10387,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260722-271",
@@ -9659,7 +10401,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260722-272",
@@ -9672,7 +10415,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260722-273",
@@ -9685,7 +10429,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260722-274",
@@ -9698,7 +10443,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260722-275",
@@ -9711,7 +10457,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169985850030",
@@ -9724,7 +10471,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169107751055",
@@ -9737,7 +10485,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169107311959",
@@ -9750,7 +10499,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170003666730",
@@ -9763,7 +10513,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170003405168",
@@ -9776,7 +10527,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169122547877",
@@ -9789,7 +10541,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170003545662",
@@ -9802,7 +10555,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169125466267",
@@ -9815,7 +10569,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-170068665802",
@@ -9826,9 +10581,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260721-276",
@@ -9841,7 +10597,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260721-277",
@@ -9854,7 +10611,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260721-278",
@@ -9867,7 +10625,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168966989741",
@@ -9878,9 +10637,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-168967393933",
@@ -9893,7 +10653,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168967729221",
@@ -9906,7 +10667,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168970588555",
@@ -9919,7 +10681,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168971584889",
@@ -9932,7 +10695,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-279",
@@ -9945,7 +10709,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-280",
@@ -9958,7 +10723,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-281",
@@ -9971,7 +10737,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-282",
@@ -9984,7 +10751,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-283",
@@ -9997,7 +10765,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-284",
@@ -10010,7 +10779,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-285",
@@ -10023,7 +10793,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-286",
@@ -10036,7 +10807,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-287",
@@ -10049,7 +10821,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-288",
@@ -10062,7 +10835,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-289",
@@ -10075,7 +10849,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260720-290",
@@ -10088,7 +10863,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168790951687",
@@ -10101,7 +10877,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169668550948",
@@ -10114,7 +10891,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168802787621",
@@ -10127,7 +10905,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169681193270",
@@ -10140,7 +10919,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168671680107",
@@ -10153,7 +10933,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169435261662",
@@ -10166,7 +10947,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168579486425",
@@ -10179,7 +10961,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168579486425",
@@ -10192,7 +10975,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168345128523",
@@ -10205,7 +10989,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168344827495",
@@ -10218,7 +11003,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168345249489",
@@ -10231,7 +11017,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169216270600",
@@ -10244,7 +11031,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168355393683",
@@ -10257,7 +11045,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "subcategory": "Farmácia & Saúde",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169225204004",
@@ -10270,7 +11059,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168356477757",
@@ -10283,7 +11073,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168356747141",
@@ -10296,7 +11087,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169227158594",
@@ -10309,7 +11101,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168358447789",
@@ -10322,7 +11115,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168456043045",
@@ -10335,7 +11129,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169331501356",
@@ -10348,7 +11143,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168468323007",
@@ -10361,7 +11157,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260716-291",
@@ -10374,7 +11171,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260716-292",
@@ -10387,7 +11185,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260716-293",
@@ -10400,7 +11199,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260716-294",
@@ -10413,7 +11213,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260716-295",
@@ -10426,7 +11227,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260716-296",
@@ -10439,7 +11241,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168177667653",
@@ -10452,7 +11255,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169046181044",
@@ -10465,7 +11269,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169050344482",
@@ -10478,7 +11283,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169050478246",
@@ -10491,7 +11297,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168183303501",
@@ -10504,7 +11311,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168257399417",
@@ -10515,9 +11323,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-168258588945",
@@ -10530,7 +11339,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169132663588",
@@ -10543,7 +11353,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169135246942",
@@ -10556,7 +11367,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-169135410618",
@@ -10569,7 +11381,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168284453127",
@@ -10582,7 +11395,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168306389991",
@@ -10595,7 +11409,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Lazer & Entretenimento",
     "subcategory": "Assinaturas & Lazer",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260715-297",
@@ -10608,7 +11423,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260715-298",
@@ -10621,7 +11437,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260715-299",
@@ -10634,7 +11451,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260715-300",
@@ -10647,7 +11465,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260715-301",
@@ -10660,7 +11479,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3366989770",
@@ -10673,7 +11493,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3366989768",
@@ -10686,7 +11507,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3300529437",
@@ -10699,7 +11521,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3300725739",
@@ -10712,7 +11535,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3300726507",
@@ -10725,7 +11549,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168076692205",
@@ -10736,9 +11561,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-168077829163",
@@ -10751,7 +11577,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168983905318",
@@ -10764,7 +11591,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260714-302",
@@ -10777,7 +11605,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260714-303",
@@ -10790,7 +11619,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260714-304",
@@ -10803,7 +11633,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260714-305",
@@ -10816,7 +11647,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260714-306",
@@ -10829,7 +11661,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260714-307",
@@ -10842,7 +11675,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260714-308",
@@ -10855,7 +11689,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260714-309",
@@ -10868,7 +11703,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260714-310",
@@ -10881,7 +11717,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-311",
@@ -10894,7 +11731,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-312",
@@ -10907,7 +11745,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-313",
@@ -10920,7 +11759,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-314",
@@ -10933,7 +11773,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-315",
@@ -10946,7 +11787,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-316",
@@ -10959,7 +11801,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-317",
@@ -10972,7 +11815,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-318",
@@ -10985,7 +11829,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Assinaturas & Software"
+    "subcategory": "Assinaturas & Software",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-319",
@@ -10998,7 +11843,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-320",
@@ -11011,7 +11857,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-321",
@@ -11024,7 +11871,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-322",
@@ -11037,7 +11885,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-323",
@@ -11050,7 +11899,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-324",
@@ -11063,7 +11913,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-325",
@@ -11076,7 +11927,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-326",
@@ -11089,7 +11941,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-327",
@@ -11102,7 +11955,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-328",
@@ -11115,7 +11969,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-329",
@@ -11128,7 +11983,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-330",
@@ -11141,7 +11997,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-331",
@@ -11154,7 +12011,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-332",
@@ -11167,7 +12025,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-333",
@@ -11180,7 +12039,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-334",
@@ -11193,7 +12053,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-335",
@@ -11206,7 +12067,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-336",
@@ -11219,7 +12081,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-337",
@@ -11232,7 +12095,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-338",
@@ -11245,7 +12109,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260713-339",
@@ -11258,7 +12123,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168548776044",
@@ -11271,7 +12137,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3357250648",
@@ -11284,7 +12151,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3357250650",
@@ -11297,7 +12165,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3291408061",
@@ -11310,7 +12179,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3291425855",
@@ -11323,7 +12193,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3357336986",
@@ -11336,7 +12207,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167701760309",
@@ -11349,7 +12221,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3357548780",
@@ -11362,7 +12235,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3291693333",
@@ -11375,7 +12249,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167496144799",
@@ -11386,9 +12261,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-168359218902",
@@ -11401,7 +12277,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168387045770",
@@ -11412,9 +12289,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-167541415981",
@@ -11425,9 +12303,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-168126587332",
@@ -11440,7 +12319,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167286692347",
@@ -11453,7 +12333,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168151311588",
@@ -11466,7 +12347,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167298944407",
@@ -11479,7 +12361,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167364132819",
@@ -11492,7 +12375,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167987449476",
@@ -11505,7 +12389,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167989223710",
@@ -11518,7 +12403,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167144003617",
@@ -11531,7 +12417,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-168004294152",
@@ -11544,7 +12431,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3277529721",
@@ -11557,7 +12445,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166922609945",
@@ -11570,7 +12459,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167776505866",
@@ -11581,9 +12471,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3342350534",
@@ -11596,7 +12487,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3342655820",
@@ -11609,7 +12501,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3277878253",
@@ -11622,7 +12515,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167793729578",
@@ -11635,7 +12529,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167861406248",
@@ -11648,7 +12543,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167872143326",
@@ -11661,7 +12557,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167047162835",
@@ -11674,7 +12571,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167046328963",
@@ -11685,9 +12583,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-166749457145",
@@ -11700,7 +12599,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166763914487",
@@ -11711,9 +12611,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3275744743",
@@ -11726,7 +12627,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166837482439",
@@ -11739,7 +12641,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3340600042",
@@ -11752,7 +12655,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3340600044",
@@ -11765,7 +12669,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167696106246",
@@ -11778,7 +12683,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167707881928",
@@ -11791,7 +12697,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166861237179",
@@ -11804,7 +12711,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3332761880",
@@ -11817,7 +12725,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3332761896",
@@ -11830,7 +12739,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3268575673",
@@ -11843,7 +12753,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3333000504",
@@ -11856,7 +12767,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3333000814",
@@ -11869,7 +12781,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166589305567",
@@ -11882,7 +12795,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166654732473",
@@ -11895,20 +12809,22 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166656246991",
     "date": "2026-07-06",
-    "merchant": "Colegio Misericordia",
+    "merchant": "Colegio Misericordia (Escola)",
     "description": "Mercado Pago Amanda - Transferencia enviada Colegio Misericordia Belgrano",
     "amount": 454459.2,
     "currency": "ARS",
     "type": "expense",
     "category": "Filhos & Família",
-    "subcategory": "Escola / Filhos",
+    "subcategory": "Escola / Colegiatura",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166659858527",
@@ -11921,7 +12837,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166452087015",
@@ -11932,9 +12849,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3330777752",
@@ -11947,7 +12865,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166455912759",
@@ -11960,7 +12879,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3330839724",
@@ -11973,7 +12893,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166456797077",
@@ -11986,7 +12907,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166469997353",
@@ -11997,9 +12919,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-166297082247",
@@ -12012,7 +12935,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166298350589",
@@ -12025,7 +12949,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167155708654",
@@ -12038,7 +12963,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166345694227",
@@ -12051,7 +12977,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3261147515",
@@ -12064,7 +12991,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3261147513",
@@ -12077,7 +13005,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3324851936",
@@ -12090,7 +13019,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166121984333",
@@ -12103,7 +13033,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3261411335",
@@ -12116,7 +13047,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166977811004",
@@ -12129,7 +13061,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3326077150",
@@ -12142,7 +13075,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-167068867808",
@@ -12153,9 +13087,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3321289010",
@@ -12168,7 +13103,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3321283564",
@@ -12181,7 +13117,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3321290746",
@@ -12194,7 +13131,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3258057361",
@@ -12207,7 +13145,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3258058169",
@@ -12220,7 +13159,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166867926024",
@@ -12231,9 +13171,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3259440241",
@@ -12246,7 +13187,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166872978124",
@@ -12259,7 +13201,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166036805865",
@@ -12272,7 +13215,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3259683273",
@@ -12285,7 +13229,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3323192520",
@@ -12298,7 +13243,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166054193553",
@@ -12311,7 +13257,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166056386589",
@@ -12324,7 +13271,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166914499126",
@@ -12335,9 +13283,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3316653474",
@@ -12350,7 +13299,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3253501807",
@@ -12363,7 +13313,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3253537583",
@@ -12376,7 +13327,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3253758927",
@@ -12389,7 +13341,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3253759543",
@@ -12402,7 +13355,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166631325546",
@@ -12415,7 +13369,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3309628378",
@@ -12428,7 +13383,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3309628386",
@@ -12441,7 +13397,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166338728450",
@@ -12454,7 +13411,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166370843250",
@@ -12467,7 +13425,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166370616038",
@@ -12480,7 +13439,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-165535818635",
@@ -12493,7 +13453,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166372388910",
@@ -12506,7 +13467,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-165537021871",
@@ -12519,7 +13481,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-165543524097",
@@ -12532,7 +13495,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-165544820327",
@@ -12545,7 +13509,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166412140600",
@@ -12556,9 +13521,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-166042325454",
@@ -12571,7 +13537,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166053196546",
@@ -12584,7 +13551,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166053111258",
@@ -12597,7 +13565,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166069026628",
@@ -12610,7 +13579,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-166068923318",
@@ -12623,7 +13593,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3239020863",
@@ -12636,7 +13607,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3301001428",
@@ -12649,7 +13621,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3301044872",
@@ -12662,7 +13635,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3239227865",
@@ -12675,7 +13649,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3239228731",
@@ -12688,7 +13663,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164890694761",
@@ -12699,9 +13675,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3297775742",
@@ -12714,7 +13691,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3236056541",
@@ -12727,7 +13705,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-165750504498",
@@ -12738,9 +13717,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-164925744611",
@@ -12753,7 +13733,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "subcategory": "Contas & Serviços",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3299370322",
@@ -12766,7 +13747,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164965276083",
@@ -12779,7 +13761,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3237767397",
@@ -12792,7 +13775,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164984891185",
@@ -12805,7 +13789,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164743455311",
@@ -12816,9 +13801,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-165568153064",
@@ -12829,9 +13815,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3233155929",
@@ -12844,7 +13831,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3233155935",
@@ -12857,7 +13845,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164745223617",
@@ -12868,9 +13857,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3294593754",
@@ -12883,7 +13873,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3294770712",
@@ -12896,7 +13887,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3233402019",
@@ -12909,7 +13901,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164759417843",
@@ -12922,7 +13915,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3233494119",
@@ -12935,7 +13929,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164647108021",
@@ -12946,9 +13941,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-165472519736",
@@ -12961,7 +13957,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3286992734",
@@ -12974,7 +13971,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3287013380",
@@ -12987,7 +13985,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3287047044",
@@ -13000,7 +13999,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3287220326",
@@ -13013,7 +14013,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3226708741",
@@ -13026,7 +14027,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-165308944244",
@@ -13037,9 +14039,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3227545775",
@@ -13052,7 +14055,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3227612993",
@@ -13065,7 +14069,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3227601393",
@@ -13078,7 +14083,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164518240617",
@@ -13089,9 +14095,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-165341880628",
@@ -13104,7 +14111,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "subcategory": "Farmácia & Saúde",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-165342214434",
@@ -13117,7 +14125,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164376848849",
@@ -13130,7 +14139,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164378725371",
@@ -13143,7 +14153,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164173189443",
@@ -13154,9 +14165,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-164174100419",
@@ -13169,7 +14181,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-165000777124",
@@ -13182,7 +14195,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164195796809",
@@ -13195,7 +14209,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164241039731",
@@ -13208,7 +14223,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3223409165",
@@ -13221,7 +14237,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3223409167",
@@ -13234,7 +14251,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-165073306246",
@@ -13247,7 +14265,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3223655819",
@@ -13260,7 +14279,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3283903506",
@@ -13273,7 +14293,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164262326073",
@@ -13286,7 +14307,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3278358976",
@@ -13299,7 +14321,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3278364258",
@@ -13312,7 +14335,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164094598221",
@@ -13323,9 +14347,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-164917753332",
@@ -13338,7 +14363,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-163870630943",
@@ -13351,7 +14377,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3216909299",
@@ -13364,7 +14391,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3276595816",
@@ -13377,7 +14405,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3276595830",
@@ -13390,7 +14419,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-163924700409",
@@ -13403,7 +14433,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164527611500",
@@ -13416,7 +14447,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3211920947",
@@ -13429,7 +14461,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164535318614",
@@ -13442,7 +14475,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-163800671891",
@@ -13453,9 +14487,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3266864100",
@@ -13468,7 +14503,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-163129729209",
@@ -13481,7 +14517,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-164022319686",
@@ -13494,7 +14531,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Lazer & Entretenimento",
     "subcategory": "Assinaturas & Lazer",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-162913675519",
@@ -13505,9 +14543,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260608-340",
@@ -13520,7 +14559,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260608-341",
@@ -13533,7 +14573,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260608-342",
@@ -13546,7 +14587,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260608-343",
@@ -13559,7 +14601,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260608-344",
@@ -13572,7 +14615,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260608-345",
@@ -13585,7 +14629,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Filhos & Família",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Escola / Colegiatura"
+    "subcategory": "Escola / Colegiatura",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260608-346",
@@ -13598,7 +14643,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260608-347",
@@ -13611,7 +14657,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-162107587369",
@@ -13624,7 +14671,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260605-348",
@@ -13637,7 +14685,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260605-349",
@@ -13650,7 +14699,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260605-350",
@@ -13663,7 +14713,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260605-351",
@@ -13676,7 +14727,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161893317365",
@@ -13689,7 +14741,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161948912879",
@@ -13702,7 +14755,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260604-352",
@@ -13715,7 +14769,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260604-353",
@@ -13728,7 +14783,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260604-354",
@@ -13741,7 +14797,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260604-355",
@@ -13754,7 +14811,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260604-356",
@@ -13767,7 +14825,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260604-357",
@@ -13780,7 +14839,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260604-358",
@@ -13793,7 +14853,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161657578229",
@@ -13806,7 +14867,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161660256155",
@@ -13819,7 +14881,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161666138259",
@@ -13832,7 +14895,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161671493563",
@@ -13843,9 +14907,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-161677096731",
@@ -13858,7 +14923,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-162476776886",
@@ -13869,9 +14935,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260603-359",
@@ -13884,7 +14951,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260603-360",
@@ -13897,7 +14965,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Energia, Luz & Serviços"
+    "subcategory": "Energia, Luz & Serviços",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260603-361",
@@ -13910,7 +14979,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Energia, Luz & Serviços"
+    "subcategory": "Energia, Luz & Serviços",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260603-362",
@@ -13923,7 +14993,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260603-363",
@@ -13936,7 +15007,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Energia, Luz & Serviços"
+    "subcategory": "Energia, Luz & Serviços",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260603-364",
@@ -13949,7 +15021,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Energia, Luz & Serviços"
+    "subcategory": "Energia, Luz & Serviços",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260603-365",
@@ -13962,7 +15035,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260603-366",
@@ -13975,7 +15049,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260603-367",
@@ -13988,7 +15063,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3161956339",
@@ -14001,7 +15077,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3218006396",
@@ -14014,7 +15091,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3218016622",
@@ -14027,7 +15105,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3162213315",
@@ -14040,7 +15119,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3162214289",
@@ -14053,7 +15133,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3219638304",
@@ -14066,7 +15147,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3219727584",
@@ -14079,7 +15161,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3219727588",
@@ -14092,7 +15175,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-162383612472",
@@ -14105,7 +15189,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-162384303978",
@@ -14118,7 +15203,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161601361999",
@@ -14131,7 +15217,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260602-368",
@@ -14144,7 +15231,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260602-369",
@@ -14157,7 +15245,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260602-370",
@@ -14170,7 +15259,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260602-371",
@@ -14183,7 +15273,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260602-372",
@@ -14196,7 +15287,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260602-373",
@@ -14209,7 +15301,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260602-374",
@@ -14222,7 +15315,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260602-375",
@@ -14235,7 +15329,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3214466796",
@@ -14248,7 +15343,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3158708211",
@@ -14261,7 +15357,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3158913281",
@@ -14274,7 +15371,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3158900623",
@@ -14287,7 +15385,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260601-376",
@@ -14300,7 +15399,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260601-377",
@@ -14313,7 +15413,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Mercado Pago / Mercado Livre"
+    "subcategory": "Mercado Pago / Mercado Livre",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260601-378",
@@ -14326,7 +15427,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Assinaturas & Software"
+    "subcategory": "Assinaturas & Software",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260601-379",
@@ -14339,7 +15441,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260601-380",
@@ -14352,7 +15455,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260601-381",
@@ -14365,7 +15469,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3154450557",
@@ -14378,7 +15483,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3154507019",
@@ -14391,7 +15497,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161948283812",
@@ -14404,7 +15511,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3210078460",
@@ -14417,7 +15525,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161157305845",
@@ -14430,7 +15539,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161157299829",
@@ -14443,7 +15553,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3210142106",
@@ -14456,7 +15567,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161953574528",
@@ -14469,7 +15581,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-162030502644",
@@ -14482,7 +15595,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-162030132950",
@@ -14493,9 +15607,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-161833785842",
@@ -14508,7 +15623,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161839861666",
@@ -14521,7 +15637,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3152994277",
@@ -14534,7 +15651,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3208267000",
@@ -14547,7 +15665,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161842397850",
@@ -14560,7 +15679,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161078614201",
@@ -14571,9 +15691,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-161095986335",
@@ -14586,7 +15707,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161097406879",
@@ -14599,7 +15721,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160887099379",
@@ -14612,7 +15735,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161679116584",
@@ -14623,9 +15747,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-160887982347",
@@ -14638,7 +15763,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161679679700",
@@ -14649,9 +15775,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-160889340245",
@@ -14664,7 +15791,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161724543042",
@@ -14677,7 +15805,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-382",
@@ -14690,7 +15819,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-383",
@@ -14703,7 +15833,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-384",
@@ -14716,7 +15847,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-385",
@@ -14729,7 +15861,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-386",
@@ -14742,7 +15875,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-387",
@@ -14755,7 +15889,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-388",
@@ -14768,7 +15903,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-389",
@@ -14781,7 +15917,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-390",
@@ -14794,7 +15931,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-391",
@@ -14807,7 +15945,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-392",
@@ -14820,7 +15959,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260529-393",
@@ -14833,7 +15973,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3146871733",
@@ -14846,7 +15987,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3146926967",
@@ -14859,7 +16001,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161495209720",
@@ -14870,9 +16013,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3147152349",
@@ -14885,7 +16029,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3201978400",
@@ -14898,7 +16043,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161504155752",
@@ -14911,7 +16057,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160744951345",
@@ -14924,7 +16071,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3202877800",
@@ -14937,7 +16085,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160744951345",
@@ -14950,7 +16099,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3148113991",
@@ -14963,7 +16113,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160792336059",
@@ -14976,7 +16127,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161583400300",
@@ -14989,7 +16141,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160793163413",
@@ -15002,7 +16155,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161586355880",
@@ -15015,7 +16169,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161587379154",
@@ -15028,7 +16183,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161586647762",
@@ -15041,7 +16197,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160799352549",
@@ -15054,7 +16211,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260528-394",
@@ -15067,7 +16225,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260528-395",
@@ -15080,7 +16239,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260528-396",
@@ -15093,7 +16253,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3142814257",
@@ -15106,7 +16267,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3142814259",
@@ -15119,7 +16281,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3197424034",
@@ -15132,7 +16295,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160549813269",
@@ -15145,7 +16309,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161340109912",
@@ -15158,7 +16323,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161395929636",
@@ -15169,9 +16335,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3145102255",
@@ -15184,7 +16351,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160622976375",
@@ -15195,9 +16363,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-160623206733",
@@ -15210,7 +16379,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160624370865",
@@ -15223,7 +16393,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161416325366",
@@ -15236,7 +16407,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161416717854",
@@ -15249,7 +16421,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3200004436",
@@ -15262,7 +16435,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3145346453",
@@ -15275,7 +16449,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161438639980",
@@ -15288,7 +16463,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260527-397",
@@ -15301,7 +16477,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260527-398",
@@ -15314,7 +16491,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260527-399",
@@ -15327,7 +16505,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260527-400",
@@ -15340,7 +16519,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3139778371",
@@ -15353,7 +16533,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160402586261",
@@ -15366,7 +16547,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3194101850",
@@ -15379,7 +16561,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3140041217",
@@ -15392,7 +16575,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3140030205",
@@ -15405,7 +16589,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160491358755",
@@ -15418,7 +16603,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-401",
@@ -15431,7 +16617,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-402",
@@ -15444,7 +16631,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-403",
@@ -15457,7 +16645,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-404",
@@ -15470,7 +16659,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-405",
@@ -15483,7 +16673,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-406",
@@ -15496,7 +16687,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-407",
@@ -15509,7 +16701,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-408",
@@ -15522,7 +16715,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-409",
@@ -15535,7 +16729,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-410",
@@ -15548,7 +16743,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-411",
@@ -15561,7 +16757,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-412",
@@ -15574,7 +16771,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-413",
@@ -15587,7 +16785,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-414",
@@ -15600,7 +16799,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-415",
@@ -15613,7 +16813,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260526-416",
@@ -15626,7 +16827,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160266554671",
@@ -15639,7 +16841,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3136974907",
@@ -15652,7 +16855,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3137007133",
@@ -15665,7 +16869,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3191355736",
@@ -15678,7 +16883,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161074709924",
@@ -15691,7 +16897,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160287245497",
@@ -15704,7 +16911,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3137254559",
@@ -15717,7 +16925,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160288233053",
@@ -15728,9 +16937,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-161128975704",
@@ -15743,7 +16953,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-161129783978",
@@ -15756,7 +16967,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160343158683",
@@ -15769,7 +16981,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160136983741",
@@ -15782,7 +16995,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160152361085",
@@ -15795,7 +17009,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160022181723",
@@ -15808,7 +17023,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160023620187",
@@ -15821,7 +17037,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160810096456",
@@ -15834,7 +17051,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160814742604",
@@ -15847,7 +17065,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160815345682",
@@ -15860,7 +17079,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160030011015",
@@ -15873,7 +17093,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160030421441",
@@ -15886,7 +17107,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160816534296",
@@ -15899,7 +17121,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160828823806",
@@ -15912,7 +17135,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160846559634",
@@ -15925,7 +17149,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160060809681",
@@ -15938,7 +17163,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160061069235",
@@ -15951,7 +17177,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3132688583",
@@ -15964,7 +17191,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3132688581",
@@ -15977,7 +17205,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159867297363",
@@ -15990,7 +17219,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159870178741",
@@ -16003,7 +17233,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159870289789",
@@ -16016,7 +17247,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160657572170",
@@ -16029,7 +17261,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159875140715",
@@ -16042,7 +17275,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159885827003",
@@ -16055,7 +17289,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3130169149",
@@ -16068,7 +17303,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3183536540",
@@ -16081,7 +17317,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159917164755",
@@ -16094,7 +17331,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3183609472",
@@ -16107,7 +17345,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-417",
@@ -16120,7 +17359,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-418",
@@ -16133,7 +17373,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-419",
@@ -16146,7 +17387,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-420",
@@ -16159,7 +17401,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-421",
@@ -16172,7 +17415,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-422",
@@ -16185,7 +17429,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-423",
@@ -16198,7 +17443,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-424",
@@ -16211,7 +17457,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-425",
@@ -16224,7 +17471,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-426",
@@ -16237,7 +17485,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-427",
@@ -16250,7 +17499,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-428",
@@ -16263,7 +17513,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260522-429",
@@ -16276,7 +17527,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3179059902",
@@ -16289,7 +17541,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3179059900",
@@ -16302,7 +17555,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3126012101",
@@ -16315,7 +17569,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3179331688",
@@ -16328,7 +17583,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3179332600",
@@ -16341,7 +17597,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160506507690",
@@ -16354,7 +17611,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160531724634",
@@ -16367,7 +17625,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160531071428",
@@ -16380,7 +17639,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159783497569",
@@ -16391,9 +17651,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-160568648690",
@@ -16406,7 +17667,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160574575488",
@@ -16419,7 +17681,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160575494426",
@@ -16432,7 +17695,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160576655674",
@@ -16445,7 +17709,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160576490940",
@@ -16458,7 +17723,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160578998924",
@@ -16471,7 +17737,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160585318916",
@@ -16484,7 +17751,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160586623484",
@@ -16497,7 +17765,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159802302599",
@@ -16510,7 +17779,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159809565391",
@@ -16521,9 +17791,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260521-430",
@@ -16536,7 +17807,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260521-431",
@@ -16549,7 +17821,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260521-432",
@@ -16562,7 +17835,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260521-433",
@@ -16575,7 +17849,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Mercado Pago / Mercado Livre"
+    "subcategory": "Mercado Pago / Mercado Livre",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260521-434",
@@ -16588,7 +17863,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260521-435",
@@ -16601,7 +17877,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3175491218",
@@ -16614,7 +17891,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3124434203",
@@ -16627,7 +17905,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3124434201",
@@ -16640,7 +17919,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159637289087",
@@ -16653,7 +17933,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160421984130",
@@ -16666,7 +17947,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3177572646",
@@ -16679,7 +17961,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3177572652",
@@ -16692,7 +17975,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159657882741",
@@ -16705,7 +17989,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159663924019",
@@ -16716,9 +18001,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-159666107617",
@@ -16731,7 +18017,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260520-436",
@@ -16744,7 +18031,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260520-437",
@@ -16757,7 +18045,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260520-438",
@@ -16770,7 +18059,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260520-439",
@@ -16783,7 +18073,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260520-440",
@@ -16796,7 +18087,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260520-441",
@@ -16809,7 +18101,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260520-442",
@@ -16822,7 +18115,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3119209877",
@@ -16835,7 +18129,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3119209983",
@@ -16848,7 +18143,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3171810762",
@@ -16861,7 +18157,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159353363559",
@@ -16874,7 +18171,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159433150527",
@@ -16885,9 +18183,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-160213257128",
@@ -16900,7 +18199,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160231883216",
@@ -16913,7 +18213,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260519-443",
@@ -16926,7 +18227,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260519-444",
@@ -16939,7 +18241,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260519-445",
@@ -16952,7 +18255,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3169974622",
@@ -16965,7 +18269,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159264645801",
@@ -16978,7 +18283,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159269578721",
@@ -16991,7 +18297,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3117726721",
@@ -17004,7 +18311,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3117726729",
@@ -17017,7 +18325,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160065819262",
@@ -17030,7 +18339,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-160069395276",
@@ -17043,7 +18353,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-446",
@@ -17056,7 +18367,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-447",
@@ -17069,7 +18381,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-448",
@@ -17082,7 +18395,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-449",
@@ -17095,7 +18409,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-450",
@@ -17108,7 +18423,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-451",
@@ -17121,7 +18437,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-452",
@@ -17134,7 +18451,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-453",
@@ -17147,7 +18465,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-454",
@@ -17160,7 +18479,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Mercado Pago / Mercado Livre"
+    "subcategory": "Mercado Pago / Mercado Livre",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-455",
@@ -17173,7 +18493,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-456",
@@ -17186,7 +18507,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-457",
@@ -17199,7 +18521,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260518-458",
@@ -17212,7 +18535,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3162180014",
@@ -17225,7 +18549,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3110353673",
@@ -17238,7 +18563,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3162444102",
@@ -17251,7 +18577,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159051936273",
@@ -17264,7 +18591,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159051811669",
@@ -17277,7 +18605,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3110599385",
@@ -17290,7 +18619,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159837605108",
@@ -17303,7 +18633,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159837700740",
@@ -17316,7 +18647,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159060464999",
@@ -17329,7 +18661,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159108260909",
@@ -17342,7 +18675,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159885813506",
@@ -17355,7 +18689,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "subcategory": "Contas & Serviços",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159886215244",
@@ -17368,7 +18703,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3160193800",
@@ -17381,7 +18717,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3108844109",
@@ -17394,7 +18731,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158951578321",
@@ -17407,7 +18745,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159757623814",
@@ -17418,9 +18757,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-159763398364",
@@ -17433,7 +18773,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3109943059",
@@ -17446,7 +18787,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3109944515",
@@ -17459,7 +18801,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159550558178",
@@ -17472,7 +18815,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159551557782",
@@ -17485,7 +18829,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158783044339",
@@ -17498,7 +18843,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158810439335",
@@ -17509,9 +18855,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260515-459",
@@ -17524,7 +18871,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260515-460",
@@ -17537,7 +18885,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260515-461",
@@ -17550,7 +18899,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260515-462",
@@ -17563,7 +18913,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260515-463",
@@ -17576,7 +18927,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260515-464",
@@ -17589,7 +18941,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260515-465",
@@ -17602,7 +18955,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260515-466",
@@ -17615,7 +18969,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3153157046",
@@ -17628,7 +18983,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3102122857",
@@ -17641,7 +18997,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3153390618",
@@ -17654,7 +19011,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3153441474",
@@ -17667,7 +19025,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158686831789",
@@ -17678,9 +19037,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-159462737180",
@@ -17693,7 +19053,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159485033422",
@@ -17706,7 +19067,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-467",
@@ -17719,7 +19081,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-468",
@@ -17732,7 +19095,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-469",
@@ -17745,7 +19109,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-470",
@@ -17758,7 +19123,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-471",
@@ -17771,7 +19137,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Mercado Pago / Mercado Livre"
+    "subcategory": "Mercado Pago / Mercado Livre",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-472",
@@ -17784,7 +19151,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-473",
@@ -17797,7 +19165,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-474",
@@ -17810,7 +19179,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-475",
@@ -17823,7 +19193,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-476",
@@ -17836,7 +19207,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-477",
@@ -17849,7 +19221,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-478",
@@ -17862,7 +19235,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260514-479",
@@ -17875,7 +19249,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3099408141",
@@ -17888,7 +19263,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3099408139",
@@ -17901,7 +19277,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159260962778",
@@ -17912,9 +19289,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-159261776862",
@@ -17927,7 +19305,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159271231208",
@@ -17940,7 +19319,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260513-480",
@@ -17953,7 +19333,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260513-481",
@@ -17966,7 +19347,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260513-482",
@@ -17979,7 +19361,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260513-483",
@@ -17992,7 +19375,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260513-484",
@@ -18005,7 +19389,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260513-485",
@@ -18018,7 +19403,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3095153503",
@@ -18031,7 +19417,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3095154389",
@@ -18044,7 +19431,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3095463563",
@@ -18057,7 +19445,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158311249071",
@@ -18070,7 +19459,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3145928896",
@@ -18083,7 +19473,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3147397332",
@@ -18096,7 +19487,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159149013822",
@@ -18109,7 +19501,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158375316297",
@@ -18122,7 +19515,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159150548542",
@@ -18135,7 +19529,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3097082341",
@@ -18148,7 +19543,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3097109371",
@@ -18161,7 +19557,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159163900910",
@@ -18172,9 +19569,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-158391915349",
@@ -18187,7 +19585,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159177978540",
@@ -18200,7 +19599,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260512-486",
@@ -18213,7 +19613,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260512-487",
@@ -18226,7 +19627,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260512-488",
@@ -18239,7 +19641,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260512-489",
@@ -18252,7 +19655,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260512-490",
@@ -18265,7 +19669,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260512-491",
@@ -18278,7 +19683,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158210614329",
@@ -18291,7 +19697,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3143518302",
@@ -18304,7 +19711,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158992710966",
@@ -18315,9 +19723,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3143755468",
@@ -18330,7 +19739,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-159012168786",
@@ -18343,7 +19753,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-492",
@@ -18356,7 +19767,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-493",
@@ -18369,7 +19781,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-494",
@@ -18382,7 +19795,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-495",
@@ -18395,7 +19809,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-496",
@@ -18408,7 +19823,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-497",
@@ -18421,7 +19837,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-498",
@@ -18434,7 +19851,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-499",
@@ -18447,7 +19865,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-500",
@@ -18460,7 +19879,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-501",
@@ -18473,7 +19893,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-502",
@@ -18486,7 +19907,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-503",
@@ -18499,7 +19921,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-504",
@@ -18512,7 +19935,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-505",
@@ -18525,7 +19949,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-506",
@@ -18538,7 +19963,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Assinaturas & Software"
+    "subcategory": "Assinaturas & Software",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-507",
@@ -18551,7 +19977,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260511-508",
@@ -18564,7 +19991,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158743996814",
@@ -18577,7 +20005,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Lazer & Entretenimento",
     "subcategory": "Assinaturas & Lazer",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3085698121",
@@ -18590,7 +20019,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158747427422",
@@ -18603,7 +20033,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3085739195",
@@ -18616,7 +20047,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158748728988",
@@ -18629,7 +20061,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3085926643",
@@ -18642,7 +20075,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3135603168",
@@ -18655,7 +20089,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157988749275",
@@ -18668,7 +20103,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158634654870",
@@ -18679,9 +20115,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-157696726721",
@@ -18694,7 +20131,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157711297729",
@@ -18705,9 +20143,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-158482901760",
@@ -18718,9 +20157,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-158486250620",
@@ -18733,7 +20173,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260508-509",
@@ -18746,7 +20187,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260508-510",
@@ -18759,7 +20201,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260508-511",
@@ -18772,7 +20215,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260508-512",
@@ -18785,7 +20229,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260508-513",
@@ -18798,7 +20243,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260508-514",
@@ -18811,7 +20257,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260508-515",
@@ -18824,7 +20271,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260508-516",
@@ -18837,7 +20285,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3126932472",
@@ -18850,7 +20299,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3126950590",
@@ -18863,7 +20313,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3078069289",
@@ -18876,7 +20327,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3078294875",
@@ -18889,7 +20341,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3078295853",
@@ -18902,7 +20355,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157535448505",
@@ -18915,7 +20369,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158310506032",
@@ -18928,7 +20383,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3127439208",
@@ -18941,7 +20397,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157547278633",
@@ -18954,7 +20411,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3127572952",
@@ -18967,7 +20425,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158374207948",
@@ -18980,7 +20439,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3079820425",
@@ -18993,7 +20453,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3128814508",
@@ -19006,7 +20467,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158381487976",
@@ -19019,7 +20481,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260507-517",
@@ -19032,7 +20495,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260507-518",
@@ -19045,7 +20509,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260507-519",
@@ -19058,7 +20523,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Filhos & Família",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Escola / Colegiatura"
+    "subcategory": "Escola / Colegiatura",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260507-520",
@@ -19071,7 +20537,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260507-521",
@@ -19084,7 +20551,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260507-522",
@@ -19097,7 +20565,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Academia & Esportes"
+    "subcategory": "Academia & Esportes",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260507-523",
@@ -19110,7 +20579,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260507-524",
@@ -19123,7 +20593,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260507-525",
@@ -19136,7 +20607,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260507-526",
@@ -19149,7 +20621,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157349603915",
@@ -19162,7 +20635,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158187539392",
@@ -19175,7 +20649,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157416924995",
@@ -19186,9 +20661,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-158203536582",
@@ -19199,9 +20675,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-158210293948",
@@ -19214,7 +20691,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158210744964",
@@ -19227,7 +20705,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260506-527",
@@ -19240,7 +20719,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260506-528",
@@ -19253,7 +20733,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260506-529",
@@ -19266,7 +20747,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260506-530",
@@ -19279,7 +20761,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Mercado Pago / Mercado Livre"
+    "subcategory": "Mercado Pago / Mercado Livre",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3069324863",
@@ -19292,7 +20775,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157195553161",
@@ -19305,7 +20789,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157964229358",
@@ -19316,9 +20801,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-157196334925",
@@ -19331,7 +20817,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-158002663614",
@@ -19344,7 +20831,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3071627957",
@@ -19357,7 +20845,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3071627955",
@@ -19370,7 +20859,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157283581831",
@@ -19383,7 +20873,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157283886993",
@@ -19396,7 +20887,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157283886993",
@@ -19409,7 +20901,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157283581831",
@@ -19422,7 +20915,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157297956951",
@@ -19435,7 +20929,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260505-531",
@@ -19448,7 +20943,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260505-532",
@@ -19461,7 +20957,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260505-533",
@@ -19474,7 +20971,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3115750068",
@@ -19487,7 +20985,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157885623208",
@@ -19500,7 +20999,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-534",
@@ -19513,7 +21013,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-535",
@@ -19526,7 +21027,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-536",
@@ -19539,7 +21041,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-537",
@@ -19552,7 +21055,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-538",
@@ -19565,7 +21069,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-539",
@@ -19578,7 +21083,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Assinaturas & Software"
+    "subcategory": "Assinaturas & Software",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-540",
@@ -19591,7 +21097,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-541",
@@ -19604,7 +21111,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-542",
@@ -19617,7 +21125,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-543",
@@ -19630,7 +21139,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-544",
@@ -19643,7 +21153,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-545",
@@ -19656,7 +21167,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-546",
@@ -19669,7 +21181,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-547",
@@ -19682,7 +21195,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-548",
@@ -19695,7 +21209,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-549",
@@ -19708,7 +21223,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-550",
@@ -19721,7 +21237,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260504-551",
@@ -19734,7 +21251,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3109183144",
@@ -19747,7 +21265,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3061466727",
@@ -19760,7 +21279,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3109407450",
@@ -19773,7 +21293,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156860556245",
@@ -19786,7 +21307,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157626246094",
@@ -19799,7 +21321,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3109408570",
@@ -19812,7 +21335,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157704636100",
@@ -19823,9 +21347,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-157705269592",
@@ -19838,7 +21363,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157708637254",
@@ -19851,7 +21377,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156943213535",
@@ -19864,7 +21391,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157713265408",
@@ -19877,7 +21405,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157715408442",
@@ -19890,7 +21419,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3107584258",
@@ -19903,7 +21433,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3107584260",
@@ -19916,7 +21447,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157508012452",
@@ -19929,7 +21461,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156743425353",
@@ -19942,7 +21475,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3108124670",
@@ -19955,7 +21489,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156781015927",
@@ -19966,9 +21501,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-156793768065",
@@ -19981,7 +21517,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3108378574",
@@ -19994,7 +21531,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156591505075",
@@ -20007,7 +21545,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157362731488",
@@ -20020,7 +21559,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157362804632",
@@ -20033,7 +21573,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157375092918",
@@ -20046,7 +21587,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156613799055",
@@ -20059,7 +21601,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156638414067",
@@ -20072,7 +21615,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156543306783",
@@ -20085,7 +21629,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-552",
@@ -20098,7 +21643,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-553",
@@ -20111,7 +21657,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-554",
@@ -20124,7 +21671,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-555",
@@ -20137,7 +21685,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-556",
@@ -20150,7 +21699,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-557",
@@ -20163,7 +21713,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-558",
@@ -20176,7 +21727,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-559",
@@ -20189,7 +21741,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-560",
@@ -20202,7 +21755,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-561",
@@ -20215,7 +21769,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-562",
@@ -20228,7 +21783,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260430-563",
@@ -20241,7 +21797,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3099267282",
@@ -20254,7 +21811,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3052401439",
@@ -20267,7 +21825,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3052582557",
@@ -20280,7 +21839,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157067349646",
@@ -20293,7 +21853,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3099537518",
@@ -20306,7 +21867,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157070357500",
@@ -20319,7 +21881,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156327075107",
@@ -20330,9 +21893,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-156348996725",
@@ -20345,7 +21909,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-157161754212",
@@ -20358,7 +21923,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156416940329",
@@ -20371,7 +21937,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260429-564",
@@ -20384,7 +21951,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260429-565",
@@ -20397,7 +21965,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260429-566",
@@ -20410,7 +21979,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260429-567",
@@ -20423,7 +21993,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260429-568",
@@ -20436,7 +22007,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3050289657",
@@ -20449,7 +22021,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156209005029",
@@ -20462,7 +22035,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156209932165",
@@ -20475,7 +22049,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156214228473",
@@ -20488,7 +22063,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156983082456",
@@ -20501,7 +22077,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156220306059",
@@ -20514,7 +22091,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260428-569",
@@ -20527,7 +22105,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260428-570",
@@ -20540,7 +22119,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260428-571",
@@ -20553,7 +22133,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260428-572",
@@ -20566,7 +22147,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3045439837",
@@ -20579,7 +22161,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3091818068",
@@ -20592,7 +22175,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156821606622",
@@ -20603,9 +22187,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-156823858574",
@@ -20618,7 +22203,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156825080236",
@@ -20631,7 +22217,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3094443232",
@@ -20644,7 +22231,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3094443242",
@@ -20657,7 +22245,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156832870972",
@@ -20670,7 +22259,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156082933965",
@@ -20683,7 +22273,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156849007398",
@@ -20696,7 +22287,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260427-573",
@@ -20709,7 +22301,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260427-574",
@@ -20722,7 +22315,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260427-575",
@@ -20735,7 +22329,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260427-576",
@@ -20748,7 +22343,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260427-577",
@@ -20761,7 +22357,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260427-578",
@@ -20774,7 +22371,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260427-579",
@@ -20787,7 +22385,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260427-580",
@@ -20800,7 +22399,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260427-581",
@@ -20813,7 +22413,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3088640370",
@@ -20826,7 +22427,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3042527339",
@@ -20839,7 +22441,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3088691236",
@@ -20852,7 +22455,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3088854340",
@@ -20865,7 +22469,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3088874128",
@@ -20878,7 +22483,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155705705503",
@@ -20891,7 +22497,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155753924143",
@@ -20904,7 +22511,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3041645893",
@@ -20917,7 +22525,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3087775096",
@@ -20930,7 +22539,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3087775098",
@@ -20943,7 +22553,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156410087976",
@@ -20956,7 +22567,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3039632339",
@@ -20969,7 +22581,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3039668959",
@@ -20982,7 +22595,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156414562170",
@@ -20995,7 +22609,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3039670505",
@@ -21008,7 +22623,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156447719222",
@@ -21019,9 +22635,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-155700045447",
@@ -21032,9 +22649,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-155705705503",
@@ -21047,7 +22665,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155706069865",
@@ -21060,7 +22679,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156470783410",
@@ -21073,7 +22693,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260424-582",
@@ -21086,7 +22707,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260424-583",
@@ -21099,7 +22721,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3080937176",
@@ -21112,7 +22735,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3080937178",
@@ -21125,7 +22749,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3080983792",
@@ -21138,7 +22763,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3035787813",
@@ -21151,7 +22777,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3081232086",
@@ -21164,7 +22791,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155518046127",
@@ -21177,7 +22805,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3082786372",
@@ -21190,7 +22819,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3082786396",
@@ -21203,7 +22833,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260423-584",
@@ -21216,7 +22847,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260423-585",
@@ -21229,7 +22861,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260423-586",
@@ -21242,7 +22875,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260423-587",
@@ -21255,7 +22889,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260423-588",
@@ -21268,7 +22903,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260423-589",
@@ -21281,7 +22917,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3076804938",
@@ -21294,7 +22931,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3076805032",
@@ -21307,7 +22945,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155358993903",
@@ -21320,7 +22959,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-156133699308",
@@ -21331,9 +22971,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-155377124773",
@@ -21346,7 +22987,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260422-590",
@@ -21359,7 +23001,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260422-591",
@@ -21372,7 +23015,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260422-592",
@@ -21385,7 +23029,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260422-593",
@@ -21398,7 +23043,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3073304478",
@@ -21411,7 +23057,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3028413429",
@@ -21424,7 +23071,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155895313880",
@@ -21437,7 +23085,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155142160755",
@@ -21450,7 +23099,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155901161714",
@@ -21463,7 +23113,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155158421887",
@@ -21476,7 +23127,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260421-594",
@@ -21489,7 +23141,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155762900562",
@@ -21502,7 +23155,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155007481485",
@@ -21515,7 +23169,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "subcategory": "Contas & Serviços",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3070976258",
@@ -21528,7 +23183,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3026293365",
@@ -21541,7 +23197,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3026529269",
@@ -21554,7 +23211,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3071271920",
@@ -21567,7 +23225,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155027409299",
@@ -21580,7 +23239,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155065800823",
@@ -21593,7 +23253,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3027356337",
@@ -21606,7 +23267,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3027356335",
@@ -21619,7 +23281,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155082499817",
@@ -21632,7 +23295,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260420-595",
@@ -21645,7 +23309,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260420-596",
@@ -21658,7 +23323,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260420-597",
@@ -21671,7 +23337,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260420-598",
@@ -21684,7 +23351,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260420-599",
@@ -21697,7 +23365,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260420-600",
@@ -21710,7 +23379,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Supermercado (Coto / Carrefour)"
+    "subcategory": "Supermercado (Coto / Carrefour)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260420-601",
@@ -21723,7 +23393,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3067097066",
@@ -21736,7 +23407,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3067097070",
@@ -21749,7 +23421,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155705746244",
@@ -21762,7 +23435,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155706943586",
@@ -21775,7 +23449,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3064731020",
@@ -21788,7 +23463,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155488535540",
@@ -21801,7 +23477,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3065071970",
@@ -21814,7 +23491,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3065092670",
@@ -21827,7 +23505,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154632885347",
@@ -21840,7 +23519,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154633759427",
@@ -21853,7 +23533,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155389889070",
@@ -21866,7 +23547,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155422064100",
@@ -21879,7 +23561,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154702698041",
@@ -21892,7 +23575,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154703986979",
@@ -21905,7 +23589,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260417-602",
@@ -21918,7 +23603,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260417-603",
@@ -21931,7 +23617,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260417-604",
@@ -21944,7 +23631,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260417-605",
@@ -21957,7 +23645,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260417-606",
@@ -21970,7 +23659,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260417-607",
@@ -21983,7 +23673,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260417-608",
@@ -21996,7 +23687,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260417-609",
@@ -22009,7 +23701,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3013940229",
@@ -22022,7 +23715,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3013949811",
@@ -22035,7 +23729,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155176379574",
@@ -22048,7 +23743,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154423601099",
@@ -22061,7 +23757,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154423894357",
@@ -22074,7 +23771,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3057832446",
@@ -22087,7 +23785,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154496915189",
@@ -22100,7 +23799,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155249477796",
@@ -22111,9 +23811,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-155280310836",
@@ -22126,7 +23827,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155305285652",
@@ -22139,7 +23841,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260416-610",
@@ -22152,7 +23855,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260416-611",
@@ -22165,7 +23869,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260416-612",
@@ -22178,7 +23883,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260416-613",
@@ -22191,7 +23897,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260416-614",
@@ -22204,7 +23911,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3008306415",
@@ -22217,7 +23925,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3008335125",
@@ -22230,7 +23939,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3051810000",
@@ -22243,7 +23953,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3008645285",
@@ -22256,7 +23967,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3008646433",
@@ -22269,7 +23981,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-155082011104",
@@ -22282,7 +23995,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154329555677",
@@ -22295,7 +24009,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260415-615",
@@ -22308,7 +24023,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260415-616",
@@ -22321,7 +24037,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260415-617",
@@ -22334,7 +24051,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260415-618",
@@ -22347,7 +24065,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Assinaturas & Software"
+    "subcategory": "Assinaturas & Software",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260415-619",
@@ -22360,7 +24079,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260415-620",
@@ -22373,7 +24093,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260415-621",
@@ -22386,7 +24107,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260415-622",
@@ -22399,7 +24121,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260415-623",
@@ -22412,7 +24135,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3050900350",
@@ -22425,7 +24149,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260414-624",
@@ -22438,7 +24163,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260414-625",
@@ -22451,7 +24177,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260414-626",
@@ -22464,7 +24191,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260414-627",
@@ -22477,7 +24205,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais"
+    "subcategory": "Compras Gerais",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154696016842",
@@ -22490,7 +24219,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3046209916",
@@ -22503,7 +24233,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154789523106",
@@ -22516,7 +24247,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154794411070",
@@ -22529,7 +24261,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260413-628",
@@ -22542,7 +24275,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260413-629",
@@ -22555,7 +24289,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260413-630",
@@ -22568,7 +24303,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260413-631",
@@ -22581,7 +24317,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2996594567",
@@ -22594,7 +24331,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3040599474",
@@ -22607,7 +24345,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3040599472",
@@ -22620,7 +24359,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3041305114",
@@ -22633,7 +24373,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3042282788",
@@ -22646,7 +24387,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3042500474",
@@ -22659,7 +24401,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3042520814",
@@ -22672,7 +24415,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3036971458",
@@ -22685,7 +24429,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2994503337",
@@ -22698,7 +24443,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153519442559",
@@ -22711,7 +24457,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Lazer & Entretenimento",
     "subcategory": "Assinaturas & Lazer",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154277576126",
@@ -22724,7 +24471,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154303303656",
@@ -22737,7 +24485,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260410-632",
@@ -22750,7 +24499,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260410-633",
@@ -22763,7 +24513,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260410-634",
@@ -22776,7 +24527,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260410-635",
@@ -22789,7 +24541,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260410-636",
@@ -22802,7 +24555,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Filhos & Família",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Escola / Colegiatura"
+    "subcategory": "Escola / Colegiatura",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260410-637",
@@ -22815,7 +24569,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260410-638",
@@ -22828,7 +24583,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260410-639",
@@ -22841,7 +24597,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260410-640",
@@ -22854,7 +24611,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260410-641",
@@ -22867,7 +24625,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260410-642",
@@ -22880,7 +24639,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)"
+    "subcategory": "Compras Gerais (Mercado Livre)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153353651309",
@@ -22891,9 +24651,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-2988096135",
@@ -22906,7 +24667,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3030228260",
@@ -22919,7 +24681,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153371121141",
@@ -22932,7 +24695,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3030444448",
@@ -22945,7 +24709,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154117008044",
@@ -22958,7 +24723,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3031257440",
@@ -22971,7 +24737,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3031329838",
@@ -22984,7 +24751,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3032319366",
@@ -22997,7 +24765,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3032319688",
@@ -23010,7 +24779,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260409-643",
@@ -23023,7 +24793,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Transporte Público (SUBE/Subte)"
+    "subcategory": "Transporte Público (SUBE/Subte)",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260409-644",
@@ -23036,7 +24807,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260409-645",
@@ -23049,7 +24821,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260409-646",
@@ -23062,7 +24835,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260409-647",
@@ -23075,7 +24849,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Academia & Esportes"
+    "subcategory": "Academia & Esportes",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260409-648",
@@ -23088,7 +24863,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos"
+    "subcategory": "Lançamentos Históricos",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260409-649",
@@ -23101,7 +24877,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260409-650",
@@ -23114,7 +24891,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260409-651",
@@ -23127,7 +24905,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Receita / Pró-labore",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Pró-labore & Entradas"
+    "subcategory": "Pró-labore & Entradas",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-galicia-20260409-652",
@@ -23140,7 +24919,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Uber / Cabify"
+    "subcategory": "Uber / Cabify",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3026440906",
@@ -23153,7 +24933,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3026430008",
@@ -23166,7 +24947,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153199587753",
@@ -23179,7 +24961,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153944294684",
@@ -23192,7 +24975,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153203871975",
@@ -23205,7 +24989,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153270467377",
@@ -23218,7 +25003,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-154019132566",
@@ -23231,7 +25017,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153276071137",
@@ -23244,7 +25031,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "subcategory": "Outros Gastos",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2981533871",
@@ -23257,7 +25045,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3022993108",
@@ -23270,7 +25059,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153794428374",
@@ -23283,7 +25073,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2977986787",
@@ -23296,7 +25087,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2977986791",
@@ -23309,7 +25101,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3019278222",
@@ -23322,7 +25115,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153621533148",
@@ -23335,7 +25129,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152941560147",
@@ -23346,9 +25141,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-152945760913",
@@ -23361,7 +25157,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153689117518",
@@ -23374,7 +25171,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "subcategory": "Contas & Serviços",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153689210922",
@@ -23387,7 +25185,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Moradia & Serviços",
     "subcategory": "Contas & Serviços",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2979879767",
@@ -23400,7 +25199,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2980044961",
@@ -23413,7 +25213,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2980047265",
@@ -23426,7 +25227,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153718785758",
@@ -23439,7 +25241,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153723208940",
@@ -23452,7 +25255,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153727643612",
@@ -23465,7 +25269,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "subcategory": "Compras & Vestuário",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3013894820",
@@ -23478,7 +25283,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3013894822",
@@ -23491,7 +25297,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3013911406",
@@ -23504,7 +25311,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3014064328",
@@ -23517,7 +25325,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153470034828",
@@ -23530,7 +25339,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153527080124",
@@ -23543,7 +25353,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2975109223",
@@ -23556,7 +25367,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152791197205",
@@ -23567,9 +25379,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-153533761438",
@@ -23582,7 +25395,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153535891148",
@@ -23595,7 +25409,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "subcategory": "Farmácia & Saúde",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153536822748",
@@ -23608,7 +25423,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "subcategory": "Farmácia & Saúde",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3016769760",
@@ -23621,7 +25437,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153542146746",
@@ -23634,7 +25451,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153542316880",
@@ -23647,7 +25465,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3009640824",
@@ -23660,7 +25479,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153217196496",
@@ -23673,7 +25493,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153217787174",
@@ -23686,7 +25507,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2969165521",
@@ -23699,7 +25521,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152486065387",
@@ -23712,7 +25535,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152503486713",
@@ -23725,7 +25549,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152511093181",
@@ -23738,7 +25563,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152510427073",
@@ -23749,9 +25575,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "expense",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3007812228",
@@ -23764,7 +25591,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3007862382",
@@ -23777,7 +25605,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2967757853",
@@ -23790,7 +25619,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2967757851",
@@ -23803,7 +25633,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-153149177912",
@@ -23814,9 +25645,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-153150736688",
@@ -23829,7 +25661,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Saúde & Bem-Estar",
     "subcategory": "Farmácia & Saúde",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152971504412",
@@ -23842,7 +25675,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152973135832",
@@ -23855,7 +25689,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152250651769",
@@ -23868,7 +25703,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152261474603",
@@ -23881,7 +25717,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2961027105",
@@ -23894,7 +25731,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3000938344",
@@ -23907,7 +25745,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3000965252",
@@ -23920,7 +25759,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152833984302",
@@ -23933,7 +25773,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transferências & Outros",
     "subcategory": "Transferências",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2961307587",
@@ -23946,7 +25787,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-3001262924",
@@ -23959,7 +25801,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2962375705",
@@ -23972,7 +25815,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-2962622593",
@@ -23985,7 +25829,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Transporte & Veículo",
     "subcategory": "Transporte Público / App",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   },
   {
     "id": "tx-amanda-mp-152904643010",
@@ -23998,6 +25843,7 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Alimentação & Supermercado",
     "subcategory": "Supermercado & Alimentação",
     "childTag": "Amanda",
-    "language": "es"
+    "language": "es",
+    "isInternalTransfer": false
   }
 ];

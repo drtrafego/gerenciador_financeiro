@@ -66,6 +66,7 @@ export interface PersonalTransaction {
   parentTag?: string;
   language: 'pt' | 'es';
   selected?: boolean;
+  isInternalTransfer?: boolean;
 }
 
 interface CustomCategory {
@@ -142,6 +143,8 @@ export default function PersonalDashboardView() {
   const [childrenList, setChildrenList] = useState<string[]>([]);
   const [parentsList, setParentsList] = useState<string[]>(["Gastão", "Amanda"]);
   const [selectedMember, setSelectedMember] = useState<string>('all');
+  const [hideInternalTransfers, setHideInternalTransfers] = useState<boolean>(true);
+  const [showOnlyExpenses, setShowOnlyExpenses] = useState<boolean>(true);
   const [showManualModal, setShowManualModal] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
@@ -180,22 +183,30 @@ export default function PersonalDashboardView() {
     };
 
     const loadAllPersonalData = () => {
-      // Sempre começa com os dados builtin (653 transações)
+      // Versão dos dados para forçar sincronização automática no navegador
+      const DATA_VERSION = "2026-09-v4-amanda-gastao-misericordia";
+      const savedVersion = localStorage.getItem('user_personal_data_version');
+      
       const builtinTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
       let combined: any[] = [...builtinTxs];
 
-      // Mescla com localStorage (transações adicionadas manualmente pelo usuário)
-      const savedTxs = localStorage.getItem('user_personal_transactions');
-      if (savedTxs) {
-        try {
-          const parsed = JSON.parse(savedTxs);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            // Adiciona somente transações do localStorage que NÃO estão no builtin
-            const builtinIds = new Set(builtinTxs.map((t: any) => t.id));
-            const extraTxs = parsed.filter((t: any) => !builtinIds.has(t.id));
-            combined = [...builtinTxs, ...extraTxs];
-          }
-        } catch (e) {}
+      // Se a versão do cache for antiga, atualiza automaticamente com os 1.846 dados consolidados
+      if (savedVersion !== DATA_VERSION) {
+        localStorage.setItem('user_personal_data_version', DATA_VERSION);
+        localStorage.removeItem('user_personal_transactions');
+        localStorage.removeItem('user_personal_parents');
+      } else {
+        const savedTxs = localStorage.getItem('user_personal_transactions');
+        if (savedTxs) {
+          try {
+            const parsed = JSON.parse(savedTxs);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              const builtinIds = new Set(builtinTxs.map((t: any) => t.id));
+              const extraTxs = parsed.filter((t: any) => !builtinIds.has(t.id));
+              combined = [...builtinTxs, ...extraTxs];
+            }
+          } catch (e) {}
+        }
       }
 
       const deduped: PersonalTransaction[] = deduplicateTransactions(combined).map((t: any) => ({
@@ -394,11 +405,26 @@ export default function PersonalDashboardView() {
 
   const now = new Date();
 
-  // Transações filtradas pelo período selecionado e membro familiar
+  // Transações filtradas pelo período selecionado, membro familiar e exclusão de transferências internas
   const filteredTransactions = transactions.filter(t => {
     if (!t.date) return false;
     if (from && t.date < from) return false;
     if (to && t.date > to) return false;
+
+    // Se estiver filtrando apenas despesas reais de consumo (sem transferências internas entre o casal)
+    if (hideInternalTransfers && t.isInternalTransfer) {
+      return false;
+    }
+
+    if (showOnlyExpenses && t.type !== 'expense') {
+      return false;
+    }
+
+    if (selectedMember === 'Misericordia') {
+      const d = ((t.description || '') + ' ' + (t.merchant || '')).toLowerCase();
+      return d.includes('misericordia');
+    }
+
     if (selectedMember !== 'all') {
       const tag = t.childTag || t.parentTag || '';
       if (tag !== selectedMember) return false;
@@ -406,16 +432,44 @@ export default function PersonalDashboardView() {
     return true;
   });
 
-  // Totais convertidos dinâmicos no período filtrado
-  const totalIncomeBRL = filteredTransactions
-    .filter(t => t.type === 'income')
-    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
-
+  // Totais convertidos dinâmicos no período filtrado (Foco em Despesas)
   const totalExpensesBRL = filteredTransactions
     .filter(t => t.type === 'expense')
     .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
 
-  const balanceBRL = totalIncomeBRL - totalExpensesBRL;
+  const totalExpensesARS = filteredTransactions
+    .filter(t => t.type === 'expense' && t.currency === 'ARS')
+    .reduce((acc, t) => acc + t.amount, 0);
+
+  // Gastos Amanda no período
+  const amandaExpensesBRL = filteredTransactions
+    .filter(t => t.type === 'expense' && (t.childTag === 'Amanda' || t.parentTag === 'Amanda'))
+    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+  const amandaExpensesARS = filteredTransactions
+    .filter(t => t.type === 'expense' && t.currency === 'ARS' && (t.childTag === 'Amanda' || t.parentTag === 'Amanda'))
+    .reduce((acc, t) => acc + t.amount, 0);
+  const amandaTxCount = filteredTransactions
+    .filter(t => t.type === 'expense' && (t.childTag === 'Amanda' || t.parentTag === 'Amanda')).length;
+
+  // Gastos Gastão no período
+  const gastaoExpensesBRL = filteredTransactions
+    .filter(t => t.type === 'expense' && (t.childTag === 'Gastão' || t.parentTag === 'Gastão'))
+    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+  const gastaoExpensesARS = filteredTransactions
+    .filter(t => t.type === 'expense' && t.currency === 'ARS' && (t.childTag === 'Gastão' || t.parentTag === 'Gastão'))
+    .reduce((acc, t) => acc + t.amount, 0);
+  const gastaoTxCount = filteredTransactions
+    .filter(t => t.type === 'expense' && (t.childTag === 'Gastão' || t.parentTag === 'Gastão')).length;
+
+  // Gastos Escola & Filhos (Colegio Misericordia) no período
+  const schoolExpenses = filteredTransactions
+    .filter(t => t.type === 'expense' && (
+      t.category === 'Filhos & Família' || 
+      (t.merchant || '').toLowerCase().includes('misericordia') ||
+      (t.description || '').toLowerCase().includes('misericordia')
+    ));
+  const schoolExpensesBRL = schoolExpenses.reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+  const schoolExpensesARS = schoolExpenses.filter(t => t.currency === 'ARS').reduce((acc, t) => acc + t.amount, 0);
 
   // -------------------------------------------------------------
   // CÁLCULO COMPARATIVO MÊS A MÊS (MoM)
@@ -425,11 +479,11 @@ export default function PersonalDashboardView() {
   const prevMonthYear = `${prevMonthDate.getFullYear()}-${String(prevMonthDate.getMonth() + 1).padStart(2, '0')}`;
 
   const currentMonthExpensesBRL = transactions
-    .filter(t => t.type === 'expense' && t.date?.startsWith(currentMonthYear))
+    .filter(t => t.type === 'expense' && t.date?.startsWith(currentMonthYear) && (!hideInternalTransfers || !t.isInternalTransfer))
     .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
 
   const prevMonthExpensesBRL = transactions
-    .filter(t => t.type === 'expense' && t.date?.startsWith(prevMonthYear))
+    .filter(t => t.type === 'expense' && t.date?.startsWith(prevMonthYear) && (!hideInternalTransfers || !t.isInternalTransfer))
     .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
 
   const momExpensesDiffBRL = currentMonthExpensesBRL - prevMonthExpensesBRL;
@@ -494,39 +548,44 @@ export default function PersonalDashboardView() {
     };
   }).sort((a, b) => b.value - a.value);
 
-  // 2. Gráfico de Histórico Mensal (Receitas vs Despesas)
-  const monthlyDataMap: Record<string, { monthKey: string; monthLabel: string; income: number; expense: number }> = {};
+  // 2. Gráfico de Histórico Mensal de Gastos (Amanda vs Gastão)
+  const monthlyDataMap: Record<string, { monthKey: string; monthLabel: string; amanda: number; gastao: number; total: number }> = {};
 
   for (let i = 5; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
     const label = d.toLocaleDateString(lang === 'es' ? 'es-AR' : 'pt-BR', { month: 'short' }).replace('.', '');
-    monthlyDataMap[key] = { monthKey: key, monthLabel: label.toUpperCase(), income: 0, expense: 0 };
+    monthlyDataMap[key] = { monthKey: key, monthLabel: label.toUpperCase(), amanda: 0, gastao: 0, total: 0 };
   }
 
   transactions.forEach(t => {
-    if (!t.date) return;
+    if (!t.date || t.type !== 'expense') return;
+    if (hideInternalTransfers && t.isInternalTransfer) return;
+
     const key = t.date.substring(0, 7);
     if (!monthlyDataMap[key]) {
       const txDate = new Date(t.date);
       const label = txDate.toLocaleDateString(lang === 'es' ? 'es-AR' : 'pt-BR', { month: 'short' }).replace('.', '');
-      monthlyDataMap[key] = { monthKey: key, monthLabel: label.toUpperCase(), income: 0, expense: 0 };
+      monthlyDataMap[key] = { monthKey: key, monthLabel: label.toUpperCase(), amanda: 0, gastao: 0, total: 0 };
     }
 
     const val = toBRL(t.amount, t.currency);
-    if (t.type === 'income') {
-      monthlyDataMap[key].income += val;
+    const tag = t.childTag || t.parentTag || '';
+    if (tag === 'Amanda') {
+      monthlyDataMap[key].amanda += val;
     } else {
-      monthlyDataMap[key].expense += val;
+      monthlyDataMap[key].gastao += val;
     }
+    monthlyDataMap[key].total += val;
   });
 
   const barTrendData = Object.values(monthlyDataMap)
     .sort((a, b) => a.monthKey.localeCompare(b.monthKey))
     .map(d => ({
       Mês: d.monthLabel,
-      Receitas: Math.round(d.income),
-      Despesas: Math.round(d.expense)
+      "Gastos Amanda": Math.round(d.amanda),
+      "Gastos Gastão": Math.round(d.gastao),
+      Total: Math.round(d.total)
     }));
 
   return (
@@ -627,9 +686,24 @@ export default function PersonalDashboardView() {
           </div>
 
           {childrenList.length === 0 ? (
-            <div className="p-4 rounded-xl bg-zinc-950 border border-dashed border-zinc-800 text-center space-y-1">
-              <p className="text-xs font-semibold text-zinc-400">Nenhum filho cadastrado ainda</p>
-              <p className="text-[11px] text-zinc-500">Cadastre seus filhos nas configurações para atribuir gastos individualmente.</p>
+            <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/80 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-zinc-300 flex items-center gap-1.5">
+                  <span>🎒</span> Colegio Misericordia (Escola)
+                </span>
+                <span className="text-[10px] text-zinc-500 font-mono">{schoolExpenses.length} mensalidades</span>
+              </div>
+              <div className="flex items-baseline justify-between">
+                <p className="text-sm font-bold font-mono text-pink-400">
+                  {maskBRL(schoolExpensesBRL)}
+                </p>
+                <span className="text-[11px] font-mono text-zinc-400">
+                  {valuesHidden ? '••••••' : `$ ${schoolExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`}
+                </span>
+              </div>
+              <p className="text-[10px] text-zinc-500">
+                Mensalidades escolares dos filhos pagas no período selecionado
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
@@ -659,26 +733,12 @@ export default function PersonalDashboardView() {
         </div>
       </div>
 
-      {/* Cards de Métricas Principais (Receita, Despesas, Saldo) */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {/* Entradas */}
+      {/* Cards de Métricas Principais (Foco em Despesas Reais) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Total Despesas Família */}
         <div className="p-5 rounded-2xl border border-zinc-800 bg-zinc-900/80 space-y-2">
           <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span>Entradas / Receitas</span>
-            <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <ArrowUpRight className="w-4 h-4" />
-            </div>
-          </div>
-          <p className="text-2xl font-bold font-mono text-emerald-400">
-            {maskBRL(totalIncomeBRL)}
-          </p>
-          <p className="text-xs text-zinc-500">Total recebido no período</p>
-        </div>
-
-        {/* Saídas */}
-        <div className="p-5 rounded-2xl border border-zinc-800 bg-zinc-900/80 space-y-2">
-          <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span>Saídas / Despesas</span>
+            <span className="font-semibold uppercase tracking-wider text-[11px]">Total de Gastos (Família)</span>
             <div className="p-2 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20">
               <ArrowDownRight className="w-4 h-4" />
             </div>
@@ -686,21 +746,57 @@ export default function PersonalDashboardView() {
           <p className="text-2xl font-bold font-mono text-rose-400">
             {maskBRL(totalExpensesBRL)}
           </p>
-          <p className="text-xs text-zinc-500">Total gasto no período</p>
+          <p className="text-[11px] text-zinc-400 font-mono">
+            {valuesHidden ? '••••••' : `$ ${totalExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({filteredTransactions.filter(t => t.type === 'expense').length} despesas)
+          </p>
         </div>
 
-        {/* Saldo Líquido */}
-        <div className="p-5 rounded-2xl border border-zinc-800 bg-zinc-900/80 space-y-2">
+        {/* Gastos Amanda */}
+        <div className="p-5 rounded-2xl border border-pink-500/20 bg-gradient-to-br from-zinc-900 to-pink-950/20 space-y-2">
           <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span>Saldo Pessoal</span>
-            <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
-              <Wallet className="w-4 h-4" />
+            <span className="font-semibold uppercase tracking-wider text-[11px] text-pink-300">👤 Gastos Amanda</span>
+            <div className="p-2 rounded-xl bg-pink-500/10 text-pink-400 border border-pink-500/20">
+              <User className="w-4 h-4" />
             </div>
           </div>
-          <p className={`text-2xl font-bold font-mono ${balanceBRL >= 0 ? 'text-purple-400' : 'text-rose-500'}`}>
-            {maskBRL(balanceBRL)}
+          <p className="text-2xl font-bold font-mono text-pink-400">
+            {maskBRL(amandaExpensesBRL)}
           </p>
-          <p className="text-xs text-zinc-500">Saldo líquido pessoal no período</p>
+          <p className="text-[11px] text-zinc-400 font-mono">
+            {valuesHidden ? '••••••' : `$ ${amandaExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({amandaTxCount} despesas)
+          </p>
+        </div>
+
+        {/* Gastos Gastão */}
+        <div className="p-5 rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-zinc-900 to-indigo-950/20 space-y-2">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span className="font-semibold uppercase tracking-wider text-[11px] text-indigo-300">👤 Gastos Gastão</span>
+            <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              <User className="w-4 h-4" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold font-mono text-indigo-400">
+            {maskBRL(gastaoExpensesBRL)}
+          </p>
+          <p className="text-[11px] text-zinc-400 font-mono">
+            {valuesHidden ? '••••••' : `$ ${gastaoExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({gastaoTxCount} despesas)
+          </p>
+        </div>
+
+        {/* Escola & Filhos (Colegio Misericordia) */}
+        <div className="p-5 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-zinc-900 to-amber-950/20 space-y-2">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span className="font-semibold uppercase tracking-wider text-[11px] text-amber-300">🎒 Escola & Filhos</span>
+            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <Baby className="w-4 h-4" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold font-mono text-amber-400">
+            {maskBRL(schoolExpensesBRL)}
+          </p>
+          <p className="text-[11px] text-zinc-400 font-mono">
+            {valuesHidden ? '••••••' : `$ ${schoolExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} (Colegio Misericordia)
+          </p>
         </div>
       </div>
 
@@ -847,14 +943,14 @@ export default function PersonalDashboardView() {
             )}
           </div>
 
-          {/* Gráfico 2: Evolução Histórica de Receitas vs Despesas (Barras) */}
+          {/* Gráfico 2: Evolução Histórica de Gastos (Barras Amanda vs Gastão) */}
           <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 space-y-4 hover:border-zinc-700 transition-all flex flex-col justify-between">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <BarChart3 className="w-4 h-4 text-indigo-400" />
-                Histórico & Tendências (Últimos Meses)
+                <BarChart3 className="w-4 h-4 text-purple-400" />
+                Gastos Mensais (Amanda vs Gastão)
               </h3>
-              <span className="text-[10px] text-zinc-500 font-mono uppercase">Valores em R$</span>
+              <span className="text-[10px] text-zinc-400 font-mono uppercase">Valores em R$</span>
             </div>
 
             <div className="h-64 w-full">
@@ -875,8 +971,8 @@ export default function PersonalDashboardView() {
                     formatter={(val: any) => [valuesHidden ? "••••••" : `R$ ${Number(val).toLocaleString('pt-BR')}`]}
                   />
                   <Legend wrapperStyle={{ paddingTop: 10, fontSize: 12, color: "#9ca3af" }} />
-                  <Bar dataKey="Receitas" fill="#10b981" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="Despesas" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Gastos Amanda" fill="#ec4899" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Gastos Gastão" fill="#6366f1" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -1063,21 +1159,22 @@ export default function PersonalDashboardView() {
 
       {/* Lista de Transações Recentes Pessoais (Com Botão de Edição) */}
       <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="space-y-0.5">
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
               <Receipt className="w-4 h-4 text-purple-400" />
-              Últimos Lançamentos Pessoais ({filteredTransactions.length})
+              Últimos Gastos & Despesas Pessoais ({filteredTransactions.filter(t => t.type === 'expense').length})
             </h3>
-            <p className="text-xs text-zinc-400">Visualização de despesas e receitas organizadas por data.</p>
+            <p className="text-xs text-zinc-400">Despesas reais consolidadas de Amanda, Gastão e Colégio Misericórdia.</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
+            {/* Seletor de Membro */}
             <div className="flex items-center bg-zinc-950 p-1 rounded-xl border border-zinc-800 text-xs font-semibold">
               <button
                 type="button"
                 onClick={() => setSelectedMember('all')}
-                className={`px-3 py-1 rounded-lg transition-all ${
+                className={`px-2.5 py-1 rounded-lg transition-all ${
                   selectedMember === 'all'
                     ? 'bg-purple-600 text-white shadow'
                     : 'text-zinc-400 hover:text-white'
@@ -1087,8 +1184,19 @@ export default function PersonalDashboardView() {
               </button>
               <button
                 type="button"
+                onClick={() => setSelectedMember('Amanda')}
+                className={`px-2.5 py-1 rounded-lg transition-all ${
+                  selectedMember === 'Amanda'
+                    ? 'bg-pink-600 text-white shadow'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                👤 Amanda
+              </button>
+              <button
+                type="button"
                 onClick={() => setSelectedMember('Gastão')}
-                className={`px-3 py-1 rounded-lg transition-all ${
+                className={`px-2.5 py-1 rounded-lg transition-all ${
                   selectedMember === 'Gastão'
                     ? 'bg-indigo-600 text-white shadow'
                     : 'text-zinc-400 hover:text-white'
@@ -1098,20 +1206,35 @@ export default function PersonalDashboardView() {
               </button>
               <button
                 type="button"
-                onClick={() => setSelectedMember('Amanda')}
-                className={`px-3 py-1 rounded-lg transition-all ${
-                  selectedMember === 'Amanda'
-                    ? 'bg-pink-600 text-white shadow'
+                onClick={() => setSelectedMember('Misericordia')}
+                className={`px-2.5 py-1 rounded-lg transition-all ${
+                  selectedMember === 'Misericordia'
+                    ? 'bg-amber-600 text-white shadow'
                     : 'text-zinc-400 hover:text-white'
                 }`}
               >
-                👤 Amanda
+                🎒 Misericórdia
               </button>
             </div>
 
+            {/* Anti-Inflação: Ocultar transferências entre casal */}
+            <button
+              type="button"
+              onClick={() => setHideInternalTransfers(prev => !prev)}
+              className={`px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                hideInternalTransfers
+                  ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
+                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-zinc-200'
+              }`}
+              title="Evita inflar os gastos reais com transferências de dinheiro entre Gastão e Amanda"
+            >
+              <span>{hideInternalTransfers ? '✓' : '○'}</span>
+              <span>{hideInternalTransfers ? 'Sem Transf. entre Casal' : 'Com Transf. entre Casal'}</span>
+            </button>
+
             <button
               onClick={() => setShowManualModal(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow transition-all ml-auto sm:ml-0"
             >
               <Plus size={14} />
               <span>Novo Gasto</span>
