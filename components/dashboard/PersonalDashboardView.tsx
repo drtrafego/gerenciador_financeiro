@@ -184,7 +184,7 @@ export default function PersonalDashboardView() {
 
     const loadAllPersonalData = () => {
       // Versão dos dados para forçar sincronização automática no navegador
-      const DATA_VERSION = "2026-09-v6-allboys-misericordia";
+      const DATA_VERSION = "2026-09-v7-allboys-filho-futebol";
       const savedVersion = localStorage.getItem('user_personal_data_version');
       
       const builtinTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
@@ -420,9 +420,9 @@ export default function PersonalDashboardView() {
       return false;
     }
 
-    if (selectedMember === 'Misericordia') {
-      const d = ((t.description || '') + ' ' + (t.merchant || '')).toLowerCase();
-      return d.includes('misericordia') || d.includes('asociacion hijas');
+    if (selectedMember === 'Filhos' || selectedMember === 'Misericordia') {
+      const d = ((t.description || '') + ' ' + (t.merchant || '') + ' ' + (t.category || '')).toLowerCase();
+      return t.category === 'Filhos & Família' || d.includes('misericordia') || d.includes('asociacion hijas') || d.includes('all boys');
     }
 
     if (selectedMember !== 'all') {
@@ -461,13 +461,15 @@ export default function PersonalDashboardView() {
   const gastaoTxCount = filteredTransactions
     .filter(t => t.type === 'expense' && (t.childTag === 'Gastão' || t.parentTag === 'Gastão')).length;
 
-  // Gastos Escola & Filhos (Colegio Misericordia) no período
+  // Gastos Escola & Filhos (Colegio Misericordia + Futebol All Boys) no período
   const schoolExpenses = filteredTransactions
     .filter(t => t.type === 'expense' && (
       t.category === 'Filhos & Família' || 
       (t.merchant || '').toLowerCase().includes('misericordia') ||
+      (t.merchant || '').toLowerCase().includes('all boys') ||
       (t.description || '').toLowerCase().includes('misericordia') ||
-      (t.description || '').toLowerCase().includes('asociacion hijas')
+      (t.description || '').toLowerCase().includes('asociacion hijas') ||
+      (t.description || '').toLowerCase().includes('all boys')
     ));
   const schoolExpensesBRL = schoolExpenses.reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
   const schoolExpensesARS = schoolExpenses.filter(t => t.currency === 'ARS').reduce((acc, t) => acc + t.amount, 0);
@@ -687,24 +689,50 @@ export default function PersonalDashboardView() {
           </div>
 
           {childrenList.length === 0 ? (
-            <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/80 space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-zinc-300 flex items-center gap-1.5">
-                  <span>🎒</span> Colegio Misericordia (Escola)
-                </span>
-                <span className="text-[10px] text-zinc-500 font-mono">{schoolExpenses.length} mensalidades</span>
-              </div>
-              <div className="flex items-baseline justify-between">
-                <p className="text-sm font-bold font-mono text-pink-400">
-                  {maskBRL(schoolExpensesBRL)}
+            <div className="space-y-2">
+              <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/80 space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-zinc-300 flex items-center gap-1.5">
+                    <span>🎒</span> Colegio Misericordia (Escola)
+                  </span>
+                  <span className="text-[10px] text-zinc-500 font-mono">
+                    {filteredTransactions.filter(t => (t.merchant || '').includes('Misericordia') || (t.description || '').toLowerCase().includes('asociacion hijas')).length} mensalidades
+                  </span>
+                </div>
+                <div className="flex items-baseline justify-between">
+                  <p className="text-sm font-bold font-mono text-pink-400">
+                    {maskBRL(filteredTransactions.filter(t => (t.merchant || '').includes('Misericordia') || (t.description || '').toLowerCase().includes('asociacion hijas')).reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0))}
+                  </p>
+                  <span className="text-[11px] font-mono text-zinc-400">
+                    {valuesHidden ? '••••••' : `$ ${filteredTransactions.filter(t => (t.merchant || '').includes('Misericordia') || (t.description || '').toLowerCase().includes('asociacion hijas')).reduce((acc, t) => acc + t.amount, 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`}
+                  </span>
+                </div>
+                <p className="text-[10px] text-zinc-500">
+                  Mensalidades escolares dos filhos no período selecionado
                 </p>
-                <span className="text-[11px] font-mono text-zinc-400">
-                  {valuesHidden ? '••••••' : `$ ${schoolExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`}
-                </span>
               </div>
-              <p className="text-[10px] text-zinc-500">
-                Mensalidades escolares dos filhos pagas no período selecionado
-              </p>
+
+              <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/80 space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-zinc-300 flex items-center gap-1.5">
+                    <span>⚽</span> All Boys (Futebol do Filho)
+                  </span>
+                  <span className="text-[10px] text-zinc-500 font-mono">
+                    {filteredTransactions.filter(t => (t.merchant || '').includes('All Boys') || (t.description || '').toLowerCase().includes('all boys')).length} pagamentos
+                  </span>
+                </div>
+                <div className="flex items-baseline justify-between">
+                  <p className="text-sm font-bold font-mono text-emerald-400">
+                    {maskBRL(filteredTransactions.filter(t => (t.merchant || '').includes('All Boys') || (t.description || '').toLowerCase().includes('all boys')).reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0))}
+                  </p>
+                  <span className="text-[11px] font-mono text-zinc-400">
+                    {valuesHidden ? '••••••' : `$ ${filteredTransactions.filter(t => (t.merchant || '').includes('All Boys') || (t.description || '').toLowerCase().includes('all boys')).reduce((acc, t) => acc + t.amount, 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`}
+                  </span>
+                </div>
+                <p className="text-[10px] text-zinc-500">
+                  Escolinha e treinos de futebol do filho em Saavedra
+                </p>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
@@ -784,10 +812,10 @@ export default function PersonalDashboardView() {
           </p>
         </div>
 
-        {/* Escola & Filhos (Colegio Misericordia) */}
+        {/* Escola & Filhos (Colegio Misericordia + Futebol All Boys) */}
         <div className="p-5 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-zinc-900 to-amber-950/20 space-y-2">
           <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span className="font-semibold uppercase tracking-wider text-[11px] text-amber-300">🎒 Escola & Filhos</span>
+            <span className="font-semibold uppercase tracking-wider text-[11px] text-amber-300">🎒 Filhos (Escola & Futebol)</span>
             <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
               <Baby className="w-4 h-4" />
             </div>
@@ -796,7 +824,7 @@ export default function PersonalDashboardView() {
             {maskBRL(schoolExpensesBRL)}
           </p>
           <p className="text-[11px] text-zinc-400 font-mono">
-            {valuesHidden ? '••••••' : `$ ${schoolExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} (Colegio Misericordia)
+            {valuesHidden ? '••••••' : `$ ${schoolExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({schoolExpenses.length} despesas: Misericórdia + All Boys)
           </p>
         </div>
       </div>
@@ -1207,14 +1235,14 @@ export default function PersonalDashboardView() {
               </button>
               <button
                 type="button"
-                onClick={() => setSelectedMember('Misericordia')}
+                onClick={() => setSelectedMember('Filhos')}
                 className={`px-2.5 py-1 rounded-lg transition-all ${
-                  selectedMember === 'Misericordia'
+                  selectedMember === 'Filhos' || selectedMember === 'Misericordia'
                     ? 'bg-amber-600 text-white shadow'
                     : 'text-zinc-400 hover:text-white'
                 }`}
               >
-                🎒 Misericórdia
+                🎒 Filhos (Escola & Futebol)
               </button>
             </div>
 
