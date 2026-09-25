@@ -184,7 +184,7 @@ export default function PersonalDashboardView() {
 
     const loadAllPersonalData = () => {
       // Versão dos dados para forçar sincronização automática no navegador
-      const DATA_VERSION = "2026-09-v5-perfect-cleanup-misericordia";
+      const DATA_VERSION = "2026-09-v6-allboys-misericordia";
       const savedVersion = localStorage.getItem('user_personal_data_version');
       
       const builtinTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
