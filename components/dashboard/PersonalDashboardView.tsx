@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useProfile } from "@/lib/contexts/ProfileContext";
-import { DICTIONARY, Currency } from "@/lib/i18n/dict";
+import { DICTIONARY } from "@/lib/i18n/dict";
+import { Currency, RatesMap, convertAmount, formatCurrency } from "@/lib/currency/format";
 import { DEMO_PERSONAL_TRANSACTIONS } from "@/lib/ai/receiptScanner";
 import PeriodBar from "@/components/shared/PeriodBar";
 import { resolvePeriod } from "@/lib/period";
@@ -109,7 +110,15 @@ const MONTHS = [
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
-export default function PersonalDashboardView() {
+interface PersonalDashboardViewProps {
+  displayCurrency?: Currency;
+  rate?: RatesMap;
+}
+
+export default function PersonalDashboardView({
+  displayCurrency: propCurrency = "BRL",
+  rate: propRate,
+}: PersonalDashboardViewProps = {}) {
   const { lang } = useProfile();
   const { hidden: valuesHidden } = useValuesVisibility();
   const dict = DICTIONARY[lang];
@@ -117,18 +126,80 @@ export default function PersonalDashboardView() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const maskBRL = (val: number, opts?: Intl.NumberFormatOptions) => {
+  // Moeda ativa selecionada no topo (BRL, USD ou ARS)
+  const [activeCurrency, setActiveCurrency] = useState<Currency>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("display_currency") as Currency;
+      if (saved && ["BRL", "USD", "ARS"].includes(saved)) return saved;
+    }
+    return (propCurrency as Currency) || "BRL";
+  });
+
+  // Cotação real da remessa Pesos/Real (default 365, onde 4.300 ARS ~ R$ 11,78 como o usuário constatou)
+  const [customArsPerBrl, setCustomArsPerBrl] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("pf_custom_ars_brl");
+      if (saved && !isNaN(Number(saved)) && Number(saved) > 0) {
+        return Number(saved);
+      }
+    }
+    return 365;
+  });
+
+  useEffect(() => {
+    if (propCurrency && ["BRL", "USD", "ARS"].includes(propCurrency)) {
+      setActiveCurrency(propCurrency);
+    }
+  }, [propCurrency]);
+
+  useEffect(() => {
+    const handleCurrencyChange = (e: any) => {
+      const newCurr = (e.detail || e) as Currency;
+      if (newCurr && ["BRL", "USD", "ARS"].includes(newCurr)) {
+        setActiveCurrency(newCurr);
+      }
+    };
+    window.addEventListener("currency-change", handleCurrencyChange);
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "display_currency" && e.newValue && ["BRL", "USD", "ARS"].includes(e.newValue)) {
+        setActiveCurrency(e.newValue as Currency);
+      }
+      if (e.key === "pf_custom_ars_brl" && e.newValue && !isNaN(Number(e.newValue))) {
+        setCustomArsPerBrl(Number(e.newValue));
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => {
+      window.removeEventListener("currency-change", handleCurrencyChange);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, []);
+
+  const convertToActive = (amount: number, fromCurr: Currency): number => {
+    const usdBrl = propRate?.usd_brl || 5.87;
+    const usdArs = usdBrl * customArsPerBrl;
+    return convertAmount(amount, fromCurr, activeCurrency, { usd_brl: usdBrl, usd_ars: usdArs });
+  };
+
+  const toBRL = (amount: number, fromCurr: Currency): number => {
+    const usdBrl = propRate?.usd_brl || 5.87;
+    const usdArs = usdBrl * customArsPerBrl;
+    return convertAmount(amount, fromCurr, "BRL", { usd_brl: usdBrl, usd_ars: usdArs });
+  };
+
+  const formatMoney = (amount: number, curr: Currency = activeCurrency): string => {
     if (valuesHidden) return "••••••";
-    return `R$ ${val.toLocaleString('pt-BR', opts || { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return formatCurrency(amount, curr);
+  };
+
+  const maskBRL = (val: number) => {
+    if (valuesHidden) return "••••••";
+    return formatCurrency(val, activeCurrency);
   };
 
   const maskOrig = (amount: number, curr: Currency, sign: string = '') => {
     if (valuesHidden) return "••••••";
-    const prefix = curr === 'ARS' ? '$ ' : curr === 'USD' ? 'US$ ' : 'R$ ';
-    const formatted = curr === 'ARS'
-      ? amount.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 2 })
-      : amount.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    return `${sign}${prefix}${formatted}`;
+    return `${sign}${formatCurrency(amount, curr)}`;
   };
 
   const [mounted, setMounted] = useState(false);
@@ -161,9 +232,6 @@ export default function PersonalDashboardView() {
   const [category, setCategory] = useState('Alimentação & Supermercado');
   const [subcategory, setSubcategory] = useState('');
   const [childTag, setChildTag] = useState('');
-
-  // Rate table for multi-currency conversion
-  const rates = { ARS: 233.6, BRL: 1, USD: 0.177 };
 
   useEffect(() => {
     setMounted(true);
@@ -345,12 +413,7 @@ export default function PersonalDashboardView() {
     saveTransactions(updated);
   };
 
-  // Helper para converter valor para BRL
-  const toBRL = (amount: number, curr: Currency) => {
-    if (curr === 'ARS') return amount / rates.ARS;
-    if (curr === 'USD') return amount * 5.65;
-    return amount;
-  };
+
 
   // Helper para buscar emoji e cor da categoria
   const getCatBadgeInfo = (catName: string) => {
@@ -435,7 +498,7 @@ export default function PersonalDashboardView() {
   // Totais convertidos dinâmicos no período filtrado (Foco em Despesas)
   const totalExpensesBRL = filteredTransactions
     .filter(t => t.type === 'expense')
-    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+    .reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
 
   const totalExpensesARS = filteredTransactions
     .filter(t => t.type === 'expense' && t.currency === 'ARS')
@@ -444,7 +507,7 @@ export default function PersonalDashboardView() {
   // Gastos Amanda no período
   const amandaExpensesBRL = filteredTransactions
     .filter(t => t.type === 'expense' && (t.childTag === 'Amanda' || t.parentTag === 'Amanda'))
-    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+    .reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
   const amandaExpensesARS = filteredTransactions
     .filter(t => t.type === 'expense' && t.currency === 'ARS' && (t.childTag === 'Amanda' || t.parentTag === 'Amanda'))
     .reduce((acc, t) => acc + t.amount, 0);
@@ -454,7 +517,7 @@ export default function PersonalDashboardView() {
   // Gastos Gastão no período
   const gastaoExpensesBRL = filteredTransactions
     .filter(t => t.type === 'expense' && (t.childTag === 'Gastão' || t.parentTag === 'Gastão'))
-    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+    .reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
   const gastaoExpensesARS = filteredTransactions
     .filter(t => t.type === 'expense' && t.currency === 'ARS' && (t.childTag === 'Gastão' || t.parentTag === 'Gastão'))
     .reduce((acc, t) => acc + t.amount, 0);
@@ -471,7 +534,7 @@ export default function PersonalDashboardView() {
       (t.description || '').toLowerCase().includes('asociacion hijas') ||
       (t.description || '').toLowerCase().includes('all boys')
     ));
-  const schoolExpensesBRL = schoolExpenses.reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+  const schoolExpensesBRL = schoolExpenses.reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
   const schoolExpensesARS = schoolExpenses.filter(t => t.currency === 'ARS').reduce((acc, t) => acc + t.amount, 0);
 
   // -------------------------------------------------------------
@@ -483,11 +546,11 @@ export default function PersonalDashboardView() {
 
   const currentMonthExpensesBRL = transactions
     .filter(t => t.type === 'expense' && t.date?.startsWith(currentMonthYear) && (!hideInternalTransfers || !t.isInternalTransfer))
-    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+    .reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
 
   const prevMonthExpensesBRL = transactions
     .filter(t => t.type === 'expense' && t.date?.startsWith(prevMonthYear) && (!hideInternalTransfers || !t.isInternalTransfer))
-    .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+    .reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
 
   const momExpensesDiffBRL = currentMonthExpensesBRL - prevMonthExpensesBRL;
   const momExpensesPct = prevMonthExpensesBRL > 0 
@@ -501,7 +564,7 @@ export default function PersonalDashboardView() {
     .filter(t => t.type === 'expense')
     .forEach(t => {
       const catName = getNormalizedCategory(t.category);
-      categorySpendingMap[catName] = (categorySpendingMap[catName] || 0) + toBRL(t.amount, t.currency);
+      categorySpendingMap[catName] = (categorySpendingMap[catName] || 0) + convertToActive(t.amount, t.currency);
       categoryCountMap[catName] = (categoryCountMap[catName] || 0) + 1;
     });
 
@@ -520,13 +583,13 @@ export default function PersonalDashboardView() {
   const topSingleExpense: PersonalTransaction | null = filteredTransactions
     .filter(t => t.type === 'expense')
     .reduce<PersonalTransaction | null>((max, curr) => {
-      const val = toBRL(curr.amount, curr.currency);
-      const maxVal = max ? toBRL(max.amount, max.currency) : 0;
+      const val = convertToActive(curr.amount, curr.currency);
+      const maxVal = max ? convertToActive(max.amount, max.currency) : 0;
       return val > maxVal ? curr : max;
     }, null);
 
   const topSingleExpenseBRL = topSingleExpense
-    ? toBRL(topSingleExpense.amount, topSingleExpense.currency)
+    ? convertToActive(topSingleExpense.amount, topSingleExpense.currency)
     : 0;
 
   // Categoria atualmente selecionada pelo clique do usuário
@@ -534,7 +597,7 @@ export default function PersonalDashboardView() {
   const selectedCategoryExpenses = selectedCatObj
     ? filteredTransactions.filter(t => t.type === 'expense' && matchesCategory(t.category, selectedCatObj.namePt, selectedCatObj.nameEs))
     : [];
-  const selectedCatSpentBRL = selectedCategoryExpenses.reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+  const selectedCatSpentBRL = selectedCategoryExpenses.reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
   const selectedCatSpentARS = selectedCategoryExpenses.filter(t => t.currency === 'ARS').reduce((acc, t) => acc + t.amount, 0);
 
   // -------------------------------------------------------------
@@ -572,7 +635,7 @@ export default function PersonalDashboardView() {
       monthlyDataMap[key] = { monthKey: key, monthLabel: label.toUpperCase(), amanda: 0, gastao: 0, total: 0 };
     }
 
-    const val = toBRL(t.amount, t.currency);
+    const val = convertToActive(t.amount, t.currency);
     const tag = t.childTag || t.parentTag || '';
     if (tag === 'Amanda') {
       monthlyDataMap[key].amanda += val;
@@ -625,8 +688,31 @@ export default function PersonalDashboardView() {
 
       {/* SELETOR DE DATAS IDÊNTICO AO DA EMPRESA (PERIODBAR) */}
       <PeriodBar from={from} to={to}>
-        <div className="text-xs text-zinc-400 font-mono">
-          Exibindo <strong className="text-purple-300">{filteredTransactions.length}</strong> de {transactions.length} lançamentos
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="text-xs text-zinc-400 font-mono">
+            Exibindo <strong className="text-purple-300">{filteredTransactions.length}</strong> de {transactions.length} lançamentos
+          </div>
+          <div className="flex items-center gap-1.5 bg-zinc-950 px-2.5 py-1 rounded-lg border border-zinc-800 text-xs">
+            <span className="text-zinc-400">💱 Câmbio Pesos:</span>
+            <span className="font-mono font-bold text-amber-300">1 R$ = {customArsPerBrl} ARS</span>
+            <button
+              type="button"
+              onClick={() => {
+                const input = prompt("Definir cotação Pesos/Real (ex: 365 para cotação de remessa/paralelo, ou 243 oficial):", String(customArsPerBrl));
+                if (input) {
+                  const val = parseFloat(input.replace(',', '.'));
+                  if (!isNaN(val) && val > 0) {
+                    setCustomArsPerBrl(val);
+                    localStorage.setItem("pf_custom_ars_brl", String(val));
+                  }
+                }
+              }}
+              className="p-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors ml-0.5"
+              title="Ajustar cotação do peso argentino"
+            >
+              <Pencil size={11} />
+            </button>
+          </div>
         </div>
       </PeriodBar>
 
@@ -652,9 +738,9 @@ export default function PersonalDashboardView() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               {parentsList.map((parent) => {
-                const parentExpensesBRL = filteredTransactions
+                const parentExpensesActive = filteredTransactions
                   .filter(t => t.childTag === parent && t.type === 'expense')
-                  .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+                  .reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
 
                 const parentTxCount = filteredTransactions.filter(t => t.childTag === parent).length;
 
@@ -667,7 +753,7 @@ export default function PersonalDashboardView() {
                       <span className="text-[10px] text-zinc-500 font-mono">{parentTxCount} txs</span>
                     </div>
                     <p className="text-sm font-bold font-mono text-purple-300">
-                      {maskBRL(parentExpensesBRL)}
+                      {maskBRL(parentExpensesActive)}
                     </p>
                   </div>
                 );
@@ -701,7 +787,7 @@ export default function PersonalDashboardView() {
                 </div>
                 <div className="flex items-baseline justify-between">
                   <p className="text-sm font-bold font-mono text-pink-400">
-                    {maskBRL(filteredTransactions.filter(t => (t.merchant || '').includes('Misericordia') || (t.description || '').toLowerCase().includes('asociacion hijas')).reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0))}
+                    {maskBRL(filteredTransactions.filter(t => (t.merchant || '').includes('Misericordia') || (t.description || '').toLowerCase().includes('asociacion hijas')).reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0))}
                   </p>
                   <span className="text-[11px] font-mono text-zinc-400">
                     {valuesHidden ? '••••••' : `$ ${filteredTransactions.filter(t => (t.merchant || '').includes('Misericordia') || (t.description || '').toLowerCase().includes('asociacion hijas')).reduce((acc, t) => acc + t.amount, 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`}
@@ -723,7 +809,7 @@ export default function PersonalDashboardView() {
                 </div>
                 <div className="flex items-baseline justify-between">
                   <p className="text-sm font-bold font-mono text-emerald-400">
-                    {maskBRL(filteredTransactions.filter(t => (t.merchant || '').includes('All Boys') || (t.description || '').toLowerCase().includes('all boys')).reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0))}
+                    {maskBRL(filteredTransactions.filter(t => (t.merchant || '').includes('All Boys') || (t.description || '').toLowerCase().includes('all boys')).reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0))}
                   </p>
                   <span className="text-[11px] font-mono text-zinc-400">
                     {valuesHidden ? '••••••' : `$ ${filteredTransactions.filter(t => (t.merchant || '').includes('All Boys') || (t.description || '').toLowerCase().includes('all boys')).reduce((acc, t) => acc + t.amount, 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`}
@@ -737,9 +823,9 @@ export default function PersonalDashboardView() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               {childrenList.map((child) => {
-                const childExpensesBRL = filteredTransactions
+                const childExpensesActive = filteredTransactions
                   .filter(t => t.childTag === child && t.type === 'expense')
-                  .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+                  .reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
 
                 const childTxCount = filteredTransactions.filter(t => t.childTag === child).length;
 
@@ -752,7 +838,7 @@ export default function PersonalDashboardView() {
                       <span className="text-[10px] text-zinc-500 font-mono">{childTxCount} txs</span>
                     </div>
                     <p className="text-sm font-bold font-mono text-pink-400">
-                      {maskBRL(childExpensesBRL)}
+                      {maskBRL(childExpensesActive)}
                     </p>
                   </div>
                 );
@@ -844,12 +930,12 @@ export default function PersonalDashboardView() {
               ) : momExpensesDiffBRL <= 0 ? (
                 <span className="text-emerald-400 flex items-center gap-1 font-mono">
                   <TrendingDown size={16} />
-                  -R$ {Math.abs(momExpensesDiffBRL).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} (-{Math.abs(momExpensesPct).toFixed(1)}%)
+                  -{formatMoney(Math.abs(momExpensesDiffBRL))} (-{Math.abs(momExpensesPct).toFixed(1)}%)
                 </span>
               ) : (
                 <span className="text-rose-400 flex items-center gap-1 font-mono">
                   <TrendingUp size={16} />
-                  +R$ {momExpensesDiffBRL.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} (+{momExpensesPct.toFixed(1)}%)
+                  +{formatMoney(momExpensesDiffBRL)} (+{momExpensesPct.toFixed(1)}%)
                 </span>
               )}
             </p>
@@ -857,7 +943,7 @@ export default function PersonalDashboardView() {
               {valuesHidden ? (
                 "Variação dos gastos em relação ao mês anterior."
               ) : (
-                `Variação dos gastos em relação ao mês anterior (Mês Atual: R$ ${currentMonthExpensesBRL.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} vs Mês Anterior: R$ ${prevMonthExpensesBRL.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}).`
+                `Variação dos gastos em relação ao mês anterior (Mês Atual: ${maskBRL(currentMonthExpensesBRL)} vs Mês Anterior: ${maskBRL(prevMonthExpensesBRL)}).`
               )}
             </p>
           </div>
@@ -912,7 +998,7 @@ export default function PersonalDashboardView() {
                 <PieIcon className="w-4 h-4 text-purple-400" />
                 Distribuição por Categoria
               </h3>
-              <span className="text-[10px] text-zinc-500 font-mono uppercase">Valores em R$</span>
+              <span className="text-[10px] text-zinc-500 font-mono uppercase">Valores em {activeCurrency}</span>
             </div>
 
             {pieChartData.length === 0 ? (
@@ -946,7 +1032,7 @@ export default function PersonalDashboardView() {
                         contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 12 }}
                         labelStyle={{ color: "#ffffff", fontWeight: "bold" }}
                         formatter={(val: any, name: any) => [
-                          valuesHidden ? "••••••" : `R$ ${Number(val).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
+                          valuesHidden ? "••••••" : formatMoney(Number(val)),
                           `${name}`
                         ]}
                       />
@@ -979,7 +1065,7 @@ export default function PersonalDashboardView() {
                 <BarChart3 className="w-4 h-4 text-purple-400" />
                 Gastos Mensais (Amanda vs Gastão)
               </h3>
-              <span className="text-[10px] text-zinc-400 font-mono uppercase">Valores em R$</span>
+              <span className="text-[10px] text-zinc-400 font-mono uppercase">Valores em {activeCurrency}</span>
             </div>
 
             <div className="h-64 w-full">
@@ -997,7 +1083,7 @@ export default function PersonalDashboardView() {
                   <RechartsTooltip
                     contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 12 }}
                     labelStyle={{ color: "#ffffff", fontWeight: "bold" }}
-                    formatter={(val: any) => [valuesHidden ? "••••••" : `R$ ${Number(val).toLocaleString('pt-BR')}`]}
+                    formatter={(val: any) => [valuesHidden ? "••••••" : formatMoney(Number(val))]}
                   />
                   <Legend wrapperStyle={{ paddingTop: 10, fontSize: 12, color: "#9ca3af" }} />
                   <Bar dataKey="Gastos Amanda" fill="#ec4899" radius={[4, 4, 0, 0]} />
@@ -1029,11 +1115,12 @@ export default function PersonalDashboardView() {
             const catName = lang === 'pt' ? cat.namePt : cat.nameEs;
             const isSelected = selectedCategoryId === cat.id;
 
-            const spentBRL = filteredTransactions
+            const spentActive = filteredTransactions
               .filter(t => t.type === 'expense' && matchesCategory(t.category, cat.namePt, cat.nameEs))
-              .reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
+              .reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
 
-            const pct = Math.min(Math.round((spentBRL / (cat.limit || 1)) * 100), 100);
+            const limitActive = convertToActive(cat.limit, 'BRL');
+            const pct = Math.min(Math.round((spentActive / (limitActive || 1)) * 100), 100);
 
             return (
               <div 
@@ -1055,7 +1142,7 @@ export default function PersonalDashboardView() {
                       <p className="text-[10px] text-zinc-400 font-mono">
                         {valuesHidden 
                           ? "••••••" 
-                          : `Gasto: R$ ${spentBRL.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} / Meta: R$ ${cat.limit.toLocaleString()}`}
+                          : `Gasto: ${formatMoney(spentActive)} / Meta: ${formatMoney(limitActive)}`}
                       </p>
                     </div>
                   </div>
@@ -1132,7 +1219,7 @@ export default function PersonalDashboardView() {
                       <th className="p-3">Familiar</th>
                       <th className="p-3">Subcategoria</th>
                       <th className="p-3 text-right">Valor Original</th>
-                      <th className="p-3 text-right">Valor em R$</th>
+                      <th className="p-3 text-right">Valor em {activeCurrency}</th>
                       <th className="p-3 text-center">Ações</th>
                     </tr>
                   </thead>
@@ -1165,7 +1252,7 @@ export default function PersonalDashboardView() {
                           {maskOrig(tx.amount, tx.currency)}
                         </td>
                         <td className="p-3 text-right font-mono font-bold text-rose-400 whitespace-nowrap">
-                          {maskBRL(toBRL(tx.amount, tx.currency))}
+                          {formatMoney(convertToActive(tx.amount, tx.currency))}
                         </td>
                         <td className="p-3 text-center whitespace-nowrap">
                           <button
@@ -1294,11 +1381,17 @@ export default function PersonalDashboardView() {
                         </div>
                         <div className="text-right">
                           <p className={`font-mono font-bold text-sm ${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                            {valuesHidden ? '••••••' : `${tx.type === 'income' ? '+' : '-'}${tx.currency === 'ARS' ? `$ ${tx.amount.toLocaleString()}` : tx.currency === 'USD' ? `$ ${tx.amount.toFixed(2)}` : `R$ ${tx.amount.toFixed(2)}`}`}
+                            {valuesHidden ? '••••••' : `${tx.type === 'income' ? '+' : '-'}${formatMoney(convertToActive(tx.amount, tx.currency))}`}
                           </p>
-                          <span className="text-[10px] font-mono font-bold text-zinc-400">
-                            {tx.currency}
-                          </span>
+                          {tx.currency !== activeCurrency ? (
+                            <span className="text-[10px] font-mono text-zinc-500 block">
+                              orig. {formatCurrency(tx.amount, tx.currency)}
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-mono font-bold text-zinc-400">
+                              {tx.currency}
+                            </span>
+                          )}
                         </div>
                       </div>
 
@@ -1353,10 +1446,10 @@ export default function PersonalDashboardView() {
                     <tr>
                       <th className="p-3 w-28 whitespace-nowrap">Data</th>
                       <th className="p-3 min-w-[220px]">Estabelecimento / Descrição</th>
-                      <th className="p-3 w-28 whitespace-nowrap">Moeda</th>
+                      <th className="p-3 w-28 whitespace-nowrap">Moeda Orig.</th>
                       <th className="p-3 min-w-[160px] whitespace-nowrap">Categoria</th>
                       <th className="p-3 w-36 whitespace-nowrap">Vínculo Familiar</th>
-                      <th className="p-3 w-36 text-right whitespace-nowrap">Valor Original</th>
+                      <th className="p-3 w-36 text-right whitespace-nowrap">Valor ({activeCurrency})</th>
                       <th className="p-3 w-20 text-center whitespace-nowrap">Ações</th>
                     </tr>
                   </thead>
@@ -1411,7 +1504,12 @@ export default function PersonalDashboardView() {
                             )}
                           </td>
                           <td className={`p-3 text-right font-mono font-bold whitespace-nowrap ${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                            {valuesHidden ? '••••••' : `${tx.type === 'income' ? '+' : '-'}${tx.currency === 'ARS' ? `$ ${tx.amount.toLocaleString()}` : tx.currency === 'USD' ? `$ ${tx.amount.toFixed(2)}` : `R$ ${tx.amount.toFixed(2)}`}`}
+                            <div>{valuesHidden ? '••••••' : `${tx.type === 'income' ? '+' : '-'}${formatMoney(convertToActive(tx.amount, tx.currency))}`}</div>
+                            {tx.currency !== activeCurrency && (
+                              <div className="text-[10px] font-normal text-zinc-500 font-mono">
+                                orig. {formatCurrency(tx.amount, tx.currency)}
+                              </div>
+                            )}
                           </td>
                           <td className="p-3 text-center whitespace-nowrap">
                             <div className="flex items-center justify-center gap-1">

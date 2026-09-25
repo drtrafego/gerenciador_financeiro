@@ -26,7 +26,7 @@ export default async function DashboardPage({
   const comparadoCom = formatPeriodLabel(data.previousPeriod);
 
   return (
-    <DashboardViewContainer>
+    <DashboardViewContainer displayCurrency={data.displayCurrency} rate={data.rate}>
       <div className="flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <h1 className="text-lg font-semibold text-zinc-200">Visão geral da Empresa</h1>

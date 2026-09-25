@@ -8,6 +8,13 @@ export default function CurrencySelector({ defaultCurrency = "BRL" }: { defaultC
   const [, startTransition] = useTransition();
 
   const handleChange = (c: string) => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("display_currency", c);
+        document.cookie = `display_currency=${c}; path=/; max-age=31536000`;
+        window.dispatchEvent(new CustomEvent("currency-change", { detail: c }));
+      } catch (e) {}
+    }
     startTransition(async () => {
       setOptimistic(c);
       await updateDisplayCurrency(c);
