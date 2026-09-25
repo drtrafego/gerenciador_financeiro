@@ -53,10 +53,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-177675618169",
@@ -165,10 +165,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-177478933699",
@@ -277,10 +277,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-178601884990",
@@ -1145,10 +1145,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-177788539800",
@@ -1915,10 +1915,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260902-36",
@@ -1973,8 +1973,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260902-40",
@@ -2155,8 +2155,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260901-47",
@@ -2491,8 +2491,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260831-63",
@@ -2589,8 +2589,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260831-70",
@@ -2727,10 +2727,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-175527765717",
@@ -2939,8 +2939,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260828-79",
@@ -2995,8 +2995,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260828-83",
@@ -3205,8 +3205,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260827-88",
@@ -3429,8 +3429,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-175757439272",
@@ -3541,8 +3541,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260825-92",
@@ -3679,10 +3679,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-175627830742",
@@ -4493,8 +4493,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260820-122",
@@ -4535,8 +4535,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260820-125",
@@ -4857,8 +4857,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-173635387985",
@@ -4869,10 +4869,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3418223201",
@@ -4897,10 +4897,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3418408231",
@@ -5235,8 +5235,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260818-141",
@@ -5291,8 +5291,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260818-145",
@@ -5429,10 +5429,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-173338685037",
@@ -5849,10 +5849,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-173781284962",
@@ -5921,8 +5921,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260813-158",
@@ -6159,8 +6159,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260812-163",
@@ -6327,8 +6327,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260811-166",
@@ -6341,8 +6341,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260811-167",
@@ -6465,10 +6465,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-172349425215",
@@ -6607,8 +6607,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260810-182",
@@ -6913,10 +6913,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-172758103660",
@@ -7055,8 +7055,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260807-196",
@@ -7123,10 +7123,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-172515171694",
@@ -7307,8 +7307,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260806-200",
@@ -7419,8 +7419,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260805-204",
@@ -7503,8 +7503,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-171239530829",
@@ -7515,10 +7515,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-172145371832",
@@ -7671,8 +7671,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260804-212",
@@ -7823,10 +7823,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-171213588037",
@@ -7837,10 +7837,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-172113727766",
@@ -7895,8 +7895,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260803-217",
@@ -7965,8 +7965,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260803-222",
@@ -7993,8 +7993,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260803-224",
@@ -8201,10 +8201,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-171724113768",
@@ -8355,10 +8355,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-171568263682",
@@ -8481,10 +8481,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-171643758582",
@@ -8707,8 +8707,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260730-237",
@@ -8735,8 +8735,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260730-239",
@@ -8959,8 +8959,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260729-243",
@@ -9211,8 +9211,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260728-246",
@@ -9225,8 +9225,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260728-247",
@@ -9293,10 +9293,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-170027478851",
@@ -9477,8 +9477,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-170744862038",
@@ -9545,10 +9545,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-169868341731",
@@ -9841,8 +9841,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260724-260",
@@ -10037,8 +10037,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260723-263",
@@ -10079,8 +10079,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260723-266",
@@ -10093,8 +10093,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260723-267",
@@ -10175,10 +10175,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-170170067456",
@@ -10401,8 +10401,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260722-272",
@@ -10597,8 +10597,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260721-277",
@@ -10945,10 +10945,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-168579486425",
@@ -11213,8 +11213,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260716-295",
@@ -11253,10 +11253,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-169046181044",
@@ -11465,8 +11465,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260715-301",
@@ -11927,8 +11927,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260713-326",
@@ -11969,8 +11969,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260713-329",
@@ -12053,8 +12053,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260713-335",
@@ -12331,10 +12331,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-168151311588",
@@ -12457,10 +12457,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-167776505866",
@@ -13031,10 +13031,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3261411335",
@@ -14445,10 +14445,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3211920947",
@@ -14769,8 +14769,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260604-353",
@@ -14839,8 +14839,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260604-358",
@@ -14921,10 +14921,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-162476776886",
@@ -15399,8 +15399,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260601-377",
@@ -15509,10 +15509,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3210078460",
@@ -15705,10 +15705,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-161097406879",
@@ -15833,8 +15833,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260529-384",
@@ -16125,10 +16125,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-161583400300",
@@ -16239,8 +16239,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260528-396",
@@ -16307,10 +16307,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-161340109912",
@@ -17231,10 +17231,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-159870289789",
@@ -17387,8 +17387,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260522-420",
@@ -17485,8 +17485,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260522-427",
@@ -17749,10 +17749,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-160586623484",
@@ -17877,8 +17877,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3175491218",
@@ -18101,8 +18101,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260520-442",
@@ -18281,10 +18281,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-159269578721",
@@ -18395,8 +18395,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260518-449",
@@ -18521,8 +18521,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260518-458",
@@ -18631,10 +18631,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-159837700740",
@@ -18673,10 +18673,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-159885813506",
@@ -18885,8 +18885,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260515-461",
@@ -19123,8 +19123,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260514-471",
@@ -19403,8 +19403,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3095153503",
@@ -19499,10 +19499,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-158375316297",
@@ -19527,10 +19527,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3097082341",
@@ -19695,10 +19695,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3143518302",
@@ -19781,8 +19781,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260511-494",
@@ -19921,8 +19921,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260511-504",
@@ -20059,10 +20059,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3085926643",
@@ -20129,10 +20129,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-157711297729",
@@ -20381,10 +20381,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3127439208",
@@ -20537,8 +20537,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260507-521",
@@ -20551,8 +20551,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260507-522",
@@ -20647,10 +20647,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-157416924995",
@@ -20733,8 +20733,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260506-529",
@@ -20787,10 +20787,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-157964229358",
@@ -21251,8 +21251,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3109183144",
@@ -21361,10 +21361,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-157708637254",
@@ -21543,10 +21543,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-157362731488",
@@ -21657,8 +21657,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260430-554",
@@ -21907,10 +21907,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-157161754212",
@@ -22119,8 +22119,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260428-571",
@@ -22371,8 +22371,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260427-579",
@@ -22565,10 +22565,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3039632339",
@@ -22803,10 +22803,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3082786372",
@@ -22985,10 +22985,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260422-590",
@@ -23097,10 +23097,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-155901161714",
@@ -23153,10 +23153,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-155007481485",
@@ -23433,10 +23433,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-155706943586",
@@ -23645,8 +23645,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Geral & Diversos",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Lançamentos Históricos",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260417-606",
@@ -23741,10 +23741,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-154423601099",
@@ -24513,8 +24513,8 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Compras & Vestuário",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "subcategory": "Transferência entre Casal (Interna)",
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260410-634",
@@ -24693,10 +24693,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3030444448",
@@ -24959,10 +24959,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-153944294684",
@@ -25001,10 +25001,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-154019132566",
@@ -25351,10 +25351,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-2975109223",
@@ -25491,10 +25491,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-153217787174",
@@ -25547,10 +25547,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-152511093181",
@@ -25561,10 +25561,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-152510427073",
@@ -25687,10 +25687,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-152250651769",
@@ -25771,10 +25771,10 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "currency": "ARS",
     "type": "income",
     "category": "Transferências & Outros",
-    "subcategory": "Transferências",
+    "subcategory": "Transferência entre Casal (Interna)",
     "childTag": "Amanda",
     "language": "es",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-2961307587",
