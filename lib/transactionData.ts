@@ -2063,13 +2063,13 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
   {
     "id": "tx-amanda-mp-176940262528",
     "date": "2026-09-02",
-    "merchant": "Club Atlético All Boys (Saavedra)",
+    "merchant": "Club All Boys (Futebol do Filho)",
     "description": "Mercado Pago Amanda - Transferencia enviada All Boys Saavedra",
     "amount": 129000,
     "currency": "ARS",
     "type": "expense",
     "category": "Filhos & Família",
-    "subcategory": "Esportes & Clube",
+    "subcategory": "Futebol do Filho (All Boys)",
     "childTag": "Amanda",
     "language": "es",
     "isInternalTransfer": false
@@ -14635,7 +14635,7 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
   {
     "id": "tx-galicia-20260608-346",
     "date": "2026-06-08",
-    "merchant": "Club Atlético All Boys (Saavedra)",
+    "merchant": "Club All Boys (Futebol do Filho)",
     "description": "Extrato Galicia - TRANSFERENCIA A TERCEROS CLUB ATLETICO ALL BO 30708476923 VARIOS MERCADO LIBRE SRL",
     "amount": 36000,
     "currency": "ARS",
@@ -14643,7 +14643,7 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Filhos & Família",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Esportes & Clube",
+    "subcategory": "Futebol do Filho (All Boys)",
     "isInternalTransfer": false
   },
   {
@@ -20277,7 +20277,7 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
   {
     "id": "tx-galicia-20260508-516",
     "date": "2026-05-08",
-    "merchant": "Club Atlético All Boys (Saavedra)",
+    "merchant": "Club All Boys (Futebol do Filho)",
     "description": "Extrato Galicia - TRANSFERENCIA A TERCEROS CLUB ATLETICO ALL BO 30708476923 VARIOS MERCADO LIBRE SRL",
     "amount": 36000,
     "currency": "ARS",
@@ -20285,7 +20285,7 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Filhos & Família",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Esportes & Clube",
+    "subcategory": "Futebol do Filho (All Boys)",
     "isInternalTransfer": false
   },
   {
@@ -24589,7 +24589,7 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
   {
     "id": "tx-galicia-20260410-639",
     "date": "2026-04-10",
-    "merchant": "Club Atlético All Boys (Saavedra)",
+    "merchant": "Club All Boys (Futebol do Filho)",
     "description": "Extrato Galicia - TRANSFERENCIA A TERCEROS CLUB ATLETICO ALL BO 30708476923 VARIOS MERCADO LIBRE SRL",
     "amount": 36500,
     "currency": "ARS",
@@ -24597,7 +24597,7 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "category": "Filhos & Família",
     "childTag": "Gastão",
     "language": "es",
-    "subcategory": "Esportes & Clube",
+    "subcategory": "Futebol do Filho (All Boys)",
     "isInternalTransfer": false
   },
   {
