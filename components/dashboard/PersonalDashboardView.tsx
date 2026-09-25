@@ -184,7 +184,7 @@ export default function PersonalDashboardView() {
 
     const loadAllPersonalData = () => {
       // Versão dos dados para forçar sincronização automática no navegador
-      const DATA_VERSION = "2026-09-v4-amanda-gastao-misericordia";
+      const DATA_VERSION = "2026-09-v5-perfect-cleanup-misericordia";
       const savedVersion = localStorage.getItem('user_personal_data_version');
       
       const builtinTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
@@ -422,7 +422,7 @@ export default function PersonalDashboardView() {
 
     if (selectedMember === 'Misericordia') {
       const d = ((t.description || '') + ' ' + (t.merchant || '')).toLowerCase();
-      return d.includes('misericordia');
+      return d.includes('misericordia') || d.includes('asociacion hijas');
     }
 
     if (selectedMember !== 'all') {
@@ -466,7 +466,8 @@ export default function PersonalDashboardView() {
     .filter(t => t.type === 'expense' && (
       t.category === 'Filhos & Família' || 
       (t.merchant || '').toLowerCase().includes('misericordia') ||
-      (t.description || '').toLowerCase().includes('misericordia')
+      (t.description || '').toLowerCase().includes('misericordia') ||
+      (t.description || '').toLowerCase().includes('asociacion hijas')
     ));
   const schoolExpensesBRL = schoolExpenses.reduce((acc, t) => acc + toBRL(t.amount, t.currency), 0);
   const schoolExpensesARS = schoolExpenses.filter(t => t.currency === 'ARS').reduce((acc, t) => acc + t.amount, 0);
