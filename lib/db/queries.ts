@@ -1,4 +1,4 @@
-import { desc, and, eq, ne, isNull, inArray, gte, lte, lt, or, sql, asc, getTableColumns } from 'drizzle-orm';
+import { desc, and, eq, ne, isNull, isNotNull, inArray, gte, lte, lt, or, sql, asc, getTableColumns } from 'drizzle-orm';
 import { db } from './drizzle';
 import {
   activityLogs,
@@ -856,13 +856,15 @@ export async function getDashboardData(from: string, to: string) {
         or(isNull(transactions.recurringEndsAt), gte(transactions.recurringEndsAt, prev.from)),
         notTestClient
       )),
-    db.select({ id: contracts.id, fixedAmount: contracts.fixedAmount, currency: contracts.currency, billingDay: contracts.billingDay, startDate: contracts.startDate, endDate: contracts.endDate, source: clients.source })
+    db.select({ id: contracts.id, fixedAmount: contracts.fixedAmount, currency: contracts.currency, billingDay: contracts.billingDay, startDate: contracts.startDate, endDate: contracts.endDate, status: contracts.status, source: clients.source })
       .from(contracts)
       .leftJoin(clients, eq(contracts.clientId, clients.id))
       .where(and(
         lte(contracts.startDate, to),
-        or(isNull(contracts.endDate), gte(contracts.endDate, prev.from)),
-        eq(contracts.status, 'active'),
+        or(
+          and(eq(contracts.status, 'active'), isNull(contracts.endDate)),
+          and(isNotNull(contracts.endDate), gte(contracts.endDate, prev.from))
+        ),
         notTestClient
       )),
     // Pagamentos confirmados: é o que separa "recebido" de "a receber" num
@@ -1042,11 +1044,12 @@ export async function getDashboardData(from: string, to: string) {
     (c) => c.endDate != null && c.endDate >= from && c.endDate <= to
   ).length;
 
-  // Para o histórico mês a mês (gráficos), usamos o status BRUTO do contrato
-  // (não o derivado em relação a hoje): um contrato finalizado no mês passado
-  // ainda deve contar nos meses em que estava vigente. `isContractEarning`
-  // compara com a data de hoje, então excluiria retroativamente esses meses.
-  const nonCancelledContracts = allContracts.filter((c) => c.status === 'active');
+  // Para o histórico mês a mês (gráficos), usamos contratos vigentes em cada mês
+  // (respeitando startDate e endDate). Um contrato cancelado ou pausado recentemente com data de término
+  // ainda deve contar nos meses anteriores em que esteve ativo.
+  const nonCancelledContracts = allContracts.filter(
+    (c) => c.status === 'active' || c.endDate != null
+  );
 
   // Cotação da época de cada mês. Sem isso, todo o histórico era convertido pela
   // cotação de hoje e o gráfico de 6 meses mudava de forma de um dia para o
@@ -1366,8 +1369,10 @@ export async function getCashFlowData(from: string, to: string) {
       .where(
         and(
           lte(contracts.startDate, to),
-          or(isNull(contracts.endDate), gte(contracts.endDate, from)),
-          eq(contracts.status, 'active'),
+          or(
+            and(eq(contracts.status, 'active'), isNull(contracts.endDate)),
+            and(isNotNull(contracts.endDate), gte(contracts.endDate, from))
+          ),
           notTestClient
         )
       ),
