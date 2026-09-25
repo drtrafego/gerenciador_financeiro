@@ -13,6 +13,7 @@ export interface ExtractedTransactionItem {
   childTag?: string;
   language?: string;
   selected?: boolean;
+  isInternalTransfer?: boolean;
 }
 
 export interface ScannedReceiptResult {
