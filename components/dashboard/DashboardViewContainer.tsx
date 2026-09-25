@@ -4,13 +4,23 @@ import React from "react";
 import { useProfile } from "@/lib/contexts/ProfileContext";
 import PersonalDashboardView from "@/components/dashboard/PersonalDashboardView";
 
-export default function DashboardViewContainer({ children }: { children: React.ReactNode }) {
+import { Currency, RatesMap } from "@/lib/currency/format";
+
+export default function DashboardViewContainer({
+  children,
+  displayCurrency = "BRL",
+  rate,
+}: {
+  children: React.ReactNode;
+  displayCurrency?: Currency;
+  rate?: RatesMap;
+}) {
   const { mode, isLoaded } = useProfile();
 
   const isPF = mode === "pf" || (typeof window !== "undefined" && (localStorage.getItem("app_profile_mode") === "pf" || document.cookie.includes("app_profile_mode=pf")));
 
   if (isPF) {
-    return <PersonalDashboardView />;
+    return <PersonalDashboardView displayCurrency={displayCurrency} rate={rate} />;
   }
 
   if (!isLoaded) {
