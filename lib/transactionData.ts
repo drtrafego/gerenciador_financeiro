@@ -14570,11 +14570,11 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "amount": 40000,
     "currency": "ARS",
     "type": "expense",
-    "category": "Compras & Vestuário",
+    "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
     "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260608-342",
@@ -14584,11 +14584,11 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "amount": 37000,
     "currency": "ARS",
     "type": "expense",
-    "category": "Compras & Vestuário",
+    "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
     "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260608-343",
@@ -14654,11 +14654,11 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "amount": 18000,
     "currency": "ARS",
     "type": "expense",
-    "category": "Compras & Vestuário",
+    "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
     "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-162107587369",
@@ -15844,11 +15844,11 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "amount": 40000,
     "currency": "ARS",
     "type": "expense",
-    "category": "Compras & Vestuário",
+    "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
     "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260529-385",
@@ -16516,11 +16516,11 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "amount": 45000,
     "currency": "ARS",
     "type": "expense",
-    "category": "Compras & Vestuário",
+    "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
     "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3139778371",
@@ -17370,11 +17370,11 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "amount": 75000,
     "currency": "ARS",
     "type": "expense",
-    "category": "Compras & Vestuário",
+    "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
     "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260522-419",
@@ -18112,11 +18112,11 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "amount": 40000,
     "currency": "ARS",
     "type": "expense",
-    "category": "Compras & Vestuário",
+    "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
     "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-amanda-mp-3119209877",
@@ -19344,11 +19344,11 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "amount": 30000,
     "currency": "ARS",
     "type": "expense",
-    "category": "Compras & Vestuário",
+    "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
     "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260513-482",
@@ -22130,11 +22130,11 @@ export const PERSONAL_TRANSACTIONS: ExtractedTransactionItem[] = [
     "amount": 50000,
     "currency": "ARS",
     "type": "expense",
-    "category": "Compras & Vestuário",
+    "category": "Transferências & Outros",
     "childTag": "Gastão",
     "language": "es",
     "subcategory": "Compras Gerais (Mercado Livre)",
-    "isInternalTransfer": false
+    "isInternalTransfer": true
   },
   {
     "id": "tx-galicia-20260428-572",
