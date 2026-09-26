@@ -524,6 +524,10 @@ export default function PersonalDashboardView({
   const gastaoTxCount = filteredTransactions
     .filter(t => t.type === 'expense' && (t.childTag === 'Gastão' || t.parentTag === 'Gastão')).length;
 
+  // Total combinado dos titulares (Amanda + Gastão)
+  const totalTitularesBRL = amandaExpensesBRL + gastaoExpensesBRL;
+  const totalTitularesARS = amandaExpensesARS + gastaoExpensesARS;
+
   // Gastos Escola & Filhos (Colegio Misericordia + Futebol All Boys) no período
   const schoolExpenses = filteredTransactions
     .filter(t => t.type === 'expense' && (
@@ -692,6 +696,7 @@ export default function PersonalDashboardView({
           <div className="text-xs text-zinc-400 font-mono">
             Exibindo <strong className="text-purple-300">{filteredTransactions.length}</strong> de {transactions.length} lançamentos
           </div>
+
           <div className="flex items-center gap-1.5 bg-zinc-950 px-2.5 py-1 rounded-lg border border-zinc-800 text-xs">
             <span className="text-zinc-400">💱 Câmbio Pesos:</span>
             <span className="font-mono font-bold text-amber-300">1 R$ = {customArsPerBrl} ARS</span>
@@ -713,8 +718,93 @@ export default function PersonalDashboardView({
               <Pencil size={11} />
             </button>
           </div>
+
+          {/* Destaque do Total Geral no Seletor de Período */}
+          <div className="flex items-center gap-2 bg-rose-500/15 border border-rose-500/30 px-3 py-1 rounded-lg text-xs shadow-sm">
+            <span className="text-zinc-400 font-semibold uppercase text-[10px] tracking-wider">Total de Gastos:</span>
+            <span className="font-mono font-bold text-rose-400 text-sm">{maskBRL(totalExpensesBRL)}</span>
+            {activeCurrency !== 'ARS' && totalExpensesARS > 0 && !valuesHidden && (
+              <span className="text-[10px] text-zinc-500 font-mono hidden sm:inline">
+                ($ {totalExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS)
+              </span>
+            )}
+          </div>
         </div>
       </PeriodBar>
+
+      {/* Cards de Métricas Principais (Foco em Despesas Reais) - NO TOPO DO DASHBOARD */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Total Despesas Família */}
+        <div className="p-5 rounded-2xl border border-rose-500/30 bg-gradient-to-br from-zinc-900 via-zinc-900 to-rose-950/30 shadow-lg shadow-rose-950/20 space-y-2 ring-1 ring-rose-500/20">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span className="font-bold uppercase tracking-wider text-[11px] text-rose-300 flex items-center gap-1.5">
+              <span>💳</span> Total de Gastos (Família)
+            </span>
+            <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30">
+              <ArrowDownRight className="w-4 h-4" />
+            </div>
+          </div>
+          <p className="text-2xl sm:text-3xl font-bold font-mono text-rose-400 tracking-tight">
+            {maskBRL(totalExpensesBRL)}
+          </p>
+          <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono pt-0.5">
+            <span>
+              {valuesHidden ? '••••••' : `$ ${totalExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`}
+            </span>
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 font-sans font-semibold">
+              {filteredTransactions.filter(t => t.type === 'expense').length} despesas
+            </span>
+          </div>
+        </div>
+
+        {/* Gastos Amanda */}
+        <div className="p-5 rounded-2xl border border-pink-500/20 bg-gradient-to-br from-zinc-900 to-pink-950/20 space-y-2">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span className="font-semibold uppercase tracking-wider text-[11px] text-pink-300">👤 Gastos Amanda</span>
+            <div className="p-2 rounded-xl bg-pink-500/10 text-pink-400 border border-pink-500/20">
+              <User className="w-4 h-4" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold font-mono text-pink-400">
+            {maskBRL(amandaExpensesBRL)}
+          </p>
+          <p className="text-[11px] text-zinc-400 font-mono">
+            {valuesHidden ? '••••••' : `$ ${amandaExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({amandaTxCount} despesas)
+          </p>
+        </div>
+
+        {/* Gastos Gastão */}
+        <div className="p-5 rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-zinc-900 to-indigo-950/20 space-y-2">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span className="font-semibold uppercase tracking-wider text-[11px] text-indigo-300">👤 Gastos Gastão</span>
+            <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              <User className="w-4 h-4" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold font-mono text-indigo-400">
+            {maskBRL(gastaoExpensesBRL)}
+          </p>
+          <p className="text-[11px] text-zinc-400 font-mono">
+            {valuesHidden ? '••••••' : `$ ${gastaoExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({gastaoTxCount} despesas)
+          </p>
+        </div>
+
+        {/* Escola & Filhos (Colegio Misericordia + Futebol All Boys) */}
+        <div className="p-5 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-zinc-900 to-amber-950/20 space-y-2">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span className="font-semibold uppercase tracking-wider text-[11px] text-amber-300">🎒 Filhos (Escola & Futebol)</span>
+            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <Baby className="w-4 h-4" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold font-mono text-amber-400">
+            {maskBRL(schoolExpensesBRL)}
+          </p>
+          <p className="text-[11px] text-zinc-400 font-mono">
+            {valuesHidden ? '••••••' : `$ ${schoolExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({schoolExpenses.length} despesas)
+          </p>
+        </div>
+      </div>
 
       {/* Grid das Pessoas Titulares e Filhos */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -725,9 +815,11 @@ export default function PersonalDashboardView({
               <User className="w-4 h-4 text-purple-400" />
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">Gastos dos Titulares</h3>
             </div>
-            <span className="text-[10px] bg-purple-500/10 text-purple-300 border border-purple-500/20 px-2 py-0.5 rounded-full font-bold">
-              Titulares Pessoais
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] bg-purple-500/10 text-purple-300 border border-purple-500/20 px-2 py-0.5 rounded-full font-bold font-mono">
+                Total Titulares: {maskBRL(totalTitularesBRL)}
+              </span>
+            </div>
           </div>
 
           {parentsList.length === 0 ? (
@@ -769,9 +861,14 @@ export default function PersonalDashboardView({
               <Baby className="w-4 h-4 text-pink-400" />
               <h3 className="text-xs font-bold text-white uppercase tracking-wider">Gastos dos Filhos / Dependentes</h3>
             </div>
-            <Link href="/settings" className="text-[10px] text-indigo-400 hover:underline font-semibold">
-              Gerenciar Filhos →
-            </Link>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] bg-pink-500/10 text-pink-300 border border-pink-500/20 px-2 py-0.5 rounded-full font-bold font-mono">
+                Total Filhos: {maskBRL(schoolExpensesBRL)}
+              </span>
+              <Link href="/settings" className="text-[10px] text-indigo-400 hover:underline font-semibold">
+                Gerenciar Filhos →
+              </Link>
+            </div>
           </div>
 
           {childrenList.length === 0 ? (
@@ -845,73 +942,6 @@ export default function PersonalDashboardView({
               })}
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Cards de Métricas Principais (Foco em Despesas Reais) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Total Despesas Família */}
-        <div className="p-5 rounded-2xl border border-zinc-800 bg-zinc-900/80 space-y-2">
-          <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span className="font-semibold uppercase tracking-wider text-[11px]">Total de Gastos (Família)</span>
-            <div className="p-2 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20">
-              <ArrowDownRight className="w-4 h-4" />
-            </div>
-          </div>
-          <p className="text-2xl font-bold font-mono text-rose-400">
-            {maskBRL(totalExpensesBRL)}
-          </p>
-          <p className="text-[11px] text-zinc-400 font-mono">
-            {valuesHidden ? '••••••' : `$ ${totalExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({filteredTransactions.filter(t => t.type === 'expense').length} despesas)
-          </p>
-        </div>
-
-        {/* Gastos Amanda */}
-        <div className="p-5 rounded-2xl border border-pink-500/20 bg-gradient-to-br from-zinc-900 to-pink-950/20 space-y-2">
-          <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span className="font-semibold uppercase tracking-wider text-[11px] text-pink-300">👤 Gastos Amanda</span>
-            <div className="p-2 rounded-xl bg-pink-500/10 text-pink-400 border border-pink-500/20">
-              <User className="w-4 h-4" />
-            </div>
-          </div>
-          <p className="text-2xl font-bold font-mono text-pink-400">
-            {maskBRL(amandaExpensesBRL)}
-          </p>
-          <p className="text-[11px] text-zinc-400 font-mono">
-            {valuesHidden ? '••••••' : `$ ${amandaExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({amandaTxCount} despesas)
-          </p>
-        </div>
-
-        {/* Gastos Gastão */}
-        <div className="p-5 rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-zinc-900 to-indigo-950/20 space-y-2">
-          <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span className="font-semibold uppercase tracking-wider text-[11px] text-indigo-300">👤 Gastos Gastão</span>
-            <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-              <User className="w-4 h-4" />
-            </div>
-          </div>
-          <p className="text-2xl font-bold font-mono text-indigo-400">
-            {maskBRL(gastaoExpensesBRL)}
-          </p>
-          <p className="text-[11px] text-zinc-400 font-mono">
-            {valuesHidden ? '••••••' : `$ ${gastaoExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({gastaoTxCount} despesas)
-          </p>
-        </div>
-
-        {/* Escola & Filhos (Colegio Misericordia + Futebol All Boys) */}
-        <div className="p-5 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-zinc-900 to-amber-950/20 space-y-2">
-          <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span className="font-semibold uppercase tracking-wider text-[11px] text-amber-300">🎒 Filhos (Escola & Futebol)</span>
-            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
-              <Baby className="w-4 h-4" />
-            </div>
-          </div>
-          <p className="text-2xl font-bold font-mono text-amber-400">
-            {maskBRL(schoolExpensesBRL)}
-          </p>
-          <p className="text-[11px] text-zinc-400 font-mono">
-            {valuesHidden ? '••••••' : `$ ${schoolExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({schoolExpenses.length} despesas: Misericórdia + All Boys)
-          </p>
         </div>
       </div>
 
@@ -1266,6 +1296,20 @@ export default function PersonalDashboardView({
                       </tr>
                     ))}
                   </tbody>
+                  <tfoot className="bg-zinc-900/95 sticky bottom-0 border-t-2 border-purple-500/40 text-white font-bold z-10 shadow-md">
+                    <tr>
+                      <td colSpan={4} className="p-3 text-right uppercase tracking-wider text-[10px] text-zinc-300">
+                        Total da Categoria ({selectedCategoryExpenses.length} lançamentos):
+                      </td>
+                      <td className="p-3 text-right font-mono text-xs text-zinc-400 whitespace-nowrap">
+                        {selectedCatSpentARS > 0 && !valuesHidden ? `$ ${selectedCatSpentARS.toLocaleString('es-AR', { maximumFractionDigits: 0 })} ARS` : '—'}
+                      </td>
+                      <td className="p-3 text-right font-mono text-rose-400 text-sm whitespace-nowrap">
+                        {maskBRL(selectedCatSpentBRL)}
+                      </td>
+                      <td className="p-3"></td>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             )}
@@ -1276,11 +1320,24 @@ export default function PersonalDashboardView({
       {/* Lista de Transações Recentes Pessoais (Com Botão de Edição) */}
       <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 space-y-4">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="space-y-0.5">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Receipt className="w-4 h-4 text-purple-400" />
-              Últimos Gastos & Despesas Pessoais ({filteredTransactions.filter(t => t.type === 'expense').length})
-            </h3>
+          <div className="space-y-1">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <Receipt className="w-4 h-4 text-purple-400" />
+                <span>Últimos Gastos & Despesas Pessoais</span>
+              </h3>
+              <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/25">
+                Total: {maskBRL(totalExpensesBRL)}
+                {activeCurrency !== 'ARS' && totalExpensesARS > 0 && !valuesHidden && (
+                  <span className="text-[10px] text-zinc-400 ml-1.5 font-normal">
+                    ($ {totalExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS)
+                  </span>
+                )}
+              </span>
+              <span className="text-[11px] text-zinc-500 font-mono">
+                ({filteredTransactions.filter(t => t.type === 'expense').length} despesas)
+              </span>
+            </div>
             <p className="text-xs text-zinc-400">Despesas reais consolidadas de Amanda, Gastão e Colégio Misericórdia.</p>
           </div>
 
@@ -1368,6 +1425,22 @@ export default function PersonalDashboardView({
             <>
               {/* VERSÃO MOBILE E TABLET (CARDS RESPONSIVOS ABAIXO DE 768PX) */}
               <div className="block md:hidden space-y-3">
+                {/* Banner de Total de Gastos no Topo da Lista Mobile */}
+                <div className="p-3.5 rounded-xl bg-zinc-950 border border-rose-500/30 flex items-center justify-between shadow-sm">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-wider font-semibold text-zinc-400">Total de Gastos no Período</p>
+                    <p className="text-xs text-zinc-500">{filteredTransactions.filter(t => t.type === 'expense').length} despesas filtradas</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-mono font-bold text-base text-rose-400">{maskBRL(totalExpensesBRL)}</p>
+                    {activeCurrency !== 'ARS' && totalExpensesARS > 0 && !valuesHidden && (
+                      <p className="text-[10px] font-mono text-zinc-400">
+                        $ {totalExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS
+                      </p>
+                    )}
+                  </div>
+                </div>
+
                 {filteredTransactions.map((tx) => {
                   const catBadge = getCatBadgeInfo(tx.category);
                   const isParent = parentsList.includes(tx.childTag || '');
@@ -1437,6 +1510,21 @@ export default function PersonalDashboardView({
                     </div>
                   );
                 })}
+
+                {/* Banner de Total Acumulado no Rodapé da Lista Mobile */}
+                <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-between text-xs">
+                  <span className="text-zinc-400 uppercase tracking-wider text-[11px] font-semibold">
+                    Total Acumulado ({filteredTransactions.filter(t => t.type === 'expense').length} despesas):
+                  </span>
+                  <div className="text-right font-mono font-bold text-rose-400">
+                    <div>{maskBRL(totalExpensesBRL)}</div>
+                    {activeCurrency !== 'ARS' && totalExpensesARS > 0 && !valuesHidden && (
+                      <div className="text-[10px] text-zinc-400 font-normal">
+                        $ {totalExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* VERSÃO DESKTOP (TABELA RESPONSIVA COM ROLAGEM E LARGURAS FIXAS) */}
@@ -1533,6 +1621,22 @@ export default function PersonalDashboardView({
                       );
                     })}
                   </tbody>
+                  <tfoot className="bg-zinc-900/95 backdrop-blur-sm border-t-2 border-zinc-700 sticky bottom-0 text-white font-bold z-10 shadow-lg">
+                    <tr>
+                      <td colSpan={5} className="p-3 text-right uppercase tracking-wider text-[11px] text-zinc-300">
+                        Total de Gastos Filtrados ({filteredTransactions.filter(t => t.type === 'expense').length} despesas):
+                      </td>
+                      <td className="p-3 text-right font-mono text-rose-400 text-sm whitespace-nowrap">
+                        <div>{maskBRL(totalExpensesBRL)}</div>
+                        {activeCurrency !== 'ARS' && totalExpensesARS > 0 && !valuesHidden && (
+                          <div className="text-[10px] font-normal text-zinc-400 font-mono">
+                            $ {totalExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS
+                          </div>
+                        )}
+                      </td>
+                      <td className="p-3"></td>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             </>
