@@ -252,7 +252,7 @@ export default function PersonalDashboardView({
 
     const loadAllPersonalData = () => {
       // Versão dos dados para forçar sincronização automática no navegador
-      const DATA_VERSION = "2026-09-v7-allboys-filho-futebol";
+      const DATA_VERSION = "2026-09-v8-fix-transf-ctas-propias";
       const savedVersion = localStorage.getItem('user_personal_data_version');
       
       const builtinTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
