@@ -134,7 +134,9 @@ export default function PersonalCategoriesPage() {
         } catch (e) {}
       }
 
-      const rates: Record<string, number> = { ARS: 233.6, BRL: 1, USD: 0.177 };
+      const customArsRate = typeof window !== 'undefined' ? Number(localStorage.getItem('pf_custom_ars_brl')) : 300;
+      const effectiveArsRate = (!isNaN(customArsRate) && customArsRate > 0) ? (customArsRate === 365 ? 300 : customArsRate) : 300;
+      const rates: Record<string, number> = { ARS: effectiveArsRate, BRL: 1, USD: 0.177 };
 
       const calculated = currentCats.map(cat => {
         const matchesCategory = (txCat: string, catPt: string, catEs: string) => {

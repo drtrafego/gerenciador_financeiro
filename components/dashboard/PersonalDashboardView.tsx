@@ -135,15 +135,20 @@ export default function PersonalDashboardView({
     return (propCurrency as Currency) || "BRL";
   });
 
-  // Cotação real da remessa Pesos/Real (default 365, onde 4.300 ARS ~ R$ 11,78 como o usuário constatou)
+  // Cotação real da remessa Pesos/Real (default 300, onde 1 R$ ~ 300 ARS)
   const [customArsPerBrl, setCustomArsPerBrl] = useState<number>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("pf_custom_ars_brl");
       if (saved && !isNaN(Number(saved)) && Number(saved) > 0) {
+        // Se estiver com o valor antigo de 365, migra para o valor real atual de 300
+        if (Number(saved) === 365) {
+          localStorage.setItem("pf_custom_ars_brl", "300");
+          return 300;
+        }
         return Number(saved);
       }
     }
-    return 365;
+    return 300;
   });
 
   useEffect(() => {
@@ -710,7 +715,7 @@ export default function PersonalDashboardView({
             <button
               type="button"
               onClick={() => {
-                const input = prompt("Definir cotação Pesos/Real (ex: 365 para cotação de remessa/paralelo, ou 243 oficial):", String(customArsPerBrl));
+                const input = prompt("Definir cotação Pesos/Real (ex: 300 para cotação atual de remessa/paralelo, ou 243 oficial):", String(customArsPerBrl));
                 if (input) {
                   const val = parseFloat(input.replace(',', '.'));
                   if (!isNaN(val) && val > 0) {
