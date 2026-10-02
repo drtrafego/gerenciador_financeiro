@@ -65,7 +65,7 @@ const INITIAL_CATEGORIES: CustomCategory[] = [
   { id: "cat-health", namePt: "Saúde & Bem-Estar", nameEs: "Salud y Bienestar", subcategories: ["Plano de Saúde (Prepaga/OSDE)", "Farmácia (Farmacity)", "Consultas & Exames", "Academia & Esportes"], limit: 2500, spent: 0, color: "bg-rose-500/20 text-rose-400 border-rose-500/30", emoji: "💊" },
   { id: "cat-shopping", namePt: "Compras & Vestuário", nameEs: "Compras y Vestuario", subcategories: ["Roupas & Calçados", "Eletrônicos & Casa", "Compras Gerais (Mercado Livre)"], limit: 3000, spent: 0, color: "bg-purple-500/20 text-purple-400 border-purple-500/30", emoji: "🛍️" },
   { id: "cat-transfers", namePt: "Transferências & Outros", nameEs: "Transferencias y Otros", subcategories: ["Transferências Gerais", "Taxas & Tarifas"], limit: 10000, spent: 0, color: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30", emoji: "💸" },
-  { id: "cat-leisure", namePt: "Lazer & Entretenimento", nameEs: "Ocio y Entretenimiento", subcategories: ["Passeios em Família", "Cinema & Shows", "Assinaturas (Netflix/Spotify)", "Viagens"], limit: 2000, spent: 0, color: "bg-violet-500/20 text-violet-400 border-violet-500/30", emoji: "🥳" },
+  { id: "cat-leisure", namePt: "Lazer & Entretenimento", nameEs: "Ocio y Entretenimiento", subcategories: ["Passeios em Família", "Cinema & Shows", "Assinaturas (Netflix/Spotify)", "Viagens", "Vinho"], limit: 2000, spent: 0, color: "bg-violet-500/20 text-violet-400 border-violet-500/30", emoji: "🥳" },
   { id: "cat-general", namePt: "Geral & Diversos", nameEs: "General y Diversos", subcategories: ["Despesas Gerais", "Lançamentos Históricos", "Não Identificados"], limit: 5000, spent: 0, color: "bg-slate-500/20 text-slate-400 border-slate-500/30", emoji: "📦" },
 ];
 
@@ -106,13 +106,20 @@ export default function PersonalCategoriesPage() {
               const emoji = (sc.emoji && sc.emoji !== "📂") ? sc.emoji : (defaultMatch?.emoji || sc.emoji || "📂");
               const color = (sc.color && sc.color !== "bg-indigo-500/20 text-indigo-400 border-indigo-500/30") ? sc.color : (defaultMatch?.color || sc.color || "bg-indigo-500/20 text-indigo-400 border-indigo-500/30");
 
+              // Garante que novas subcategorias padrão (como "Vinho") sejam mescladas mesmo com cache existente
+              const defaultSubcats = defaultMatch?.subcategories || [];
+              const userSubcats = Array.isArray(sc.subcategories) ? sc.subcategories : [];
+              const mergedSubcategories = Array.from(new Set([...userSubcats, ...defaultSubcats]));
+
               return {
                 ...defaultMatch,
                 ...sc,
+                subcategories: mergedSubcategories,
                 emoji,
                 color
               };
             });
+            localStorage.setItem('personal_custom_categories', JSON.stringify(currentCats));
           }
         } catch (e) {}
       } else {

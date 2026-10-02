@@ -96,7 +96,7 @@ O parser classifica os lançamentos de acordo com as seguintes regras de negóci
 6. **Compras & Vestuário:**
    - E-commerce e varejo: `Mercado Libre`, `Temu`, `Shein`, `EBANX`, `Macowens`, `Livrarias`.
 7. **Lazer & Entretenimento:**
-   - Assinaturas de streaming e passeios: `Netflix`, `Spotify`, cinemas.
+   - Assinaturas de streaming, passeios, viagens e vinhos: `Netflix`, `Spotify`, cinemas, viagens, vinotecas e vinhos.
 8. **Transferências & Outros:**
    - Movimentações bancárias entre contas familiares ou terceiros (`Transferencia enviada` / `Transferencia recibida`).
 

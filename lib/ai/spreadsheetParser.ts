@@ -51,6 +51,10 @@ export function autoCategorizeMerchant(merchantName: string, desc: string = ''):
     return { category: 'Saúde & Bem-Estar', subcategory: 'Farmácia (Farmacity)' };
   }
 
+  if (text.includes('VINHO') || text.includes('VINOTECA') || text.includes('WINE') || text.includes('BODEGA') || text.includes('ADEGA') || text.includes('ENOTECA')) {
+    return { category: 'Lazer & Entretenimento', subcategory: 'Vinho' };
+  }
+
   if (text.includes('NETFLIX') || text.includes('SPOTIFY') || text.includes('CINEMA') || text.includes('SHOW')) {
     return { category: 'Lazer & Entretenimento', subcategory: 'Assinaturas (Netflix/Spotify)' };
   }
