@@ -6,7 +6,33 @@ export type Rates = {
 };
 
 export async function fetchLatestRates(): Promise<Rates> {
-  // Tentativa 1: Frankfurter (Banco Central Europeu)
+  // Tentativa 1: DolarApi (Especializada no mercado argentino - BCRA e Câmbio Livre)
+  try {
+    const [brlRes, usdRes] = await Promise.all([
+      fetch('https://dolarapi.com/v1/cotizaciones/brl', { cache: 'no-store' }),
+      fetch('https://dolarapi.com/v1/dolares/oficial', { cache: 'no-store' }),
+    ]);
+
+    if (brlRes.ok && usdRes.ok) {
+      const brlData = await brlRes.json();
+      const usdData = await usdRes.json();
+
+      const arsPerBrl = Number(brlData.venta);
+      const usdArs = Number(usdData.venta);
+
+      if (arsPerBrl > 0 && usdArs > 0) {
+        const usdBrl = usdArs / arsPerBrl;
+        return {
+          USD_BRL: Number(usdBrl.toFixed(4)),
+          USD_ARS: usdArs,
+          ARS_BRL: Number((1 / arsPerBrl).toFixed(6)),
+          source: 'dolarapi',
+        };
+      }
+    }
+  } catch {}
+
+  // Tentativa 2: Frankfurter (Banco Central Europeu)
   // Nota: ECB não cobre ARS, então validamos antes de retornar
   try {
     const res = await fetch(

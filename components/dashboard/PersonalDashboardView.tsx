@@ -135,21 +135,67 @@ export default function PersonalDashboardView({
     return (propCurrency as Currency) || "BRL";
   });
 
-  // Cotação real da remessa Pesos/Real (default 300, onde 1 R$ ~ 300 ARS)
+  // Cotação ao vivo da internet (DolarApi / BCRA / ExchangeRate-API)
+  const [liveRates, setLiveRates] = useState<{
+    arsPerBrlOficial: number;
+    arsPerBrlBlue: number;
+    source: string;
+    fetchedAt: string;
+  } | null>(null);
+
+  const [isAutoRate, setIsAutoRate] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      const mode = localStorage.getItem("pf_ars_rate_mode");
+      return mode !== "manual";
+    }
+    return true;
+  });
+
+  // Cotação real Pesos/Real em uso (inicia em 291.7 oficial e atualiza via API da internet)
   const [customArsPerBrl, setCustomArsPerBrl] = useState<number>(() => {
     if (typeof window !== "undefined") {
+      const mode = localStorage.getItem("pf_ars_rate_mode");
       const saved = localStorage.getItem("pf_custom_ars_brl");
-      if (saved && !isNaN(Number(saved)) && Number(saved) > 0) {
-        // Se estiver com o valor antigo de 365, migra para o valor real atual de 300
-        if (Number(saved) === 365) {
-          localStorage.setItem("pf_custom_ars_brl", "300");
-          return 300;
-        }
+      if (mode === "manual" && saved && !isNaN(Number(saved)) && Number(saved) > 0) {
         return Number(saved);
       }
     }
-    return 300;
+    return 291.7;
   });
+
+  // Busca cotação oficial da internet automaticamente ao carregar
+  useEffect(() => {
+    let isMounted = true;
+    async function loadLiveRates() {
+      try {
+        const res = await fetch("/api/currency/rates");
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.success && data.rates && isMounted) {
+            setLiveRates({
+              arsPerBrlOficial: data.rates.arsPerBrlOficial,
+              arsPerBrlBlue: data.rates.arsPerBrlBlue,
+              source: data.source || "DolarApi",
+              fetchedAt: data.fetchedAt || new Date().toISOString()
+            });
+
+            // Se o usuário estiver no modo automático (padrão), sincroniza com a cotação oficial da internet
+            const mode = localStorage.getItem("pf_ars_rate_mode");
+            if (mode !== "manual") {
+              setCustomArsPerBrl(data.rates.arsPerBrlOficial);
+              setIsAutoRate(true);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Falha ao buscar cotação ao vivo da internet:", err);
+      }
+    }
+    loadLiveRates();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (propCurrency && ["BRL", "USD", "ARS"].includes(propCurrency)) {
@@ -171,6 +217,9 @@ export default function PersonalDashboardView({
       }
       if (e.key === "pf_custom_ars_brl" && e.newValue && !isNaN(Number(e.newValue))) {
         setCustomArsPerBrl(Number(e.newValue));
+      }
+      if (e.key === "pf_ars_rate_mode") {
+        setIsAutoRate(e.newValue !== "manual");
       }
     };
     window.addEventListener("storage", handleStorage);
@@ -711,21 +760,55 @@ export default function PersonalDashboardView({
 
           <div className="flex items-center gap-1.5 bg-zinc-950 px-2.5 py-1 rounded-lg border border-zinc-800 text-xs">
             <span className="text-zinc-400">💱 Câmbio Pesos:</span>
-            <span className="font-mono font-bold text-amber-300">1 R$ = {customArsPerBrl} ARS</span>
+            <span className="font-mono font-bold text-amber-300">
+              1 R$ = {typeof customArsPerBrl === 'number' ? (Number.isInteger(customArsPerBrl) ? customArsPerBrl : customArsPerBrl.toFixed(1)) : customArsPerBrl} ARS
+            </span>
+            <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono font-semibold ${
+              isAutoRate 
+                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" 
+                : "bg-blue-500/10 text-blue-300 border border-blue-500/20"
+            }`}>
+              {isAutoRate ? "🌐 Ao Vivo (DolarApi)" : "✏️ Manual"}
+            </span>
             <button
               type="button"
               onClick={() => {
-                const input = prompt("Definir cotação Pesos/Real (ex: 300 para cotação atual de remessa/paralelo, ou 243 oficial):", String(customArsPerBrl));
-                if (input) {
-                  const val = parseFloat(input.replace(',', '.'));
-                  if (!isNaN(val) && val > 0) {
-                    setCustomArsPerBrl(val);
-                    localStorage.setItem("pf_custom_ars_brl", String(val));
+                const oficialStr = liveRates?.arsPerBrlOficial ? `${liveRates.arsPerBrlOficial} ARS` : "291.7 ARS";
+                const blueStr = liveRates?.arsPerBrlBlue ? `${liveRates.arsPerBrlBlue} ARS` : "299.4 ARS";
+                const promptMsg = `Cotação da Internet em tempo real:
+• Oficial BCRA / DolarApi: ${oficialStr}
+• Paralelo / Blue: ${blueStr}
+
+Digite o valor desejado (ou digite 'auto' para usar a cotação oficial da internet automaticamente):`;
+                const input = prompt(promptMsg, isAutoRate ? "auto" : String(customArsPerBrl));
+                if (input !== null) {
+                  const cleaned = input.trim().toLowerCase();
+                  if (cleaned === "auto" || cleaned === "oficial" || cleaned === "") {
+                    localStorage.removeItem("pf_custom_ars_brl");
+                    localStorage.setItem("pf_ars_rate_mode", "auto");
+                    setIsAutoRate(true);
+                    if (liveRates?.arsPerBrlOficial) {
+                      setCustomArsPerBrl(liveRates.arsPerBrlOficial);
+                    }
+                  } else if (cleaned === "blue") {
+                    const rate = liveRates?.arsPerBrlBlue || 299.4;
+                    localStorage.setItem("pf_custom_ars_brl", String(rate));
+                    localStorage.setItem("pf_ars_rate_mode", "manual");
+                    setIsAutoRate(false);
+                    setCustomArsPerBrl(rate);
+                  } else {
+                    const val = parseFloat(cleaned.replace(',', '.'));
+                    if (!isNaN(val) && val > 0) {
+                      localStorage.setItem("pf_custom_ars_brl", String(val));
+                      localStorage.setItem("pf_ars_rate_mode", "manual");
+                      setIsAutoRate(false);
+                      setCustomArsPerBrl(val);
+                    }
                   }
                 }
               }}
               className="p-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors ml-0.5"
-              title="Ajustar cotação do peso argentino"
+              title="Ajustar ou alternar cotação oficial da internet"
             >
               <Pencil size={11} />
             </button>
