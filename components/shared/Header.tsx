@@ -11,6 +11,7 @@ import { useProfile } from "@/lib/contexts/ProfileContext";
 
 const titles: Record<string, string> = {
   "/dashboard":           "Dashboard",
+  "/personal":            "Gastos Pessoais (Família)",
   "/clients":             "Clientes",
   "/contracts":           "Contratos",
   "/invoices":            "Faturas",

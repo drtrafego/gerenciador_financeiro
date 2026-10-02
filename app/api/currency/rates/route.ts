@@ -75,7 +75,7 @@ export async function GET() {
       rates: {
         arsPerBrlOficial: Number(arsPerBrlOficial.toFixed(2)),
         arsPerBrlBlue: Number(arsPerBrlBlue.toFixed(2)),
-        arsPerBrl: Number(arsPerBrlOficial.toFixed(2)),
+        arsPerBrl: Number(arsPerBrlBlue.toFixed(2)),
         usdBrl: Number(usdBrl.toFixed(4)),
         usdArs: Number(usdArsOficial.toFixed(2)),
         usdArsBlue: Number(usdArsBlue.toFixed(2)),

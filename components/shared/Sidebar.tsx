@@ -70,6 +70,18 @@ const navSectionsPJ: NavSection[] = [
     ],
   },
   {
+    id: "pessoal_pj_quick",
+    title: "Finanças Pessoais",
+    badge: "FAMÍLIA",
+    badgeColor: "bg-purple-500/10 text-purple-400 border border-purple-500/30",
+    items: [
+      { href: "/personal", label: "Gastos Pessoais", icon: Home },
+      { href: "/credit-cards", label: "Cartões de Crédito", icon: CreditCard },
+      { href: "/personal-categories", label: "Categorias & Metas", icon: PieChart },
+      { href: "/scan", label: "Escanear Cupom", icon: Sparkles, badge: "IA" },
+    ],
+  },
+  {
     id: "config_pj",
     title: "Configurações",
     items: [
@@ -86,7 +98,7 @@ const navSectionsPF: NavSection[] = [
     badge: "PESSOAL",
     badgeColor: "bg-purple-500/10 text-purple-400 border border-purple-500/30",
     items: [
-      { href: "/dashboard", label: "Visão Geral Pessoal", icon: LayoutDashboard },
+      { href: "/personal", label: "Visão Geral Pessoal", icon: LayoutDashboard },
       { href: "/scan", label: "Escanear Foto/Print", icon: Sparkles, badge: "IA" },
     ],
   },
@@ -103,6 +115,13 @@ const navSectionsPF: NavSection[] = [
     title: "Configurações & Família",
     items: [
       { href: "/settings", label: "Configurações & Filhos", icon: Settings },
+    ],
+  },
+  {
+    id: "retornar_pj",
+    title: "Voltar para Agência",
+    items: [
+      { href: "/dashboard", label: "Dashboard Empresa (PJ)", icon: Building2 },
     ],
   },
 ];
@@ -125,7 +144,7 @@ export default function Sidebar() {
 
   const handleSwitchMode = (newMode: "pj" | "pf") => {
     setMode(newMode);
-    router.push("/dashboard");
+    router.push(newMode === "pf" ? "/personal" : "/dashboard");
   };
 
   const toggleSection = (sectionId: string) => {

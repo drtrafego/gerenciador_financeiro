@@ -151,7 +151,7 @@ export default function PersonalDashboardView({
     return true;
   });
 
-  // Cotação real Pesos/Real em uso (inicia em 291.7 oficial e atualiza via API da internet)
+  // Cotação real Pesos/Real em uso (inicia em 300.35 Dólar Blue e atualiza via API da internet)
   const [customArsPerBrl, setCustomArsPerBrl] = useState<number>(() => {
     if (typeof window !== "undefined") {
       const mode = localStorage.getItem("pf_ars_rate_mode");
@@ -160,7 +160,7 @@ export default function PersonalDashboardView({
         return Number(saved);
       }
     }
-    return 291.7;
+    return 300.35;
   });
 
   // Busca cotação oficial da internet automaticamente ao carregar
@@ -179,10 +179,11 @@ export default function PersonalDashboardView({
               fetchedAt: data.fetchedAt || new Date().toISOString()
             });
 
-            // Se o usuário estiver no modo automático (padrão), sincroniza com a cotação oficial da internet
+            // Se o usuário estiver no modo automático (padrão), sincroniza com o Dólar Blue (câmbio real de mercado: 300.35)
             const mode = localStorage.getItem("pf_ars_rate_mode");
             if (mode !== "manual") {
-              setCustomArsPerBrl(data.rates.arsPerBrlOficial);
+              const effectiveRate = data.rates.arsPerBrlBlue || data.rates.arsPerBrl || 300.35;
+              setCustomArsPerBrl(effectiveRate);
               setIsAutoRate(true);
             }
           }
@@ -759,39 +760,39 @@ export default function PersonalDashboardView({
           </div>
 
           <div className="flex items-center gap-1.5 bg-zinc-950 px-2.5 py-1 rounded-lg border border-zinc-800 text-xs">
-            <span className="text-zinc-400">💱 Câmbio Pesos:</span>
+            <span className="text-zinc-400">💱 Câmbio Blue:</span>
             <span className="font-mono font-bold text-amber-300">
-              1 R$ = {typeof customArsPerBrl === 'number' ? (Number.isInteger(customArsPerBrl) ? customArsPerBrl : customArsPerBrl.toFixed(1)) : customArsPerBrl} ARS
+              1 R$ = {typeof customArsPerBrl === 'number' ? (Number.isInteger(customArsPerBrl) ? customArsPerBrl : customArsPerBrl.toFixed(2)) : customArsPerBrl} ARS
             </span>
             <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono font-semibold ${
               isAutoRate 
                 ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" 
                 : "bg-blue-500/10 text-blue-300 border border-blue-500/20"
             }`}>
-              {isAutoRate ? "🌐 Ao Vivo (DolarApi)" : "✏️ Manual"}
+              {isAutoRate ? "🌐 Dólar Blue Ao Vivo" : "✏️ Manual"}
             </span>
             <button
               type="button"
               onClick={() => {
-                const oficialStr = liveRates?.arsPerBrlOficial ? `${liveRates.arsPerBrlOficial} ARS` : "291.7 ARS";
-                const blueStr = liveRates?.arsPerBrlBlue ? `${liveRates.arsPerBrlBlue} ARS` : "299.4 ARS";
-                const promptMsg = `Cotação da Internet em tempo real:
-• Oficial BCRA / DolarApi: ${oficialStr}
-• Paralelo / Blue: ${blueStr}
+                const oficialStr = liveRates?.arsPerBrlOficial ? `${liveRates.arsPerBrlOficial} ARS` : "291.99 ARS";
+                const blueStr = liveRates?.arsPerBrlBlue ? `${liveRates.arsPerBrlBlue} ARS` : "300.35 ARS";
+                const promptMsg = `Cotações da Internet em tempo real:
+• Câmbio Oficial Blue (Dia a dia): ${blueStr}
+• Banco Central BCRA Oficial: ${oficialStr}
 
-Digite o valor desejado (ou digite 'auto' para usar a cotação oficial da internet automaticamente):`;
+Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da internet):`;
                 const input = prompt(promptMsg, isAutoRate ? "auto" : String(customArsPerBrl));
                 if (input !== null) {
                   const cleaned = input.trim().toLowerCase();
-                  if (cleaned === "auto" || cleaned === "oficial" || cleaned === "") {
+                  if (cleaned === "auto" || cleaned === "blue" || cleaned === "") {
                     localStorage.removeItem("pf_custom_ars_brl");
                     localStorage.setItem("pf_ars_rate_mode", "auto");
                     setIsAutoRate(true);
-                    if (liveRates?.arsPerBrlOficial) {
-                      setCustomArsPerBrl(liveRates.arsPerBrlOficial);
+                    if (liveRates?.arsPerBrlBlue) {
+                      setCustomArsPerBrl(liveRates.arsPerBrlBlue);
                     }
-                  } else if (cleaned === "blue") {
-                    const rate = liveRates?.arsPerBrlBlue || 299.4;
+                  } else if (cleaned === "oficial") {
+                    const rate = liveRates?.arsPerBrlOficial || 291.99;
                     localStorage.setItem("pf_custom_ars_brl", String(rate));
                     localStorage.setItem("pf_ars_rate_mode", "manual");
                     setIsAutoRate(false);

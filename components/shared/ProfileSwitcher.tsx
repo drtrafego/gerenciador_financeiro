@@ -11,7 +11,7 @@ export default function ProfileSwitcher() {
 
   const handleSwitchMode = (newMode: "pj" | "pf") => {
     setMode(newMode);
-    router.push("/dashboard");
+    router.push(newMode === "pf" ? "/personal" : "/dashboard");
   };
 
   return (
