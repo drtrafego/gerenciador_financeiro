@@ -215,7 +215,7 @@ STACK_SECRET_SERVER_KEY=
 
 ```env
 # Banco de dados
-DATABASE_URL=postgresql://user:pass@ep-xxx.neon.tech/neondb?sslmode=require
+POSTGRES_URL=postgresql://usuario:senha@host:5432/banco?sslmode=require
 
 # Stack Auth
 NEXT_PUBLIC_STACK_PROJECT_ID=
