@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useProfile } from '@/lib/contexts/ProfileContext';
 import { DICTIONARY } from '@/lib/i18n/dict';
+import { parseBrazilianCurrency, formatBrazilianNumber } from '@/lib/currency/format';
 import { 
   PieChart as PieIcon, 
   Baby, 
@@ -81,6 +82,7 @@ export default function PersonalCategoriesPage() {
   const [namePt, setNamePt] = useState('');
   const [nameEs, setNameEs] = useState('');
   const [limit, setLimit] = useState<number>(1000);
+  const [limitRaw, setLimitRaw] = useState<string>('');
   const [subcategoriesInput, setSubcategoriesInput] = useState('');
   const [selectedEmoji, setSelectedEmoji] = useState('📂');
   const [selectedColor, setSelectedColor] = useState(COLOR_OPTIONS[0].class);
@@ -181,6 +183,13 @@ export default function PersonalCategoriesPage() {
     setCategories(updated);
     localStorage.setItem('personal_custom_categories', JSON.stringify(updated));
     window.dispatchEvent(new Event('user_pf_data_changed'));
+
+    // Sincroniza categorias na nuvem Neon PostgreSQL para Amanda e Gastão
+    fetch('/api/personal/transactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'save_categories', categories: updated })
+    }).catch(console.warn);
   };
 
   const handleOpenAddModal = () => {
@@ -188,6 +197,7 @@ export default function PersonalCategoriesPage() {
     setNamePt('');
     setNameEs('');
     setLimit(1500);
+    setLimitRaw('1.500,00');
     setSubcategoriesInput('');
     setSelectedEmoji('📂');
     setSelectedColor(COLOR_OPTIONS[0].class);
@@ -199,6 +209,7 @@ export default function PersonalCategoriesPage() {
     setNamePt(cat.namePt);
     setNameEs(cat.nameEs);
     setLimit(cat.limit);
+    setLimitRaw(formatBrazilianNumber(cat.limit));
     setSubcategoriesInput(cat.subcategories.join(', '));
     setSelectedEmoji(cat.emoji || '📂');
     setSelectedColor(cat.color || COLOR_OPTIONS[0].class);
@@ -213,6 +224,8 @@ export default function PersonalCategoriesPage() {
       .map(s => s.trim())
       .filter(Boolean);
 
+    const finalLimit = parseBrazilianCurrency(limitRaw) || limit;
+
     if (editingId) {
       const updated = categories.map(c => 
         c.id === editingId 
@@ -220,7 +233,7 @@ export default function PersonalCategoriesPage() {
               ...c, 
               namePt, 
               nameEs: nameEs || namePt, 
-              limit, 
+              limit: finalLimit, 
               subcategories: subcats,
               emoji: selectedEmoji,
               color: selectedColor
@@ -234,7 +247,7 @@ export default function PersonalCategoriesPage() {
         namePt,
         nameEs: nameEs || namePt,
         subcategories: subcats.length ? subcats : ["Geral"],
-        limit,
+        limit: finalLimit,
         spent: 0,
         color: selectedColor,
         emoji: selectedEmoji
@@ -449,13 +462,26 @@ export default function PersonalCategoriesPage() {
               <div className="space-y-1">
                 <label className="text-xs text-zinc-400 font-semibold">Limite de Gasto Mensal (R$ / BRL)</label>
                 <input
-                  type="number"
+                  type="text"
+                  inputMode="decimal"
                   required
-                  step="50"
-                  value={limit}
-                  onChange={(e) => setLimit(Number(e.target.value))}
+                  placeholder="Ex: 10.000,00"
+                  value={limitRaw}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setLimitRaw(val);
+                    setLimit(parseBrazilianCurrency(val));
+                  }}
                   className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-sm font-mono text-white focus:border-indigo-500 outline-none"
                 />
+                <div className="flex items-center justify-between text-[11px] pt-0.5">
+                  <span className="text-zinc-500">Padrão BR: 10.000,00</span>
+                  {limit > 0 && (
+                    <span className="text-emerald-400 font-mono font-bold">
+                      ✓ R$ {formatBrazilianNumber(limit)}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-1">

@@ -7,6 +7,7 @@ import { DICTIONARY } from '@/lib/i18n/dict';
 import { SAMPLE_RECEIPTS, processReceiptImage, ScannedReceiptResult, ExtractedTransactionItem } from '@/lib/ai/receiptScanner';
 import { parseSpreadsheetFile } from '@/lib/ai/spreadsheetParser';
 import { useProfile } from '@/lib/contexts/ProfileContext';
+import { parseBrazilianCurrency, formatBrazilianNumber } from '@/lib/currency/format';
 import { 
   Sparkles, 
   UploadCloud, 
@@ -61,6 +62,7 @@ export default function ScanPage() {
   const [date, setDate] = useState('');
   const [merchant, setMerchant] = useState('');
   const [amount, setAmount] = useState<number>(0);
+  const [amountRaw, setAmountRaw] = useState<string>('');
   const [scanCurrency, setScanCurrency] = useState<'ARS' | 'BRL' | 'USD'>('ARS');
   const [category, setCategory] = useState('');
   const [childTag, setChildTag] = useState('');
@@ -225,6 +227,7 @@ export default function ScanPage() {
     setDate(validDate);
     setMerchant(res.merchant || 'Lançamento Escaneado');
     setAmount(res.amount || 0);
+    setAmountRaw(formatBrazilianNumber(res.amount || 0));
     setScanCurrency(res.currency || 'ARS');
     setCategory(lang === 'pt' ? res.category : (res.categoryEs || res.category));
     setChildTag(res.childTag || '');
@@ -273,15 +276,16 @@ export default function ScanPage() {
     setExtractedTransactions(prev => prev.filter(t => t.id !== id));
   };
 
-  // Salva transação única no localStorage e sincroniza
+  // Salva transação única no localStorage e sincroniza na nuvem
   const handleSaveSingleTransaction = () => {
     const today = new Date().toISOString().split('T')[0];
+    const finalAmount = parseBrazilianCurrency(amountRaw) || Number(amount) || 0;
     const newTx = {
       id: `tx-pf-scan-${Date.now()}`,
       date: date || today,
       merchant: merchant || 'Lançamento via Scanner',
       description: 'Lançamento importado via Scanner IA',
-      amount: Number(amount) || 0,
+      amount: finalAmount,
       currency: scanCurrency || 'ARS',
       type: 'expense' as const,
       category: category || 'Alimentação & Supermercado',
@@ -311,6 +315,13 @@ export default function ScanPage() {
 
     const updated = deduplicateTransactions([newTx, ...txs]);
     localStorage.setItem('user_personal_transactions', JSON.stringify(updated));
+
+    // Salva no banco Neon PostgreSQL na nuvem para sincronizar com Amanda e Gastão
+    fetch('/api/personal/transactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'add', transaction: newTx })
+    }).catch(console.warn);
     
     // Dispara eventos globais para atualização instantânea
     window.dispatchEvent(new Event('user_pf_data_changed'));
@@ -366,6 +377,13 @@ export default function ScanPage() {
 
     const updated = deduplicateTransactions([...newTxs, ...txs]);
     localStorage.setItem('user_personal_transactions', JSON.stringify(updated));
+
+    // Salva na nuvem Neon PostgreSQL para sincronizar com Amanda e Gastão
+    fetch('/api/personal/transactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'add', transactions: newTxs })
+    }).catch(console.warn);
 
     // Dispara eventos globais para atualização instantânea
     window.dispatchEvent(new Event('user_pf_data_changed'));
@@ -558,11 +576,15 @@ export default function ScanPage() {
                         <td className="p-3">
                           <div className="flex gap-1 items-center">
                             <input
-                              type="number"
-                              step="0.01"
-                              value={tx.amount}
-                              onChange={(e) => handleUpdateExtractedItem(tx.id, 'amount', Number(e.target.value))}
-                              className="w-24 bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1 text-xs font-mono font-bold text-white focus:border-purple-500 outline-none"
+                              type="text"
+                              inputMode="decimal"
+                              value={(tx as any).amountRaw !== undefined ? (tx as any).amountRaw : formatBrazilianNumber(tx.amount)}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                handleUpdateExtractedItem(tx.id, 'amountRaw' as any, val);
+                                handleUpdateExtractedItem(tx.id, 'amount', parseBrazilianCurrency(val));
+                              }}
+                              className="w-28 bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1 text-xs font-mono font-bold text-white focus:border-purple-500 outline-none"
                             />
                             <select
                               value={tx.currency}
@@ -697,9 +719,15 @@ export default function ScanPage() {
                   </label>
                   <div className="flex gap-2">
                     <input
-                      type="number"
-                      value={amount}
-                      onChange={(e) => setAmount(Number(e.target.value))}
+                      type="text"
+                      inputMode="decimal"
+                      placeholder="Ex: 10.000,00"
+                      value={amountRaw}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setAmountRaw(val);
+                        setAmount(parseBrazilianCurrency(val));
+                      }}
                       className="flex-1 bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-sm font-mono text-white focus:border-indigo-500 outline-none"
                     />
                     <select
@@ -711,6 +739,14 @@ export default function ScanPage() {
                       <option value="BRL">R$ BRL (Brasil)</option>
                       <option value="USD">$ USD (Dólar)</option>
                     </select>
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] pt-0.5">
+                    <span className="text-zinc-500">Padrão BR: 10.000,00</span>
+                    {amount > 0 && (
+                      <span className="text-emerald-400 font-mono font-bold">
+                        ✓ {scanCurrency} {formatBrazilianNumber(amount)}
+                      </span>
+                    )}
                   </div>
                 </div>
 

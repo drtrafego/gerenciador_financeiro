@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useProfile } from "@/lib/contexts/ProfileContext";
 import { DICTIONARY } from "@/lib/i18n/dict";
-import { Currency, RatesMap, convertAmount, formatCurrency } from "@/lib/currency/format";
+import { Currency, RatesMap, convertAmount, formatCurrency, parseBrazilianCurrency, formatBrazilianNumber } from "@/lib/currency/format";
 import { DEMO_PERSONAL_TRANSACTIONS } from "@/lib/ai/receiptScanner";
 import PeriodBar from "@/components/shared/PeriodBar";
 import { resolvePeriod } from "@/lib/period";
@@ -274,19 +274,25 @@ export default function PersonalDashboardView({
   const [showManualModal, setShowManualModal] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
+  // Modo do gráfico de evolução: 'total' (Consolidado), 'stacked' (Empilhado), 'split' (Separado Amanda vs Gastão)
+  const [chartMode, setChartMode] = useState<'total' | 'stacked' | 'split'>('total');
+
   // Edit modal state
   const [editingTx, setEditingTx] = useState<PersonalTransaction | null>(null);
+  const [editingAmountRaw, setEditingAmountRaw] = useState<string>('');
 
   // Manual Form State
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [merchant, setMerchant] = useState('');
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState<number>(0);
+  const [amountRaw, setAmountRaw] = useState<string>('');
   const [txCurrency, setTxCurrency] = useState<Currency>('ARS');
   const [type, setType] = useState<'expense' | 'income'>('expense');
   const [category, setCategory] = useState('Alimentação & Supermercado');
   const [subcategory, setSubcategory] = useState('');
   const [childTag, setChildTag] = useState('');
+  const [isCloudSyncing, setIsCloudSyncing] = useState<boolean>(false);
 
   useEffect(() => {
     setMounted(true);
@@ -305,56 +311,44 @@ export default function PersonalDashboardView({
       return clean;
     };
 
-    const loadAllPersonalData = () => {
-      // Versão dos dados para forçar sincronização automática no navegador
-      const DATA_VERSION = "2026-09-v8-fix-transf-ctas-propias";
-      const savedVersion = localStorage.getItem('user_personal_data_version');
-      
+    const loadAllPersonalData = async () => {
       const builtinTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
       let combined: any[] = [...builtinTxs];
 
-      // Se a versão do cache for antiga, atualiza automaticamente com os 1.846 dados consolidados
-      if (savedVersion !== DATA_VERSION) {
-        localStorage.setItem('user_personal_data_version', DATA_VERSION);
-        localStorage.removeItem('user_personal_transactions');
-        localStorage.removeItem('user_personal_parents');
-      } else {
-        const savedTxs = localStorage.getItem('user_personal_transactions');
-        if (savedTxs) {
-          try {
-            const parsed = JSON.parse(savedTxs);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              const builtinIds = new Set(builtinTxs.map((t: any) => t.id));
-              const extraTxs = parsed.filter((t: any) => !builtinIds.has(t.id));
-              combined = [...builtinTxs, ...extraTxs];
-            }
-          } catch (e) {}
-        }
+      // 1. Carrega imediatamente do localStorage para velocidade instantânea
+      const savedTxs = localStorage.getItem('user_personal_transactions');
+      if (savedTxs) {
+        try {
+          const parsed = JSON.parse(savedTxs);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const builtinIds = new Set(builtinTxs.map((t: any) => t.id));
+            const extraTxs = parsed.filter((t: any) => !builtinIds.has(t.id));
+            combined = [...builtinTxs, ...extraTxs];
+          }
+        } catch (e) {}
       }
 
-      const deduped: PersonalTransaction[] = deduplicateTransactions(combined).map((t: any) => ({
+      const initialDeduped: PersonalTransaction[] = deduplicateTransactions(combined).map((t: any) => ({
         ...t,
         type: (t.type || 'expense') as 'expense' | 'income',
         language: (t.language || 'es') as 'pt' | 'es'
       }));
-      setTransactions(deduped);
-      localStorage.setItem('user_personal_transactions', JSON.stringify(deduped));
+      setTransactions(initialDeduped);
 
+      let localCats: any[] = [];
       const storedCats = localStorage.getItem('personal_custom_categories');
       if (storedCats) {
         try {
           const parsed = JSON.parse(storedCats);
           if (Array.isArray(parsed) && parsed.length > 0) {
+            localCats = parsed;
             const merged = parsed.map((sc: any) => {
               const defaultMatch = DEFAULT_CATEGORIES.find(dc => dc.id === sc.id || dc.namePt === sc.namePt);
               const emoji = (sc.emoji && sc.emoji !== "📂") ? sc.emoji : (defaultMatch?.emoji || sc.emoji || "📂");
               const color = (sc.color && sc.color !== "bg-indigo-500/20 text-indigo-400 border-indigo-500/30") ? sc.color : (defaultMatch?.color || sc.color || "bg-indigo-500/20 text-indigo-400 border-indigo-500/30");
-
-              // Garante que novas subcategorias padrão (como "Vinho") sejam mescladas mesmo com cache existente
               const defaultSubcats = defaultMatch?.subcategories || [];
               const userSubcats = Array.isArray(sc.subcategories) ? sc.subcategories : [];
               const mergedSubcategories = Array.from(new Set([...userSubcats, ...defaultSubcats]));
-
               return {
                 ...defaultMatch,
                 ...sc,
@@ -363,12 +357,10 @@ export default function PersonalDashboardView({
                 color
               };
             });
-
             const existingIds = new Set(parsed.map((p: any) => p.id || p.namePt));
             const missingDefaults = DEFAULT_CATEGORIES.filter(dc => !existingIds.has(dc.id) && !existingIds.has(dc.namePt));
             const allCats = [...merged, ...missingDefaults];
             setCategories(allCats);
-            localStorage.setItem('personal_custom_categories', JSON.stringify(allCats));
           } else {
             setCategories(DEFAULT_CATEGORIES);
           }
@@ -386,38 +378,59 @@ export default function PersonalDashboardView({
           if (Array.isArray(parsed) && parsed.length > 0) {
             setParentsList(parsed);
           } else {
-            const found = Array.from(new Set(deduped.map(t => t.childTag || t.parentTag).filter(Boolean))) as string[];
-            const p = found.length > 0 ? found : ["Gastão", "Amanda"];
-            setParentsList(p);
-            localStorage.setItem('user_personal_parents', JSON.stringify(p));
+            setParentsList(["Gastão", "Amanda"]);
           }
         } catch (e) {
           setParentsList(["Gastão", "Amanda"]);
         }
       } else {
-        const found = Array.from(new Set(deduped.map(t => t.childTag || t.parentTag).filter(Boolean))) as string[];
-        const p = found.length > 0 ? found : ["Gastão", "Amanda"];
-        setParentsList(p);
-        localStorage.setItem('user_personal_parents', JSON.stringify(p));
+        setParentsList(["Gastão", "Amanda"]);
       }
 
-      const storedChildren = localStorage.getItem('user_personal_children');
-      if (storedChildren) {
-        try {
-          const parsed = JSON.parse(storedChildren);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setChildrenList(parsed);
-          } else {
-            setChildrenList([]);
+      // 2. Sincroniza bidirecionalmente com o banco Neon PostgreSQL na nuvem!
+      // Envia os lançamentos locais e recebe todos os lançamentos consolidados (Amanda + Gastão)
+      try {
+        setIsCloudSyncing(true);
+        const res = await fetch('/api/personal/transactions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'sync',
+            localTransactions: initialDeduped,
+            localCategories: localCats.length > 0 ? localCats : undefined
+          })
+        });
+
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success) {
+            const dbCustom = json.customTransactions || [];
+            const deletedSet = new Set(json.deletedIds || []);
+
+            // Junta os 1.846 históricos + todos os customizados do banco na nuvem
+            const allMerged = [...builtinTxs, ...dbCustom].filter((t: any) => !deletedSet.has(t.id));
+            const finalDeduped: PersonalTransaction[] = deduplicateTransactions(allMerged).map((t: any) => ({
+              ...t,
+              type: (t.type || 'expense') as 'expense' | 'income',
+              language: (t.language || 'es') as 'pt' | 'es'
+            }));
+
+            setTransactions(finalDeduped);
+            localStorage.setItem('user_personal_transactions', JSON.stringify(finalDeduped));
+
+            // Sincroniza lista de membros/responsáveis encontrados
+            const foundMembers = Array.from(new Set(finalDeduped.map(t => t.childTag || t.parentTag).filter(Boolean))) as string[];
+            if (foundMembers.length > 0) {
+              setParentsList(prev => Array.from(new Set([...prev, "Gastão", "Amanda", ...foundMembers])));
+            }
           }
-        } catch (e) {
-          setChildrenList([]);
         }
-      } else {
-        setChildrenList([]);
+      } catch (err) {
+        console.warn('Sincronização em nuvem offline, usando dados locais:', err);
+      } finally {
+        setIsCloudSyncing(false);
       }
     };
-
 
     loadAllPersonalData();
 
@@ -436,14 +449,20 @@ export default function PersonalDashboardView({
     window.dispatchEvent(new Event('user_pf_data_changed'));
   };
 
+  const handleOpenEditModal = (tx: PersonalTransaction) => {
+    setEditingTx(tx);
+    setEditingAmountRaw(formatBrazilianNumber(tx.amount));
+  };
+
   const handleAddManualTransaction = (e: React.FormEvent) => {
     e.preventDefault();
+    const finalAmount = parseBrazilianCurrency(amountRaw) || amount;
     const newTx: PersonalTransaction = {
       id: `tx-pf-${Date.now()}`,
       date,
       merchant,
       description,
-      amount,
+      amount: finalAmount,
       currency: txCurrency,
       type,
       category,
@@ -452,12 +471,21 @@ export default function PersonalDashboardView({
     };
     const updated = [newTx, ...transactions];
     saveTransactions(updated);
+
+    // Persiste imediatamente no Neon PostgreSQL para sincronizar com Amanda e Gastão
+    fetch('/api/personal/transactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'add', transaction: newTx })
+    }).catch(console.warn);
+
     setShowManualModal(false);
 
     // Reset
     setMerchant('');
     setDescription('');
     setAmount(0);
+    setAmountRaw('');
     setChildTag('');
   };
 
@@ -465,14 +493,36 @@ export default function PersonalDashboardView({
     e.preventDefault();
     if (!editingTx) return;
 
-    const updated = transactions.map(t => (t.id === editingTx.id ? editingTx : t));
+    const finalAmount = parseBrazilianCurrency(editingAmountRaw) || editingTx.amount;
+    const updatedTx: PersonalTransaction = {
+      ...editingTx,
+      amount: finalAmount
+    };
+
+    const updated = transactions.map(t => (t.id === updatedTx.id ? updatedTx : t));
     saveTransactions(updated);
+
+    // Atualiza imediatamente na nuvem
+    fetch('/api/personal/transactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'update', transaction: updatedTx })
+    }).catch(console.warn);
+
     setEditingTx(null);
+    setEditingAmountRaw('');
   };
 
   const handleDeleteTransaction = (id: string) => {
     const updated = transactions.filter(t => t.id !== id);
     saveTransactions(updated);
+
+    // Remove imediatamente da nuvem e adiciona à lista de excluídos
+    fetch('/api/personal/transactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'delete', id })
+    }).catch(console.warn);
   };
 
 
@@ -717,8 +767,62 @@ export default function PersonalDashboardView({
       Mês: d.monthLabel,
       "Gastos Amanda": Math.round(d.amanda),
       "Gastos Gastão": Math.round(d.gastao),
+      "Total Consolidado": Math.round(d.total),
       Total: Math.round(d.total)
     }));
+
+  const avgMonthlyTotal = barTrendData.length > 0 
+    ? Math.round(barTrendData.reduce((acc, d) => acc + d["Total Consolidado"], 0) / barTrendData.length) 
+    : 0;
+
+  const CustomBarTooltip = ({ active, payload, label }: any) => {
+    if (!active || !payload || !payload.length) return null;
+    const data = payload[0]?.payload;
+    if (!data) return null;
+
+    const total = data["Total Consolidado"] || data.Total || 0;
+    const amanda = data["Gastos Amanda"] || 0;
+    const gastao = data["Gastos Gastão"] || 0;
+    const amandaPct = total > 0 ? ((amanda / total) * 100).toFixed(0) : "0";
+    const gastaoPct = total > 0 ? ((gastao / total) * 100).toFixed(0) : "0";
+
+    return (
+      <div className="bg-zinc-950 border border-zinc-700 p-3 rounded-xl shadow-2xl space-y-2 min-w-[220px]">
+        <div className="border-b border-zinc-800 pb-1.5 flex justify-between items-center">
+          <span className="text-xs font-bold text-white uppercase tracking-wider">{label}</span>
+          <span className="text-[10px] text-zinc-500 font-mono">{activeCurrency}</span>
+        </div>
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between text-xs font-bold text-white bg-purple-500/15 border border-purple-500/30 px-2.5 py-1.5 rounded-lg">
+            <span className="flex items-center gap-1.5 text-purple-300">
+              💳 Total da Família:
+            </span>
+            <span className="font-mono text-purple-200">
+              {valuesHidden ? '••••••' : formatMoney(total)}
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-[11px] text-zinc-300 px-1 pt-0.5">
+            <span className="flex items-center gap-1.5 text-pink-400">
+              <span className="w-2 h-2 rounded-full bg-pink-500 inline-block" />
+              Amanda:
+            </span>
+            <span className="font-mono">
+              {valuesHidden ? '••••••' : formatMoney(amanda)} <span className="text-zinc-500 text-[10px]">({amandaPct}%)</span>
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-[11px] text-zinc-300 px-1">
+            <span className="flex items-center gap-1.5 text-indigo-400">
+              <span className="w-2 h-2 rounded-full bg-indigo-500 inline-block" />
+              Gastão:
+            </span>
+            <span className="font-mono">
+              {valuesHidden ? '••••••' : formatMoney(gastao)} <span className="text-zinc-500 text-[10px]">({gastaoPct}%)</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in duration-300 pb-10">
@@ -1184,14 +1288,62 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
             )}
           </div>
 
-          {/* Gráfico 2: Evolução Histórica de Gastos (Barras Amanda vs Gastão) */}
+          {/* Gráfico 2: Evolução Histórica de Gastos (Consolidado / Empilhado / Separado) */}
           <div className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 space-y-4 hover:border-zinc-700 transition-all flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <BarChart3 className="w-4 h-4 text-purple-400" />
-                Gastos Mensais (Amanda vs Gastão)
-              </h3>
-              <span className="text-[10px] text-zinc-400 font-mono uppercase">Valores em {activeCurrency}</span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                  <BarChart3 className="w-4 h-4 text-purple-400" />
+                  Evolução dos Gastos Mensais
+                </h3>
+                <p className="text-[11px] text-zinc-400">
+                  {chartMode === 'total' 
+                    ? 'Visualizando gastos totais consolidados da família' 
+                    : chartMode === 'stacked'
+                    ? 'Visualizando gastos empilhados (Amanda + Gastão = Total)'
+                    : 'Visualizando comparativo lado a lado (Amanda vs Gastão)'}
+                </p>
+              </div>
+
+              {/* Seletor de Modo de Visualização do Gráfico */}
+              <div className="flex items-center bg-zinc-950 p-0.5 rounded-xl border border-zinc-800 text-[11px] self-start sm:self-auto">
+                <button
+                  type="button"
+                  onClick={() => setChartMode('total')}
+                  className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                    chartMode === 'total' 
+                      ? 'bg-purple-600 text-white shadow-sm' 
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                  title="Ver o gasto total consolidado da casa somado em uma única barra"
+                >
+                  Total Consolidado
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setChartMode('stacked')}
+                  className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                    chartMode === 'stacked' 
+                      ? 'bg-purple-600 text-white shadow-sm' 
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                  title="Barras empilhadas onde a altura total representa o gasto completo do mês"
+                >
+                  Empilhado
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setChartMode('split')}
+                  className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                    chartMode === 'split' 
+                      ? 'bg-purple-600 text-white shadow-sm' 
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                  title="Comparar gastos individuais de Amanda e Gastão lado a lado"
+                >
+                  Separado
+                </button>
+              </div>
             </div>
 
             <div className="h-64 w-full">
@@ -1206,16 +1358,34 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
                     width={50}
                     tickFormatter={(val) => valuesHidden ? "" : (val >= 1000 ? `${(val/1000).toFixed(0)}k` : val)}
                   />
-                  <RechartsTooltip
-                    contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 12 }}
-                    labelStyle={{ color: "#ffffff", fontWeight: "bold" }}
-                    formatter={(val: any) => [valuesHidden ? "••••••" : formatMoney(Number(val))]}
-                  />
+                  <RechartsTooltip content={<CustomBarTooltip />} />
                   <Legend wrapperStyle={{ paddingTop: 10, fontSize: 12, color: "#9ca3af" }} />
-                  <Bar dataKey="Gastos Amanda" fill="#ec4899" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="Gastos Gastão" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                  {chartMode === 'total' && (
+                    <Bar dataKey="Total Consolidado" fill="#8b5cf6" radius={[6, 6, 0, 0]} name="Gasto Total da Família" />
+                  )}
+                  {chartMode === 'stacked' && (
+                    <>
+                      <Bar dataKey="Gastos Amanda" stackId="gastos" fill="#ec4899" name="Gastos Amanda" />
+                      <Bar dataKey="Gastos Gastão" stackId="gastos" fill="#6366f1" radius={[6, 6, 0, 0]} name="Gastos Gastão" />
+                    </>
+                  )}
+                  {chartMode === 'split' && (
+                    <>
+                      <Bar dataKey="Gastos Amanda" fill="#ec4899" radius={[4, 4, 0, 0]} name="Gastos Amanda" />
+                      <Bar dataKey="Gastos Gastão" fill="#6366f1" radius={[4, 4, 0, 0]} name="Gastos Gastão" />
+                    </>
+                  )}
                 </BarChart>
               </ResponsiveContainer>
+            </div>
+
+            <div className="flex items-center justify-between pt-2 border-t border-zinc-800/80 text-[11px] text-zinc-400">
+              <span className="flex items-center gap-1.5 font-medium">
+                <span className="w-2 h-2 rounded-full bg-purple-500" />
+                Média Mensal Consolidada:
+                <strong className="text-white font-mono">{maskBRL(avgMonthlyTotal)}</strong>
+              </span>
+              <span className="text-[10px] text-zinc-500 font-mono uppercase">Valores em {activeCurrency}</span>
             </div>
           </div>
         </div>
@@ -1502,7 +1672,11 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
             </button>
 
             <button
-              onClick={() => setShowManualModal(true)}
+              onClick={() => {
+                setAmountRaw('');
+                setAmount(0);
+                setShowManualModal(true);
+              }}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow transition-all ml-auto sm:ml-0"
             >
               <Plus size={14} />
@@ -1589,7 +1763,7 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
 
                         <div className="flex items-center gap-1 ml-auto">
                           <button
-                            onClick={() => setEditingTx(tx)}
+                            onClick={() => handleOpenEditModal(tx)}
                             className="p-1.5 text-zinc-400 hover:text-indigo-400 bg-zinc-900 border border-zinc-800 rounded-lg transition-colors flex items-center gap-1 text-[10px] font-semibold px-2"
                           >
                             <Pencil size={12} />
@@ -1698,7 +1872,7 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
                           <td className="p-3 text-center whitespace-nowrap">
                             <div className="flex items-center justify-center gap-1">
                               <button
-                                onClick={() => setEditingTx(tx)}
+                                onClick={() => handleOpenEditModal(tx)}
                                 className="p-1.5 text-zinc-500 hover:text-indigo-400 hover:bg-indigo-500/10 rounded-lg transition-colors"
                                 title="Editar este lançamento"
                               >
@@ -1791,13 +1965,26 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-zinc-400">Valor</label>
                   <input
-                    type="number"
+                    type="text"
+                    inputMode="decimal"
                     required
-                    step="0.01"
-                    value={editingTx.amount}
-                    onChange={(e) => setEditingTx({ ...editingTx, amount: Number(e.target.value) })}
+                    placeholder="Ex: 10.000,00"
+                    value={editingAmountRaw}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setEditingAmountRaw(val);
+                      setEditingTx({ ...editingTx, amount: parseBrazilianCurrency(val) });
+                    }}
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-sm font-mono text-white focus:border-indigo-500 outline-none"
                   />
+                  <div className="flex items-center justify-between text-[11px] pt-0.5">
+                    <span className="text-zinc-500">Padrão BR: 10.000,00</span>
+                    {editingTx.amount > 0 && (
+                      <span className="text-emerald-400 font-mono font-bold">
+                        ✓ {formatMoney(editingTx.amount, editingTx.currency)}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="space-y-1">
@@ -1990,13 +2177,26 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
                     Valor
                   </label>
                   <input
-                    type="number"
+                    type="text"
+                    inputMode="decimal"
                     required
-                    step="0.01"
-                    value={amount || ''}
-                    onChange={(e) => setAmount(Number(e.target.value))}
+                    placeholder="Ex: 10.000,00"
+                    value={amountRaw}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setAmountRaw(val);
+                      setAmount(parseBrazilianCurrency(val));
+                    }}
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-sm font-mono text-white focus:border-purple-500 outline-none"
                   />
+                  <div className="flex items-center justify-between text-[11px] pt-0.5">
+                    <span className="text-zinc-500">Padrão BR: 10.000,00</span>
+                    {amount > 0 && (
+                      <span className="text-emerald-400 font-mono font-bold">
+                        ✓ {formatMoney(amount, txCurrency)}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="space-y-1">
