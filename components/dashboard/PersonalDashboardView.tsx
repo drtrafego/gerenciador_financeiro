@@ -38,7 +38,8 @@ import {
   Flame,
   Award,
   RefreshCw,
-  Cloud
+  Cloud,
+  UploadCloud
 } from "lucide-react";
 
 import {
@@ -67,7 +68,7 @@ export interface PersonalTransaction {
   subcategory?: string;
   childTag?: string;
   parentTag?: string;
-  language: 'pt' | 'es';
+  language?: 'pt' | 'es';
   selected?: boolean;
   isInternalTransfer?: boolean;
 }
@@ -130,11 +131,21 @@ function deduplicateTransactions(list: any[]): any[] {
 interface PersonalDashboardViewProps {
   displayCurrency?: Currency;
   rate?: RatesMap;
+  initialTransactions?: PersonalTransaction[];
+  initialCategories?: CustomCategory[];
+  currentUser?: {
+    email: string;
+    name: string;
+    role: "Amanda" | "Gastão";
+  };
 }
 
 export default function PersonalDashboardView({
   displayCurrency: propCurrency = "BRL",
   rate: propRate,
+  initialTransactions,
+  initialCategories,
+  currentUser,
 }: PersonalDashboardViewProps = {}) {
   const { lang } = useProfile();
   const { hidden: valuesHidden } = useValuesVisibility();
@@ -275,21 +286,33 @@ export default function PersonalDashboardView({
   };
 
   const [mounted, setMounted] = useState(false);
-  const [transactions, setTransactions] = useState<PersonalTransaction[]>(
-    (DEMO_PERSONAL_TRANSACTIONS || []).map(t => ({
+  const [transactions, setTransactions] = useState<PersonalTransaction[]>(() => {
+    if (initialTransactions && initialTransactions.length > 0) {
+      return initialTransactions;
+    }
+    return (DEMO_PERSONAL_TRANSACTIONS || []).map(t => ({
       ...t,
       type: (t.type || 'expense') as 'expense' | 'income',
       language: (t.language || 'es') as 'pt' | 'es'
-    })) as PersonalTransaction[]
+    })) as PersonalTransaction[];
+  });
+  const [categories, setCategories] = useState<CustomCategory[]>(
+    initialCategories && initialCategories.length > 0 ? initialCategories : DEFAULT_CATEGORIES
   );
-  const [categories, setCategories] = useState<CustomCategory[]>(DEFAULT_CATEGORIES);
-  const [childrenList, setChildrenList] = useState<string[]>([]);
+  const [childrenList, setChildrenList] = useState<string[]>(["Bernardo"]);
   const [parentsList, setParentsList] = useState<string[]>(["Gastão", "Amanda"]);
   const [selectedMember, setSelectedMember] = useState<string>('all');
   const [hideInternalTransfers, setHideInternalTransfers] = useState<boolean>(true);
   const [showOnlyExpenses, setShowOnlyExpenses] = useState<boolean>(true);
   const [showManualModal, setShowManualModal] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+
+  // Sincroniza estado se initialTransactions mudar via SSR
+  useEffect(() => {
+    if (initialTransactions && initialTransactions.length > 0) {
+      setTransactions((prev) => deduplicateTransactions([...initialTransactions, ...prev]));
+    }
+  }, [initialTransactions]);
 
   // Modo do gráfico de evolução: 'total' (Consolidado), 'stacked' (Empilhado), 'split' (Separado Amanda vs Gastão)
   const [chartMode, setChartMode] = useState<'total' | 'stacked' | 'split'>('total');
@@ -298,7 +321,7 @@ export default function PersonalDashboardView({
   const [editingTx, setEditingTx] = useState<PersonalTransaction | null>(null);
   const [editingAmountRaw, setEditingAmountRaw] = useState<string>('');
 
-  // Manual Form State
+  // Manual Form State - default titular vem do usuário logado (Amanda ou Gastão)
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [merchant, setMerchant] = useState('');
   const [description, setDescription] = useState('');
@@ -308,7 +331,7 @@ export default function PersonalDashboardView({
   const [type, setType] = useState<'expense' | 'income'>('expense');
   const [category, setCategory] = useState('Alimentação & Supermercado');
   const [subcategory, setSubcategory] = useState('');
-  const [childTag, setChildTag] = useState('');
+  const [childTag, setChildTag] = useState<string>(currentUser?.role || '');
   const [isCloudSyncing, setIsCloudSyncing] = useState<boolean>(false);
   const [lastSyncTime, setLastSyncTime] = useState<string | null>(null);
 
@@ -317,27 +340,20 @@ export default function PersonalDashboardView({
 
     const loadAllPersonalData = async () => {
       const builtinTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
-      let combined: any[] = [...builtinTxs];
+      const baseTxs = initialTransactions && initialTransactions.length > 0 ? initialTransactions : builtinTxs;
 
-      // 1. Carrega imediatamente do localStorage para velocidade instantânea
+      // 1. Verifica se há transações criadas offline neste aparelho no localStorage
+      let localOnlyTxs: any[] = [];
       const savedTxs = localStorage.getItem('user_personal_transactions');
       if (savedTxs) {
         try {
           const parsed = JSON.parse(savedTxs);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            const builtinIds = new Set(builtinTxs.map((t: any) => t.id));
-            const extraTxs = parsed.filter((t: any) => !builtinIds.has(t.id));
-            combined = [...builtinTxs, ...extraTxs];
+            const baseIds = new Set(baseTxs.map((t: any) => t.id));
+            localOnlyTxs = parsed.filter((t: any) => t && t.id && !baseIds.has(t.id));
           }
         } catch (e) {}
       }
-
-      const initialDeduped: PersonalTransaction[] = deduplicateTransactions(combined).map((t: any) => ({
-        ...t,
-        type: (t.type || 'expense') as 'expense' | 'income',
-        language: (t.language || 'es') as 'pt' | 'es'
-      }));
-      setTransactions(initialDeduped);
 
       let localCats: any[] = [];
       const storedCats = localStorage.getItem('personal_custom_categories');
@@ -346,53 +362,12 @@ export default function PersonalDashboardView({
           const parsed = JSON.parse(storedCats);
           if (Array.isArray(parsed) && parsed.length > 0) {
             localCats = parsed;
-            const merged = parsed.map((sc: any) => {
-              const defaultMatch = DEFAULT_CATEGORIES.find(dc => dc.id === sc.id || dc.namePt === sc.namePt);
-              const emoji = (sc.emoji && sc.emoji !== "📂") ? sc.emoji : (defaultMatch?.emoji || sc.emoji || "📂");
-              const color = (sc.color && sc.color !== "bg-indigo-500/20 text-indigo-400 border-indigo-500/30") ? sc.color : (defaultMatch?.color || sc.color || "bg-indigo-500/20 text-indigo-400 border-indigo-500/30");
-              const defaultSubcats = defaultMatch?.subcategories || [];
-              const userSubcats = Array.isArray(sc.subcategories) ? sc.subcategories : [];
-              const mergedSubcategories = Array.from(new Set([...userSubcats, ...defaultSubcats]));
-              return {
-                ...defaultMatch,
-                ...sc,
-                subcategories: mergedSubcategories,
-                emoji,
-                color
-              };
-            });
-            const existingIds = new Set(parsed.map((p: any) => p.id || p.namePt));
-            const missingDefaults = DEFAULT_CATEGORIES.filter(dc => !existingIds.has(dc.id) && !existingIds.has(dc.namePt));
-            const allCats = [...merged, ...missingDefaults];
-            setCategories(allCats);
-          } else {
-            setCategories(DEFAULT_CATEGORIES);
           }
-        } catch (e) {
-          setCategories(DEFAULT_CATEGORIES);
-        }
-      } else {
-        setCategories(DEFAULT_CATEGORIES);
-      }
-
-      const storedParents = localStorage.getItem('user_personal_parents');
-      if (storedParents) {
-        try {
-          const parsed = JSON.parse(storedParents);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setParentsList(parsed);
-          } else {
-            setParentsList(["Gastão", "Amanda"]);
-          }
-        } catch (e) {
-          setParentsList(["Gastão", "Amanda"]);
-        }
-      } else {
-        setParentsList(["Gastão", "Amanda"]);
+        } catch (e) {}
       }
 
       // 2. Sincroniza bidirecionalmente com o banco Neon PostgreSQL na nuvem!
-      // Envia os lançamentos locais e recebe todos os lançamentos consolidados (Amanda + Gastão)
+      // Envia eventuais anotações locais offline e recebe todos os dados unificados de Amanda e Gastão
       try {
         setIsCloudSyncing(true);
         const res = await fetch('/api/personal/transactions', {
@@ -400,7 +375,7 @@ export default function PersonalDashboardView({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'sync',
-            localTransactions: initialDeduped,
+            localTransactions: localOnlyTxs,
             localCategories: localCats.length > 0 ? localCats : undefined
           })
         });
@@ -411,7 +386,7 @@ export default function PersonalDashboardView({
             const dbCustom = json.customTransactions || [];
             const deletedSet = new Set(json.deletedIds || []);
 
-            // Junta todos os customizados do banco na nuvem (primeiro) + os 1.846 históricos para sobrepor
+            // Junta os customizados da nuvem com os históricos de base
             const allMerged = [...dbCustom, ...builtinTxs].filter((t: any) => !deletedSet.has(t.id));
             const finalDeduped: PersonalTransaction[] = deduplicateTransactions(allMerged).map((t: any) => ({
               ...t,
@@ -423,7 +398,7 @@ export default function PersonalDashboardView({
             localStorage.setItem('user_personal_transactions', JSON.stringify(finalDeduped));
             setLastSyncTime(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
 
-            // Sincroniza lista de membros/responsáveis encontrados
+            // Sincroniza membros
             const foundMembers = Array.from(new Set(finalDeduped.map(t => t.childTag || t.parentTag).filter(Boolean))) as string[];
             if (foundMembers.length > 0) {
               setParentsList(prev => Array.from(new Set([...prev, "Gastão", "Amanda", ...foundMembers])));
@@ -431,7 +406,7 @@ export default function PersonalDashboardView({
           }
         }
       } catch (err) {
-        console.warn('Sincronização em nuvem offline, usando dados locais:', err);
+        console.warn('Sincronização em nuvem offline, usando dados já carregados:', err);
       } finally {
         setIsCloudSyncing(false);
       }
@@ -610,6 +585,33 @@ export default function PersonalDashboardView({
     return rawCat || (lang === 'pt' ? "Geral & Diversos" : "General y Diversos");
   };
 
+  const getMemberBadge = (tag?: string) => {
+    if (!tag) return null;
+    const t = tag.toLowerCase().trim();
+    if (t === 'amanda' || (t.includes('amanda') && !t.includes('gast'))) {
+      return {
+        label: `👩 ${tag}`,
+        style: "bg-pink-500/20 text-pink-300 border-pink-500/30"
+      };
+    }
+    if (t === 'gastão' || t === 'gastao' || (t.includes('gast') && !t.includes('amanda'))) {
+      return {
+        label: `👨 ${tag}`,
+        style: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30"
+      };
+    }
+    if (t.includes('filho') || t.includes('bernardo')) {
+      return {
+        label: `🎒 ${tag}`,
+        style: "bg-amber-500/20 text-amber-300 border-amber-500/30"
+      };
+    }
+    return {
+      label: `👥 ${tag}`,
+      style: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+    };
+  };
+
   // -------------------------------------------------------------
   // CONTROLE DE PERÍODO & DATAS (SELETOR DA EMPRESA)
   // -------------------------------------------------------------
@@ -622,6 +624,40 @@ export default function PersonalDashboardView({
   });
 
   const now = new Date();
+
+  // Helpers de classificação familiar unificada
+  const isSchoolOrChildrenTx = (t: PersonalTransaction) => {
+    const tag = (t.childTag || t.parentTag || '').toLowerCase();
+    const d = ((t.description || '') + ' ' + (t.merchant || '') + ' ' + (t.category || '')).toLowerCase();
+    return (
+      tag.includes('filho') ||
+      tag.includes('bernardo') ||
+      t.category === 'Filhos & Família' ||
+      d.includes('misericordia') ||
+      d.includes('asociacion hijas') ||
+      d.includes('all boys') ||
+      d.includes('futebol') ||
+      d.includes('pelicula') ||
+      d.includes('campeonato')
+    );
+  };
+
+  const isAmandaTx = (t: PersonalTransaction) => {
+    const tag = (t.childTag || t.parentTag || '').toLowerCase();
+    return (tag === 'amanda' || tag.startsWith('amanda')) && !tag.includes('gast');
+  };
+
+  const isGastaoTx = (t: PersonalTransaction) => {
+    const tag = (t.childTag || t.parentTag || '').toLowerCase();
+    return (tag === 'gastão' || tag === 'gastao' || tag.startsWith('gast')) && !tag.includes('amanda');
+  };
+
+  const isSharedOrHouseholdTx = (t: PersonalTransaction) => {
+    if (isSchoolOrChildrenTx(t)) return false;
+    if (isAmandaTx(t)) return false;
+    if (isGastaoTx(t)) return false;
+    return true;
+  };
 
   // Transações filtradas pelo período selecionado, membro familiar e exclusão de transferências internas
   const filteredTransactions = transactions.filter(t => {
@@ -638,9 +674,22 @@ export default function PersonalDashboardView({
       return false;
     }
 
+    if (selectedMember === 'Amanda') {
+      const tag = (t.childTag || t.parentTag || '').toLowerCase();
+      return tag === 'amanda' || tag.includes('amanda');
+    }
+
+    if (selectedMember === 'Gastão') {
+      const tag = (t.childTag || t.parentTag || '').toLowerCase();
+      return tag === 'gastão' || tag === 'gastao' || tag.includes('gastão') || tag.includes('gastao');
+    }
+
     if (selectedMember === 'Filhos' || selectedMember === 'Misericordia') {
-      const d = ((t.description || '') + ' ' + (t.merchant || '') + ' ' + (t.category || '')).toLowerCase();
-      return t.category === 'Filhos & Família' || d.includes('misericordia') || d.includes('asociacion hijas') || d.includes('all boys');
+      return isSchoolOrChildrenTx(t);
+    }
+
+    if (selectedMember === 'Casa' || selectedMember === 'Compartilhado') {
+      return isSharedOrHouseholdTx(t);
     }
 
     if (selectedMember !== 'all') {
@@ -660,41 +709,30 @@ export default function PersonalDashboardView({
     .reduce((acc, t) => acc + t.amount, 0);
 
   // Gastos Amanda no período
-  const amandaExpensesBRL = filteredTransactions
-    .filter(t => t.type === 'expense' && (t.childTag === 'Amanda' || t.parentTag === 'Amanda'))
-    .reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
-  const amandaExpensesARS = filteredTransactions
-    .filter(t => t.type === 'expense' && t.currency === 'ARS' && (t.childTag === 'Amanda' || t.parentTag === 'Amanda'))
-    .reduce((acc, t) => acc + t.amount, 0);
-  const amandaTxCount = filteredTransactions
-    .filter(t => t.type === 'expense' && (t.childTag === 'Amanda' || t.parentTag === 'Amanda')).length;
+  const amandaExpenses = filteredTransactions.filter(t => t.type === 'expense' && isAmandaTx(t));
+  const amandaExpensesBRL = amandaExpenses.reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
+  const amandaExpensesARS = amandaExpenses.filter(t => t.currency === 'ARS').reduce((acc, t) => acc + t.amount, 0);
+  const amandaTxCount = amandaExpenses.length;
 
   // Gastos Gastão no período
-  const gastaoExpensesBRL = filteredTransactions
-    .filter(t => t.type === 'expense' && (t.childTag === 'Gastão' || t.parentTag === 'Gastão'))
-    .reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
-  const gastaoExpensesARS = filteredTransactions
-    .filter(t => t.type === 'expense' && t.currency === 'ARS' && (t.childTag === 'Gastão' || t.parentTag === 'Gastão'))
-    .reduce((acc, t) => acc + t.amount, 0);
-  const gastaoTxCount = filteredTransactions
-    .filter(t => t.type === 'expense' && (t.childTag === 'Gastão' || t.parentTag === 'Gastão')).length;
+  const gastaoExpenses = filteredTransactions.filter(t => t.type === 'expense' && isGastaoTx(t));
+  const gastaoExpensesBRL = gastaoExpenses.reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
+  const gastaoExpensesARS = gastaoExpenses.filter(t => t.currency === 'ARS').reduce((acc, t) => acc + t.amount, 0);
+  const gastaoTxCount = gastaoExpenses.length;
+
+  // Gastos Escola & Filhos (Colegio Misericordia + Futebol All Boys) no período
+  const schoolExpenses = filteredTransactions.filter(t => t.type === 'expense' && isSchoolOrChildrenTx(t));
+  const schoolExpensesBRL = schoolExpenses.reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
+  const schoolExpensesARS = schoolExpenses.filter(t => t.currency === 'ARS').reduce((acc, t) => acc + t.amount, 0);
+
+  // Gastos Compartilhados / Casa & Família (Supermercado, Luz, Água, Aluguel, Ambos)
+  const sharedExpenses = filteredTransactions.filter(t => t.type === 'expense' && isSharedOrHouseholdTx(t));
+  const sharedExpensesBRL = sharedExpenses.reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
+  const sharedExpensesARS = sharedExpenses.filter(t => t.currency === 'ARS').reduce((acc, t) => acc + t.amount, 0);
 
   // Total combinado dos titulares (Amanda + Gastão)
   const totalTitularesBRL = amandaExpensesBRL + gastaoExpensesBRL;
   const totalTitularesARS = amandaExpensesARS + gastaoExpensesARS;
-
-  // Gastos Escola & Filhos (Colegio Misericordia + Futebol All Boys) no período
-  const schoolExpenses = filteredTransactions
-    .filter(t => t.type === 'expense' && (
-      t.category === 'Filhos & Família' || 
-      (t.merchant || '').toLowerCase().includes('misericordia') ||
-      (t.merchant || '').toLowerCase().includes('all boys') ||
-      (t.description || '').toLowerCase().includes('misericordia') ||
-      (t.description || '').toLowerCase().includes('asociacion hijas') ||
-      (t.description || '').toLowerCase().includes('all boys')
-    ));
-  const schoolExpensesBRL = schoolExpenses.reduce((acc, t) => acc + convertToActive(t.amount, t.currency), 0);
-  const schoolExpensesARS = schoolExpenses.filter(t => t.currency === 'ARS').reduce((acc, t) => acc + t.amount, 0);
 
   // -------------------------------------------------------------
   // CÁLCULO COMPARATIVO MÊS A MÊS (MoM)
@@ -795,11 +833,14 @@ export default function PersonalDashboardView({
     }
 
     const val = convertToActive(t.amount, t.currency);
-    const tag = t.childTag || t.parentTag || '';
-    if (tag === 'Amanda') {
+    const tag = (t.childTag || t.parentTag || '').toLowerCase();
+    if (tag === 'amanda' || (tag.includes('amanda') && !tag.includes('gast'))) {
       monthlyDataMap[key].amanda += val;
-    } else {
+    } else if (tag === 'gastão' || tag === 'gastao' || (tag.includes('gast') && !tag.includes('amanda'))) {
       monthlyDataMap[key].gastao += val;
+    } else {
+      monthlyDataMap[key].amanda += val / 2;
+      monthlyDataMap[key].gastao += val / 2;
     }
     monthlyDataMap[key].total += val;
   });
@@ -880,6 +921,16 @@ export default function PersonalDashboardView({
               <Cloud size={12} />
               <span>Nuvem Unificada (Amanda & Gastão)</span>
             </span>
+            {currentUser && (
+              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${
+                currentUser.role === 'Amanda'
+                  ? 'bg-pink-500/20 text-pink-300 border-pink-500/30'
+                  : 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30'
+              }`}>
+                <span>{currentUser.role === 'Amanda' ? '👩' : '👨'}</span>
+                <span>Conectado como: {currentUser.name || currentUser.role}</span>
+              </span>
+            )}
             {lastSyncTime && (
               <span className="text-[11px] text-zinc-400 font-mono hidden sm:inline">
                 • Sincronizado às {lastSyncTime}
@@ -915,7 +966,14 @@ export default function PersonalDashboardView({
           </Link>
 
           <button
-            onClick={() => setShowManualModal(true)}
+            onClick={() => {
+              setAmountRaw('');
+              setAmount(0);
+              setMerchant('');
+              setDescription('');
+              setChildTag(currentUser?.role || '');
+              setShowManualModal(true);
+            }}
             className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs border border-zinc-700 transition-all w-full sm:w-auto"
           >
             <Plus size={15} />
@@ -1001,75 +1059,91 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
       </PeriodBar>
 
       {/* Cards de Métricas Principais (Foco em Despesas Reais) - NO TOPO DO DASHBOARD */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
         {/* Total Despesas Família */}
-        <div className="p-5 rounded-2xl border border-rose-500/30 bg-gradient-to-br from-zinc-900 via-zinc-900 to-rose-950/30 shadow-lg shadow-rose-950/20 space-y-2 ring-1 ring-rose-500/20">
+        <div className="p-4 sm:p-5 rounded-2xl border border-rose-500/30 bg-gradient-to-br from-zinc-900 via-zinc-900 to-rose-950/30 shadow-lg shadow-rose-950/20 space-y-2 ring-1 ring-rose-500/20">
           <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span className="font-bold uppercase tracking-wider text-[11px] text-rose-300 flex items-center gap-1.5">
-              <span>💳</span> Total de Gastos (Família)
+            <span className="font-bold uppercase tracking-wider text-[10px] text-rose-300 flex items-center gap-1">
+              <span>💳</span> Total Família
             </span>
-            <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30">
-              <ArrowDownRight className="w-4 h-4" />
+            <div className="p-1.5 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30">
+              <ArrowDownRight className="w-3.5 h-3.5" />
             </div>
           </div>
-          <p className="text-2xl sm:text-3xl font-bold font-mono text-rose-400 tracking-tight">
+          <p className="text-xl sm:text-2xl font-bold font-mono text-rose-400 tracking-tight">
             {maskBRL(totalExpensesBRL)}
           </p>
-          <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono pt-0.5">
+          <div className="flex items-center justify-between text-[10px] text-zinc-400 font-mono pt-0.5">
             <span>
               {valuesHidden ? '••••••' : `$ ${totalExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`}
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 font-sans font-semibold">
-              {filteredTransactions.filter(t => t.type === 'expense').length} despesas
+            <span className="px-1.5 py-0.5 rounded-full bg-zinc-800 text-zinc-300 font-sans font-semibold">
+              {filteredTransactions.filter(t => t.type === 'expense').length} txs
             </span>
           </div>
         </div>
 
         {/* Gastos Amanda */}
-        <div className="p-5 rounded-2xl border border-pink-500/20 bg-gradient-to-br from-zinc-900 to-pink-950/20 space-y-2">
+        <div className="p-4 sm:p-5 rounded-2xl border border-pink-500/20 bg-gradient-to-br from-zinc-900 to-pink-950/20 space-y-2">
           <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span className="font-semibold uppercase tracking-wider text-[11px] text-pink-300">👤 Gastos Amanda</span>
-            <div className="p-2 rounded-xl bg-pink-500/10 text-pink-400 border border-pink-500/20">
-              <User className="w-4 h-4" />
+            <span className="font-semibold uppercase tracking-wider text-[10px] text-pink-300">👩 Amanda</span>
+            <div className="p-1.5 rounded-xl bg-pink-500/10 text-pink-400 border border-pink-500/20">
+              <User className="w-3.5 h-3.5" />
             </div>
           </div>
-          <p className="text-2xl font-bold font-mono text-pink-400">
+          <p className="text-xl sm:text-2xl font-bold font-mono text-pink-400">
             {maskBRL(amandaExpensesBRL)}
           </p>
-          <p className="text-[11px] text-zinc-400 font-mono">
-            {valuesHidden ? '••••••' : `$ ${amandaExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({amandaTxCount} despesas)
+          <p className="text-[10px] text-zinc-400 font-mono">
+            {valuesHidden ? '••••••' : `$ ${amandaExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({amandaTxCount} txs)
           </p>
         </div>
 
         {/* Gastos Gastão */}
-        <div className="p-5 rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-zinc-900 to-indigo-950/20 space-y-2">
+        <div className="p-4 sm:p-5 rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-zinc-900 to-indigo-950/20 space-y-2">
           <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span className="font-semibold uppercase tracking-wider text-[11px] text-indigo-300">👤 Gastos Gastão</span>
-            <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-              <User className="w-4 h-4" />
+            <span className="font-semibold uppercase tracking-wider text-[10px] text-indigo-300">👨 Gastão</span>
+            <div className="p-1.5 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              <User className="w-3.5 h-3.5" />
             </div>
           </div>
-          <p className="text-2xl font-bold font-mono text-indigo-400">
+          <p className="text-xl sm:text-2xl font-bold font-mono text-indigo-400">
             {maskBRL(gastaoExpensesBRL)}
           </p>
-          <p className="text-[11px] text-zinc-400 font-mono">
-            {valuesHidden ? '••••••' : `$ ${gastaoExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({gastaoTxCount} despesas)
+          <p className="text-[10px] text-zinc-400 font-mono">
+            {valuesHidden ? '••••••' : `$ ${gastaoExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({gastaoTxCount} txs)
           </p>
         </div>
 
         {/* Escola & Filhos (Colegio Misericordia + Futebol All Boys) */}
-        <div className="p-5 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-zinc-900 to-amber-950/20 space-y-2">
+        <div className="p-4 sm:p-5 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-zinc-900 to-amber-950/20 space-y-2">
           <div className="flex items-center justify-between text-zinc-400 text-xs">
-            <span className="font-semibold uppercase tracking-wider text-[11px] text-amber-300">🎒 Filhos (Escola & Futebol)</span>
-            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
-              <Baby className="w-4 h-4" />
+            <span className="font-semibold uppercase tracking-wider text-[10px] text-amber-300">🎒 Filhos & Colégio</span>
+            <div className="p-1.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <Baby className="w-3.5 h-3.5" />
             </div>
           </div>
-          <p className="text-2xl font-bold font-mono text-amber-400">
+          <p className="text-xl sm:text-2xl font-bold font-mono text-amber-400">
             {maskBRL(schoolExpensesBRL)}
           </p>
-          <p className="text-[11px] text-zinc-400 font-mono">
-            {valuesHidden ? '••••••' : `$ ${schoolExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({schoolExpenses.length} despesas)
+          <p className="text-[10px] text-zinc-400 font-mono">
+            {valuesHidden ? '••••••' : `$ ${schoolExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({schoolExpenses.length} txs)
+          </p>
+        </div>
+
+        {/* Casa & Compartilhado */}
+        <div className="p-4 sm:p-5 rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-zinc-900 to-emerald-950/20 space-y-2">
+          <div className="flex items-center justify-between text-zinc-400 text-xs">
+            <span className="font-semibold uppercase tracking-wider text-[10px] text-emerald-300">🏠 Casa & Compartilhado</span>
+            <div className="p-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <Building2 className="w-3.5 h-3.5" />
+            </div>
+          </div>
+          <p className="text-xl sm:text-2xl font-bold font-mono text-emerald-400">
+            {maskBRL(sharedExpensesBRL)}
+          </p>
+          <p className="text-[10px] text-zinc-400 font-mono">
+            {valuesHidden ? '••••••' : `$ ${sharedExpensesARS.toLocaleString('pt-BR', { maximumFractionDigits: 0 })} ARS`} ({sharedExpenses.length} txs)
           </p>
         </div>
       </div>
@@ -1677,50 +1751,61 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
 
           <div className="flex flex-wrap items-center gap-2">
             {/* Seletor de Membro */}
-            <div className="flex items-center bg-zinc-950 p-1 rounded-xl border border-zinc-800 text-xs font-semibold">
+            <div className="flex items-center bg-zinc-950 p-1 rounded-xl border border-zinc-800 text-xs font-semibold overflow-x-auto">
               <button
                 type="button"
                 onClick={() => setSelectedMember('all')}
-                className={`px-2.5 py-1 rounded-lg transition-all ${
+                className={`px-2.5 py-1 rounded-lg transition-all whitespace-nowrap ${
                   selectedMember === 'all'
                     ? 'bg-purple-600 text-white shadow'
                     : 'text-zinc-400 hover:text-white'
                 }`}
               >
-                Todos
+                Todos (Consolidado)
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedMember('Amanda')}
-                className={`px-2.5 py-1 rounded-lg transition-all ${
+                className={`px-2.5 py-1 rounded-lg transition-all whitespace-nowrap ${
                   selectedMember === 'Amanda'
                     ? 'bg-pink-600 text-white shadow'
                     : 'text-zinc-400 hover:text-white'
                 }`}
               >
-                👤 Amanda
+                👩 Amanda
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedMember('Gastão')}
-                className={`px-2.5 py-1 rounded-lg transition-all ${
+                className={`px-2.5 py-1 rounded-lg transition-all whitespace-nowrap ${
                   selectedMember === 'Gastão'
                     ? 'bg-indigo-600 text-white shadow'
                     : 'text-zinc-400 hover:text-white'
                 }`}
               >
-                👤 Gastão
+                👨 Gastão
               </button>
               <button
                 type="button"
                 onClick={() => setSelectedMember('Filhos')}
-                className={`px-2.5 py-1 rounded-lg transition-all ${
+                className={`px-2.5 py-1 rounded-lg transition-all whitespace-nowrap ${
                   selectedMember === 'Filhos' || selectedMember === 'Misericordia'
                     ? 'bg-amber-600 text-white shadow'
                     : 'text-zinc-400 hover:text-white'
                 }`}
               >
-                🎒 Filhos (Escola & Futebol)
+                🎒 Filhos & Colégio
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedMember('Casa')}
+                className={`px-2.5 py-1 rounded-lg transition-all whitespace-nowrap ${
+                  selectedMember === 'Casa' || selectedMember === 'Compartilhado'
+                    ? 'bg-emerald-600 text-white shadow'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                🏠 Casa & Compartilhado
               </button>
             </div>
 
@@ -1743,6 +1828,9 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
               onClick={() => {
                 setAmountRaw('');
                 setAmount(0);
+                setMerchant('');
+                setDescription('');
+                setChildTag(currentUser?.role || '');
                 setShowManualModal(true);
               }}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow transition-all ml-auto sm:ml-0"
@@ -1818,15 +1906,15 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
                             </span>
                           )}
 
-                          {tx.childTag && (
-                            <span className={`px-2 py-0.5 rounded-full font-bold border text-[10px] ${
-                              isParent 
-                                ? "bg-indigo-500/20 text-indigo-300 border-indigo-500/30" 
-                                : "bg-pink-500/20 text-pink-300 border-pink-500/30"
-                            }`}>
-                              {isParent ? `👤 ${tx.childTag}` : `👶 ${tx.childTag}`}
-                            </span>
-                          )}
+                          {(() => {
+                            const badge = getMemberBadge(tx.childTag);
+                            if (!badge) return null;
+                            return (
+                              <span className={`px-2 py-0.5 rounded-full font-bold border text-[10px] ${badge.style}`}>
+                                {badge.label}
+                              </span>
+                            );
+                          })()}
                         </div>
 
                         <div className="flex items-center gap-1 ml-auto">
@@ -1917,17 +2005,15 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
                             </span>
                           </td>
                           <td className="p-3 whitespace-nowrap">
-                            {tx.childTag ? (
-                              <span className={`px-2 py-0.5 rounded-full font-bold border text-[11px] ${
-                                isParent 
-                                  ? "bg-indigo-500/20 text-indigo-300 border-indigo-500/30" 
-                                  : "bg-pink-500/20 text-pink-300 border-pink-500/30"
-                              }`}>
-                                {isParent ? `👤 ${tx.childTag}` : `👶 ${tx.childTag}`}
-                              </span>
-                            ) : (
-                              <span className="text-zinc-600">-</span>
-                            )}
+                            {(() => {
+                              const badge = getMemberBadge(tx.childTag);
+                              if (!badge) return <span className="text-zinc-600">-</span>;
+                              return (
+                                <span className={`px-2.5 py-0.5 rounded-full font-bold border text-[11px] ${badge.style}`}>
+                                  {badge.label}
+                                </span>
+                              );
+                            })()}
                           </td>
                           <td className={`p-3 text-right font-mono font-bold whitespace-nowrap ${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}`}>
                             <div>{valuesHidden ? '••••••' : `${tx.type === 'income' ? '+' : '-'}${formatMoney(convertToActive(tx.amount, tx.currency))}`}</div>
@@ -2119,50 +2205,93 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-purple-400">Vincular a Pessoa / Familiar</label>
-                <div className="flex flex-wrap gap-2">
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-purple-400 flex items-center justify-between">
+                  <span>Vincular a Pessoa / Familiar</span>
+                  {editingTx.childTag && (
+                    <span className="text-[11px] text-zinc-400 font-medium">
+                      Atribuído: <strong className="text-white">{editingTx.childTag}</strong>
+                    </span>
+                  )}
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setEditingTx({ ...editingTx, childTag: 'Amanda' })}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
+                      editingTx.childTag === 'Amanda'
+                        ? 'bg-pink-600 text-white border-pink-500 shadow-sm'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:border-zinc-700'
+                    }`}
+                  >
+                    <span>👩</span>
+                    <span>Amanda</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setEditingTx({ ...editingTx, childTag: 'Gastão' })}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
+                      editingTx.childTag === 'Gastão'
+                        ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:border-zinc-700'
+                    }`}
+                  >
+                    <span>👨</span>
+                    <span>Gastão</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setEditingTx({ ...editingTx, childTag: 'Amanda e Gastão' })}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
+                      editingTx.childTag === 'Amanda e Gastão' || editingTx.childTag === 'Casal'
+                        ? 'bg-purple-600 text-white border-purple-500 shadow-sm'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:border-zinc-700'
+                    }`}
+                  >
+                    <span>👥</span>
+                    <span>Ambos / Casal</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setEditingTx({ ...editingTx, childTag: 'Filhos & Família' })}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
+                      editingTx.childTag === 'Filhos & Família' || editingTx.childTag === 'Bernardo'
+                        ? 'bg-amber-600 text-white border-amber-500 shadow-sm'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:border-zinc-700'
+                    }`}
+                  >
+                    <span>🎒</span>
+                    <span>Bernardo / Filhos</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setEditingTx({ ...editingTx, childTag: 'Família / Casa' })}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
+                      editingTx.childTag === 'Família / Casa' || editingTx.childTag === 'Casa'
+                        ? 'bg-emerald-600 text-white border-emerald-500 shadow-sm'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:border-zinc-700'
+                    }`}
+                  >
+                    <span>🏠</span>
+                    <span>Casa & Geral</span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => setEditingTx({ ...editingTx, childTag: '' })}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
                       !editingTx.childTag
-                        ? 'bg-purple-500/20 border-purple-500/40 text-purple-300 font-bold'
-                        : 'border-zinc-800 text-zinc-400 hover:text-white'
+                        ? 'bg-zinc-700 text-white border-zinc-600'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700'
                     }`}
                   >
-                    Nenhum
+                    <span>📦</span>
+                    <span>Sem titular</span>
                   </button>
-
-                  {parentsList.map((parent) => (
-                    <button
-                      key={parent}
-                      type="button"
-                      onClick={() => setEditingTx({ ...editingTx, childTag: parent })}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                        editingTx.childTag === parent
-                          ? 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300 font-bold'
-                          : 'border-zinc-800 text-zinc-400 hover:text-white'
-                      }`}
-                    >
-                      👤 {parent}
-                    </button>
-                  ))}
-
-                  {childrenList.map((child) => (
-                    <button
-                      key={child}
-                      type="button"
-                      onClick={() => setEditingTx({ ...editingTx, childTag: child })}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                        editingTx.childTag === child
-                          ? 'bg-pink-500/20 border-pink-500/40 text-pink-300 font-bold'
-                          : 'border-zinc-800 text-zinc-400 hover:text-white'
-                      }`}
-                    >
-                      👶 {child}
-                    </button>
-                  ))}
                 </div>
               </div>
 
@@ -2340,55 +2469,96 @@ Digite o valor desejado (ou digite 'auto' para usar o Dólar Blue ao vivo da int
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-purple-400 flex items-center gap-1">
-                  <User size={13} className="text-purple-400" />
-                  Vincular a Pessoa / Familiar
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-purple-400 flex items-center justify-between">
+                  <span className="flex items-center gap-1">
+                    <User size={13} className="text-purple-400" />
+                    Quem gastou? (Titular / Destino)
+                  </span>
+                  {childTag && (
+                    <span className="text-[11px] text-zinc-400 font-medium">
+                      Atribuído: <strong className="text-white">{childTag}</strong>
+                    </span>
+                  )}
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setChildTag('Amanda')}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
+                      childTag === 'Amanda'
+                        ? 'bg-pink-600 text-white border-pink-500 shadow-sm'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:border-zinc-700'
+                    }`}
+                  >
+                    <span>👩</span>
+                    <span>Amanda</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setChildTag('Gastão')}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
+                      childTag === 'Gastão'
+                        ? 'bg-indigo-600 text-white border-indigo-500 shadow-sm'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:border-zinc-700'
+                    }`}
+                  >
+                    <span>👨</span>
+                    <span>Gastão</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setChildTag('Amanda e Gastão')}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
+                      childTag === 'Amanda e Gastão' || childTag === 'Casal'
+                        ? 'bg-purple-600 text-white border-purple-500 shadow-sm'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:border-zinc-700'
+                    }`}
+                  >
+                    <span>👥</span>
+                    <span>Ambos / Casal</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setChildTag('Filhos & Família')}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
+                      childTag === 'Filhos & Família' || childTag === 'Bernardo'
+                        ? 'bg-amber-600 text-white border-amber-500 shadow-sm'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:border-zinc-700'
+                    }`}
+                  >
+                    <span>🎒</span>
+                    <span>Bernardo / Filhos</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setChildTag('Família / Casa')}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
+                      childTag === 'Família / Casa' || childTag === 'Casa'
+                        ? 'bg-emerald-600 text-white border-emerald-500 shadow-sm'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:border-zinc-700'
+                    }`}
+                  >
+                    <span>🏠</span>
+                    <span>Casa & Geral</span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => setChildTag('')}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all text-left flex items-center gap-1.5 ${
                       !childTag
-                        ? 'bg-purple-500/20 border-purple-500/40 text-purple-300 font-bold'
-                        : 'border-zinc-800 text-zinc-400 hover:text-white'
+                        ? 'bg-zinc-700 text-white border-zinc-600'
+                        : 'bg-zinc-950 border-zinc-800 text-zinc-400 hover:border-zinc-700'
                     }`}
                   >
-                    Nenhum
+                    <span>📦</span>
+                    <span>Sem titular</span>
                   </button>
-
-                  {/* Pais */}
-                  {parentsList.map((parent) => (
-                    <button
-                      key={parent}
-                      type="button"
-                      onClick={() => setChildTag(parent)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                        childTag === parent
-                          ? 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300 font-bold'
-                          : 'border-zinc-800 text-zinc-400 hover:text-white'
-                      }`}
-                    >
-                      👤 {parent}
-                    </button>
-                  ))}
-
-                  {/* Filhos */}
-                  {childrenList.map((child) => (
-                    <button
-                      key={child}
-                      type="button"
-                      onClick={() => setChildTag(child)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-                        childTag === child
-                          ? 'bg-pink-500/20 border-pink-500/40 text-pink-300 font-bold'
-                          : 'border-zinc-800 text-zinc-400 hover:text-white'
-                      }`}
-                    >
-                      👶 {child}
-                    </button>
-                  ))}
                 </div>
               </div>
 

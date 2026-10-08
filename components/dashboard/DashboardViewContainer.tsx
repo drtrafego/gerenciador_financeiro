@@ -10,17 +10,35 @@ export default function DashboardViewContainer({
   children,
   displayCurrency = "BRL",
   rate,
+  initialTransactions,
+  initialCategories,
+  currentUser,
 }: {
   children: React.ReactNode;
   displayCurrency?: Currency;
   rate?: RatesMap;
+  initialTransactions?: any[];
+  initialCategories?: any[];
+  currentUser?: {
+    email: string;
+    name: string;
+    role: "Amanda" | "Gastão";
+  };
 }) {
   const { mode, isLoaded } = useProfile();
 
   const isPF = mode === "pf" || (typeof window !== "undefined" && (localStorage.getItem("app_profile_mode") === "pf" || document.cookie.includes("app_profile_mode=pf")));
 
   if (isPF) {
-    return <PersonalDashboardView displayCurrency={displayCurrency} rate={rate} />;
+    return (
+      <PersonalDashboardView
+        displayCurrency={displayCurrency}
+        rate={rate}
+        initialTransactions={initialTransactions}
+        initialCategories={initialCategories}
+        currentUser={currentUser}
+      />
+    );
   }
 
   if (!isLoaded) {

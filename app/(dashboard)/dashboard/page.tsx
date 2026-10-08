@@ -12,6 +12,15 @@ import SourceBreakdown from "@/components/dashboard/SourceBreakdown";
 import SourceMrrBar from "@/components/dashboard/SourceMrrBar";
 import SourceMrrTrend from "@/components/dashboard/SourceMrrTrend";
 import DashboardViewContainer from "@/components/dashboard/DashboardViewContainer";
+import { stackServerApp } from "@/stack/server";
+import {
+  getPersonalCustomTransactions,
+  getPersonalDeletedIds,
+  getPersonalCategories,
+  deduplicateTransactions,
+  PersonalTransaction,
+} from "@/lib/agent/services/personalTransactions";
+import { PERSONAL_TRANSACTIONS } from "@/lib/transactionData";
 
 export default async function DashboardPage({
   searchParams,
@@ -22,11 +31,43 @@ export default async function DashboardPage({
   const { from, to } = resolvePeriod(sp);
   const data = await getDashboardData(from, to);
 
+  let userEmail = "";
+  let userName = "";
+  try {
+    const stackUser = await stackServerApp.getUser();
+    userEmail = stackUser?.primaryEmail || "";
+    userName = stackUser?.displayName || "";
+  } catch {}
+
+  const isAmanda = userEmail.toLowerCase().includes("amanda");
+  const currentUser = {
+    email: userEmail,
+    name: userName || (isAmanda ? "Amanda" : "Gastão"),
+    role: (isAmanda ? "Amanda" : "Gastão") as "Amanda" | "Gastão",
+  };
+
+  const [customTxs, deletedSet, customCategories] = await Promise.all([
+    getPersonalCustomTransactions(),
+    getPersonalDeletedIds(),
+    getPersonalCategories(),
+  ]);
+
+  const allMerged = [...customTxs, ...(PERSONAL_TRANSACTIONS as any[])].filter(
+    (t) => !deletedSet.has(t.id)
+  );
+  const serverTxs: PersonalTransaction[] = deduplicateTransactions(allMerged);
+
   const periodBalance = data.periodReceived - data.periodExpense;
   const comparadoCom = formatPeriodLabel(data.previousPeriod);
 
   return (
-    <DashboardViewContainer displayCurrency={data.displayCurrency} rate={data.rate}>
+    <DashboardViewContainer
+      displayCurrency={data.displayCurrency}
+      rate={data.rate}
+      initialTransactions={serverTxs}
+      initialCategories={customCategories.length > 0 ? customCategories : undefined}
+      currentUser={currentUser}
+    >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <h1 className="text-lg font-semibold text-zinc-200">Visão geral da Empresa</h1>
