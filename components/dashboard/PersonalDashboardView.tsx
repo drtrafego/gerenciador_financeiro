@@ -36,7 +36,9 @@ import {
   Filter,
   BarChart3,
   Flame,
-  Award
+  Award,
+  RefreshCw,
+  Cloud
 } from "lucide-react";
 
 import {
@@ -109,6 +111,21 @@ const MONTHS = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
+
+function deduplicateTransactions(list: any[]): any[] {
+  const seen = new Set<string>();
+  const clean: any[] = [];
+  for (const tx of list) {
+    if (!tx || !tx.id) continue;
+    const normMerchant = (tx.merchant || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '');
+    const key = `${tx.id}_${tx.date}_${normMerchant}_${Number(tx.amount).toFixed(2)}_${tx.type || 'expense'}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      clean.push(tx);
+    }
+  }
+  return clean;
+}
 
 interface PersonalDashboardViewProps {
   displayCurrency?: Currency;
@@ -293,23 +310,10 @@ export default function PersonalDashboardView({
   const [subcategory, setSubcategory] = useState('');
   const [childTag, setChildTag] = useState('');
   const [isCloudSyncing, setIsCloudSyncing] = useState<boolean>(false);
+  const [lastSyncTime, setLastSyncTime] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
-
-    const deduplicateTransactions = (list: any[]) => {
-      const seen = new Set<string>();
-      const clean: any[] = [];
-      for (const tx of list) {
-        const normMerchant = (tx.merchant || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '');
-        const key = `${tx.date}_${normMerchant}_${Number(tx.amount).toFixed(2)}_${tx.type || 'expense'}`;
-        if (!seen.has(key)) {
-          seen.add(key);
-          clean.push(tx);
-        }
-      }
-      return clean;
-    };
 
     const loadAllPersonalData = async () => {
       const builtinTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
@@ -407,8 +411,8 @@ export default function PersonalDashboardView({
             const dbCustom = json.customTransactions || [];
             const deletedSet = new Set(json.deletedIds || []);
 
-            // Junta os 1.846 históricos + todos os customizados do banco na nuvem
-            const allMerged = [...builtinTxs, ...dbCustom].filter((t: any) => !deletedSet.has(t.id));
+            // Junta todos os customizados do banco na nuvem (primeiro) + os 1.846 históricos para sobrepor
+            const allMerged = [...dbCustom, ...builtinTxs].filter((t: any) => !deletedSet.has(t.id));
             const finalDeduped: PersonalTransaction[] = deduplicateTransactions(allMerged).map((t: any) => ({
               ...t,
               type: (t.type || 'expense') as 'expense' | 'income',
@@ -417,6 +421,7 @@ export default function PersonalDashboardView({
 
             setTransactions(finalDeduped);
             localStorage.setItem('user_personal_transactions', JSON.stringify(finalDeduped));
+            setLastSyncTime(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
 
             // Sincroniza lista de membros/responsáveis encontrados
             const foundMembers = Array.from(new Set(finalDeduped.map(t => t.childTag || t.parentTag).filter(Boolean))) as string[];
@@ -447,6 +452,44 @@ export default function PersonalDashboardView({
     setTransactions(updated);
     localStorage.setItem('user_personal_transactions', JSON.stringify(updated));
     window.dispatchEvent(new Event('user_pf_data_changed'));
+  };
+
+  const handleManualCloudSync = async () => {
+    setIsCloudSyncing(true);
+    try {
+      const res = await fetch('/api/personal/transactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'sync',
+          localTransactions: transactions,
+          localCategories: categories
+        })
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success) {
+          const dbCustom = json.customTransactions || [];
+          const deletedSet = new Set(json.deletedIds || []);
+          const builtinTxs: any[] = DEMO_PERSONAL_TRANSACTIONS || [];
+          const allMerged = [...dbCustom, ...builtinTxs].filter((t: any) => !deletedSet.has(t.id));
+          const finalDeduped: PersonalTransaction[] = deduplicateTransactions(allMerged).map((t: any) => ({
+            ...t,
+            type: (t.type || 'expense') as 'expense' | 'income',
+            language: (t.language || 'es') as 'pt' | 'es'
+          }));
+
+          setTransactions(finalDeduped);
+          localStorage.setItem('user_personal_transactions', JSON.stringify(finalDeduped));
+          setLastSyncTime(new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }));
+        }
+      }
+    } catch (e) {
+      console.warn('Erro ao sincronizar manualmente com a nuvem:', e);
+    } finally {
+      setIsCloudSyncing(false);
+    }
   };
 
   const handleOpenEditModal = (tx: PersonalTransaction) => {
@@ -828,16 +871,41 @@ export default function PersonalDashboardView({
     <div className="space-y-6 animate-in fade-in duration-300 pb-10">
       {/* Banner Superior com Ações */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-gradient-to-r from-purple-950 via-zinc-900 to-indigo-950 p-6 rounded-2xl border border-purple-500/20 shadow-xl">
-        <div className="space-y-1">
-          <h2 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-            {dict.dashboard.title}
-          </h2>
+        <div className="space-y-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+              {dict.dashboard.title}
+            </h2>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              <Cloud size={12} />
+              <span>Nuvem Unificada (Amanda & Gastão)</span>
+            </span>
+            {lastSyncTime && (
+              <span className="text-[11px] text-zinc-400 font-mono hidden sm:inline">
+                • Sincronizado às {lastSyncTime}
+              </span>
+            )}
+          </div>
           <p className="text-xs text-zinc-300">
             Acompanhe o controle financeiro pessoal, despesas dos titulares e dependentes familiares.
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+          <button
+            onClick={handleManualCloudSync}
+            disabled={isCloudSyncing}
+            className={`flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-xs border transition-all ${
+              isCloudSyncing
+                ? "bg-purple-900/50 border-purple-500/50 text-purple-200 animate-pulse"
+                : "bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border-zinc-700"
+            }`}
+            title="Sincronizar todas as anotações de Amanda e Gastão com o banco na nuvem"
+          >
+            <RefreshCw size={14} className={isCloudSyncing ? "animate-spin text-purple-400" : "text-emerald-400"} />
+            <span>{isCloudSyncing ? "Sincronizando..." : "Sincronizar Nuvem"}</span>
+          </button>
+
           <Link
             href="/scan"
             className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-600/20 transition-all w-full sm:w-auto"
