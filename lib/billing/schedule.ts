@@ -3,7 +3,8 @@
 // Regras que este arquivo materializa:
 // 1. A data de VENCIMENTO (trigger_date) é canônica e nunca muda. O que muda é
 //    a data de ENVIO, calculada por sendDateFor.
-// 2. Só sábado e domingo adiam o envio para o próximo dia útil.
+// 2. Finais de semana e feriados nacionais/bancários adiam o envio para o
+//    próximo dia útil.
 // 3. Entre duas mensagens consecutivas do mesmo vencimento (aviso -> D+2 -> D+5)
 //    tem que existir pelo menos 2 dias úteis de intervalo, sempre contando a
 //    partir da data EFETIVA de envio da mensagem anterior, não da nominal.
@@ -47,17 +48,93 @@ export function weekdayOf(iso: string): number {
   return parseIso(iso).getUTCDay();
 }
 
-// Só sábado e domingo adiam o envio. Feriado nacional NÃO adia, por decisão do
-// dono: manter uma tabela de feriados desatualizada seria pior do que enviar a
-// mensagem no feriado, que é lida do mesmo jeito.
+// Finais de semana e feriados nacionais/bancários adiam o envio.
+// Os feriados são calculados dinamicamente sem depender de tabela estática.
 export function isWeekend(iso: string): boolean {
   const day = weekdayOf(iso);
   return day === 0 || day === 6;
 }
 
+// Algoritmo de Meeus/Jones/Butcher para a data da Páscoa no calendário gregoriano.
+// Retorna a data no formato 'YYYY-MM-DD'.
+export function getEasterSunday(year: number): string {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  const mm = String(month).padStart(2, '0');
+  const dd = String(day).padStart(2, '0');
+  return `${year}-${mm}-${dd}`;
+}
+
+const holidayCache = new Map<number, Set<string>>();
+
+// Feriados nacionais oficiais (Lei 10.607/2002, Lei 6.802/1980, Lei 14.759/2023)
+// e feriados bancários FEBRABAN / Resolução CMN 4.880.
+export function getHolidaysForYear(year: number): Set<string> {
+  const cached = holidayCache.get(year);
+  if (cached) return cached;
+
+  const easter = getEasterSunday(year);
+  const holidays = new Set<string>([
+    // Feriados nacionais fixos
+    `${year}-01-01`, // Confraternização Universal
+    `${year}-04-21`, // Tiradentes
+    `${year}-05-01`, // Dia do Trabalhador
+    `${year}-09-07`, // Independência do Brasil
+    `${year}-10-12`, // Nossa Senhora Aparecida
+    `${year}-11-02`, // Finados
+    `${year}-11-15`, // Proclamação da República
+    `${year}-11-20`, // Dia da Consciência Negra (Lei 14.759/2023)
+    `${year}-12-25`, // Natal
+
+    // Feriados móveis e bancários derivados da Páscoa
+    addDays(easter, -48), // Segunda-feira de Carnaval
+    addDays(easter, -47), // Terça-feira de Carnaval
+    addDays(easter, -2),  // Sexta-feira Santa (Paixão de Cristo)
+    addDays(easter, 60),  // Corpus Christi
+  ]);
+
+  holidayCache.set(year, holidays);
+  return holidays;
+}
+
+export function isHoliday(iso: string): boolean {
+  const yyyy = Number(iso.slice(0, 4));
+  if (!yyyy || Number.isNaN(yyyy)) return false;
+  return getHolidaysForYear(yyyy).has(iso);
+}
+
+// Dia útil: nem fim de semana nem feriado nacional/bancário.
+export function isBusinessDay(iso: string): boolean {
+  return !isWeekend(iso) && !isHoliday(iso);
+}
+
+// Motivo pelo qual um envio precisou ser adiado (para exibição natural na mensagem).
+export type PostponeReason = 'fim de semana' | 'feriado' | 'fim de semana ou feriado';
+
+export function getPostponedReason(iso: string): PostponeReason {
+  const weekend = isWeekend(iso);
+  const holiday = isHoliday(iso);
+  if (weekend && holiday) return 'fim de semana ou feriado';
+  if (holiday) return 'feriado';
+  return 'fim de semana';
+}
+
+// Avança para o próximo dia útil caso a data caia em fim de semana ou feriado.
 export function nextBusinessDay(iso: string): string {
   let current = iso;
-  while (isWeekend(current)) current = addDays(current, 1);
+  while (!isBusinessDay(current)) current = addDays(current, 1);
   return current;
 }
 
@@ -131,10 +208,10 @@ export function sendDateFor(dueIso: string, stage: ReminderStage): string {
 }
 
 // Inverso de sendDateFor: quais datas de vencimento têm envio daquela etapa
-// marcado para hoje. Devolve lista vazia em sábado e domingo, porque nenhum
-// envio é agendado para o fim de semana.
+// marcado para hoje. Devolve lista vazia em finais de semana e feriados,
+// porque nenhum envio é agendado fora de dia útil.
 export function dueDateCandidatesFor(todayIso: string, stage: ReminderStage): string[] {
-  if (isWeekend(todayIso)) return [];
+  if (!isBusinessDay(todayIso)) return [];
 
   const candidates: string[] = [];
   for (let offset = 0; offset <= CANDIDATE_SCAN_DAYS; offset++) {

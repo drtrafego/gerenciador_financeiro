@@ -20,6 +20,7 @@ import {
   DUNNING_STAGES,
   canonicalDueDateFor,
   dueDateCandidatesFor,
+  getPostponedReason,
   isFirstBillingFor,
   sendDateFor,
 } from '@/lib/billing/schedule';
@@ -29,8 +30,8 @@ import { getConfirmedKeys } from '@/lib/billing/confirmations';
 //
 // 1. O passo dos vencimentos é dirigido pela DATA DE ENVIO, não pelo dia do mês.
 //    dueDateCandidatesFor devolve quais vencimentos têm envio marcado para hoje,
-//    então um vencimento de sábado ou domingo é avisado na segunda, com o texto
-//    de "venceu no fim de semana" e a data REAL do vencimento. trigger_date
+//    então um vencimento de fim de semana ou feriado é avisado no próximo dia útil,
+//    com a explicação do adiamento e a data REAL do vencimento. trigger_date
 //    continua sendo a data de vencimento canônica, nunca a data de envio.
 //
 // 2. Cobrança de atraso em duas etapas, D+2 e D+5, e para (PASSO A2). Só cobra
@@ -355,24 +356,27 @@ export async function GET(request: Request) {
         .filter(({ contract }) => firstBillingIds.has(contract.id))
         .map(({ contract }) => (contract.name ?? '').trim() || 'Serviço');
 
+      const reason = !noPrazo ? getPostponedReason(dueIso) : undefined;
+
       let message: string;
       if (firstNames.length > 0) {
         // Primeira cobrança do contrato: dá as boas vindas, avisa que o serviço
         // começa e cobra a primeira parcela. Cobre também o grupo misto (serviço
-        // novo vencendo junto com contrato antigo) e o adiamento de fim de semana.
+        // novo vencendo junto com contrato antigo) e o adiamento de fim de semana ou feriado.
         message = buildFirstBillingMessage({
           saudacao,
           data: dataBr,
           items,
           total,
           postponed: !noPrazo,
+          reason,
           firstNames,
           clienteNovo: !clientesJaAvisados.has(group[0]!.contract.clientId ?? ''),
         });
       } else if (!noPrazo) {
-        // Vencimento no fim de semana: o texto explica o adiamento e usa a data
+        // Vencimento no fim de semana ou feriado: o texto explica o adiamento e usa a data
         // REAL do vencimento, não a data de hoje.
-        message = buildPostponedDueMessage({ saudacao, data: dataBr, items, total });
+        message = buildPostponedDueMessage({ saudacao, data: dataBr, items, total, reason });
       } else if (claimedContracts.length === 1) {
         message = resolveMessage(defaultBody, {
           nome: saudacao,

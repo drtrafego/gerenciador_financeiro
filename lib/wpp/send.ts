@@ -5,7 +5,12 @@
 // dentro do whatsapp-service, mesmo formato de erro salvo em reminders.errorMessage.
 
 import type { Reminder, MessageTemplate, Client, Invoice, Contract, ReminderStage } from '@/lib/db/schema';
-import { isFirstBillingFor, sendDateFor } from '@/lib/billing/schedule';
+import {
+  isFirstBillingFor,
+  sendDateFor,
+  getPostponedReason,
+  type PostponeReason,
+} from '@/lib/billing/schedule';
 
 const WPP_URL = process.env.WPP_SERVICE_URL ?? '';
 const WPP_KEY = process.env.WPP_API_KEY ?? '';
@@ -128,8 +133,14 @@ export function buildConsolidatedMessage({
   });
 }
 
-// Aviso do vencimento adiado: o vencimento caiu no sábado ou no domingo e a
-// mensagem só sai no próximo dia útil, então o texto explica o atraso e usa a
+function formatPostponedReasonText(reason?: PostponeReason): string {
+  if (reason === 'feriado') return 'em um feriado';
+  if (reason === 'fim de semana ou feriado') return 'no fim de semana ou feriado';
+  return 'no fim de semana';
+}
+
+// Aviso do vencimento adiado: o vencimento caiu no fim de semana ou feriado e a
+// mensagem só sai no próximo dia útil, então o texto explica o adiamento e usa a
 // data REAL do vencimento, não a data do envio. Texto fixo aqui no código, NÃO
 // lê da tabela message_templates.
 export function buildPostponedDueMessage({
@@ -137,16 +148,19 @@ export function buildPostponedDueMessage({
   data,
   items,
   total,
+  reason = 'fim de semana',
 }: {
   saudacao: string;
   data: string;
   items: BillingItem[];
   total: string;
+  reason?: PostponeReason;
 }): string {
+  const motivo = formatPostponedReasonText(reason);
   const abertura =
     items.length === 1
-      ? `O seu pagamento de *${items[0]!.valor}* venceu no dia ${data}, que caiu no fim de semana, por isso estou te avisando hoje.`
-      : `Os seus pagamentos venceram no dia ${data}, que caiu no fim de semana, por isso estou te avisando hoje:\n\n${buildItemsBlock(items, total)}`;
+      ? `O seu pagamento de *${items[0]!.valor}* venceu no dia ${data}, que caiu ${motivo}, por isso estou te avisando hoje.`
+      : `Os seus pagamentos venceram no dia ${data}, que caiu ${motivo}, por isso estou te avisando hoje:\n\n${buildItemsBlock(items, total)}`;
 
   return wrapJuliana({
     saudacao,
@@ -170,8 +184,8 @@ function joinServiceNames(names: string[]): string {
 // base, porque duplicar builder é o que faz a chave Pix divergir com o tempo:
 //
 // 1. Todo o grupo é estreante e o vencimento saiu no prazo: boas vindas cheias.
-// 2. Todo o grupo é estreante mas o vencimento caiu no fim de semana: mesma
-//    boas vindas, com a data REAL do vencimento e a explicação do adiamento.
+// 2. Todo o grupo é estreante mas o vencimento caiu no fim de semana ou feriado:
+//    mesma boas vindas, com a data REAL do vencimento e a explicação do adiamento.
 // 3. Grupo MISTO (cliente antigo que fechou um serviço novo com o mesmo dia de
 //    cobrança): abre dando as boas vindas ao serviço novo e lista TODOS os
 //    pagamentos do dia com o total. Uma mensagem só, de propósito: mandar duas
@@ -187,6 +201,7 @@ export function buildFirstBillingMessage({
   items,
   total,
   postponed,
+  reason = 'fim de semana',
   firstNames,
   clienteNovo = true,
 }: {
@@ -195,6 +210,7 @@ export function buildFirstBillingMessage({
   items: BillingItem[];
   total: string;
   postponed: boolean;
+  reason?: PostponeReason;
   firstNames: string[];
   /** Falso quando o cliente já recebeu mensagem da Juliana antes. */
   clienteNovo?: boolean;
@@ -214,6 +230,7 @@ export function buildFirstBillingMessage({
   // cadastrado continuam sendo dois.
   const plural = (misto ? firstNames.length : items.length) > 1;
 
+  const motivo = formatPostponedReasonText(reason);
   let abertura: string;
   let cobranca: string;
 
@@ -232,11 +249,11 @@ export function buildFirstBillingMessage({
     // só é ruído: a frase menciona o valor direto.
     if (items.length === 1) {
       cobranca = postponed
-        ? `A primeira parcela, no valor de *${items[0]!.valor}*, venceu no dia ${data}, que caiu no fim de semana, por isso estou te avisando hoje.`
+        ? `A primeira parcela, no valor de *${items[0]!.valor}*, venceu no dia ${data}, que caiu ${motivo}, por isso estou te avisando hoje.`
         : `A primeira parcela, no valor de *${items[0]!.valor}*, vence hoje, ${data}.`;
     } else {
       cobranca = postponed
-        ? `Os seus pagamentos venceram no dia ${data}, que caiu no fim de semana, por isso estou te avisando hoje. E ${entrada} aqui:\n\n${buildItemsBlock(items, total)}`
+        ? `Os seus pagamentos venceram no dia ${data}, que caiu ${motivo}, por isso estou te avisando hoje. E ${entrada} aqui:\n\n${buildItemsBlock(items, total)}`
         : `Hoje, ${data}, vencem os seus pagamentos, e ${entrada} aqui:\n\n${buildItemsBlock(items, total)}`;
     }
   } else {
@@ -249,8 +266,8 @@ export function buildFirstBillingMessage({
 
     if (postponed) {
       cobranca = plural
-        ? `As primeiras parcelas do seu contrato venceram no dia ${data}, que caiu no fim de semana, por isso estou te avisando hoje:\n\n${buildItemsBlock(items, total)}`
-        : `A primeira parcela do seu contrato, no valor de *${items[0]!.valor}*, venceu no dia ${data}, que caiu no fim de semana, por isso estou te avisando hoje.`;
+        ? `As primeiras parcelas do seu contrato venceram no dia ${data}, que caiu ${motivo}, por isso estou te avisando hoje:\n\n${buildItemsBlock(items, total)}`
+        : `A primeira parcela do seu contrato, no valor de *${items[0]!.valor}*, venceu no dia ${data}, que caiu ${motivo}, por isso estou te avisando hoje.`;
     } else {
       cobranca = plural
         ? `Para fechar essa primeira etapa, hoje, ${data}, vencem as primeiras parcelas do seu contrato:\n\n${buildItemsBlock(items, total)}`
@@ -357,6 +374,7 @@ export function buildAutomaticBillingMessage({
   if (stage === 'due') {
     const dueIso = reminder.triggerDate;
     const postponed = sendDateFor(dueIso, 'due') !== dueIso;
+    const reason = postponed ? getPostponedReason(dueIso) : undefined;
 
     if (isFirstBillingFor(dueIso, contract.startDate, contract.billingDay)) {
       return buildFirstBillingMessage({
@@ -365,10 +383,11 @@ export function buildAutomaticBillingMessage({
         items,
         total: valor,
         postponed,
+        reason,
         firstNames: [nome],
       });
     }
-    if (postponed) return buildPostponedDueMessage({ saudacao, data, items, total: valor });
+    if (postponed) return buildPostponedDueMessage({ saudacao, data, items, total: valor, reason });
     return null;
   }
 

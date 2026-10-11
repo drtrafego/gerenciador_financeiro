@@ -976,9 +976,9 @@ export default function RemindersClient({ reminders, templates, clients, alertPh
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-3 max-w-2xl">
             <h2 className="text-sm font-semibold text-zinc-200">Como funciona a cobrança automática</h2>
             <ul className="text-sm text-zinc-400 space-y-2">
-              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">1.</span>No dia do vencimento o cliente recebe o aviso. Se o vencimento cai no sábado ou no domingo, o aviso sai na segunda, com a data real do vencimento no texto.</li>
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">1.</span>No dia do vencimento o cliente recebe o aviso. Se o vencimento cai no fim de semana ou feriado, o aviso sai no próximo dia útil, com a data real do vencimento no texto.</li>
               <li className="flex gap-2"><span className="text-indigo-400 shrink-0">2.</span>Sem confirmação de pagamento, ele recebe a cobrança D+2 e, depois, a D+5. São duas cobranças e para.</li>
-              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">3.</span>Entre duas mensagens do mesmo vencimento sempre existem pelo menos 2 dias úteis. Feriado não adia envio, só sábado e domingo.</li>
+              <li className="flex gap-2"><span className="text-indigo-400 shrink-0">3.</span>Entre duas mensagens do mesmo vencimento sempre existem pelo menos 2 dias úteis. Finais de semana e feriados adiam o envio para o próximo dia útil.</li>
               <li className="flex gap-2"><span className="text-indigo-400 shrink-0">4.</span>Confirmar o pagamento interrompe as cobranças daquele vencimento, emite a fatura quitada e manda o recibo por e-mail ao cliente. O honorário passa a contar como recebido no dashboard, sem precisar de lançamento à mão. Dá para confirmar por aqui ou direto no fluxo de caixa.</li>
               <li className="flex gap-2"><span className="text-indigo-400 shrink-0">5.</span>Contrato pausado ou cancelado para de ser cobrado automaticamente.</li>
             </ul>
