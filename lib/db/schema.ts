@@ -132,6 +132,9 @@ export const contracts = pgTable('contracts', {
   startDate: date('start_date').notNull(),
   endDate: date('end_date'),
   status: text('status').default('active'), // active | paused | cancelled
+  // Renovação automática: true (padrão) = contrato ativo segue sendo cobrado mesmo
+  // depois do endDate; false = prazo fechado, a cobrança para no endDate.
+  autoRenew: boolean('auto_renew').notNull().default(true),
   description: text('description'),
   pdfUrl: text('pdf_url'),
   createdAt: timestamp('created_at').defaultNow(),

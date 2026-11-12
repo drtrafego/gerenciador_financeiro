@@ -26,7 +26,7 @@ import {
 import { stackServerApp } from '@/stack/server';
 import type { User } from './schema';
 import { notTestClient } from './filters';
-import { isContractEarning } from '@/lib/contracts';
+import { isContractEarning, isFixedTerm } from '@/lib/contracts';
 import { convertAmount, safeRates } from '@/lib/currency/format';
 import type { Currency, RatesMap } from '@/lib/currency/format';
 import { addDaysIso, previousPeriod, todayBrt } from '@/lib/period';
@@ -812,7 +812,7 @@ export async function getDashboardData(from: string, to: string) {
         notTestClient
       )),
     // Origem do cliente: MRR (contratos ativos por canal; finalizados filtrados em JS)
-    db.select({ source: clients.source, fixedAmount: contracts.fixedAmount, currency: contracts.currency, endDate: contracts.endDate, type: contracts.type })
+    db.select({ source: clients.source, fixedAmount: contracts.fixedAmount, currency: contracts.currency, endDate: contracts.endDate, type: contracts.type, autoRenew: contracts.autoRenew })
       .from(contracts)
       .innerJoin(clients, eq(contracts.clientId, clients.id))
       .where(and(eq(contracts.status, 'active'), notTestClient)),
@@ -862,7 +862,7 @@ export async function getDashboardData(from: string, to: string) {
       .where(and(
         lte(contracts.startDate, to),
         or(
-          and(eq(contracts.status, 'active'), ne(contracts.type, 'project')),
+          and(eq(contracts.status, 'active'), and(ne(contracts.type, 'project'), eq(contracts.autoRenew, true))),
           and(eq(contracts.status, 'active'), isNull(contracts.endDate)),
           and(isNotNull(contracts.endDate), gte(contracts.endDate, prev.from))
         ),
@@ -1211,7 +1211,7 @@ export async function getDashboardData(from: string, to: string) {
   };
 
   for (const r of sourceContracts) {
-    if (!isContractEarning('active', r.endDate, r.type)) continue; // pula contratos finalizados
+    if (!isContractEarning('active', r.endDate, isFixedTerm(r.type, r.autoRenew))) continue; // pula contratos finalizados
     const key = r.source ?? 'none';
     ensureSource(key).mrr += convertAmount(parseFloat(r.fixedAmount ?? '0'), (r.currency ?? 'BRL') as Currency, 'BRL', rate);
   }
@@ -1371,7 +1371,7 @@ export async function getCashFlowData(from: string, to: string) {
         and(
           lte(contracts.startDate, to),
           or(
-            and(eq(contracts.status, 'active'), ne(contracts.type, 'project')),
+            and(eq(contracts.status, 'active'), and(ne(contracts.type, 'project'), eq(contracts.autoRenew, true))),
             and(eq(contracts.status, 'active'), isNull(contracts.endDate)),
             and(isNotNull(contracts.endDate), gte(contracts.endDate, from))
           ),

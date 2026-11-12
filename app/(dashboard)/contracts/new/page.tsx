@@ -145,6 +145,18 @@ export default async function NewContractPage({
                 className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
+            <div className="sm:col-span-2 flex items-center gap-2">
+              <input
+                id="autoRenew"
+                name="autoRenew"
+                type="checkbox"
+                defaultChecked={true}
+                className="h-4 w-4 rounded border-zinc-700 bg-zinc-800 text-indigo-500"
+              />
+              <label htmlFor="autoRenew" className="text-sm text-zinc-300">
+                Renovação automática (segue cobrando após a data de término, até cancelar)
+              </label>
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-zinc-300 mb-1.5">Status</label>

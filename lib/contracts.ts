@@ -24,13 +24,13 @@ export const CONTRACT_STATUS_STYLES: Record<EffectiveContractStatus, string> = {
 export function effectiveContractStatus(
   status: string | null | undefined,
   endDate: string | null | undefined,
-  type?: string | null | undefined
+  fixedTerm?: boolean
 ): EffectiveContractStatus {
   if (status === 'cancelled') return 'cancelled';
   if (status === 'paused') return 'paused';
   // Apenas projetos pontuais (não recorrentes) são finalizados pela data de término.
   // Contratos mensais ativos contam com renovação automática contínua.
-  if (type === 'project' && endDate) {
+  if (fixedTerm && endDate) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const end = new Date(endDate + 'T00:00:00');
@@ -43,7 +43,12 @@ export function effectiveContractStatus(
 export function isContractEarning(
   status: string | null | undefined,
   endDate: string | null | undefined,
-  type?: string | null | undefined
+  fixedTerm?: boolean
 ): boolean {
-  return effectiveContractStatus(status, endDate, type) === 'active';
+  return effectiveContractStatus(status, endDate, fixedTerm) === 'active';
+}
+
+// Contrato com prazo fechado: projeto pontual ou mensalidade com renovação automática desligada.
+export function isFixedTerm(type: string | null | undefined, autoRenew: boolean | null | undefined): boolean {
+  return type === 'project' || autoRenew === false;
 }

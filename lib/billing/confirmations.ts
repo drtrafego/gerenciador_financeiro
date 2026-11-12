@@ -20,6 +20,7 @@ import {
   type PaymentConfirmation,
 } from '@/lib/db/schema';
 import { DUNNING_STAGES, addDays, canonicalDueDateFor, sendDateFor } from './schedule';
+import { isFixedTerm } from '@/lib/contracts';
 
 // Erros de negócio próprios, para o chamador decidir o status HTTP (a API do
 // agente converte em 404/400) sem este módulo depender da camada de rota.
@@ -352,7 +353,7 @@ export async function listOpenDues({
       if (canonicalDueDateFor(dueIso, row.contract.billingDay) !== dueIso) continue;
       if (row.contract.startDate && row.contract.startDate > dueIso) continue;
       // Renovação automática: apenas projetos com prazo fechado encerram por data de término
-      if (row.contract.type === 'project' && row.contract.endDate && row.contract.endDate < dueIso) continue;
+      if (isFixedTerm(row.contract.type, row.contract.autoRenew) && row.contract.endDate && row.contract.endDate < dueIso) continue;
       planned.push({ contract: row.contract, client: row.client, dueDate: dueIso });
     }
   }

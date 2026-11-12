@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Plus, FileText } from "lucide-react";
 import { formatCurrency, convertAmount, asCurrency } from "@/lib/currency/format";
 import type { Currency, RatesMap } from "@/lib/currency/format";
-import { effectiveContractStatus } from "@/lib/contracts";
+import { effectiveContractStatus, isFixedTerm } from "@/lib/contracts";
 import { todayBrt } from "@/lib/period";
 import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 import ContractsTable from "./ContractsTable";
@@ -90,7 +90,7 @@ export default function ContractsView({
   // Contrato que forma o MRR: ativo e dentro do prazo. É o mesmo critério do
   // dashboard, para os dois números fecharem.
   const contratosAtivos = contractRows.filter(
-    (r) => effectiveContractStatus(r.contract?.status, r.contract?.endDate, r.contract?.type) === "active"
+    (r) => effectiveContractStatus(r.contract?.status, r.contract?.endDate, isFixedTerm(r.contract?.type, r.contract?.autoRenew)) === "active"
   ).length;
 
   // Recorrência viva: não foi parada à mão e ainda não passou do fim. Sem isso o

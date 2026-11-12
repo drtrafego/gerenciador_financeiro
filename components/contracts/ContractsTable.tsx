@@ -7,6 +7,7 @@ import { useValuesVisibility } from "@/lib/contexts/ValuesVisibilityContext";
 import type { Currency, RatesMap } from "@/lib/currency/format";
 import {
   effectiveContractStatus,
+  isFixedTerm,
   CONTRACT_STATUS_LABELS,
   CONTRACT_STATUS_STYLES,
 } from "@/lib/contracts";
@@ -30,6 +31,7 @@ type ContractRow = {
     billingDay: number | null;
     status: string | null;
     endDate: string | null;
+    autoRenew?: boolean | null;
   };
   clientName: string | null;
 };
@@ -92,7 +94,7 @@ export default function ContractsTable({
       {/* Celular: card clicável inteiro, então a coluna "Ver" não precisa existir aqui */}
       <div className="flex flex-col gap-2 sm:hidden">
         {rows.map(({ contract, clientName }) => {
-          const eff = effectiveContractStatus(contract.status, contract.endDate, contract.type);
+          const eff = effectiveContractStatus(contract.status, contract.endDate, isFixedTerm(contract.type, contract.autoRenew));
           return (
             <Link
               key={contract.id}
@@ -132,7 +134,7 @@ export default function ContractsTable({
         </thead>
         <tbody className="divide-y divide-zinc-800">
           {rows.map(({ contract, clientName }) => {
-            const eff = effectiveContractStatus(contract.status, contract.endDate, contract.type);
+            const eff = effectiveContractStatus(contract.status, contract.endDate, isFixedTerm(contract.type, contract.autoRenew));
             return (
             <tr key={contract.id} className="hover:bg-zinc-800/50 transition-colors">
               <td className="px-4 py-3 font-medium text-white">{clientName ?? "—"}</td>

@@ -29,6 +29,8 @@ const contractSchema = z.object({
   startDate: z.string().min(1),
   endDate: z.string().optional().transform((v) => v || null),
   status: z.enum(['active', 'paused', 'cancelled']).default('active'),
+  // Checkbox do formulário: marcado envia "on", desmarcado não envia nada.
+  autoRenew: z.preprocess((v) => v === 'on' || v === 'true', z.boolean()),
   description: z.string().optional(),
 });
 
@@ -92,6 +94,7 @@ export async function createContractAction(formData: FormData): Promise<void> {
       billingDay: parsed.billingDay,
       startDate: parsed.startDate,
       endDate: parsed.endDate ?? null,
+      autoRenew: parsed.autoRenew,
       status: parsed.status,
       description: parsed.description ?? null,
       pdfUrl: pdfUrl ?? null,
@@ -139,6 +142,7 @@ export async function updateContractAction(id: string, formData: FormData): Prom
       billingDay: parsed.billingDay,
       startDate: parsed.startDate,
       endDate: parsed.endDate ?? null,
+      autoRenew: parsed.autoRenew,
       status: parsed.status,
       description: parsed.description ?? null,
       // Sem arquivo novo, o campo nem entra no UPDATE e o PDF atual fica intacto.

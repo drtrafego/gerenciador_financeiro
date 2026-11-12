@@ -25,6 +25,7 @@ import {
   sendDateFor,
 } from '@/lib/billing/schedule';
 import { getConfirmedKeys } from '@/lib/billing/confirmations';
+import { isFixedTerm } from '@/lib/contracts';
 
 // Três regras novas que este cron passou a obedecer:
 //
@@ -134,7 +135,7 @@ export async function GET(request: Request) {
     return activeContracts.filter(({ contract }) => {
       if (canonicalDueDateFor(dueIso, contract.billingDay) !== dueIso) return false;
       if (contract.startDate && contract.startDate > dueIso) return false;
-      if (contract.type === 'project' && contract.endDate && contract.endDate < dueIso) return false;
+      if (isFixedTerm(contract.type, contract.autoRenew) && contract.endDate && contract.endDate < dueIso) return false;
       return true;
     });
   }
