@@ -126,11 +126,15 @@ export async function GET(request: Request) {
 
   // Contratos que vencem em "dueIso": dia de cobrança canônico igual à data e
   // vigência conferida contra a data do VENCIMENTO, não contra hoje.
+  //
+  // RENOVAÇÃO AUTOMÁTICA: Contratos ativos de mensalidade/fee fixo (fixed_fee, etc.)
+  // renovam automaticamente se não forem cancelados ou pausados. Apenas contratos
+  // pontuais do tipo 'project' respeitam término rígido por endDate.
   function contractsDueOn(dueIso: string): ContractRow[] {
     return activeContracts.filter(({ contract }) => {
       if (canonicalDueDateFor(dueIso, contract.billingDay) !== dueIso) return false;
       if (contract.startDate && contract.startDate > dueIso) return false;
-      if (contract.endDate && contract.endDate < dueIso) return false;
+      if (contract.type === 'project' && contract.endDate && contract.endDate < dueIso) return false;
       return true;
     });
   }

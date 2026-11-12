@@ -1,8 +1,9 @@
 // Status efetivo do contrato.
-// "Finalizado" é DERIVADO da data de término (não é gravado no banco): quando a
-// data de término já passou e o contrato não foi cancelado/pausado, ele é tratado
-// como finalizado e deixa de contar como receita recorrente (MRR / receita por canal).
-// "Cancelado" continua sendo uma ação manual (interrupção antes do prazo).
+// "Finalizado" é DERIVADO da data de término exclusivamente para projetos pontuais
+// (type === 'project'). Contratos de mensalidade e fee fixo recorrente (fixed_fee,
+// fixed_plus_percentage) com status 'active' têm RENOVAÇÃO AUTOMÁTICA: se não foram
+// cancelados ou pausados pelo dono, continuam ativos indefinidamente.
+// "Cancelado" continua sendo uma ação manual (interrupção do contrato).
 
 export type EffectiveContractStatus = 'active' | 'paused' | 'cancelled' | 'finished';
 
@@ -22,11 +23,14 @@ export const CONTRACT_STATUS_STYLES: Record<EffectiveContractStatus, string> = {
 
 export function effectiveContractStatus(
   status: string | null | undefined,
-  endDate: string | null | undefined
+  endDate: string | null | undefined,
+  type?: string | null | undefined
 ): EffectiveContractStatus {
   if (status === 'cancelled') return 'cancelled';
   if (status === 'paused') return 'paused';
-  if (endDate) {
+  // Apenas projetos pontuais (não recorrentes) são finalizados pela data de término.
+  // Contratos mensais ativos contam com renovação automática contínua.
+  if (type === 'project' && endDate) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const end = new Date(endDate + 'T00:00:00');
@@ -35,10 +39,11 @@ export function effectiveContractStatus(
   return 'active';
 }
 
-// Conta como receita recorrente viva? (ativo e dentro do prazo)
+// Conta como receita recorrente viva? (ativo e dentro do prazo / renovado)
 export function isContractEarning(
   status: string | null | undefined,
-  endDate: string | null | undefined
+  endDate: string | null | undefined,
+  type?: string | null | undefined
 ): boolean {
-  return effectiveContractStatus(status, endDate) === 'active';
+  return effectiveContractStatus(status, endDate, type) === 'active';
 }

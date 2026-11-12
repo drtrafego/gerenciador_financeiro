@@ -812,7 +812,7 @@ export async function getDashboardData(from: string, to: string) {
         notTestClient
       )),
     // Origem do cliente: MRR (contratos ativos por canal; finalizados filtrados em JS)
-    db.select({ source: clients.source, fixedAmount: contracts.fixedAmount, currency: contracts.currency, endDate: contracts.endDate })
+    db.select({ source: clients.source, fixedAmount: contracts.fixedAmount, currency: contracts.currency, endDate: contracts.endDate, type: contracts.type })
       .from(contracts)
       .innerJoin(clients, eq(contracts.clientId, clients.id))
       .where(and(eq(contracts.status, 'active'), notTestClient)),
@@ -862,6 +862,7 @@ export async function getDashboardData(from: string, to: string) {
       .where(and(
         lte(contracts.startDate, to),
         or(
+          and(eq(contracts.status, 'active'), ne(contracts.type, 'project')),
           and(eq(contracts.status, 'active'), isNull(contracts.endDate)),
           and(isNotNull(contracts.endDate), gte(contracts.endDate, prev.from))
         ),
@@ -1210,7 +1211,7 @@ export async function getDashboardData(from: string, to: string) {
   };
 
   for (const r of sourceContracts) {
-    if (!isContractEarning('active', r.endDate)) continue; // pula contratos finalizados
+    if (!isContractEarning('active', r.endDate, r.type)) continue; // pula contratos finalizados
     const key = r.source ?? 'none';
     ensureSource(key).mrr += convertAmount(parseFloat(r.fixedAmount ?? '0'), (r.currency ?? 'BRL') as Currency, 'BRL', rate);
   }
@@ -1370,6 +1371,7 @@ export async function getCashFlowData(from: string, to: string) {
         and(
           lte(contracts.startDate, to),
           or(
+            and(eq(contracts.status, 'active'), ne(contracts.type, 'project')),
             and(eq(contracts.status, 'active'), isNull(contracts.endDate)),
             and(isNotNull(contracts.endDate), gte(contracts.endDate, from))
           ),

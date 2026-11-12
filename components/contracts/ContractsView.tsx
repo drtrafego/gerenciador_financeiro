@@ -90,7 +90,7 @@ export default function ContractsView({
   // Contrato que forma o MRR: ativo e dentro do prazo. É o mesmo critério do
   // dashboard, para os dois números fecharem.
   const contratosAtivos = contractRows.filter(
-    (r) => effectiveContractStatus(r.contract?.status, r.contract?.endDate) === "active"
+    (r) => effectiveContractStatus(r.contract?.status, r.contract?.endDate, r.contract?.type) === "active"
   ).length;
 
   // Recorrência viva: não foi parada à mão e ainda não passou do fim. Sem isso o

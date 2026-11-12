@@ -92,7 +92,7 @@ export default function ContractsTable({
       {/* Celular: card clicável inteiro, então a coluna "Ver" não precisa existir aqui */}
       <div className="flex flex-col gap-2 sm:hidden">
         {rows.map(({ contract, clientName }) => {
-          const eff = effectiveContractStatus(contract.status, contract.endDate);
+          const eff = effectiveContractStatus(contract.status, contract.endDate, contract.type);
           return (
             <Link
               key={contract.id}
@@ -132,7 +132,7 @@ export default function ContractsTable({
         </thead>
         <tbody className="divide-y divide-zinc-800">
           {rows.map(({ contract, clientName }) => {
-            const eff = effectiveContractStatus(contract.status, contract.endDate);
+            const eff = effectiveContractStatus(contract.status, contract.endDate, contract.type);
             return (
             <tr key={contract.id} className="hover:bg-zinc-800/50 transition-colors">
               <td className="px-4 py-3 font-medium text-white">{clientName ?? "—"}</td>

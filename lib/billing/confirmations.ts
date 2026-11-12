@@ -351,7 +351,8 @@ export async function listOpenDues({
       const dueIso = addDays(todayIso, -offset);
       if (canonicalDueDateFor(dueIso, row.contract.billingDay) !== dueIso) continue;
       if (row.contract.startDate && row.contract.startDate > dueIso) continue;
-      if (row.contract.endDate && row.contract.endDate < dueIso) continue;
+      // Renovação automática: apenas projetos com prazo fechado encerram por data de término
+      if (row.contract.type === 'project' && row.contract.endDate && row.contract.endDate < dueIso) continue;
       planned.push({ contract: row.contract, client: row.client, dueDate: dueIso });
     }
   }
