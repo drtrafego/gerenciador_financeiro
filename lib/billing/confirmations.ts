@@ -334,7 +334,7 @@ export async function listOpenDues({
 }): Promise<OpenDueItem[]> {
   const todayIso = todayBrtIso();
 
-  const conditions = [eq(contracts.status, 'active')];
+  const conditions = [eq(contracts.status, 'active'), eq(clients.status, 'active')];
   if (contractId) conditions.push(eq(contracts.id, contractId));
   if (clientId) conditions.push(eq(contracts.clientId, clientId));
   if (phone) conditions.push(eq(clients.phone, phone));

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { reminders, messageTemplates, clients, invoices, contracts, systemSettings } from '@/lib/db/schema';
 import type { ReminderStage } from '@/lib/db/schema';
-import { eq, and, lte, inArray, notInArray } from 'drizzle-orm';
+import { eq, and, lte, inArray, notInArray, or, isNull } from 'drizzle-orm';
 import {
   sendWhatsApp,
   resolveMessage,
@@ -121,8 +121,13 @@ export async function GET(request: Request) {
     ? await db
         .select({ contract: contracts, client: clients })
         .from(contracts)
-        .leftJoin(clients, eq(contracts.clientId, clients.id))
-        .where(eq(contracts.status, 'active'))
+        .innerJoin(clients, eq(contracts.clientId, clients.id))
+        .where(
+          and(
+            eq(contracts.status, 'active'),
+            eq(clients.status, 'active')
+          )
+        )
     : [];
 
   // Contratos que vencem em "dueIso": dia de cobrança canônico igual à data e
@@ -132,7 +137,8 @@ export async function GET(request: Request) {
   // renovam automaticamente se não forem cancelados ou pausados. Apenas contratos
   // pontuais do tipo 'project' respeitam término rígido por endDate.
   function contractsDueOn(dueIso: string): ContractRow[] {
-    return activeContracts.filter(({ contract }) => {
+    return activeContracts.filter(({ contract, client }) => {
+      if (!client || client.status !== 'active') return false;
       if (canonicalDueDateFor(dueIso, contract.billingDay) !== dueIso) return false;
       if (contract.startDate && contract.startDate > dueIso) return false;
       if (isFixedTerm(contract.type, contract.autoRenew) && contract.endDate && contract.endDate < dueIso) return false;
@@ -610,7 +616,8 @@ export async function GET(request: Request) {
       and(
         eq(reminders.status, 'pending'),
         lte(reminders.triggerDate, todayBrt),
-        notInArray(reminders.stage, ['overdue_d2', 'overdue_d5'])
+        notInArray(reminders.stage, ['overdue_d2', 'overdue_d5']),
+        or(isNull(reminders.clientId), eq(clients.status, 'active'))
       )
     );
 

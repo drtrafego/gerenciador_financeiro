@@ -153,6 +153,10 @@ export async function sendNowReminderService(id: string) {
 
   const { reminder, template, client, invoice, contract } = row;
 
+  if (client && client.status === 'inactive') {
+    throw badRequest('Cliente está marcado como inativo. Reative o cliente antes de enviar lembretes.');
+  }
+
   // Cobrança de atraso com pagamento já confirmado não é reenviada por ninguém.
   if (reminder.contractId && (reminder.stage === 'overdue_d2' || reminder.stage === 'overdue_d5')) {
     const [confirmacao] = await db

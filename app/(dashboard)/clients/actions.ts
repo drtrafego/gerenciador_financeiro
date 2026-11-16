@@ -5,8 +5,8 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { createClient, updateClient, deleteClient, getUser } from '@/lib/db/queries';
 import { db } from '@/lib/db';
-import { contracts } from '@/lib/db/schema';
-import { eq, sql } from 'drizzle-orm';
+import { contracts, reminders } from '@/lib/db/schema';
+import { and, eq, sql } from 'drizzle-orm';
 import { CLIENT_SOURCE_CODES } from '@/lib/clientSources';
 
 const clientSchema = z.object({
@@ -38,6 +38,7 @@ export async function createClientAction(formData: FormData): Promise<void> {
     isTest: parsed.isTest ?? false,
     notes: parsed.notes ?? null,
   });
+
   revalidatePath('/clients');
   redirect(`/contracts/new?clientId=${newClient.id}`);
 }
@@ -59,8 +60,24 @@ export async function updateClientAction(id: string, formData: FormData): Promis
     isTest: parsed.isTest ?? false,
     notes: parsed.notes ?? null,
   });
+
+  // Se o cliente foi inativado, cancela qualquer lembrete pendente para ele
+  // e pausa os contratos ativos dele para interromper cobranças e ajustar MRR
+  if (parsed.status === 'inactive') {
+    await db
+      .update(reminders)
+      .set({ status: 'cancelled', errorMessage: 'Cliente marcado como inativo' })
+      .where(and(eq(reminders.clientId, id), eq(reminders.status, 'pending')));
+
+    await db
+      .update(contracts)
+      .set({ status: 'paused' })
+      .where(and(eq(contracts.clientId, id), eq(contracts.status, 'active')));
+  }
+
   revalidatePath('/clients');
   revalidatePath(`/clients/${id}`);
+  revalidatePath('/contracts');
   redirect(`/clients/${id}`);
 }
 
