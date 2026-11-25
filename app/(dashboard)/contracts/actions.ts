@@ -16,6 +16,9 @@ import {
   isPdfUrlUsedByOtherContract,
   getUser,
 } from '@/lib/db/queries';
+import { db } from '@/lib/db';
+import { reminders } from '@/lib/db/schema';
+import { and, eq } from 'drizzle-orm';
 
 const contractSchema = z.object({
   clientId: z.string().uuid(),
@@ -148,6 +151,12 @@ export async function updateContractAction(id: string, formData: FormData): Prom
       // Sem arquivo novo, o campo nem entra no UPDATE e o PDF atual fica intacto.
       ...(novoPdfUrl !== undefined && { pdfUrl: novoPdfUrl }),
     });
+    if (parsed.status === 'paused' || parsed.status === 'cancelled') {
+      await db
+        .update(reminders)
+        .set({ status: 'cancelled', errorMessage: `Contrato ${parsed.status === 'cancelled' ? 'cancelado' : 'pausado'}` })
+        .where(and(eq(reminders.contractId, id), eq(reminders.status, 'pending')));
+    }
   } catch (err) {
     if (novoPdfUrl) await deleteContractPdfIfOurs(novoPdfUrl);
     throw err;
@@ -162,6 +171,9 @@ export async function updateContractAction(id: string, formData: FormData): Prom
   }
   revalidatePath('/contracts');
   revalidatePath(`/contracts/${id}`);
+  revalidatePath('/dashboard');
+  revalidatePath('/cash-flow');
+  revalidatePath('/');
   redirect('/contracts');
 }
 

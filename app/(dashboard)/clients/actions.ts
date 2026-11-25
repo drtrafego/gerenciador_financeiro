@@ -78,6 +78,9 @@ export async function updateClientAction(id: string, formData: FormData): Promis
   revalidatePath('/clients');
   revalidatePath(`/clients/${id}`);
   revalidatePath('/contracts');
+  revalidatePath('/dashboard');
+  revalidatePath('/cash-flow');
+  revalidatePath('/');
   redirect(`/clients/${id}`);
 }
 

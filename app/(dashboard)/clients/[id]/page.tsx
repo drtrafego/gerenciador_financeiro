@@ -11,7 +11,7 @@ import { Mail, Phone, Pencil, FileText, Plus } from 'lucide-react';
 import DeleteClientButton from '@/components/clients/DeleteClientButton';
 import MaskedCurrency from '@/components/shared/MaskedCurrency';
 import { CLIENT_SOURCES, sourceLabel } from '@/lib/clientSources';
-import { effectiveContractStatus, CONTRACT_STATUS_LABELS } from '@/lib/contracts';
+import { effectiveContractStatus, isFixedTerm, CONTRACT_STATUS_LABELS } from '@/lib/contracts';
 
 const contractStatusText: Record<string, string> = {
   active: 'text-green-400',
@@ -261,7 +261,7 @@ export default async function ClientDetailPage({
                     {formatCurrency(parseFloat(c.fixedAmount ?? '0'), (c.currency as Currency) ?? 'BRL')}
                   </p>
                   {(() => {
-                    const eff = effectiveContractStatus(c.status, c.endDate);
+                    const eff = effectiveContractStatus(c.status, c.endDate, isFixedTerm(c.type, c.autoRenew));
                     return (
                       <p className={cn('text-xs', contractStatusText[eff])}>
                         {CONTRACT_STATUS_LABELS[eff]}

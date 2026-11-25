@@ -9,7 +9,7 @@ import { formatCurrency } from '@/lib/currency/format';
 import type { Currency } from '@/lib/currency/format';
 import { cn } from '@/lib/utils';
 import { FileText } from 'lucide-react';
-import { effectiveContractStatus, CONTRACT_STATUS_LABELS, CONTRACT_STATUS_STYLES } from '@/lib/contracts';
+import { effectiveContractStatus, isFixedTerm, CONTRACT_STATUS_LABELS, CONTRACT_STATUS_STYLES } from '@/lib/contracts';
 
 const typeLabels: Record<string, string> = {
   fixed_fee: 'Fee Fixo',
@@ -47,7 +47,7 @@ export default async function ContractDetailPage({
               {contract.name ?? typeLabels[contract.type] ?? contract.type}
             </h1>
             {(() => {
-              const eff = effectiveContractStatus(contract.status, contract.endDate);
+              const eff = effectiveContractStatus(contract.status, contract.endDate, isFixedTerm(contract.type, contract.autoRenew));
               return (
                 <span className={cn('rounded-full border px-2.5 py-0.5 text-xs font-medium', CONTRACT_STATUS_STYLES[eff])}>
                   {CONTRACT_STATUS_LABELS[eff]}

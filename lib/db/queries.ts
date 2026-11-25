@@ -986,7 +986,10 @@ export async function getDashboardData(from: string, to: string) {
         const dateStr = dayInMonth(m, c.billingDay ?? 5);
         if (dateStr < pFrom || dateStr > pTo) continue;
         if (dateStr < c.startDate || (c.endDate != null && dateStr > c.endDate)) continue;
-        addIncome(c.fixedAmount, c.currency, c.source, confirmedKeys.has(`${c.id}|${dateStr}`));
+        const isConfirmed = confirmedKeys.has(`${c.id}|${dateStr}`);
+        // Contrato pausado ou cancelado não gera projeção futura "a receber"
+        if (c.status !== 'active' && !isConfirmed) continue;
+        addIncome(c.fixedAmount, c.currency, c.source, isConfirmed);
       }
     }
 
@@ -1418,6 +1421,10 @@ export async function getCashFlowData(from: string, to: string) {
       const withinRange = dateStr >= from && dateStr <= to;
       const withinContract = dateStr >= c.startDate && (c.endDate == null || dateStr <= c.endDate);
       if (withinRange && withinContract) {
+        const isConfirmed = confirmedKeys.has(`${c.id}|${dateStr}`);
+        // Contrato pausado ou cancelado não gera projeção futura "a receber" no fluxo de caixa
+        if (c.status !== 'active' && !isConfirmed) continue;
+
         contractIncomes.push({
           id: `contract-${c.id}-${dateStr}`,
           type: 'income' as const,
@@ -1435,7 +1442,7 @@ export async function getCashFlowData(from: string, to: string) {
           contractId: c.id,
           dueDate: dateStr,
           clientName: c.clientName ?? null,
-          confirmed: confirmedKeys.has(`${c.id}|${dateStr}`),
+          confirmed: isConfirmed,
         });
       }
     }
